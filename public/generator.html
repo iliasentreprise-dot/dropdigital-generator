@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Dropdigital Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:#050008; --red:#e8110a; --gold:#c4a0ff;
+    --blue:#2a8aff; --blue-dark:#0a4a8a;
+    --green:#25D366; --cream:#ece0ff; --grey:#120020;
+    --purple:#9b4dff; --purple-dark:#5a1a9a; --purple-glow:rgba(155,77,255,.6);
+    --purple-deep:#0d0018; --purple-mid:#1a0035; --purple-bright:#b366ff;
+    --purple-ultra:#7a00ff; --glow1:rgba(155,77,255,.4); --glow2:rgba(100,0,255,.3);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    background:var(--purple-deep);
+    color:var(--cream);
+    font-family:'DM Sans',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* ── BACKGROUND multicouche violet profond ── */
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(120,0,255,.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(80,0,200,.15) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 50% 40%, rgba(155,77,255,.08) 0%, transparent 50%),
+      linear-gradient(160deg, #0d0018 0%, #08000f 40%, #120025 70%, #060010 100%);
+    pointer-events:none;z-index:0;
+  }
+  /* grain texture */
+  body::after{
+    content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:.6;
+  }
+
+  /* ── SCANLINES ── */
+  .scanlines{position:fixed;inset:0;pointer-events:none;z-index:1;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  }
+
+  /* ── PARTICULES FLOTTANTES ── */
+  .particles{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+  .particle{position:absolute;border-radius:50%;animation:floatUp linear infinite;opacity:0}
+  @keyframes floatUp{
+    0%{transform:translateY(100vh) scale(0);opacity:0}
+    10%{opacity:1}
+    90%{opacity:.5}
+    100%{transform:translateY(-20px) scale(1);opacity:0}
+  }
+
+  /* ── ROBOT IA SVG ── */
+  .robot-wrap{display:flex;justify-content:center;margin-bottom:20px;position:relative}
+  .robot-svg{width:110px;height:110px;animation:robotFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(155,77,255,.7)) drop-shadow(0 0 60px rgba(100,0,255,.4))}
+  @keyframes robotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .robot-glow-ring{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:80px;height:16px;background:radial-gradient(ellipse,rgba(155,77,255,.5) 0%,transparent 70%);border-radius:50%;animation:glowPulse 3s ease-in-out infinite}
+  @keyframes glowPulse{0%,100%{opacity:.5;transform:translateX(-50%) scaleX(1)}50%{opacity:1;transform:translateX(-50%) scaleX(1.3)}}
+
+  /* ── HEADER ── */
+  .site-header{
+    text-align:center;padding:44px 20px 34px;
+    position:relative;z-index:2;
+    border-bottom:1px solid rgba(155,77,255,.25);
+    background:linear-gradient(180deg,rgba(155,77,255,.1) 0%,rgba(80,0,180,.05) 60%,transparent 100%);
+  }
+  .site-header h1{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(38px,7vw,76px);
+    color:white;line-height:1;letter-spacing:3px;
+    text-shadow:0 0 25px rgba(155,77,255,.7),0 0 50px rgba(120,0,255,.4);
+  }
+  .site-header h1 span{
+    color:#d4aaff;
+    text-shadow:0 0 25px rgba(155,77,255,.7),0 0 50px rgba(120,0,255,.4);
+  }
+  .site-header h1 em{
+    color:#fff;font-style:normal;
+    text-shadow:0 0 25px rgba(155,77,255,.7),0 0 50px rgba(120,0,255,.4);
+  }
+  .site-header p{font-size:clamp(14px,2.5vw,17px);color:rgba(196,160,255,.7);margin-top:10px;max-width:600px;margin-inline:auto;line-height:1.6}
+  .header-badge{display:inline-block;background:linear-gradient(135deg,rgba(155,77,255,.2),rgba(100,0,255,.15));border:1px solid rgba(155,77,255,.4);color:var(--purple-bright);font-size:11px;letter-spacing:3px;padding:5px 16px;margin-bottom:18px;font-family:'Bebas Neue',sans-serif;text-transform:uppercase}
+
+  .progress-wrap{max-width:700px;margin:24px auto 0;padding:0 20px}
+  .progress-steps{display:flex;gap:6px;justify-content:center}
+  .progress-dot{width:32px;height:4px;background:rgba(155,77,255,.15);border-radius:2px;transition:all .4s}
+  .progress-dot.active{background:var(--purple);box-shadow:0 0 8px rgba(155,77,255,.8)}
+  .progress-dot.done{background:var(--purple-bright);box-shadow:0 0 6px rgba(179,102,255,.6)}
+
+  .chat-wrap{max-width:700px;margin:0 auto;padding:40px 20px 100px;position:relative;z-index:2}
+  .q-block{animation:fadeUp .5s ease forwards;opacity:0}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .q-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;color:var(--purple-bright);margin-bottom:10px;display:block;text-shadow:0 0 15px rgba(179,102,255,.6)}
+  .q-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,5vw,44px);color:white;line-height:1.1;margin-bottom:8px;text-shadow:0 0 30px rgba(155,77,255,.4)}
+  .q-title span{color:var(--purple-bright);text-shadow:0 0 20px rgba(179,102,255,.8)}
+  .q-sub{font-size:14px;color:rgba(196,160,255,.6);margin-bottom:28px;line-height:1.5}
+  .q-sub em{color:var(--purple-bright);font-style:normal;background:rgba(155,77,255,.1);padding:2px 8px;border-radius:3px;border:1px solid rgba(155,77,255,.2)}
+
+  .btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+  .btn-grid.cols-3{grid-template-columns:repeat(3,1fr)} .btn-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:500px){.btn-grid.cols-3{grid-template-columns:repeat(2,1fr)}}
+  .choice-btn{
+    background:rgba(155,77,255,.04);
+    border:1px solid rgba(155,77,255,.2);
+    color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;
+    padding:14px 16px;cursor:pointer;transition:all .25s;text-align:left;line-height:1.4;
+    position:relative;overflow:hidden;
+  }
+  .choice-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(155,77,255,.08),transparent);opacity:0;transition:opacity .25s}
+  .choice-btn:hover{border-color:var(--purple);background:rgba(155,77,255,.1);color:white;transform:translateY(-2px);box-shadow:0 4px 20px rgba(155,77,255,.3)}
+  .choice-btn:hover::before{opacity:1}
+  .choice-btn.selected{border-color:var(--purple-bright);background:rgba(155,77,255,.2);color:var(--purple-bright);box-shadow:0 0 20px rgba(155,77,255,.3),inset 0 0 20px rgba(155,77,255,.05)}
+  .choice-btn .btn-emoji{display:block;font-size:22px;margin-bottom:6px}
+
+  .text-input-wrap{position:relative;margin-top:16px}
+  .text-input-wrap label{display:block;font-size:12px;letter-spacing:2px;color:rgba(155,77,255,.6);text-transform:uppercase;margin-bottom:8px}
+  .q-input{width:100%;background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.2);border-bottom:2px solid var(--purple);color:white;font-family:'DM Sans',sans-serif;font-size:16px;padding:16px 18px;outline:none;transition:all .2s}
+  .q-input:focus{border-color:var(--purple-bright);background:rgba(155,77,255,.08);box-shadow:0 4px 20px rgba(155,77,255,.2)} .q-input::placeholder{color:rgba(155,77,255,.3)}
+
+  /* BOUTON PRINCIPAL SHIMMER */
+  .next-btn{
+    margin-top:28px;
+    background:linear-gradient(135deg,var(--purple-dark),var(--purple),var(--purple-bright));
+    color:white;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;
+    padding:18px 40px;border:none;cursor:pointer;
+    clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+    transition:all .2s;
+    box-shadow:0 4px 30px rgba(155,77,255,.5),0 0 60px rgba(100,0,255,.3);
+    width:100%;position:relative;overflow:hidden;
+  }
+  .next-btn::after{
+    content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+    animation:shimmer 2.5s ease-in-out infinite;
+  }
+  @keyframes shimmer{0%{left:-100%}100%{left:200%}}
+  .next-btn:hover:not(:disabled){filter:brightness(1.2);transform:translateY(-2px);box-shadow:0 8px 50px rgba(155,77,255,.7)}
+  .next-btn:disabled{opacity:.4;cursor:not-allowed}
+
+  .or-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:rgba(155,77,255,.3);font-size:12px;letter-spacing:2px}
+  .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:rgba(155,77,255,.15)}
+  .stripe-note{background:rgba(155,77,255,.06);border:1px solid rgba(155,77,255,.2);padding:16px 20px;font-size:14px;color:#c4a0ff;margin-bottom:20px;line-height:1.6}
+
+  /* MINI LOADING */
+  .mini-loading{display:flex;align-items:center;gap:12px;padding:20px;color:rgba(155,77,255,.5);font-size:14px}
+  .mini-dots{display:flex;gap:6px}
+  .mini-dot{width:8px;height:8px;border-radius:50%;background:var(--purple);animation:miniPulse 1.2s ease-in-out infinite;box-shadow:0 0 8px rgba(155,77,255,.6)}
+  .mini-dot:nth-child(2){animation-delay:.2s}.mini-dot:nth-child(3){animation-delay:.4s}
+  @keyframes miniPulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+
+  /* LOADING SCREEN */
+  #loadingScreen{display:none;position:fixed;inset:0;z-index:100;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;
+    background:radial-gradient(ellipse 80% 60% at 30% 20%,rgba(120,0,255,.25) 0%,transparent 60%),
+               radial-gradient(ellipse 60% 50% at 70% 80%,rgba(80,0,200,.2) 0%,transparent 55%),
+               linear-gradient(160deg,#0d0018 0%,#08000f 40%,#120025 70%,#060010 100%);
+  }
+  #loadingScreen.show{display:flex}
+
+  /* ROBOT loading animé */
+  .loading-robot{margin-bottom:30px;animation:robotFloat 3s ease-in-out infinite;filter:drop-shadow(0 0 50px rgba(155,77,255,.9)) drop-shadow(0 0 100px rgba(100,0,255,.6))}
+  .loading-robot svg{width:100px;height:100px}
+
+  /* Ecran du robot qui clignote */
+  @keyframes screenBlink{0%,100%{opacity:1}50%{opacity:.7}}
+  .robot-screen-text{animation:screenBlink 2s ease-in-out infinite}
+
+  .loading-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,6vw,52px);color:white;letter-spacing:3px;margin-bottom:12px;text-shadow:0 0 40px rgba(155,77,255,.6)}
+  .loading-title span{color:var(--purple-bright);text-shadow:0 0 20px rgba(179,102,255,1)}
+  .loading-msg{font-size:16px;color:#c4a0ff;min-height:28px;transition:opacity .3s;letter-spacing:1px}
+  .loading-bar-wrap{width:min(400px,90vw);height:3px;background:rgba(155,77,255,.1);margin:24px auto 20px;overflow:hidden;border-radius:2px}
+  .loading-bar{height:100%;background:linear-gradient(90deg,var(--purple-dark),var(--purple),var(--purple-bright));animation:loadFill 18s ease-in-out forwards;border-radius:2px;box-shadow:0 0 10px rgba(155,77,255,.8)}
+  @keyframes loadFill{0%{width:0}20%{width:22%}50%{width:55%}80%{width:80%}95%{width:92%}100%{width:100%}}
+  .loading-steps{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .ls{font-size:13px;color:rgba(155,77,255,.25);transition:color .3s} .ls.done{color:var(--green)} .ls.active{color:white;text-shadow:0 0 10px rgba(255,255,255,.5)}
+
+  /* RESULTS */
+  #resultsScreen{display:none;position:relative;z-index:2} #resultsScreen.show{display:block}
+  .results-header{
+    background:linear-gradient(160deg,#021a0a 0%,#04240e 40%,#021a0a 70%,#010f06 100%);
+    border-bottom:2px solid rgba(37,211,102,.3);
+    padding:70px 20px 60px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .results-header::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%,rgba(0,180,70,.18) 0%,transparent 65%),
+      radial-gradient(ellipse 40% 30% at 30% 80%,rgba(0,120,50,.1) 0%,transparent 50%);
+  }
+  .check-anim{font-size:80px;animation:pop .6s cubic-bezier(.175,.885,.32,1.275) forwards;display:block;margin-bottom:24px;filter:drop-shadow(0 0 20px rgba(37,211,102,.9)) drop-shadow(0 0 50px rgba(0,180,70,.5))}
+  @keyframes pop{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+  .results-header h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,7vw,72px);color:white;line-height:1;margin-bottom:14px;text-shadow:0 0 30px rgba(37,211,102,.3),0 2px 4px rgba(0,0,0,.8)}
+  .results-header h2 span{color:#2eff7a;text-shadow:0 0 20px rgba(37,211,102,1),0 0 50px rgba(0,255,100,.6),0 0 2px #fff}
+  .results-header p{font-size:17px;color:rgba(200,240,210,.7);max-width:520px;margin:0 auto}
+  .results-body{max-width:920px;margin:0 auto;padding:40px 20px}
+
+  .tabs{display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap}
+  .tab-btn{background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.15);color:rgba(155,77,255,.5);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:10px 18px;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:1px}
+  .tab-btn.active{background:rgba(155,77,255,.15);border-color:var(--purple-bright);color:var(--purple-bright);box-shadow:0 0 15px rgba(155,77,255,.3)}
+  .tab-btn:hover:not(.active){color:rgba(196,160,255,.8);border-color:rgba(155,77,255,.3)}
+  .tab-content{display:none} .tab-content.active{display:block}
+
+  .rc{background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.15);border-left:3px solid var(--green);padding:28px;margin-bottom:20px;animation:fadeUp .5s ease forwards;opacity:0;position:relative;overflow:hidden}
+  .rc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(37,211,102,.4),transparent)}
+  .rc:nth-child(1){animation-delay:.1s}.rc:nth-child(2){animation-delay:.2s}.rc:nth-child(3){animation-delay:.3s}.rc:nth-child(4){animation-delay:.4s}.rc:nth-child(5){animation-delay:.5s}.rc:nth-child(6){animation-delay:.6s}
+  .rch{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+  .rct{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--green);letter-spacing:2px;text-shadow:0 0 15px rgba(37,211,102,.5)}
+  .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+  .copy-btn{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.4);color:var(--green);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;padding:8px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+  .copy-btn:hover,.copy-btn.copied{background:var(--green);color:#050008;box-shadow:0 0 15px rgba(37,211,102,.5)}
+  .preview-btn{background:rgba(155,77,255,.08);border:1px solid rgba(155,77,255,.3);color:var(--purple-bright);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;padding:8px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+  .preview-btn:hover{background:var(--purple);color:white}
+  .rc-content{font-size:15px;color:rgba(196,160,255,.8);line-height:1.7}
+  .code-block{background:rgba(0,0,0,.4);border:1px solid rgba(155,77,255,.1);padding:20px;font-family:'Courier New',monospace;font-size:11px;color:#c4a0ff;overflow-x:auto;max-height:260px;overflow-y:auto;line-height:1.5}
+
+  /* CHAPITRE CARDS */
+  .chap-card{background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.1);border-left:3px solid var(--green);padding:22px;margin-bottom:16px}
+  .chap-card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--green);letter-spacing:1px;margin-bottom:4px;text-shadow:0 0 10px rgba(37,211,102,.4)}
+  .chap-card-sub{font-size:13px;color:rgba(155,77,255,.6);margin-bottom:12px;font-style:italic}
+  .chap-card-body{font-size:14px;color:rgba(196,160,255,.7);line-height:1.75;white-space:pre-wrap}
+  .chap-num{display:inline-block;background:rgba(155,77,255,.1);border:1px solid rgba(155,77,255,.2);color:var(--purple-bright);font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;padding:4px 10px;margin-bottom:10px}
+
+  /* DROPDIGITAL METHOD section (remplace pirate) */
+  .pirate-hero{background:linear-gradient(135deg,#0d0900,#1a1000,#120b00,#0d0900);border:2px solid rgba(212,160,10,.4);padding:50px 30px;text-align:center;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(212,160,10,.15),inset 0 0 60px rgba(200,134,10,.04);animation:goldBorderPulse 3s ease-in-out infinite}
+  .pirate-hero::before{content:'🏴';position:absolute;font-size:220px;opacity:.025;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+  .pirate-tag{display:inline-block;background:linear-gradient(135deg,#7a5500,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a);background-size:200% 200%;color:#1a0a00;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:4px;padding:6px 20px;margin-bottom:20px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);box-shadow:0 0 25px rgba(240,180,41,.6);animation:goldShift 3s ease-in-out infinite;font-weight:700}
+  .pirate-hero h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5.5vw,58px);color:white;line-height:1.05;margin-bottom:16px;text-shadow:0 0 20px rgba(200,134,10,.3)}
+  .pirate-hero h2 span{color:#f0b429;text-shadow:0 0 20px rgba(240,180,41,.8)} .pirate-hero h2 em{color:#f0b429;font-style:normal;text-shadow:0 0 20px rgba(240,180,41,.8)}
+  .pirate-hero p{font-size:16px;color:rgba(240,210,150,.6);max-width:560px;margin:0 auto 30px;line-height:1.75}
+  .pirate-hero p strong{color:#ffe066}
+  .pirate-stat-row{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin:30px 0}
+  .pirate-stat{text-align:center;padding:16px 20px;background:rgba(155,77,255,.06);border:1px solid rgba(155,77,255,.2)}
+  .pirate-stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--purple-bright);line-height:1;text-shadow:0 0 20px rgba(179,102,255,.6)}
+  .pirate-stat-label{font-size:11px;color:rgba(155,77,255,.5);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+  .pirate-points{display:grid;gap:12px;max-width:600px;margin:0 auto 32px;text-align:left}
+  .pirate-point{display:flex;align-items:flex-start;gap:12px;background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.12);padding:14px 16px}
+  .pirate-point-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+  .pirate-point-text{font-size:14px;color:rgba(196,160,255,.7);line-height:1.6} .pirate-point-text strong{color:white;display:block;margin-bottom:2px}
+
+  /* CTA BUTTONS */
+  .big-pirate-btn{
+    display:block;background:linear-gradient(135deg,var(--purple-dark),var(--purple),var(--purple-bright));
+    color:white;font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,3.5vw,28px);letter-spacing:3px;
+    padding:22px 50px;text-decoration:none;border:none;cursor:pointer;
+    clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+    box-shadow:0 8px 50px rgba(155,77,255,.6),0 0 100px rgba(100,0,255,.3);
+    animation:pulseGlow 2s ease-in-out infinite;
+    width:100%;max-width:600px;margin:0 auto;text-align:center;position:relative;overflow:hidden;
+  }
+  .big-pirate-btn::after{content:'';position:absolute;top:0;left:-200%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:goldShimmerPeriodic 5s ease-in-out infinite}
+  @keyframes pulseGlow{0%,100%{box-shadow:0 8px 50px rgba(155,77,255,.6)}50%{box-shadow:0 8px 80px rgba(155,77,255,.9),0 0 120px rgba(100,0,255,.5)}}
+  .big-pirate-btn:hover{filter:brightness(1.15)}
+
+  .final-cta{background:linear-gradient(135deg,#0d0900,#1a1000,#120b00,#0d0900);border:2px solid rgba(212,160,10,.5);padding:50px 30px;text-align:center;margin:40px 0;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(212,160,10,.2),inset 0 0 60px rgba(200,134,10,.05);animation:goldBorderPulse 3s ease-in-out infinite}
+  .final-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 30%,rgba(240,180,41,.08) 0%,transparent 65%)}
+  @keyframes goldBorderPulse{0%,100%{box-shadow:0 0 30px rgba(200,134,10,.2),inset 0 0 40px rgba(200,134,10,.04)}50%{box-shadow:0 0 60px rgba(240,180,41,.35),inset 0 0 80px rgba(200,134,10,.08)}}
+  .final-cta .tag{display:inline-block;background:linear-gradient(135deg,#7a5500,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a);background-size:200% 200%;color:#1a0a00;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;padding:6px 20px;margin-bottom:20px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);box-shadow:0 0 20px rgba(240,180,41,.6);animation:goldShift 3s ease-in-out infinite;font-weight:700}
+  .final-cta h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,54px);color:white;line-height:1.05;margin-bottom:16px;text-shadow:0 0 20px rgba(200,134,10,.3)}
+  .final-cta h2 span{color:#f0b429;text-shadow:0 0 20px rgba(240,180,41,.8)} .final-cta h2 em{color:#f0b429;font-style:normal;text-shadow:0 0 20px rgba(240,180,41,.8)}
+  .final-cta p{font-size:16px;color:rgba(240,210,150,.6);max-width:520px;margin:0 auto 30px;line-height:1.7}
+  .final-cta p strong{color:#ffe066}
+  .big-red-btn{display:block;background:linear-gradient(135deg,#7a5500,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a);background-size:200% 200%;color:#1a0a00;font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,3.5vw,28px);letter-spacing:3px;padding:22px 50px;text-decoration:none;border:none;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);box-shadow:0 8px 50px rgba(240,180,41,.5),0 0 100px rgba(200,134,10,.3);animation:goldShift 3s ease-in-out infinite,goldGlow 2s ease-in-out infinite;width:100%;max-width:600px;margin:0 auto;text-align:center;position:relative;overflow:hidden;font-weight:700}
+  .big-red-btn::after{content:"";position:absolute;top:0;left:-200%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:goldShimmerPeriodic 5s ease-in-out infinite}
+  .big-red-btn:hover{filter:brightness(1.15)}
+  .final-cta .small-note{font-size:13px;color:rgba(240,180,41,.35);margin-top:14px}
+  .restart-btn{display:block;background:transparent;border:1px solid rgba(155,77,255,.15);color:rgba(155,77,255,.4);font-family:'DM Sans',sans-serif;font-size:14px;padding:14px;cursor:pointer;width:100%;text-align:center;transition:all .2s;margin-top:16px}
+  .restart-btn:hover{color:rgba(196,160,255,.8);border-color:rgba(155,77,255,.3)}
+
+  /* PROMPT CLAUDE box */
+  .prompt-claude-box{background:rgba(155,77,255,.04);border:1px solid rgba(155,77,255,.2);padding:24px;margin-top:20px}
+  .prompt-claude-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--green);margin-bottom:12px;text-shadow:0 0 10px rgba(37,211,102,.4)}
+  .prompt-claude-text{font-size:13px;color:#c4a0ff;line-height:1.7;white-space:pre-wrap;font-family:'Courier New',monospace}
+
+  @media(max-width:768px){.btn-grid{grid-template-columns:1fr 1fr}.btn-grid.cols-3{grid-template-columns:1fr}.rch{flex-direction:column;align-items:flex-start}.tabs{flex-direction:column}.pirate-stat-row{gap:12px}}
+  @media(max-width:480px){.btn-grid{grid-template-columns:1fr}.next-btn{font-size:18px;padding:16px 30px}}
+
+  /* ── BOUTON MÉTHODE DROPDIGITAL — JAUNE DORÉ ── */
+  .tab-btn-pirate{
+    background:linear-gradient(135deg,#7a5500,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a) !important;
+    background-size:200% 200% !important;
+    border:1px solid #f0b429 !important;
+    color:#1a0a00 !important;
+    font-weight:700 !important;
+    position:relative;
+    overflow:hidden !important;
+    animation:goldShift 3s ease-in-out infinite,goldGlow 2s ease-in-out infinite !important;
+    text-shadow:0 1px 2px rgba(255,220,80,.5);
+  }
+  @keyframes goldShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  @keyframes goldGlow{0%,100%{box-shadow:0 0 12px rgba(240,180,41,.6),0 0 25px rgba(240,180,41,.3)}50%{box-shadow:0 0 22px rgba(255,220,80,.9),0 0 50px rgba(240,180,41,.5),0 0 80px rgba(200,134,10,.3)}}
+  .tab-btn-pirate::before{content:"";position:absolute;top:0;left:-200%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:goldShimmerPeriodic 5s ease-in-out infinite;}
+  @keyframes goldShimmerPeriodic{0%{left:-200%}15%{left:200%}100%{left:200%}}
+  @keyframes goldShimmer{0%{left:-100%}100%{left:200%}}
+  .tab-btn-pirate.active{background:linear-gradient(135deg,#5a3d00,#a86c08,#d4941f,#ffd700,#d4941f,#a86c08) !important;border-color:#ffd700 !important;color:#1a0a00 !important;box-shadow:0 0 30px rgba(255,215,0,.8),0 0 60px rgba(240,180,41,.5) !important;}
+  .tab-btn-pirate:hover:not(.active){filter:brightness(1.15) !important;color:#1a0a00 !important;}
+  .pirate-star{position:absolute;font-size:10px;color:#ffe566;pointer-events:none;animation:starBlink 1.8s ease-in-out infinite;text-shadow:0 0 6px rgba(255,220,50,.9);}
+  .s1{top:-7px;right:8px;animation-delay:0s}
+  .s2{top:-5px;left:10px;font-size:8px;animation-delay:.6s}
+  .s3{bottom:-7px;right:24px;animation-delay:1.2s}
+  @keyframes starBlink{0%,100%{opacity:0;transform:scale(.4) rotate(0deg)}30%{opacity:1;transform:scale(1.3) rotate(20deg)}60%{opacity:.6;transform:scale(.9) rotate(-10deg)}80%{opacity:1;transform:scale(1.1) rotate(5deg)}}
+
+  /* ── RC GOLD (dropdigital system) ── */
+  .rc-gold{
+    background:linear-gradient(135deg,#0d0900,#1a1000,#120b00) !important;
+    border:1px solid rgba(212,160,10,.35) !important;
+    border-left:3px solid #f0b429 !important;
+    box-shadow:0 0 30px rgba(200,134,10,.12),inset 0 0 40px rgba(200,134,10,.04);
+    animation:goldBorderPulse 3s ease-in-out infinite !important;
+  }
+  .rc-gold::before{background:linear-gradient(90deg,transparent,rgba(240,180,41,.25),transparent) !important}
+
+  /* ── RC RED AGGRESSIVE (problème) ── */
+  .rc-red-aggressive{
+    background:linear-gradient(135deg,#1a0000,#2a0000,#1a0000) !important;
+    border:1px solid rgba(255,42,42,.3) !important;
+    border-left:4px solid #e8110a !important;
+    box-shadow:0 0 40px rgba(232,17,10,.15),inset 0 0 60px rgba(200,0,0,.06);
+    animation:redPulse 2.5s ease-in-out infinite !important;
+  }
+  .rc-red-aggressive::before{background:linear-gradient(90deg,transparent,rgba(255,42,42,.2),transparent) !important}
+  @keyframes redPulse{
+    0%,100%{box-shadow:0 0 30px rgba(232,17,10,.12),inset 0 0 40px rgba(200,0,0,.05)}
+    50%{box-shadow:0 0 60px rgba(255,42,42,.25),inset 0 0 80px rgba(200,0,0,.1)}
+  }
+
+  /* ── STATS VERTS SHINY ── */
+  .pirate-stat-green{
+    background:linear-gradient(135deg,#021a0a,#04240e,#021a0a) !important;
+    border:1px solid rgba(37,211,102,.35) !important;
+    box-shadow:0 0 20px rgba(37,211,102,.15),inset 0 0 30px rgba(0,180,70,.05);
+    position:relative;overflow:hidden;
+    animation:greenShine 3s ease-in-out infinite;
+  }
+  .pirate-stat-green::after{
+    content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(37,211,102,.15),transparent);
+    animation:greenShimmer 2.5s ease-in-out infinite;
+  }
+  @keyframes greenShine{
+    0%,100%{box-shadow:0 0 15px rgba(37,211,102,.12),inset 0 0 20px rgba(0,180,70,.04)}
+    50%{box-shadow:0 0 35px rgba(37,211,102,.3),inset 0 0 50px rgba(0,200,80,.08)}
+  }
+  @keyframes greenShimmer{0%{left:-100%}100%{left:200%}}
+  .green-num{color:#25D366 !important;text-shadow:0 0 25px rgba(37,211,102,.9),0 0 50px rgba(0,200,80,.4) !important}
+  .green-label{color:rgba(37,211,102,.7) !important}
+
+  /* ── RC GREEN FULL (carrousels) ── */
+  .rc-green-full{
+    background:linear-gradient(135deg,#021a0a,#04240e,#031508) !important;
+    border:1px solid rgba(37,211,102,.3) !important;
+    border-left:4px solid #25D366 !important;
+    box-shadow:0 0 40px rgba(37,211,102,.12),inset 0 0 60px rgba(0,180,70,.04);
+    animation:greenShine 3s ease-in-out infinite !important;
+  }
+  .rc-green-full::before{background:linear-gradient(90deg,transparent,rgba(37,211,102,.2),transparent) !important}
+  .rc-green-full .pirate-point{
+    background:rgba(37,211,102,.05) !important;
+    border:1px solid rgba(37,211,102,.15) !important;
+  }
+  .rc-green-full .pirate-point-text{color:rgba(200,240,210,.8) !important}
+  .rc-green-full .pirate-point-text strong{color:#25D366 !important;text-shadow:0 0 10px rgba(37,211,102,.5)}
+  .rc-green-full .pirate-point-icon{filter:drop-shadow(0 0 6px rgba(37,211,102,.6))}
+
+  /* ── SHIMMER ON PAGE DE VENTE & EBOOK tab buttons ── */
+  .tab-btn-sales, .tab-btn-ebook {
+    position:relative;
+    overflow:hidden;
+  }
+  .tab-btn-sales::before, .tab-btn-ebook::before {
+    content:"";position:absolute;top:0;left:-200%;width:60%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+    animation:tabShimmerPeriodic 5s ease-in-out infinite;
+  }
+  .tab-btn-sales::before { animation-delay: 1s; }
+  .tab-btn-ebook::before { animation-delay: 2.5s; }
+  @keyframes tabShimmerPeriodic{0%{left:-200%}15%{left:200%}100%{left:200%}}
+
+  /* ── PIRATE RC: fix invisible text (re-trigger animation when tab becomes active) ── */
+  .tab-content .rc { opacity:1 !important; animation:none !important; }
+  .tab-content.active .rc { opacity:1 !important; }
+
+  .copy-btn-green{
+    background:rgba(37,211,102,.1) !important;
+    border:1px solid rgba(37,211,102,.4) !important;
+    color:#25D366 !important;
+  }
+  .copy-btn-green:hover,.copy-btn-green.copied{
+    background:#25D366 !important;
+    color:#021a0a !important;
+    box-shadow:0 0 20px rgba(37,211,102,.5) !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- Effets de fond -->
+<div class="scanlines"></div>
+<div class="particles" id="particles"></div>
+
+<div class="site-header">
+  <!-- Robot IA SVG style iOS -->
+  <div class="robot-wrap">
+    <svg class="robot-svg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+      <!-- Corps robot -->
+      <rect x="22" y="52" width="66" height="48" rx="14" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.5"/>
+      <!-- Tête -->
+      <rect x="18" y="10" width="74" height="52" rx="14" fill="#f0ecff" stroke="#c4a0ff" stroke-width="1.5"/>
+      <!-- Écran interne -->
+      <rect x="26" y="18" width="58" height="36" rx="8" fill="#0d0018"/>
+      <!-- Lueur écran -->
+      <rect x="26" y="18" width="58" height="36" rx="8" fill="none" stroke="rgba(155,77,255,.6)" stroke-width="1"/>
+      <!-- Texte IA sur l'écran -->
+      <text x="55" y="42" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#9b4dff" class="robot-screen-text" style="filter:url(#glowFilter)">DG</text>
+      <!-- Halo violet sur l'écran -->
+      <ellipse cx="55" cy="36" rx="20" ry="12" fill="rgba(155,77,255,.12)"/>
+      <!-- Antenne -->
+      <line x1="55" y1="10" x2="55" y2="2" stroke="#c4a0ff" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="55" cy="1" r="3" fill="#9b4dff" style="filter:drop-shadow(0 0 4px rgba(155,77,255,1))"/>
+      <!-- Oreille gauche / caméra -->
+      <circle cx="16" cy="36" r="7" fill="#e0d8f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <circle cx="16" cy="36" r="4" fill="#0d0018"/>
+      <circle cx="16" cy="36" r="2" fill="#9b4dff"/>
+      <!-- Oreille droite -->
+      <circle cx="94" cy="36" r="7" fill="#e0d8f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <circle cx="94" cy="36" r="4" fill="#0d0018"/>
+      <circle cx="94" cy="36" r="2" fill="#9b4dff"/>
+      <!-- Bras gauche -->
+      <rect x="6" y="56" width="18" height="32" rx="9" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <!-- Bras droit -->
+      <rect x="86" y="56" width="18" height="32" rx="9" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <!-- Mains -->
+      <rect x="4" y="84" width="22" height="14" rx="7" fill="#d8ccf0" stroke="#c4a0ff" stroke-width="1"/>
+      <rect x="84" y="84" width="22" height="14" rx="7" fill="#d8ccf0" stroke="#c4a0ff" stroke-width="1"/>
+      <!-- Clavier -->
+      <rect x="18" y="97" width="74" height="12" rx="4" fill="#1a0035" stroke="rgba(155,77,255,.4)" stroke-width="1"/>
+      <!-- Touches clavier -->
+      <rect x="22" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.3)"/>
+      <rect x="33" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.3)"/>
+      <rect x="44" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.3)"/>
+      <rect x="55" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.5)"/>
+      <rect x="66" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.3)"/>
+      <rect x="77" y="100" width="8" height="6" rx="1.5" fill="rgba(155,77,255,.3)"/>
+      <!-- Détails corps - joints -->
+      <circle cx="30" cy="56" r="3" fill="rgba(155,77,255,.4)"/>
+      <circle cx="80" cy="56" r="3" fill="rgba(155,77,255,.4)"/>
+      <!-- LED ventre -->
+      <circle cx="55" cy="76" r="5" fill="rgba(155,77,255,.15)" stroke="rgba(155,77,255,.5)" stroke-width="1"/>
+      <circle cx="55" cy="76" r="2.5" fill="#9b4dff" style="animation:robotFloat 1.5s ease-in-out infinite alternate"/>
+      <defs>
+        <filter id="glowFilter"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+    </svg>
+    <div class="robot-glow-ring"></div>
+  </div>
+
+  <div class="header-badge">⚡ Outil Exclusif Membres</div>
+  <h1>Dropdigital <span>Generator</span><br><em>by IA</em></h1>
+  <p>7 questions. Un produit digital complet. Une page de vente prête à encaisser.</p>
+  <div class="progress-wrap"><div class="progress-steps" id="progressDots"></div></div>
+</div>
+
+<div class="chat-wrap" id="chatWrap"></div>
+
+<div id="loadingScreen">
+  <div class="loading-robot">
+    <svg viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+      <rect x="22" y="52" width="66" height="48" rx="14" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.5"/>
+      <rect x="18" y="10" width="74" height="52" rx="14" fill="#f0ecff" stroke="#c4a0ff" stroke-width="1.5"/>
+      <rect x="26" y="18" width="58" height="36" rx="8" fill="#0d0018"/>
+      <text x="55" y="42" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#9b4dff" class="robot-screen-text">DG</text>
+      <ellipse cx="55" cy="36" rx="20" ry="12" fill="rgba(155,77,255,.12)"/>
+      <line x1="55" y1="10" x2="55" y2="2" stroke="#c4a0ff" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="55" cy="1" r="3" fill="#9b4dff"/>
+      <circle cx="16" cy="36" r="7" fill="#e0d8f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <circle cx="16" cy="36" r="4" fill="#0d0018"/>
+      <circle cx="16" cy="36" r="2" fill="#9b4dff"/>
+      <circle cx="94" cy="36" r="7" fill="#e0d8f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <circle cx="94" cy="36" r="4" fill="#0d0018"/>
+      <circle cx="94" cy="36" r="2" fill="#9b4dff"/>
+      <rect x="6" y="56" width="18" height="32" rx="9" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.2"/>
+      <rect x="86" y="56" width="18" height="32" rx="9" fill="#e8e0f8" stroke="#c4a0ff" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <div class="loading-title">Le générateur <span>IA</span><br>crée ton empire...</div>
+  <div class="loading-msg" id="loadingMsg">⚡ Analyse de ton marché...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-steps">
+    <div class="ls" id="ls1">🎯 Avatar client & positionnement</div>
+    <div class="ls" id="ls2">📖 Script complet de l'ebook (6 chapitres)</div>
+    <div class="ls" id="ls3">🔥 Narration émotionnelle page de vente</div>
+    <div class="ls" id="ls4">💻 Copywriting & design HTML page de vente</div>
+    <div class="ls" id="ls5">✅ Finalisation & prompt Lovable</div>
+  </div>
+</div>
+
+<div id="resultsScreen">
+  <div class="results-header">
+    <span class="check-anim">⚡</span>
+    <h2>Ton produit est <span>prêt.</span><br>Ton site va <span>vendre.</span></h2>
+    <p>Voici tout ce dont tu as besoin pour encaisser dès cette semaine.</p>
+  </div>
+  <div class="results-body" id="resultsBody"></div>
+</div>
+
+<script>
+// Génération des particules violettes
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['rgba(155,77,255,', 'rgba(100,0,255,', 'rgba(179,102,255,', 'rgba(80,0,200,'];
+  for(let i=0;i<25;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+1;
+    const color = colors[Math.floor(Math.random()*colors.length)];
+    const opacity = Math.random()*0.6+0.2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${color}${opacity});
+      box-shadow:0 0 ${size*3}px ${color}0.8);
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    container.appendChild(p);
+  }
+})();
+// ── STATE ──────────────────────────────────────────────
+const S = { step:0, total:7, a:{} };
+
+// ── THEMES ─────────────────────────────────────────────
+function getTheme(marche, niche) {
+  const T = {
+    'Parentalité & éducation':  {p:'#9b7fa6',s:'#2a1535',a:'#f5a7c7',bg:'#1a0a1f',bg2:'#220d2a',txt:'#f0e8f8',hl:'#f5a7c7',btn:'#9b7fa6',btxt:'white',n:'Violet Pastel'},
+    'Vie sociale':              {p:'#9b7fa6',s:'#2a1535',a:'#f5a7c7',bg:'#1a0a1f',bg2:'#220d2a',txt:'#f0e8f8',hl:'#f5a7c7',btn:'#9b7fa6',btxt:'white',n:'Violet Pastel'},
+    'Séduction & dating':       {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Bordeaux'},
+    'Reconquête amoureuse':     {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Bordeaux'},
+    'Confiance en soi & estime personnelle':{p:'#7a6fa6',s:'#1a1535',a:'#b0a0f0',bg:'#0f0e1a',bg2:'#181630',txt:'#e8e5f8',hl:'#b0a0f0',btn:'#7a6fa6',btxt:'white',n:'Indigo'},
+    'Statut & charisme':        {p:'#7a6fa6',s:'#1a1535',a:'#b0a0f0',bg:'#0f0e1a',bg2:'#181630',txt:'#e8e5f8',hl:'#b0a0f0',btn:'#7a6fa6',btxt:'white',n:'Indigo'},
+    'Alimentation saine / nutrition':{p:'#4a8c5c',s:'#0a1f12',a:'#7fca95',bg:'#070f0a',bg2:'#0f2018',txt:'#e8f5ec',hl:'#7fca95',btn:'#4a8c5c',btxt:'white',n:'Vert Sauge'},
+    'Réduction du stress / anxiété':{p:'#4a8c5c',s:'#0a1f12',a:'#7fca95',bg:'#070f0a',bg2:'#0f2018',txt:'#e8f5ec',hl:'#7fca95',btn:'#4a8c5c',btxt:'white',n:'Vert Sauge'},
+    'Sommeil & récupération':   {p:'#2a5c8a',s:'#050f1a',a:'#c4a0ff',bg:'#030810',bg2:'#071020',txt:'#e0ecff',hl:'#c4a0ff',btn:'#2a5c8a',btxt:'white',n:'Bleu Nuit'},
+    'Perte de poids':           {p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'},
+    'Musculation / prise de masse':{p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'},
+    'Looksmaxxing':             {p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Premium'},
+    'Monétisation TikTok / réseaux sociaux':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
+    'Freelance & vendre ses compétences':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
+    'Marketing digital & vente en ligne':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
+    'Achat-revente':            {p:'#c8960a',s:'#1a1200',a:'#ffd700',bg:'#0a0800',bg2:'#141000',txt:'#fff8e0',hl:'#ffd700',btn:'#c8960a',btxt:'black',n:'Or Pirate'},
+    'Investissement & épargne': {p:'#1a7a3a',s:'#051205',a:'#4dff88',bg:'#020a04',bg2:'#051008',txt:'#e0fff0',hl:'#4dff88',btn:'#1a7a3a',btxt:'white',n:'Vert Finance'},
+    'Business automatisé / revenus passifs':{p:'#7a1abf',s:'#12051e',a:'#c07aff',bg:'#090310',bg2:'#100518',txt:'#f0e0ff',hl:'#c07aff',btn:'#7a1abf',btxt:'white',n:'Violet Tech'},
+  };
+  if (T[niche]) return T[niche];
+  if (marche==='sante') return {p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'};
+  if (marche==='relations') return {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Passion'};
+  if (marche==='argent') return {p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'};
+  return {p:'#8b3cf7',s:'#0a0018',a:'#ffffff',bg:'#0a0a0a',bg2:'#0d0a18',txt:'#f0eaff',hl:'#ffffff',btn:'#8b3cf7',btxt:'white',n:'Violet Pirate'};
+}
+
+// ── NICHES (fixed — 6 par marché) ─────────────────────────────────────
+const NICHES = {
+  sante:[
+    {e:'⚖️',l:'Perte de poids'},
+    {e:'💪',l:'Musculation / prise de masse'},
+    {e:'✨',l:'Looksmaxxing'},
+    {e:'😰',l:'Réduction du stress / anxiété'},
+    {e:'😴',l:'Sommeil & récupération'},
+    {e:'🥗',l:'Alimentation saine / nutrition'}
+  ],
+  relations:[
+    {e:'❤️‍🔥',l:'Séduction & dating'},
+    {e:'🧠',l:'Confiance en soi & estime personnelle'},
+    {e:'🤝',l:'Vie sociale'},
+    {e:'👑',l:'Statut & charisme'},
+    {e:'👶',l:'Parentalité & éducation'},
+    {e:'💔',l:'Reconquête amoureuse'}
+  ],
+  argent:[
+    {e:'💻',l:'Marketing digital & vente en ligne'},
+    {e:'📱',l:'Monétisation TikTok / réseaux sociaux'},
+    {e:'🔄',l:'Achat-revente'},
+    {e:'🛠️',l:'Freelance & vendre ses compétences'},
+    {e:'📈',l:'Investissement & épargne'},
+    {e:'🤖',l:'Business automatisé / revenus passifs'}
+  ]
+};
+
+// ── SOUS-NICHES fixes (6 par niche) ─────────────────────────────────────
+const SOUS_NICHES = {
+  'Perte de poids':[
+    {e:'🔥',l:'Avoir la taille fine'},
+    {e:'👇',l:'Perdre le bas du ventre'},
+    {e:'🦵',l:'Éliminer la cellulite'},
+    {e:'😮',l:'Avoir les joues creuses / mâchoire définie'},
+    {e:'🫡',l:'Perdre son double menton'},
+    {e:'🏃',l:'Affiner ses cuisses / hanches'}
+  ],
+  'Musculation / prise de masse':[
+    {e:'🎯',l:'Avoir des abdos visibles'},
+    {e:'🏋️',l:'Développer ses épaules / trapèzes'},
+    {e:'💪',l:'Grossir les bras (biceps / triceps)'},
+    {e:'🔺',l:'Avoir un grand dos en V'},
+    {e:'🫁',l:'Développer sa poitrine (pectoraux)'},
+    {e:'🍑',l:'Avoir des fessiers ronds et musclés'}
+  ],
+  'Looksmaxxing':[
+    {e:'✨',l:'Avoir une peau nette / sans acné'},
+    {e:'🦷',l:'Avoir une mâchoire plus carrée'},
+    {e:'🧍',l:'Améliorer sa posture'},
+    {e:'😁',l:'Avoir des dents blanches et alignées'},
+    {e:'💈',l:'Soigner sa coupe de cheveux / style'},
+    {e:'👁️',l:'Avoir un regard plus intense'}
+  ],
+  'Réduction du stress / anxiété':[
+    {e:'🌀',l:'Arrêter de ruminer / pensées négatives'},
+    {e:'😮‍💨',l:'Gérer les crises d\'angoisse'},
+    {e:'🌙',l:'Dormir malgré le stress'},
+    {e:'⏳',l:'Stopper la procrastination liée à l\'anxiété'},
+    {e:'💼',l:'Gérer le stress au travail'},
+    {e:'😟',l:'Arrêter de se faire du souci pour tout'}
+  ],
+  'Sommeil & récupération':[
+    {e:'😴',l:'S\'endormir rapidement'},
+    {e:'🌛',l:'Arrêter de se réveiller la nuit'},
+    {e:'☀️',l:'Arrêter de se sentir fatigué au réveil'},
+    {e:'⚡',l:'Faire des siestes efficaces'},
+    {e:'🏅',l:'Récupérer après le sport'},
+    {e:'⏰',l:'Réduire le temps de sommeil nécessaire'}
+  ],
+  'Alimentation saine / nutrition':[
+    {e:'🍬',l:'Arrêter le sucre / les addictions alimentaires'},
+    {e:'🥦',l:'Manger sain sans se priver'},
+    {e:'🍱',l:'Préparer des repas rapides et équilibrés (meal prep)'},
+    {e:'🫃',l:'Améliorer sa digestion / réduire les ballonnements'},
+    {e:'⚡',l:'Booster son énergie avec l\'alimentation'},
+    {e:'💰',l:'Manger sain avec un petit budget'}
+  ],
+  'Séduction & dating':[
+    {e:'🗣️',l:'Aborder sans se faire rejeter'},
+    {e:'📱',l:'Avoir plus de matchs sur les apps de rencontre'},
+    {e:'💬',l:'Savoir quoi dire après le premier message'},
+    {e:'💘',l:'Passer de l\'amie à la petite amie'},
+    {e:'🧲',l:'Attirer sans courir après'},
+    {e:'🍷',l:'Réussir le premier rendez-vous'}
+  ],
+  'Confiance en soi & estime personnelle':[
+    {e:'🪞',l:'Arrêter de se comparer aux autres'},
+    {e:'🎤',l:'Oser prendre la parole en public'},
+    {e:'🙈',l:'Arrêter de chercher la validation des autres'},
+    {e:'💬',l:'Assumer ses opinions sans avoir peur du jugement'},
+    {e:'🚀',l:'Sortir de sa zone de confort au quotidien'},
+    {e:'🫂',l:'Stopper la honte et le complexe d\'infériorité'}
+  ],
+  'Vie sociale':[
+    {e:'🤝',l:'Trouver des amis à l\'âge adulte'},
+    {e:'😶',l:'Ne plus se sentir seul en société'},
+    {e:'💞',l:'Créer des liens profonds rapidement'},
+    {e:'🎉',l:'Être quelqu\'un qu\'on a envie d\'inviter'},
+    {e:'📞',l:'Relancer des amitiés perdues'},
+    {e:'🏕️',l:'Trouver sa tribu / communauté'}
+  ],
+  'Statut & charisme':[
+    {e:'✨',l:'Avoir une présence qui s\'impose naturellement'},
+    {e:'🎯',l:'Parler avec assurance et impact'},
+    {e:'🫡',l:'Être respecté sans forcer'},
+    {e:'⚡',l:'Dégager une énergie de leader'},
+    {e:'👔',l:'Améliorer son style vestimentaire'},
+    {e:'🤝',l:'Savoir networker et se vendre'}
+  ],
+  'Parentalité & éducation':[
+    {e:'😤',l:'Gérer les crises de colère de son enfant'},
+    {e:'🚫',l:'Poser des limites sans crier'},
+    {e:'❤️',l:'Créer une connexion forte avec son enfant'},
+    {e:'😪',l:'Aider son enfant à mieux dormir'},
+    {e:'😌',l:'Éduquer sans culpabilité'},
+    {e:'👨‍👩‍👧‍👦',l:'Gérer plusieurs enfants sans s\'épuiser'}
+  ],
+  'Reconquête amoureuse':[
+    {e:'💌',l:'Récupérer son ex après une rupture'},
+    {e:'😏',l:'Rendre son ex jaloux / lui manquer'},
+    {e:'🔍',l:'Savoir si son ex veut revenir'},
+    {e:'🌅',l:'Rebondir après une rupture difficile'},
+    {e:'🛑',l:'Éviter les erreurs qui éloignent son ex'},
+    {e:'📩',l:'Reprendre contact sans paraître désespéré'}
+  ],
+  'Marketing digital & vente en ligne':[
+    {e:'📖',l:'Créer et vendre un ebook'},
+    {e:'🎓',l:'Lancer une formation en ligne'},
+    {e:'📋',l:'Vendre des templates / ressources digitales'},
+    {e:'🤝',l:'Trouver ses premiers clients en freelance'},
+    {e:'💎',l:'Créer une offre irrésistible'},
+    {e:'⚙️',l:'Automatiser ses ventes avec un funnel'}
+  ],
+  'Monétisation TikTok / réseaux sociaux':[
+    {e:'🎠',l:'Gagner de l\'argent avec des carousels anonymes'},
+    {e:'🎭',l:'Monétiser son compte sans montrer son visage'},
+    {e:'📸',l:'Vendre via les stories Instagram'},
+    {e:'🔥',l:'Créer du contenu viral rapidement'},
+    {e:'💰',l:'Passer de 0 à ses premiers abonnés payants'},
+    {e:'🔗',l:'Utiliser l\'affiliation sur les réseaux'}
+  ],
+  'Achat-revente':[
+    {e:'👗',l:'Revendre des vêtements de marque (Vinted / Leboncoin)'},
+    {e:'🔎',l:'Trouver des produits sous-cotés à retourner'},
+    {e:'📦',l:'Faire du dropshipping sans stock'},
+    {e:'🏺',l:'Acheter en vide-greniers / revendre en ligne'},
+    {e:'🤝',l:'Négocier pour acheter moins cher'},
+    {e:'🤖',l:'Automatiser ses annonces et ventes'}
+  ],
+  'Freelance & vendre ses compétences':[
+    {e:'✍️',l:'Se lancer en copywriting freelance'},
+    {e:'🎬',l:'Proposer des services de montage vidéo'},
+    {e:'📣',l:'Vendre des services de community management'},
+    {e:'🌐',l:'Créer des sites web pour des clients locaux'},
+    {e:'📝',l:'Faire de la traduction / rédaction en ligne'},
+    {e:'🖥️',l:'Devenir assistant virtuel'}
+  ],
+  'Investissement & épargne':[
+    {e:'💶',l:'Commencer à investir avec moins de 100€'},
+    {e:'📊',l:'Comprendre la bourse pour débutants'},
+    {e:'₿',l:'Investir dans les cryptos sans se faire plumer'},
+    {e:'🛡️',l:'Se constituer une épargne de précaution'},
+    {e:'🏠',l:'Comprendre l\'immobilier locatif'},
+    {e:'🧾',l:'Optimiser ses impôts légalement'}
+  ],
+  'Business automatisé / revenus passifs':[
+    {e:'⚙️',l:'Créer un système de vente automatique'},
+    {e:'🏖️',l:'Vivre de ses rentes digitales'},
+    {e:'🔍',l:'Monétiser un blog / site SEO'},
+    {e:'💻',l:'Créer un SaaS simple sans coder'},
+    {e:'📧',l:'Construire une newsletter monétisée'},
+    {e:'🔗',l:'Générer des revenus avec l\'affiliation'}
+  ]
+};
+
+// ── EBOOKS fixes (4 titres par sous-niche) ─────────────────────────────────────
+const EBOOKS = {
+  'Avoir la taille fine':['Protocole Taille Guêpe','Méthode Corset Naturel','Secret Taille Fine','Rituel Sablier 21J'],
+  'Perdre le bas du ventre':['Protocole Ventre Plat 72h','Méthode Tablette Japonaise','Secret Bas Ventre','Rituel Ventre Acier'],
+  'Éliminer la cellulite':['Code Anti-Peau d\'Orange','Méthode Peau Lisse','Secret Cellulite Zéro','Protocole Jambes Lisses'],
+  'Avoir les joues creuses / mâchoire définie':['Méthode Mâchoire Sculptée','Secret Visage Ciselé','Protocole Joues Creuses','Ritual Face Sharp'],
+  'Perdre son double menton':['Méthode Menton Net','Protocole Cou Fin','Secret Double Menton','Ritual Jawline Perfect'],
+  'Affiner ses cuisses / hanches':['Méthode Cuisses Fines','Protocole Hanches Slim','Secret Jambes Fuselées','Ritual Thigh Gap'],
+  'Avoir des abdos visibles':['Protocole Abdos Visibles','Code Six Pack 30J','Méthode Ventre Béton','Secret Abdos Secs'],
+  'Développer ses épaules / trapèzes':['Méthode Épaules Boulder','Protocole Trapèzes Massifs','Secret Carrure Large','Ritual Épaules Larges'],
+  'Grossir les bras (biceps / triceps)':['Protocole Bras Énormes','Méthode Arms Unlock','Secret Biceps Rapide','Ritual Bras Massifs'],
+  'Avoir un grand dos en V':['Méthode Dos en V','Protocole Back Unlock','Secret Dos Large','Ritual Latissimus Max'],
+  'Développer sa poitrine (pectoraux)':['Méthode Pecs Solides','Protocole Poitrine Béton','Secret Chest Unlock','Ritual Pecs Massifs'],
+  'Avoir des fessiers ronds et musclés':['Protocole Fessiers Ronds','Méthode Glute Unlock','Secret Booty Parfait','Ritual Fessiers Sculptés'],
+  'Avoir une peau nette / sans acné':['Protocole Peau Nette','Méthode Acné Zéro','Secret Teint Parfait','Ritual Peau Verre'],
+  'Avoir une mâchoire plus carrée':['Méthode Jawline Sharp','Protocole Mâchoire Carrée','Secret Face Ciselée','Ritual Jawline Parfait'],
+  'Améliorer sa posture':['Méthode Posture Royale','Protocole Dos Droit','Secret Alpha Posture','Ritual Corps Droit'],
+  'Avoir des dents blanches et alignées':['Protocole Dents Blanches','Méthode Sourire Parfait','Secret Hollywood Smile','Ritual Dents Éclat'],
+  'Soigner sa coupe de cheveux / style':['Méthode Style Alpha','Protocole Glow Up','Secret Coupe Parfaite','Ritual Look Parfait'],
+  'Avoir un regard plus intense':['Méthode Regard Magnétique','Protocole Yeux Perçants','Secret Hunter Eyes','Ritual Regard Alpha'],
+  'Arrêter de ruminer / pensées négatives':['Méthode Cerveau Off','Protocole Mental Calme','Secret Pensées Zéro','Ritual Tête Vide'],
+  'Gérer les crises d\'angoisse':['Protocole Angoisse Stop','Méthode Calme Immédiat','Secret Crise Zéro','Ritual Paix Intérieure'],
+  'Dormir malgré le stress':['Méthode Sommeil Paisible','Protocole Nuit Calme','Secret Endormissement Rapide','Ritual Stress Off'],
+  'Stopper la procrastination liée à l\'anxiété':['Méthode Procras Killer','Protocole Action Immédiate','Secret Mode Focus','Ritual Anti-Flemme'],
+  'Gérer le stress au travail':['Méthode Zen Au Bureau','Protocole Burn-Out Zéro','Secret Boss Mentality','Ritual Travail Serein'],
+  'Arrêter de se faire du souci pour tout':['Méthode Souci Zéro','Protocole Mental Fort','Secret Lâcher Prise','Ritual Worry Free'],
+  'S\'endormir rapidement':['Protocole Sommeil 5min','Méthode Endormissement Rapide','Secret Nuit Parfaite','Ritual Sommeil Militaire'],
+  'Arrêter de se réveiller la nuit':['Méthode Nuit Complète','Protocole Réveil Zéro','Secret Sommeil Profond','Ritual Nuit Entière'],
+  'Arrêter de se sentir fatigué au réveil':['Méthode Réveil Éveillé','Protocole Énergie Matin','Secret Morning Power','Ritual Réveil Parfait'],
+  'Faire des siestes efficaces':['Méthode Sieste Militaire','Protocole Power Nap','Secret Sieste 20min','Ritual Recharge Rapide'],
+  'Récupérer après le sport':['Méthode Récup Express','Protocole Muscles Reposés','Secret Récupération Pro','Ritual Post-Training'],
+  'Réduire le temps de sommeil nécessaire':['Méthode Sommeil Minimal','Protocole 5h Reposé','Secret Polyphasique Simple','Ritual Énergie Maximale'],
+  'Arrêter le sucre / les addictions alimentaires':['Méthode Sucre Zéro','Protocole Détox Sucre','Secret Sugar Free','Ritual Addiction Stop'],
+  'Manger sain sans se priver':['Méthode Plaisir Sain','Protocole Régime Libre','Secret Sans Frustration','Ritual Manger Bien'],
+  'Préparer des repas rapides et équilibrés (meal prep)':['Méthode Batch Cooking','Protocole Repas Express','Secret Semaine Prête','Ritual Cuisine Rapide'],
+  'Améliorer sa digestion / réduire les ballonnements':['Méthode Ventre Heureux','Protocole Digestion Parfaite','Secret Ballonnements Zéro','Ritual Gut Healthy'],
+  'Booster son énergie avec l\'alimentation':['Méthode Énergie Illimitée','Protocole Boost Naturel','Secret Vitalité Max','Ritual Énergie Pure'],
+  'Manger sain avec un petit budget':['Méthode Healthy Pauvre','Protocole Budget Sain','Secret Manger Bien','Ritual Épicerie Malin'],
+  'Aborder sans se faire rejeter':['Méthode Approche Parfaite','Protocole Zéro Rejet','Secret Premier Mot','Ritual Approche Froide'],
+  'Avoir plus de matchs sur les apps de rencontre':['Méthode Profil Magnétique','Protocole Match Machine','Secret Tinder Unlock','Ritual Photos Parfaites'],
+  'Savoir quoi dire après le premier message':['Méthode Convo Parfaite','Protocole Message Parfait','Secret Discussion Facile','Ritual Chat Magnétique'],
+  'Passer de l\'amie à la petite amie':['Méthode Friendzone Exit','Protocole Zone Ami Zéro','Secret Friendzone Killer','Ritual Passage Clé'],
+  'Attirer sans courir après':['Méthode Aimant Humain','Protocole Attraction Pure','Secret Désir Naturel','Ritual Pull Ne Push'],
+  'Réussir le premier rendez-vous':['Méthode RDV Parfait','Protocole Premier Date','Secret Date Inoubliable','Ritual Premier Soir'],
+  'Arrêter de se comparer aux autres':['Méthode Regard Intérieur','Protocole Comparaison Zéro','Secret Paix Intérieure','Ritual Estime Solide'],
+  'Oser prendre la parole en public':['Méthode Voix Assurée','Protocole Prise Parole','Secret Parler Fort','Ritual Public Speaking'],
+  'Arrêter de chercher la validation des autres':['Méthode Validation Interne','Protocole Opinion Zéro','Secret Regard Des Autres','Ritual Indépendance Mentale'],
+  'Assumer ses opinions sans avoir peur du jugement':['Méthode Opinion Ferme','Protocole Sans Filtre','Secret Dire Non','Ritual Assertivité Pure'],
+  'Sortir de sa zone de confort au quotidien':['Méthode Confort Killer','Protocole Courage Daily','Secret Un Pas Dehors','Ritual Inconfort Daily'],
+  'Stopper la honte et le complexe d\'infériorité':['Méthode Honte Zéro','Protocole Libération Mentale','Secret Complexe Brisé','Ritual Fierté Naturelle'],
+  'Trouver des amis à l\'âge adulte':['Méthode Ami Adulte','Protocole Lien Rapide','Secret Amitié Adulte','Ritual Rencontre Vraie'],
+  'Ne plus se sentir seul en société':['Méthode Solitude Zéro','Protocole Connexion Réelle','Secret Lien Humain','Ritual Plus Jamais Seul'],
+  'Créer des liens profonds rapidement':['Méthode Lien Profond','Protocole Amitié Vraie','Secret Connexion Rapide','Ritual Relation Forte'],
+  'Être quelqu\'un qu\'on a envie d\'inviter':['Méthode Magnétisme Social','Protocole Être Invité','Secret Présence Désirée','Ritual Aura Sociale'],
+  'Relancer des amitiés perdues':['Méthode Reconnexion Facile','Protocole Ami Retrouvé','Secret Relance Parfaite','Ritual Lien Retrouvé'],
+  'Trouver sa tribu / communauté':['Méthode Tribu Parfaite','Protocole Ma Communauté','Secret Trouver Sa Place','Ritual Appartenance Vraie'],
+  'Avoir une présence qui s\'impose naturellement':['Méthode Présence Magnétique','Protocole Aura Naturelle','Secret S\'imposer Sans Forcer','Ritual Présence Royale'],
+  'Parler avec assurance et impact':['Méthode Parole Puissante','Protocole Voix D\'Impact','Secret Discours Parfait','Ritual Parler En Leader'],
+  'Être respecté sans forcer':['Méthode Respect Naturel','Protocole Autorité Calme','Secret Faire Respecter','Ritual Respect Immédiat'],
+  'Dégager une énergie de leader':['Méthode Aura Leader','Protocole Énergie Alpha','Secret Chef Naturel','Ritual Dominant Calme'],
+  'Améliorer son style vestimentaire':['Méthode Style Dominant','Protocole Look Alpha','Secret Dress Code Power','Ritual Garde-Robe Elite'],
+  'Savoir networker et se vendre':['Méthode Network Facile','Protocole Carnet Contacts','Secret Se Vendre Bien','Ritual Réseau Puissant'],
+  'Gérer les crises de colère de son enfant':['Méthode Crise Zéro','Protocole Enfant Calme','Secret Colère Stop','Ritual Parent Serein'],
+  'Poser des limites sans crier':['Méthode Limite Douce','Protocole Sans Crier','Secret Autorité Calme','Ritual Discipline Zen'],
+  'Créer une connexion forte avec son enfant':['Méthode Lien Parent','Protocole Connexion Enfant','Secret Mon Enfant M\'écoute','Ritual Amour Ancré'],
+  'Aider son enfant à mieux dormir':['Méthode Dodo Rapide','Protocole Nuit Enfant','Secret Sommeil Bébé','Ritual Nuit Paisible'],
+  'Éduquer sans culpabilité':['Méthode Parent Imparfait','Protocole Zéro Culpabilité','Secret Bon Parent','Ritual Éduquer Serein'],
+  'Gérer plusieurs enfants sans s\'épuiser':['Méthode Chaos Maîtrisé','Protocole Famille Zen','Secret Multi-Enfants','Ritual Maison Sereine'],
+  'Récupérer son ex après une rupture':['Méthode Reconquête Totale','Protocole Ex Revient','Secret Retour Garanti','Ritual Reconquête 30J'],
+  'Rendre son ex jaloux / lui manquer':['Méthode Jalousie Douce','Protocole Lui Manquer','Secret Rendre Jaloux','Ritual Glow Up Rupture'],
+  'Savoir si son ex veut revenir':['Méthode Signes Clés','Protocole Décoder Son Ex','Secret Lire Les Signaux','Ritual Mind Reading Ex'],
+  'Rebondir après une rupture difficile':['Méthode Rupture Rebound','Protocole Cœur Brisé','Secret Avancer Vite','Ritual Nouveau Départ'],
+  'Éviter les erreurs qui éloignent son ex':['Méthode Erreur Zéro','Protocole Garder Sa Dignité','Secret Ne Pas Supplier','Ritual Comportement Parfait'],
+  'Reprendre contact sans paraître désespéré':['Méthode Premier Message','Protocole Reprendre Contact','Secret Message Parfait','Ritual Retour Subtil'],
+  'Créer et vendre un ebook':['Méthode Ebook Machine','Protocole Premier Ebook','Secret Vendre Sans Stock','Ritual Ebook Vendu'],
+  'Lancer une formation en ligne':['Méthode Formation Express','Protocole Cours En Ligne','Secret Formateur Rapide','Ritual Formation Vendue'],
+  'Vendre des templates / ressources digitales':['Méthode Template Money','Protocole Ressource Digitale','Secret Vendre Ses Outils','Ritual Template Machine'],
+  'Trouver ses premiers clients en freelance':['Méthode Premier Client','Protocole Client Rapide','Secret Décrocher Contrat','Ritual Client En 7J'],
+  'Créer une offre irrésistible':['Méthode Offre Parfaite','Protocole Offre Irrésistible','Secret Vendre Facilement','Ritual Prix Qui Convertit'],
+  'Automatiser ses ventes avec un funnel':['Méthode Funnel Pirate','Protocole Vente Auto','Secret Machine À Cash','Ritual Argent Passif'],
+  'Gagner de l\'argent avec des carousels anonymes':['Méthode Carousel Cash','Protocole TikTok Anonyme','Secret Vendre Sans Visage','Ritual Carousel Pirate'],
+  'Monétiser son compte sans montrer son visage':['Méthode Fantôme Riche','Protocole Anonyme Rentable','Secret Compte Masqué','Ritual No Face Money'],
+  'Vendre via les stories Instagram':['Méthode Story Vendeuse','Protocole Stories Qui Vendent','Secret Vente En Story','Ritual Story Machine'],
+  'Créer du contenu viral rapidement':['Méthode Contenu Viral','Protocole Post Explosif','Secret Algo Piraté','Ritual Viralité Rapide'],
+  'Passer de 0 à ses premiers abonnés payants':['Méthode Abonné Premium','Protocole Communauté Payante','Secret Fidèles Qui Paient','Ritual Fan Payant'],
+  'Utiliser l\'affiliation sur les réseaux':['Méthode Affiliation Facile','Protocole Lien Qui Rapporte','Secret Commission Passive','Ritual Affiliation Machine'],
+  'Revendre des vêtements de marque (Vinted / Leboncoin)':['Méthode Vinted Profit','Protocole Friperie Rentable','Secret Marque Revendue','Ritual Garde-Robe Cash'],
+  'Trouver des produits sous-cotés à retourner':['Méthode Produit Caché','Protocole Occasion Rentable','Secret Acheter Bas','Ritual Flip Parfait'],
+  'Faire du dropshipping sans stock':['Méthode Drop Sans Stock','Protocole Boutique Fantôme','Secret Revendre Sans Avoir','Ritual Drop Machine'],
+  'Acheter en vide-greniers / revendre en ligne':['Méthode Grenier En Or','Protocole Chiner Rentable','Secret Vide-Grenier Cash','Ritual Occasion Revendue'],
+  'Négocier pour acheter moins cher':['Méthode Négociation Facile','Protocole Prix Cassé','Secret Toujours Négocier','Ritual Discount Garanti'],
+  'Automatiser ses annonces et ventes':['Méthode Annonce Auto','Protocole Vente Pilote Auto','Secret Leboncoin Machine','Ritual Annonce Parfaite'],
+  'Se lancer en copywriting freelance':['Méthode Copyrighter Payé','Protocole Mots Qui Vendent','Secret Plume Rentable','Ritual Texte En Cash'],
+  'Proposer des services de montage vidéo':['Méthode Monteur Freelance','Protocole Vidéo Rentable','Secret Cut Qui Rapporte','Ritual Monteur Payé'],
+  'Vendre des services de community management':['Méthode CM Rentable','Protocole Gérer Pour Gagner','Secret Réseaux Des Autres','Ritual CM Machine'],
+  'Créer des sites web pour des clients locaux':['Méthode Site Local Cash','Protocole Web Local','Secret Vendre Des Sites','Ritual Client Web Facile'],
+  'Faire de la traduction / rédaction en ligne':['Méthode Plume Libre','Protocole Rédacteur Payé','Secret Écrire Pour Vivre','Ritual Mots En Euros'],
+  'Devenir assistant virtuel':['Méthode VA Rentable','Protocole Assistant Remote','Secret Travailler Partout','Ritual VA Machine'],
+  'Commencer à investir avec moins de 100€':['Méthode Investir Pauvre','Protocole 100€ Placés','Secret Petit Capital','Ritual Premier Investissement'],
+  'Comprendre la bourse pour débutants':['Méthode Bourse Facile','Protocole Actions Simples','Secret Trader Débutant','Ritual Bourse Sans Peur'],
+  'Investir dans les cryptos sans se faire plumer':['Méthode Crypto Sage','Protocole Bitcoin Simple','Secret Crypto Sans Risque','Ritual Crypto Débutant'],
+  'Se constituer une épargne de précaution':['Méthode Épargne Blindée','Protocole Matelas Financier','Secret Économiser Vite','Ritual Épargne Solide'],
+  'Comprendre l\'immobilier locatif':['Méthode Immo Sans Capital','Protocole Premier Locatif','Secret Loyer Passif','Ritual Immo Rentable'],
+  'Optimiser ses impôts légalement':['Méthode Impôts Réduits','Protocole Fiscalité Maline','Secret Payer Moins','Ritual Optimisation Fiscale'],
+  'Créer un système de vente automatique':['Méthode Machine À Vendre','Protocole Vente Automatique','Secret Funnel Parfait','Ritual Système Pirate'],
+  'Vivre de ses rentes digitales':['Méthode Rente Digitale','Protocole Liberté Financière','Secret Revenu Sans Travailler','Ritual Cash Automatique'],
+  'Monétiser un blog / site SEO':['Méthode Blog Rentable','Protocole SEO Simple','Secret Trafic Gratuit','Ritual Site En Cash'],
+  'Créer un SaaS simple sans coder':['Méthode SaaS No-Code','Protocole Outil Rentable','Secret Logiciel Sans Code','Ritual SaaS Facile'],
+  'Construire une newsletter monétisée':['Méthode Newsletter Cash','Protocole Mail Rentable','Secret Liste Qui Rapporte','Ritual Newsletter Machine'],
+  'Générer des revenus avec l\'affiliation':['Méthode Affiliation Pure','Protocole Lien Rentable','Secret Commission Auto','Ritual Affilié Riche']
+};
+
+// ── COPYWRITING pré-écrit par sous-niche ─────────────────────────────────────
+const COPY = {
+  'Aborder sans se faire rejeter':{
+    hook:"97% des rejets arrivent avant que tu ouvres la bouche. Voici pourquoi — et comment inverser ça en 7 jours.",
+    probleme:"Tu cherches la phrase parfaite pendant que le moment passe. Ce blocage n'est pas de la timidité — c'est l'absence d'un cadre mental clair. Sans cadre, le cerveau panique et choisit l'inaction par défaut.",
+    revelation:"[Nom ebook] te donne le système d'approche en 3 secondes — ce que tu dis, comment tu le dis, où tu mets ton regard. Un protocole reproductible basé sur la psychologie de la première impression, pas des lignes apprises par cœur.",
+    avis:[{n:"Kevin",a:23,t:"J'avais 0 expérience d'approche. En une semaine j'ai abordé 6 filles et obtenu 3 numéros. Le cadre mental change tout."},{n:"Sofiane",a:28,t:"Ce qui m'a le plus aidé c'est la partie sur le regard et la voix. Le texte c'est 20% du résultat — je ne savais pas ça."},{n:"Lucas",a:31,t:"J'ai essayé des dizaines de techniques. C'est la première fois que quelque chose fonctionne de façon cohérente et naturelle."}],
+    cta1:"⚡ Accès immédiat — Première approche réussie en 7 jours ou remboursé intégralement. Sans question posée.",
+    cta2:"🎁 Méthode + 10 phrases d'accroche testées sur le terrain offertes — Offre disponible encore [X]h seulement.",
+    cta3:"🔒 Accès Lifetime — Inclut les mises à jour + cas pratiques filmés. Prix remonte ce soir à minuit."
+  },
+  'Avoir plus de matchs sur les apps de rencontre':{
+    hook:"Ton profil est jugé en 0,3 secondes. Voici les 3 éléments qui font la différence entre 2 matchs et 20 matchs par semaine.",
+    probleme:"Les apps de rencontre sont un jeu visuel avant d'être un jeu de séduction. Ta bio, ton ordre de photos et ton angle de profil envoient des signaux inconscients que tu ne contrôles pas — et qui te coûtent 90% de tes matchs potentiels.",
+    revelation:"[Nom ebook] te donne le protocole de profil optimisé — photo principale, ordre des images, bio magnétique et premier message — basé sur l'analyse de milliers de profils qui convertissent.",
+    avis:[{n:"Maxime",a:24,t:"Je stagnais à 3-4 matchs par semaine depuis des mois. En refaisant mon profil avec la méthode : 23 matchs la première semaine."},{n:"Tom",a:27,t:"La partie sur l'ordre des photos m'a choqué. Un seul changement et mon taux de match a doublé le lendemain."},{n:"Antoine",a:22,t:"La bio magnétique décrite dans le guide est contre-intuitive. Moins de texte, plus d'impact. Ça marche vraiment."}],
+    cta1:"⚡ Prix de lancement — Matchs doublés en 48h ou remboursé intégralement. Aucune condition.",
+    cta2:"🎁 Méthode + audit profil Tinder complet offert — L'offre disparaît dans [X]h.",
+    cta3:"🔒 Accès Lifetime + templates bio pour chaque niche offerts — Prix final dans [X]h."
+  },
+  'Savoir quoi dire après le premier message':{
+    hook:"80% des conversations meurent après le deuxième message. Pas parce que tu es ennuyeux — parce que tu suis le mauvais script.",
+    probleme:"Tu envoies ça va ? ou tu commentes sa photo — et la conversation tourne en rond jusqu'au silence. Ce n'est pas un manque de personnalité. C'est un manque de structure conversationnelle.",
+    revelation:"[Nom ebook] te donne la structure de conversation en 4 phases — accroche, curiosité, tension, proposition — avec des exemples concrets pour chaque étape et 20 relances de secours.",
+    avis:[{n:"Nico",a:25,t:"Je n'avais jamais de blanc. Maintenant je guide la conversation naturellement vers le rendez-vous. La structure change tout."},{n:"Dylan",a:29,t:"Les 20 relances de secours m'ont sauvé des dizaines de conversations qui allaient mourir. Pratique et efficace."},{n:"Romain",a:23,t:"En une semaine j'ai obtenu plus de rendez-vous qu'en 6 mois sur Tinder. La méthode est concrète, pas théorique."}],
+    cta1:"⚡ Tarif limité — Conversation fluide qui mène au rendez-vous en 7 jours ou remboursé.",
+    cta2:"🎁 Méthode + 20 templates de messages offerts — Expire ce soir à minuit.",
+    cta3:"🔒 Accès Lifetime + guide escalade conversation inclus — Rendez-vous garanti ou remboursé."
+  },
+  'Passer de l\'amie à la petite amie':{
+    hook:"La friendzone n'est pas une punition. C'est un signal d'attraction mal orienté. Et ça se retourne.",
+    probleme:"Tu es gentil, présent, attentionné — et elle te voit comme un ami. Ce n'est pas parce que tu n'es pas assez bien. C'est parce que tu n'as jamais créé de tension émotionnelle. Sans tension, il n'y a pas d'attraction — juste du confort.",
+    revelation:"[Nom ebook] te donne le protocole de création de tension en 5 étapes — présence réduite, polarisation, humour taquin, contact physique progressif et moment décisif — pour basculer la dynamique sans tout perdre.",
+    avis:[{n:"Julien",a:22,t:"J'étais dans la friendzone de la même fille depuis 2 ans. En 3 semaines de protocole elle m'a envoyé le premier message ambigu. En 5 semaines on était ensemble."},{n:"Baptiste",a:26,t:"La partie sur la présence réduite est contre-intuitive mais redoutable. En m'éloignant légèrement, j'ai créé plus d'attraction qu'en 6 mois de présence totale."},{n:"Marc",a:29,t:"Le protocole m'a aidé à comprendre ce que je faisais mal depuis des années. Un seul changement de comportement et la dynamique a basculé."}],
+    cta1:"⚡ Prix limité — Friendzone quittée en 30 jours ou remboursé intégralement. Zéro risque.",
+    cta2:"🎁 Méthode + plan d'action semaine par semaine offert — Disponible encore [X]h.",
+    cta3:"🔒 Accès Lifetime + guide signaux d'attraction inclus — Friendzone exit garanti."
+  },
+  'Attirer sans courir après':{
+    hook:"Plus tu cours après quelqu'un, moins tu l'attires. C'est de la physique sociale — et ça se maîtrise.",
+    probleme:"Tu doubles les messages, tu es toujours disponible, tu fais tout pour plaire — et ça repousse. L'attraction ne fonctionne pas à la générosité. Elle fonctionne à la rareté et à la valeur perçue.",
+    revelation:"[Nom ebook] te donne le protocole d'attraction passive — les 4 comportements qui créent le désir naturellement, sans jeu et sans manipulation — pour devenir quelqu'un qu'on cherche.",
+    avis:[{n:"Alexis",a:27,t:"J'ai arrêté de courir après et en 2 semaines c'est elle qui relançait. Je n'aurais pas cru que c'était aussi efficace."},{n:"Samir",a:24,t:"La partie sur la disponibilité m'a choqué. J'étais disponible 24/7 et ça me tuait. Ce guide m'a appris à me respecter — et ça attire."},{n:"Théo",a:31,t:"Pour la première fois j'attire sans effort. C'est une façon d'être, pas une technique. Ce guide change ça profondément."}],
+    cta1:"⚡ Offre de lancement — Attraction naturelle développée en 21 jours ou remboursé.",
+    cta2:"🎁 Méthode + guide valeur personnelle complet offert — L'offre expire dans [X]h.",
+    cta3:"🔒 Accès Lifetime + routine attraction quotidienne incluse — Magnétisme naturel garanti."
+  },
+  'Réussir le premier rendez-vous':{
+    hook:"Le premier rendez-vous ne se gagne pas sur place. Il se prépare 48h avant. Voici comment.",
+    probleme:"La plupart des premiers rendez-vous échouent parce que l'ambiance est trop neutre — café banals, conversations polies, aucune tension. Sans émotion forte, il n'y a pas de souvenir fort. Et sans souvenir fort, pas de deuxième rendez-vous.",
+    revelation:"[Nom ebook] te donne le protocole du premier rendez-vous parfait — le lieu qui crée l'émotion, la structure de conversation qui crée la complicité et les 3 moments clés qui déclenchent le deuxième rendez-vous.",
+    avis:[{n:"Pierre",a:26,t:"J'avais des premiers rendez-vous mais jamais de suites. Ce guide m'a montré exactement ce que je ratais. Maintenant j'ai systématiquement un deuxième rendez-vous."},{n:"Karim",a:23,t:"Le choix du lieu décrit dans le guide m'a semblé anodin au départ. En pratique ça change tout le feeling de la soirée."},{n:"Nathan",a:30,t:"La structure de conversation m'a sauvé. Plus de blancs gênants, plus de sujets plats. Le rendez-vous s'est terminé à 2h du matin."}],
+    cta1:"⚡ Tarif limité — Premier rendez-vous réussi ou remboursé. Même sans expérience.",
+    cta2:"🎁 Méthode + checklist date parfaite offerte — Expire dans [X]h seulement.",
+    cta3:"🔒 Accès Lifetime + guide lieux et activités par ville inclus — Deuxième rendez-vous garanti."
+  },
+  'Récupérer son ex après une rupture':{
+    hook:"La reconquête ne commence pas par un message. Elle commence par disparaître. Voici pourquoi — et le plan complet.",
+    probleme:"Après une rupture, l'instinct naturel est de tout faire pour récupérer l'autre — messages, explications, promesses. Ce comportement fait exactement l'inverse de ce qu'il faut. Il confirme la décision de ton ex.",
+    revelation:"[Nom ebook] te donne le protocole de reconquête en 30 jours — phase no contact, travail sur soi, signal de retour et reprise de contact stratégique — pour maximiser tes chances de retour sans te dévaluer.",
+    avis:[{n:"Léa",a:26,t:"J'avais tout fait de travers les 2 premières semaines. Ce guide m'a remise sur les rails. 5 semaines plus tard mon ex m'a recontactée de lui-même."},{n:"Kévin",a:29,t:"Le protocole no contact m'a sauvé d'erreurs que j'allais commettre. Dur à tenir mais les résultats sont réels."},{n:"Inès",a:24,t:"Ce qui m'a le plus aidé c'est la partie sur le travail sur soi pendant la phase de silence. J'ai changé vraiment — et ça s'est vu quand on s'est revus."}],
+    cta1:"⚡ Tarif de lancement — Plan de reconquête activé en 7 jours ou remboursé intégralement.",
+    cta2:"🎁 Méthode + messages de reconquête stratégiques offerts — Disponible encore [X]h.",
+    cta3:"🔒 Accès Lifetime + guide no contact complet inclus — Ex de retour garanti ou remboursé."
+  },
+  'Gérer les crises de colère de son enfant':{
+    hook:"La crise de colère de ton enfant n'est pas de la manipulation. C'est son cerveau immature qui déborde. Voici comment l'aider en 3 minutes.",
+    probleme:"Face à une crise, le parent réagit avec son propre système émotionnel activé — il crie, menace ou cède. Aucune de ces réponses ne régule l'enfant. La crise s'amplifie ou se répète parce que le besoin sous-jacent n'est jamais adressé.",
+    revelation:"[Nom ebook] te donne le protocole de régulation de crise en 3 étapes — connexion d'abord, limite ensuite, enseignement après — pour stopper la crise en moins de 3 minutes et réduire leur fréquence de 80% en 14 jours.",
+    avis:[{n:"Amandine",a:34,t:"Mon fils de 4 ans faisait 3 crises par jour. En 2 semaines avec ce protocole : une par semaine. J'aurais pleuré si on me l'avait dit avant."},{n:"Stéphane",a:38,t:"La partie connexion d'abord est contre-intuitive mais redoutable. En rejoignant son émotion au lieu de m'y opposer, la crise s'arrête beaucoup plus vite."},{n:"Lucie",a:31,t:"Ce guide m'a appris à voir la crise différemment. Ce n'est plus un combat — c'est un besoin. Et ça change tout."}],
+    cta1:"⚡ Prix de lancement — Crises réduites de 80% en 14 jours ou remboursé intégralement.",
+    cta2:"🎁 Méthode + protocole urgence crise offert — Disponible encore [X]h.",
+    cta3:"🔒 Accès Lifetime + guide communication enfant inclus — Crise zéro garanti."
+  }
+};
+
+// ── INIT ───────────────────────────────────────────────
+function init(){ buildDots(); renderStep(0); }
+
+function buildDots(){
+  const w=document.getElementById('progressDots'); w.innerHTML='';
+  for(let i=0;i<S.total;i++){
+    const d=document.createElement('div');
+    d.className='progress-dot'+(i<S.step?' done':i===S.step?' active':'');
+    w.appendChild(d);
+  }
+}
+
+function renderStep(n){
+  S.step=n; buildDots();
+  document.getElementById('chatWrap').innerHTML='';
+  [rPrenom,rMarche,rNiche,rSousNiche,rOffre,rRevenus,rStripe][n]?.();
+  setTimeout(function(){
+    if(n===0){
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      var el=document.getElementById('chatWrap');
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  },60);
+}
+
+// ── STEP 1 : PRENOM ─────────────────────────────────────
+function rPrenom(){
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 1 / 7</span>
+    <div class="q-title">Comment tu t'appelles,<br><span>jeune pirate ?</span></div>
+    <p class="q-sub">Dis-moi ton prénom, on va créer quelque chose de grand ensemble.</p>
+    <div class="text-input-wrap"><input type="text" class="q-input" id="inp0" placeholder="Ton prénom..." autocomplete="off"/></div>
+    <button class="next-btn" id="nb0" onclick="go0()" disabled>⚓ EMBARQUER →</button>
+  </div>`);
+  const i=document.getElementById('inp0');
+  i.addEventListener('input',()=>{document.getElementById('nb0').disabled=i.value.trim().length<2});
+  i.addEventListener('keydown',e=>{if(e.key==='Enter'&&i.value.trim().length>=2)go0()});
+  i.focus();
+}
+function go0(){const v=document.getElementById('inp0').value.trim();if(!v)return;S.a.prenom=v;renderStep(1);}
+
+// ── STEP 2 : MARCHE ─────────────────────────────────────
+function rMarche(){
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 2 / 7</span>
+    <div class="q-title">Quel marché tu veux<br><span>attaquer, ${S.a.prenom} ?</span></div>
+    <p class="q-sub">Si tu débutes, <em>💡 la niche de la Santé et des Relations sont celles qui convertissent le mieux et le plus rapidement.</em></p>
+    <div class="btn-grid cols-3">
+      <button class="choice-btn" onclick="selM('sante',this)"><span class="btn-emoji">🏋️</span><strong>Santé</strong><br><small style="color:#666;font-size:12px">Poids, sport, bien-être</small></button>
+      <button class="choice-btn" onclick="selM('relations',this)"><span class="btn-emoji">❤️</span><strong>Relations</strong><br><small style="color:#666;font-size:12px">Couple, famille, social</small></button>
+      <button class="choice-btn" onclick="selM('argent',this)"><span class="btn-emoji">💰</span><strong>Argent</strong><br><small style="color:#666;font-size:12px">Business, investissement</small></button>
+    </div>
+  </div>`);
+}
+function selM(m,b){S.a.marche=m;sel(b);setTimeout(()=>renderStep(2),400);}
+
+// ── STEP 3 : NICHE ─────────────────────────────────────
+function rNiche(){
+  const ns=NICHES[S.a.marche]||[];
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 3 / 7</span>
+    <div class="q-title">Quelle niche<br><span>t'attire ?</span></div>
+    <p class="q-sub">Choisis ou écris la tienne.</p>
+    <div class="btn-grid">${ns.map(n=>`<button class="choice-btn" onclick="selN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
+    <div class="or-divider">OU MA PROPRE IDÉE</div>
+    <div class="text-input-wrap"><label>NICHE PERSO</label><input type="text" class="q-input" id="inp2" placeholder="Ex: méditation pour entrepreneurs..."/></div>
+    <button class="next-btn" id="nb2" onclick="go2()" disabled>VALIDER →</button>
+  </div>`);
+  document.getElementById('inp2').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.niche='';}document.getElementById('nb2').disabled=!this.value.trim()&&!S.a.niche;});
+}
+function selN(n,b){S.a.niche=n;sel(b);document.getElementById('inp2').value='';document.getElementById('nb2').disabled=false;}
+function go2(){const c=document.getElementById('inp2').value.trim();if(c)S.a.niche=c;if(!S.a.niche)return;renderStep(3);}
+
+// ── STEP 4 : SOUS-NICHE (données fixes) ───────────
+function rSousNiche(){
+  const subniches = SOUS_NICHES[S.a.niche] || [{e:'🎯',l:'Débutants complets'},{e:'📈',l:'Résultats rapides'},{e:'💪',l:'Angle spécifique'},{e:'⚡',l:'Approche unique'},{e:'🏆',l:'Niveau avancé'},{e:'🔥',l:'Méthode express'}];
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 4 / 7</span>
+    <div class="q-title">Quelle <span>sous-niche</span><br>tu vises ?</div>
+    <p class="q-sub">Plus précis = plus de ventes. C'est le secret des produits qui vendent dès J1.</p>
+    <div class="btn-grid">${subniches.map(n=>`<button class="choice-btn" onclick="selSN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
+    <div class="or-divider">OU MON IDÉE PRÉCISE</div>
+    <div class="text-input-wrap"><label>SOUS-NICHE PERSO</label><input type="text" class="q-input" id="inp3" placeholder="Ex: femmes de 35-50 ans..."/></div>
+    <button class="next-btn" id="nb3" onclick="go3()" disabled>VALIDER →</button>
+  </div>`);
+  document.getElementById('inp3').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.sousniche='';}document.getElementById('nb3').disabled=!this.value.trim()&&!S.a.sousniche;});
+}
+function selSN(n,b){S.a.sousniche=n;sel(b);document.getElementById('inp3').value='';document.getElementById('nb3').disabled=false;}
+function go3(){const c=document.getElementById('inp3').value.trim();if(c)S.a.sousniche=c;if(!S.a.sousniche)return;renderStep(4);}
+
+// ── STEP 5 : OFFRE (titres ebooks fixes) ────────────────
+function rOffre(){
+  const ebookTitles = EBOOKS[S.a.sousniche] || [
+    `Méthode ${S.a.sousniche} Express`,
+    `Protocole ${S.a.sousniche} Rapide`,
+    `Secret ${S.a.sousniche}`,
+    `Ritual ${S.a.sousniche} Pro`
+  ];
+  const copy = COPY[S.a.sousniche];
+  const offres = copy ? [copy.cta1.replace(/^[⚡🎁🔒]\s*/,''), copy.cta2.replace(/^[⚡🎁🔒]\s*/,''), copy.cta3.replace(/^[⚡🎁🔒]\s*/,'')] : ebookTitles.slice(0,3);
+
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 5 / 7</span>
+    <div class="q-title">Quel ebook tu veux<br><span>lancer ?</span></div>
+    <p class="q-sub">4 titres créés pour ta sous-niche. Choisis ou écris le tien.</p>
+    <div class="btn-grid" style="grid-template-columns:1fr 1fr;">${ebookTitles.map((s,i)=>`<button class="choice-btn" onclick='selO(${JSON.stringify(s)},this)' style="text-align:left;"><span class="btn-emoji">📖</span><strong style="color:var(--purple);display:block;margin-bottom:4px;font-size:13px;">TITRE ${i+1}</strong>${s}</button>`).join('')}</div>
+    <div class="or-divider">OU MON TITRE PERSO</div>
+    <div class="text-input-wrap"><label>MON TITRE PERSONNALISÉ</label><input type="text" class="q-input" id="inp4" placeholder="Ex: Ma Méthode Unique..."/></div>
+    <button class="next-btn" id="nb4" onclick="go4()" disabled>VALIDER MON TITRE →</button>
+  </div>`);
+  document.getElementById('inp4').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.offre='';}document.getElementById('nb4').disabled=!this.value.trim()&&!S.a.offre;});
+}
+function selO(o,b){S.a.offre=o;sel(b);document.getElementById('inp4').value='';document.getElementById('nb4').disabled=false;}
+function go4(){const c=document.getElementById('inp4').value.trim();if(c)S.a.offre=c;if(!S.a.offre)return;renderStep(5);}
+
+// ── STEP 6 : REVENUS ────────────────────────────────────
+function rRevenus(){
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 6 / 7</span>
+    <div class="q-title">Ton objectif<br><span>de revenus ?</span></div>
+    <p class="q-sub">Sois honnête. J'adapte la stratégie prix en conséquence.</p>
+    <div class="btn-grid cols-2">
+      <button class="choice-btn" onclick="selR('500€/mois',this)"><span class="btn-emoji">💰</span><strong>500€/mois</strong><br><small style="color:#666;font-size:12px">Complément de revenu</small></button>
+      <button class="choice-btn" onclick="selR('1 000€/mois',this)"><span class="btn-emoji">🔥</span><strong>1 000€/mois</strong><br><small style="color:#666;font-size:12px">Revenu solide</small></button>
+      <button class="choice-btn" onclick="selR('3 000€/mois',this)"><span class="btn-emoji">⚡</span><strong>3 000€/mois</strong><br><small style="color:#666;font-size:12px">Remplacer un salaire</small></button>
+      <button class="choice-btn" onclick="selR('10K+/mois',this)"><span class="btn-emoji">🏴‍☠️</span><strong>10K+/mois</strong><br><small style="color:#666;font-size:12px">Empire digital</small></button>
+    </div>
+  </div>`);
+}
+function selR(r,b){S.a.revenus=r;sel(b);setTimeout(()=>renderStep(6),400);}
+
+// ── STEP 7 : STRIPE ─────────────────────────────────────
+function rStripe(){
+  cw(`<div class="q-block">
+    <span class="q-label">⚓ ÉTAPE 7 / 7 — DERNIÈRE ÉTAPE</span>
+    <div class="q-title">Ton lien <span>Stripe</span><br>pour encaisser</div>
+    <p class="q-sub">Intégré directement dans ta page de vente.</p>
+    <div class="stripe-note">💳 Crée ton lien sur <strong>dashboard.stripe.com → Liens de paiement</strong><br>Ressemble à : <code style="color:var(--purple);font-size:12px">https://buy.stripe.com/xxxx</code></div>
+    <div class="text-input-wrap"><label>TON LIEN STRIPE</label><input type="url" class="q-input" id="inp6" placeholder="https://buy.stripe.com/..."/></div>
+    <p style="font-size:12px;color:#444;margin-top:8px;">Pas encore de Stripe ? Laisse vide, tu l'ajouteras après.</p>
+    <button class="next-btn" onclick="go6()" style="margin-top:24px;background:var(--purple);color:white;font-size:22px;">⚡ GÉNÉRER MON PRODUIT COMPLET</button>
+  </div>`);
+}
+function go6(){S.a.stripe=document.getElementById('inp6').value.trim()||'#STRIPE_LINK';generate();}
+
+// ── GENERATE ───────────────────────────────────────────
+async function generate(){
+  document.getElementById('chatWrap').style.display='none';
+  document.querySelector('.site-header').style.display='none';
+  document.getElementById('loadingScreen').classList.add('show');
+
+  const msgs=['⚡ Analyse de ton marché...','⚓ Construction de l\'offre irrésistible...','🏴‍☠️ Rédaction du copywriting émotionnel...','📖 Génération du script ebook complet...','✨ Finalisation de ton empire...','💰 Derniers ajustements...'];
+  let mi=0;const mel=document.getElementById('loadingMsg');
+  const mi_=setInterval(()=>{mi=(mi+1)%msgs.length;mel.style.opacity=0;setTimeout(()=>{mel.textContent=msgs[mi];mel.style.opacity=1;},300);},3500);
+
+  const lids=['ls1','ls2','ls3','ls4','ls5'];let li=0;
+  const li_=setInterval(()=>{
+    if(li>0)document.getElementById(lids[li-1]).classList.replace('active','done');
+    if(li<lids.length){document.getElementById(lids[li]).classList.add('active');li++;}
+    else clearInterval(li_);
+  },3500);
+
+  const {prenom,marche,niche,sousniche,offre,revenus,stripe}=S.a;
+  const theme=getTheme(marche,niche);
+
+  // Récupérer le copywriting pré-écrit si disponible
+  const copyData = COPY[sousniche];
+  const copyBlock = copyData ? `
+COPYWRITING PRÉ-ÉCRIT POUR CETTE SOUS-NICHE (utilise ces éléments dans ta génération) :
+Hook : ${copyData.hook}
+Problème : ${copyData.probleme}
+Révélation : ${copyData.revelation.replace('[Nom ebook]', offre)}
+Avis 1 : ${copyData.avis[0].n}, ${copyData.avis[0].a} ans — "${copyData.avis[0].t}"
+Avis 2 : ${copyData.avis[1].n}, ${copyData.avis[1].a} ans — "${copyData.avis[1].t}"
+Avis 3 : ${copyData.avis[2].n}, ${copyData.avis[2].a} ans — "${copyData.avis[2].t}"
+CTA Offre 1 : ${copyData.cta1}
+CTA Offre 2 : ${copyData.cta2}
+CTA Offre 3 : ${copyData.cta3}
+` : '';
+
+  const prompt=`Tu es un expert copywriter et infoproduit francophone de niveau mondial. Génère UNIQUEMENT un objet JSON valide, sans backticks ni markdown, sans aucun texte avant ou après.
+
+Données client :
+Prénom: ${prenom} | Marché: ${marche} | Niche: ${niche} | Sous-niche: ${sousniche}
+Offre choisie: ${offre} | Objectif revenus: ${revenus}
+Thème design: ${theme.n}
+${copyBlock}
+
+RÈGLES STRICTES :
+1. "titre_produit" : 2-4 mots MAX, ultra-percutants, directement liés à l'offre "${offre}". Jamais générique.
+2. "avatar" : UNE personne ultra-précise. Genre, âge exact, situation sociale, peur n°1 formulée en ses propres mots, désir profond.
+3. "histoire_cible" : Un paragraphe narratif de 5-7 phrases qui RACONTE L'HISTOIRE de cette personne — sa situation AVANT le produit. Commence par "Tu te souviens de ce soir où...", "C'est 23h, tu es encore devant ton écran..." ou autre accroche situationnelle. Douleur vécue, moment précis, émotion ressentie. Cette histoire servira d'intro émotionnelle pour la page de vente.
+4. "douleurs_profondes" : 3 douleurs émotionnelles très spécifiques formulées comme si c'est la cible qui parle, à la première personne ("Je me réveille chaque matin avec...")
+5. "desirs_profonds" : 3 désirs profonds formulés comme si c'est la cible qui les rêve à voix haute.
+6. Les 6 chapitres doivent avoir un contenu de 400 mots minimum CHACUN, avec des conseils RÉELS, des exemples CONCRETS et des techniques ACTIONNABLES liés à la niche. Pas de généralités. Du vrai contenu expert qui apporte de la valeur réelle.
+7. Les témoignages doivent être ultra-spécifiques avec des résultats chiffrés crédibles.
+
+JSON EXACT à produire :
+{
+  "titre_produit": "2-4 mots max directement liés à l'offre",
+  "sous_titre": "phrase qui promet le résultat principal avec un délai",
+  "prix": "prix en chiffre seul entre 17 et 97 adapté à ${revenus}",
+  "prix_barre": "prix barré en chiffre seul, environ 2x le prix",
+  "avatar": "Paragraphe de 5 phrases : genre+âge+situation sociale précise / peur numéro 1 en ses propres mots / désir profond / blocage actuel / raison d'achat aujourd'hui",
+  "histoire_cible": "Paragraphe narratif immersif de 6-8 phrases qui raconte l'histoire de la cible AVANT le produit. Accroche situationnelle forte, douleur vécue en scène précise, émotion authentique. Écriture directe, tu/toi, comme si tu parles à quelqu'un.",
+  "douleurs_profondes": ["douleur émotionnelle à la première personne ultra-spécifique à ${sousniche}", "deuxième douleur profonde formulée authentiquement", "troisième douleur avec une situation précise"],
+  "desirs_profonds": ["désir profond formulé comme un rêve à voix haute ultra-spécifique", "deuxième désir concret et émotionnel", "troisième désir lié à l'identité et la transformation"],
+  "promesse": "1 phrase choc ultra-spécifique avec résultat précis + délai précis",
+  "garantie": "garantie 7 jours formulée de façon rassurante et naturelle",
+  "problemes": ["problème émotionnel douloureux lié à ${sousniche}", "problème pratique quotidien", "frustration face aux autres méthodes"],
+  "modules": [
+    {"e":"emoji pertinent","t":"titre module 1","d":"bénéfice concret que l'acheteur va obtenir"},
+    {"e":"emoji","t":"titre module 2","d":"bénéfice concret"},
+    {"e":"emoji","t":"titre module 3","d":"bénéfice concret"},
+    {"e":"emoji","t":"titre module 4","d":"bénéfice concret"},
+    {"e":"emoji","t":"titre module 5","d":"bénéfice concret"},
+    {"e":"emoji","t":"titre module 6","d":"bénéfice concret"}
+  ],
+  "temoignages": [
+    {"p":"prénom cohérent avec la niche","a":"âge réaliste","v":"ville française","t":"témoignage de 4 phrases TRÈS spécifique avec résultat chiffré crédible et histoire personnelle"},
+    {"p":"autre prénom","a":"âge différent","v":"autre ville","t":"parcours différent, résultat différent mais précis"},
+    {"p":"troisième prénom","a":"âge","v":"ville","t":"témoignage qui lève une objection courante de la niche"}
+  ],
+  "faq": [
+    {"q":"question très spécifique à ${sousniche}","r":"réponse rassurante de 2-3 phrases"},
+    {"q":"question sur le temps nécessaire ou la difficulté","r":"réponse concrète avec chiffres"},
+    {"q":"question sur la garantie","r":"réponse qui supprime tout risque perçu"}
+  ],
+  "chapitres": [
+    {"n":1,"t":"Titre chapitre 1 accrocheur lié à l'offre","st":"sous-titre intriguant","c":"Contenu DÉTAILLÉ de 400 mots minimum. Commence par une situation concrète vécue par la cible. Explique le problème clé de ce chapitre avec des données ou faits. Donne 3 techniques PRÉCISES avec des étapes claires et des exemples. Conclure sur la transformation possible."},
+    {"n":2,"t":"Titre chapitre 2","st":"sous-titre","c":"400 mots minimum. Même niveau de détail. Techniques avancées avec exemples concrets."},
+    {"n":3,"t":"Titre chapitre 3","st":"sous-titre","c":"400 mots minimum. Approfondir un aspect clé souvent négligé."},
+    {"n":4,"t":"Titre chapitre 4","st":"sous-titre","c":"400 mots minimum. Les erreurs à éviter avec leurs solutions exactes."},
+    {"n":5,"t":"Titre chapitre 5","st":"sous-titre","c":"400 mots minimum. Plan d'action concret semaine par semaine."},
+    {"n":6,"t":"Titre chapitre 6","st":"sous-titre","c":"400 mots minimum. Maintenir les résultats et aller encore plus loin. Vision long terme."}
+  ],
+  "prompt_lovable": "Intègre ce fichier HTML comme page principale de mon site. Connecte le lien Stripe ${stripe||'[AJOUTER TON LIEN STRIPE ICI]'} sur TOUS les boutons d'achat. Rends le site entièrement responsive desktop, tablette et mobile. Ajoute un compteur de compte à rebours de 15 minutes sur la bannière d'urgence du haut. Configure une page de confirmation de paiement simple après le paiement Stripe. Garde le design, les couleurs, les animations et le CSS exactement tels quels."
+}`;
+
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const raw=data.content.map(b=>b.text||'').join('');
+    let clean=raw.replace(/```json|```/g,'').trim();
+    const js=clean.indexOf('{'),je=clean.lastIndexOf('}');
+    if(js!==-1&&je!==-1)clean=clean.slice(js,je+1);
+    let parsed;try{parsed=JSON.parse(clean);}catch(e){parsed=fallback();}
+    clearInterval(mi_);clearInterval(li_);
+    lids.forEach(id=>{const el=document.getElementById(id);el.classList.remove('active');el.classList.add('done');});
+    setTimeout(()=>showResults(parsed,theme),800);
+  } catch(err){
+    clearInterval(mi_);clearInterval(li_);
+    showResults(fallback(),getTheme(S.a.marche,S.a.niche));
+  }
+}
+
+function fallback(){
+  return{titre_produit:"La Méthode Complète",sous_titre:"Résultats garantis dès la première semaine",prix:"17,80",prix_barre:"47",avatar:"Une personne motivée qui cherche des résultats concrets. Elle a déjà essayé sans succès et est prête à investir. Son problème numéro 1 est le manque de clarté sur quoi faire exactement. Elle achètera parce que la promesse est précise et la garantie lève tout risque.",histoire_cible:"C'est 23h, tu es seul·e face à ton écran, encore une fois. Tu as essayé des dizaines de méthodes, regardé des heures de vidéos YouTube, mais rien ne change vraiment. La frustration monte. Tu sais que la solution existe quelque part, mais tu ne la trouves pas. Ce sentiment d'être bloqué·e alors que d'autres avancent, c'est épuisant. Et cette nuit encore, tu te couches avec le même poids sur la poitrine.",douleurs_profondes:["Je me réveille chaque matin avec ce sentiment d'être à côté de ma vie","J'ai tout essayé et rien ne fonctionne pour moi, je dois être différent·e des autres","Chaque jour qui passe sans résultat me fait sentir que c'est trop tard"],desirs_profonds:["Je veux juste me lever un matin et me sentir fier·e de qui je suis devenu·e","Je rêve du jour où ça sera naturel, sans effort, sans me battre contre moi-même","Je veux prouver, surtout à moi-même, que je suis capable de transformer ma vie"],promesse:"Obtiens des résultats visibles en 7 jours — garanti ou remboursé intégralement.",garantie:"Si tu ne vois aucun résultat dans les 7 premiers jours en suivant la méthode, je te rembourse intégralement. Sans question, sans délai.",problemes:["Tu essaies depuis des mois sans voir de résultats durables","Tu ne sais pas par où commencer ni quelles étapes suivre dans l'ordre","Tu perds du temps avec des méthodes qui ne s'adaptent pas à ta situation"],modules:[{e:"🎯",t:"Le positionnement parfait",d:"Comment te démarquer dès le départ"},{e:"⚡",t:"La méthode accélérée",d:"Les raccourcis que les experts utilisent"},{e:"🔥",t:"Les erreurs fatales",d:"Ce qui fait échouer 90% des gens"},{e:"💪",t:"Passer à l'action",d:"Le plan concret jour par jour"},{e:"📈",t:"Scaler les résultats",d:"Aller encore plus loin"},{e:"🏆",t:"Maintenir sur la durée",d:"La transformation durable"}],temoignages:[{p:"Sophie",a:"34",v:"Lyon",t:"J'ai essayé des dizaines de méthodes avant celle-ci. En 5 jours j'ai vu une vraie différence. Ce guide m'a sauvé la mise."},{p:"Marc",a:"28",v:"Bordeaux",t:"Résultats en 4 jours. Les explications sont tellement claires que je me suis lancé sans hésiter."},{p:"Camille",a:"41",v:"Paris",t:"Simple, efficace, direct. Pas de blabla, que du concret. J'aurais voulu trouver ça 2 ans plus tôt."}],faq:[{q:"Est-ce adapté aux débutants complets ?",r:"Oui, 100%. Ce guide a été conçu pour que quelqu'un qui part de zéro obtienne des résultats."},{q:"En combien de temps vais-je voir des résultats ?",r:"La plupart voient une différence dès les 3-5 premiers jours."},{q:"Et si ça ne fonctionne pas pour moi ?",r:"Remboursement intégral dans les 7 jours, sans question posée."}],chapitres:[{n:1,t:"Les fondations que personne ne pose",st:"Pourquoi tu échoues depuis le début",c:"La plupart des gens qui n'obtiennent pas de résultats font la même erreur : ils sautent les fondations. Ils cherchent des raccourcis avant d'avoir posé les bases. Ce chapitre va changer ta façon d'approcher le problème.\n\nPremière technique : L'audit de point de départ. Avant de faire quoi que ce soit, tu dois savoir exactement où tu en es. Prends une feuille, réponds à ces 3 questions : Qu'est-ce qui fonctionne déjà ? Qu'est-ce qui bloque ? Quelle est la prochaine action la plus simple ? Cet exercice prend 15 minutes mais évite des semaines d'erreur.\n\nDeuxième technique : La règle des 80/20 appliquée. Dans chaque domaine, 20% des actions génèrent 80% des résultats. Ton travail est d'identifier ces 20% et de les exécuter en priorité absolue. Pour y arriver, liste toutes tes actions possibles, note-les de 1 à 10 en impact, et concentre-toi uniquement sur celles au-dessus de 7.\n\nTroisième technique : L'ancrage des habitudes. Un résultat durable vient d'une habitude, pas d'un effort ponctuel. Connecte la nouvelle action à une habitude existante (juste après le café du matin, juste avant de dormir). La neurologie confirme que ce mécanisme réduit de 60% l'effort mental nécessaire.\n\nConclusion : En appliquant ces trois bases, tu vas constater un changement dès la première semaine. Ce n'est pas de la magie, c'est de la mécanique."},{n:2,t:"La méthode que les experts cachent",st:"Ce que les meilleurs font différemment",c:"Il existe une différence fondamentale entre ceux qui obtiennent des résultats rapidement et ceux qui stagnent. Ce n'est pas le talent. Ce n'est pas la chance. C'est une façon spécifique de structurer leur progression.\n\nTechnique 1 : La progression par paliers. Au lieu de viser 100% d'un coup, découpe ton objectif en paliers de 25%. Chaque palier atteint déclenche de la dopamine et renforce la motivation. Exemple concret : si ton objectif est X, vise d'abord 25% de X, célèbre, puis avance.\n\nTechnique 2 : Le feedback loop quotidien. Chaque soir, pose-toi ces deux questions : Qu'est-ce qui a fonctionné aujourd'hui ? Qu'est-ce que je ferai différemment demain ? Ce rituel de 5 minutes accélère ton apprentissage par 3 selon les études sur la métacognition.\n\nTechnique 3 : L'environnement de succès. Tu ne peux pas te battre contre ton environnement. Les experts configurent leur espace pour rendre le succès facile et l'échec difficile. Identifie les 3 frictions qui te font abandonner et supprime-les physiquement de ton environnement.\n\nCe que tu vas ressentir en appliquant tout ça : une clarté nouvelle, une énergie différente le matin, et surtout des résultats qui s'accumulent plutôt que de stagner."},{n:3,t:"Accélérer sans se brûler",st:"La vitesse durable vs le sprint épuisant",c:"Le piège numéro 1 de ceux qui démarrent fort : ils confondent intensité et efficacité. Résultat : ils s'épuisent en 3 semaines, abandonnent, et restent convaincus que la méthode ne fonctionne pas.\n\nTechnique 1 : Le principe de récupération active. Dans chaque domaine de performance, les meilleurs intègrent des périodes de récupération délibérée. Ce n'est pas du repos passif mais une activité légère qui maintient le momentum sans drainer l'énergie.\n\nTechnique 2 : L'intensité variable. Au lieu de maintenir 100% tout le temps, alterne : 3 jours à 80% d'effort, 1 jour à 40%, 3 jours à 90%. Cette structure protège contre l'épuisement et améliore les résultats globaux de 40% comparé à l'effort constant.\n\nTechnique 3 : Les indicateurs d'alarme. Apprends à reconnaître les signaux qui précèdent l'abandon : irritabilité, perte de motivation, rationalisation. Quand tu les identifies, active immédiatement le protocole de récupération plutôt qu'attendre la rupture.\n\nLa vraie accélération vient de la constance sur 90 jours, pas de l'intensité sur 7 jours."},{n:4,t:"Les 5 erreurs qui tuent les résultats",st:"Et comment ne plus jamais les faire",c:"Ces 5 erreurs sont responsables de 90% des échecs. Tu en fais probablement au moins 3 en ce moment sans le savoir.\n\nErreur 1 : Vouloir tout changer en même temps. Solution : ne change qu'une seule chose à la fois. Quand elle est installée (21 jours minimum), ajoutes-en une autre.\n\nErreur 2 : Mesurer les mauvais indicateurs. La plupart mesurent les résultats finaux (trop lents à arriver) plutôt que les indicateurs avancés (immédiats). Identifie 2-3 indicateurs quotidiens qui précèdent les résultats finaux et suis-les.\n\nErreur 3 : Apprendre sans appliquer. La consommation de contenu sans action crée une illusion de progression. Règle : pour chaque heure d'apprentissage, 2 heures d'application minimum.\n\nErreur 4 : Ignorer le contexte personnel. Les méthodes génériques ne tiennent pas compte de ta situation, tes contraintes, ton rythme. Adapte chaque technique à ta réalité plutôt que de l'appliquer mécaniquement.\n\nErreur 5 : Abandonner trop tôt. La plupart abandonnent exactement 2-3 semaines avant que les résultats ne commencent à se matérialiser. La courbe d'apprentissage est non-linéaire : longue phase plate, puis croissance exponentielle."},{n:5,t:"Le plan d'action des 30 premiers jours",st:"Semaine par semaine, action par action",c:"Voici le plan concret. Pas de théorie, que des actions précises.\n\nSemaine 1 : Installation des fondations. Jour 1-2 : audit de situation et identification de tes 3 priorités absolues. Jour 3-4 : mise en place de l'environnement et suppression des frictions. Jour 5-7 : exécution du protocole minimal viable — la plus petite version de la méthode qui donne des résultats mesurables.\n\nSemaine 2 : Montée en puissance. Tu as maintenant une première semaine de données. Identifie ce qui a fonctionné et double dessus. Identifie ce qui n'a pas fonctionné et modifie ou supprime. Intègre 1 nouvelle technique de ce guide.\n\nSemaine 3 : Consolidation. C'est la semaine critique — beaucoup abandonnent ici car les résultats ne sont pas encore visibles au maximum. Continue. Le travail des semaines 1 et 2 est en train de s'installer en profondeur.\n\nSemaine 4 : Récolte et ajustement. Les premiers résultats significatifs apparaissent. Mesure précisément où tu en es. Planifie les 30 prochains jours en utilisant ce que tu as appris.\n\nRègle d'or : exécute d'abord, optimise ensuite."},{n:6,t:"Maintenir et dépasser",st:"La transformation qui dure toute une vie",c:"Félicitations d'être arrivé au dernier chapitre. Ce que tu as appris ici n'est pas une solution temporaire. C'est un système de vie.\n\nLa maintenance intelligente : Les résultats se maintiennent grâce à 3 piliers. Premier pilier : le rituel quotidien minimal (15-30 minutes par jour suffisent une fois les fondations posées). Deuxième pilier : la révision mensuelle (1h par mois pour analyser les résultats et ajuster). Troisième pilier : la montée de niveau semestrielle (tous les 6 mois, identifie le prochain palier et planifie comment l'atteindre).\n\nAller plus loin : Une fois les bases maîtrisées, voici comment aller au niveau supérieur. Trouve une communauté de personnes qui travaillent sur les mêmes objectifs — l'environnement social est le facteur de succès le plus sous-estimé. Enseigne ce que tu sais à d'autres — rien n'ancre mieux une compétence que de l'expliquer. Documente ton parcours — non pour les autres, mais pour toi, car voir ta progression sur 6 mois est le meilleur carburant à long terme.\n\nLa vérité finale : La transformation durable ne vient pas d'une méthode parfaite. Elle vient de l'identité. Quand tu passes de 'quelqu'un qui essaie' à 'quelqu'un qui est', rien ne peut t'arrêter. Ce guide t'a donné les outils. L'identité, tu la construis une action à la fois."}],prompt_lovable:"Intègre ce fichier HTML comme page principale. Connecte le lien Stripe sur tous les boutons d'achat. Rends le site responsive. Ajoute un timer de 15 minutes. Configure une page de confirmation après paiement. Garde le design tel quel."};
+}
+
+// ── ILLUSTRATIONS SVG ──────────────────────────────────
+function getIllustration(niche, chapNum, t) {
+  const illos = {
+    poids:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><ellipse cx="200" cy="140" rx="80" ry="50" fill="${t.p}22" stroke="${t.a}" stroke-width="1.5"/><ellipse cx="200" cy="130" rx="55" ry="35" fill="${t.p}33"/><line x1="120" y1="80" x2="200" y2="130" stroke="${t.a}" stroke-width="2" stroke-dasharray="6,3"/><line x1="280" y1="80" x2="200" y2="130" stroke="${t.a}" stroke-width="2" stroke-dasharray="6,3"/><circle cx="120" cy="75" r="18" fill="${t.p}44" stroke="${t.p}" stroke-width="1.5"/><circle cx="280" cy="75" r="25" fill="${t.p}55" stroke="${t.a}" stroke-width="2"/><text x="200" y="25" text-anchor="middle" fill="${t.a}" font-size="11" font-family="sans-serif" letter-spacing="3">AVANT → APRÈS</text><text x="120" y="78" text-anchor="middle" fill="${t.a}" font-size="10" font-family="sans-serif">AVANT</text><text x="280" y="78" text-anchor="middle" fill="${t.bg}" font-size="10" font-family="sans-serif" font-weight="bold">APRÈS</text></svg>`],
+    sport:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><rect x="60" y="160" width="280" height="4" fill="${t.p}44" rx="2"/><rect x="80" y="120" width="20" height="44" fill="${t.p}33" rx="2"/><rect x="120" y="90" width="20" height="74" fill="${t.p}55" rx="2"/><rect x="160" y="60" width="20" height="104" fill="${t.p}77" rx="2"/><rect x="200" y="40" width="20" height="124" fill="${t.a}" rx="2"/><rect x="240" y="55" width="20" height="109" fill="${t.p}88" rx="2"/><rect x="280" y="75" width="20" height="89" fill="${t.p}66" rx="2"/><text x="200" y="20" text-anchor="middle" fill="${t.a}" font-size="11" font-family="sans-serif" letter-spacing="3">PROGRESSION</text><polyline points="90,118 130,88 170,58 210,38 250,53 290,73" fill="none" stroke="${t.a}" stroke-width="2.5" stroke-linecap="round"/></svg>`],
+    seduction:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><path d="M200 170 C200 170 100 120 100 80 C100 55 120 40 150 50 C170 57 200 80 200 80 C200 80 230 57 250 50 C280 40 300 55 300 80 C300 120 200 170 200 170Z" fill="${t.p}55" stroke="${t.a}" stroke-width="2"/><circle cx="130" cy="70" r="4" fill="${t.a}" opacity="0.6"/><circle cx="270" cy="70" r="4" fill="${t.a}" opacity="0.6"/><circle cx="200" cy="50" r="3" fill="${t.a}" opacity="0.4"/><text x="200" y="30" text-anchor="middle" fill="${t.a}" font-size="12" font-family="sans-serif" letter-spacing="3">CONNEXION</text></svg>`],
+    business:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><polyline points="50,180 100,160 150,140 200,100 250,70 300,40 350,20" fill="none" stroke="${t.a}" stroke-width="3"/><circle cx="350" cy="20" r="8" fill="${t.a}"/><line x1="50" y1="180" x2="350" y2="180" stroke="${t.p}44" stroke-width="1"/><line x1="50" y1="20" x2="50" y2="180" stroke="${t.p}44" stroke-width="1"/><text x="200" y="210" text-anchor="middle" fill="${t.p}" font-size="11" font-family="sans-serif" letter-spacing="2">REVENUS EN CROISSANCE</text><rect x="85" y="155" width="30" height="25" fill="${t.p}33" rx="1"/><rect x="135" y="130" width="30" height="50" fill="${t.p}55" rx="1"/><rect x="185" y="95" width="30" height="85" fill="${t.p}77" rx="1"/><rect x="235" y="65" width="30" height="115" fill="${t.p}99" rx="1"/><rect x="285" y="35" width="30" height="145" fill="${t.a}" rx="1"/></svg>`],
+    sante:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><path d="M200 50 L220 110 L280 110 L230 145 L250 205 L200 170 L150 205 L170 145 L120 110 L180 110 Z" fill="${t.p}44" stroke="${t.a}" stroke-width="2"/><text x="200" y="30" text-anchor="middle" fill="${t.a}" font-size="12" font-family="sans-serif" letter-spacing="3">VITALITÉ</text><circle cx="200" cy="130" r="20" fill="${t.a}" opacity="0.15"/></svg>`],
+    default:[`<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="220" fill="${t.bg2}"/><polygon points="200,40 320,170 80,170" fill="${t.p}22" stroke="${t.a}" stroke-width="2"/><circle cx="200" cy="105" r="25" fill="${t.a}" opacity="0.2"/><text x="200" y="200" text-anchor="middle" fill="${t.p}" font-size="11" font-family="sans-serif" letter-spacing="3">MÉTHODE</text></svg>`]
+  };
+  const nLow=(niche||'').toLowerCase();
+  let set=illos.default;
+  if(nLow.includes('poids')||nLow.includes('ventre')||nLow.includes('mince')||nLow.includes('menton')||nLow.includes('taille'))set=illos.poids;
+  else if(nLow.includes('muscul')||nLow.includes('sport')||nLow.includes('séch')||nLow.includes('masse'))set=illos.sport;
+  else if(nLow.includes('sédu')||nLow.includes('couple')||nLow.includes('ex')||nLow.includes('amour')||nLow.includes('charme'))set=illos.seduction;
+  else if(nLow.includes('tiktok')||nLow.includes('business')||nLow.includes('argent')||nLow.includes('freelance'))set=illos.business;
+  else if(nLow.includes('santé')||nLow.includes('immunité')||nLow.includes('maladies'))set=illos.sante;
+  return set[chapNum%set.length]||illos.default[0];
+}
+
+// ── BUILD SALES HTML (avec narration émotionnelle) ──────
+function buildSalesHTML(d, t, stripe) {
+  const pay=stripe!=='#STRIPE_LINK'?stripe:'#';
+  const stars='⭐⭐⭐⭐⭐';
+  const temos=(d.temoignages||[]).map(tm=>`
+    <div style="background:${t.bg2};border:1px solid ${t.p}33;border-left:4px solid ${t.a};padding:28px;border-radius:2px;">
+      <div style="color:${t.a};font-size:20px;margin-bottom:10px;">${stars}</div>
+      <p style="color:${t.txt};font-size:16px;line-height:1.75;font-style:italic;margin-bottom:14px;">"${tm.t}"</p>
+      <div style="color:${t.p};font-weight:700;font-size:14px;letter-spacing:1px;">— ${tm.p}, ${tm.a} ans · ${tm.v}</div>
+    </div>`).join('');
+  const mods=(d.modules||[]).map(m=>`
+    <div style="background:${t.bg2};border:1px solid ${t.p}22;padding:22px;display:flex;gap:16px;align-items:flex-start;">
+      <span style="font-size:28px;flex-shrink:0;">${m.e}</span>
+      <div><strong style="color:white;display:block;margin-bottom:4px;font-size:16px;">${m.t}</strong><span style="color:#888;font-size:14px;">${m.d}</span></div>
+    </div>`).join('');
+  const probs=(d.problemes||[]).map(p=>`
+    <div style="display:flex;align-items:center;gap:14px;background:rgba(139,60,247,.06);border-left:3px solid #e8110a;padding:16px 20px;">
+      <span style="color:#e8110a;font-size:22px;flex-shrink:0;">✗</span>
+      <span style="color:#bbb;font-size:16px;">${p}</span>
+    </div>`).join('');
+  const douleurs=(d.douleurs_profondes||[]).map(dl=>`
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid ${t.p}11;">
+      <span style="color:${t.p};font-size:18px;flex-shrink:0;margin-top:2px;">💬</span>
+      <p style="color:#aaa;font-size:16px;line-height:1.7;font-style:italic;">"${dl}"</p>
+    </div>`).join('');
+  const desirs=(d.desirs_profonds||[]).map(ds=>`
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid ${t.p}11;">
+      <span style="color:${t.a};font-size:18px;flex-shrink:0;margin-top:2px;">✨</span>
+      <p style="color:${t.txt};font-size:16px;line-height:1.7;font-style:italic;">"${ds}"</p>
+    </div>`).join('');
+  const faqs=(d.faq||[]).map(f=>`
+    <details style="border-bottom:1px solid ${t.p}22;padding:18px 0;">
+      <summary style="color:white;font-size:16px;cursor:pointer;font-weight:700;list-style:none;letter-spacing:.5px;">${f.q}</summary>
+      <p style="color:#aaa;font-size:15px;line-height:1.75;margin-top:14px;">${f.r}</p>
+    </details>`).join('');
+
+  return`<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${d.titre_produit} — ${d.sous_titre}</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:${t.bg};color:${t.txt};font-family:'DM Sans',sans-serif;overflow-x:hidden}
+.btn{display:block;background:${t.btn};color:${t.btxt};font-family:'Bebas Neue',sans-serif;font-size:clamp(20px,4vw,32px);letter-spacing:2px;padding:24px 40px;text-decoration:none;text-align:center;border:none;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);box-shadow:0 8px 50px ${t.btn}66;animation:pulse 2s ease-in-out infinite;width:100%;max-width:600px;margin:0 auto;display:block}
+@keyframes pulse{0%,100%{box-shadow:0 8px 50px ${t.btn}66}50%{box-shadow:0 8px 80px ${t.btn}aa}}
+.btn:hover{filter:brightness(1.1)}
+.sec{max-width:880px;margin:0 auto;padding:70px 20px}
+.div{height:1px;background:linear-gradient(90deg,transparent,${t.p}44,transparent)}
+.tag{display:inline-block;background:${t.a};color:${t.bg};font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;padding:6px 18px;margin-bottom:20px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+h2.sh{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,6vw,62px);color:white;line-height:1;margin-bottom:20px}
+h2.sh span{color:${t.a}}
+@media(max-width:600px){.sec{padding:50px 16px}}
+</style></head><body>
+
+<div style="background:${t.p};color:white;text-align:center;padding:12px 20px;font-family:'Bebas Neue',sans-serif;font-size:clamp(13px,3vw,20px);letter-spacing:2px;">⚠️ OFFRE LIMITÉE — PRIX SPÉCIAL DISPONIBLE AUJOURD'HUI SEULEMENT ⚠️</div>
+
+<!-- HERO -->
+<div style="background:radial-gradient(ellipse at 50% 0%,${t.p}44 0%,transparent 60%),${t.bg};padding:80px 20px;text-align:center;border-bottom:2px solid ${t.p}44;">
+  <div style="display:inline-block;background:${t.p}22;border:1px solid ${t.p}44;color:${t.a};font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:4px;padding:8px 24px;margin-bottom:30px;">${S.a.offre||'PRODUIT DIGITAL'}</div>
+  <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,120px);line-height:.9;color:white;margin-bottom:16px;">${d.titre_produit}</h1>
+  <p style="font-size:clamp(18px,3vw,26px);color:${t.a};max-width:700px;margin:0 auto 16px;line-height:1.5;">${d.sous_titre}</p>
+  <p style="font-size:clamp(15px,2.5vw,19px);color:#888;max-width:600px;margin:0 auto 40px;line-height:1.65;">${d.promesse}</p>
+  <div style="margin:0 auto;max-width:600px;">
+    <div style="font-size:18px;color:#555;text-decoration:line-through;margin-bottom:4px;">Normalement ${d.prix_barre}€</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,15vw,110px);color:${t.a};line-height:1;letter-spacing:-3px;">${d.prix}€</div>
+    <div style="font-size:13px;color:#555;margin-bottom:28px;">Accès immédiat · Téléchargement instantané</div>
+    <a href="${pay}" class="btn">✅ OUI — JE VEUX ACCÉDER MAINTENANT</a>
+    <p style="font-size:12px;color:#444;margin-top:12px;">🔒 Paiement 100% sécurisé via Stripe</p>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- HISTOIRE ÉMOTIONNELLE -->
+<div class="sec" style="text-align:center;">
+  <span class="tag">📖 TU TE RECONNAIS ?</span>
+  <div style="max-width:680px;margin:0 auto;background:${t.bg2};border:1px solid ${t.p}22;border-left:4px solid ${t.a};padding:36px 32px;text-align:left;">
+    <p style="font-size:18px;color:${t.txt};line-height:1.9;font-style:italic;">"${d.histoire_cible}"</p>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- DOULEURS -->
+<div class="sec">
+  <span class="tag">😔 CE QUE TU RESSENS</span>
+  <h2 class="sh">Ces pensées qui<br><span>tournent en boucle...</span></h2>
+  <div style="margin-top:24px;">${douleurs}</div>
+</div>
+
+<div class="div"></div>
+
+<!-- DÉSIRS -->
+<div style="background:${t.bg2};padding:70px 20px;border-top:1px solid ${t.p}22;border-bottom:1px solid ${t.p}22;">
+  <div style="max-width:880px;margin:0 auto;">
+    <span class="tag">✨ CE QUE TU VEUX VRAIMENT</span>
+    <h2 class="sh">Au fond de toi,<br><span>tu veux juste...</span></h2>
+    <div style="margin-top:24px;">${desirs}</div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- PROBLEMES -->
+<div class="sec">
+  <span class="tag">⚠️ POURQUOI ÇA N'A PAS MARCHÉ</span>
+  <h2 class="sh">Ce n'est <span>pas ta faute.</span><br>Tu n'avais pas la bonne méthode.</h2>
+  <div style="display:grid;gap:12px;margin-top:24px;">${probs}</div>
+</div>
+
+<div class="div"></div>
+
+<!-- MODULES -->
+<div style="background:${t.bg2};padding:70px 20px;border-top:1px solid ${t.p}22;border-bottom:1px solid ${t.p}22;">
+  <div style="max-width:880px;margin:0 auto;">
+    <span class="tag">📦 CE QUE TU REÇOIS</span>
+    <h2 class="sh">Tout ce qu'il faut<br><span>pour avoir des résultats</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:30px;">${mods}</div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- CTA MILIEU -->
+<div style="background:radial-gradient(ellipse at 50%,${t.p}22 0%,transparent 70%),${t.bg2};padding:60px 20px;text-align:center;border-top:2px solid ${t.p}44;border-bottom:2px solid ${t.p}44;">
+  <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,5vw,54px);color:white;line-height:1.1;margin-bottom:24px;">Tu peux changer ça<br><span style="color:${t.a}">dès cette semaine.</span></p>
+  <a href="${pay}" class="btn" style="margin:0 auto;">🔥 ACCÉDER MAINTENANT — ${d.prix}€</a>
+</div>
+
+<div class="div"></div>
+
+<!-- TÉMOIGNAGES -->
+<div class="sec">
+  <span class="tag">⭐ ILS L'ONT FAIT AVANT TOI</span>
+  <h2 class="sh">Ils ont obtenu<br><span>des résultats réels</span></h2>
+  <div style="display:grid;gap:16px;margin-top:30px;">${temos}</div>
+</div>
+
+<div class="div"></div>
+
+<!-- GARANTIE -->
+<div class="sec" style="text-align:center;">
+  <div style="background:linear-gradient(135deg,${t.p}11,${t.bg2});border:2px solid ${t.a};padding:50px 30px;max-width:600px;margin:0 auto;">
+    <div style="font-size:60px;margin-bottom:16px;">🏆</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:${t.a};letter-spacing:2px;margin-bottom:14px;">GARANTIE 7 JOURS</div>
+    <p style="font-size:16px;color:#bbb;line-height:1.75;max-width:460px;margin:0 auto 12px;">${d.garantie}</p>
+    <p style="font-size:13px;color:#555;">Tu ne prends aucun risque.</p>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- FAQ -->
+<div style="background:${t.bg2};padding:70px 20px;">
+  <div style="max-width:700px;margin:0 auto;">
+    <span class="tag">❓ TES QUESTIONS</span>
+    <h2 class="sh" style="margin-bottom:30px;">Ce que tu veux<br><span>savoir</span></h2>
+    ${faqs}
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- CTA FINAL -->
+<div style="background:radial-gradient(ellipse at 50% 100%,${t.p}44 0%,transparent 60%),${t.bg};padding:100px 20px;text-align:center;border-top:2px solid ${t.p}44;">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,7vw,80px);color:white;line-height:1;margin-bottom:16px;">Il est temps de<br><span style="color:${t.a}">passer à l'action.</span></div>
+  <p style="font-size:18px;color:#666;max-width:500px;margin:0 auto 40px;line-height:1.7;">Tu as tout lu. Tu sais que ça peut fonctionner pour toi. La seule question qui reste : tu le fais maintenant, ou tu continues comme avant ?</p>
+  <div style="font-size:18px;color:#555;text-decoration:line-through;margin-bottom:4px;">Normalement ${d.prix_barre}€</div>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(50px,10vw,90px);color:${t.a};line-height:1;margin-bottom:8px;">${d.prix}€</div>
+  <div style="font-size:13px;color:#444;margin-bottom:32px;">Accès immédiat · Garantie 7 jours</div>
+  <a href="${pay}" class="btn">✅ OUI, JE VEUX CHANGER ÇA MAINTENANT</a>
+  <p style="font-size:12px;color:#333;margin-top:16px;">🔒 Paiement sécurisé Stripe · Remboursement sans question en 7 jours</p>
+</div>
+
+</body></html>`;
+}
+
+// ── SHOW RESULTS ───────────────────────────────────────
+function showResults(d, theme) {
+  document.getElementById('loadingScreen').classList.remove('show');
+  document.getElementById('resultsScreen').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const stripe=S.a.stripe||'#STRIPE_LINK';
+  const {prenom,marche,niche,sousniche,offre,revenus}=S.a;
+  window._sHTML=buildSalesHTML(d,theme,stripe);
+
+  // ── PROMPT LOVABLE DYNAMIQUE COMPLET ──
+  const copyData = COPY[sousniche] || {};
+  const ctaByOffre = offre===S.a.offre ? (copyData.cta1||'') : '';
+  const avis1 = (copyData.avis||[])[0]||{n:'Marie',a:28,t:'Résultats incroyables en 2 semaines.'};
+  const avis2 = (copyData.avis||[])[1]||{n:'Thomas',a:32,t:'La méthode la plus claire que j\'ai testée.'};
+  const avis3 = (copyData.avis||[])[2]||{n:'Camille',a:25,t:'Je recommande à 100%.'};
+
+  const lovablePrompt = `Tu vas modifier et enrichir cette page de vente HTML pour l'adapter exactement aux paramètres suivants.
+
+═══════════════════════════════════════
+PARAMÈTRES DU PRODUIT
+═══════════════════════════════════════
+Ebook : "${offre}"
+Marché : ${marche}
+Niche : ${niche}
+Sous-niche : ${sousniche}
+Prix : ${d.prix}€ (barré : ${d.prix_barre}€)
+Lien Stripe : ${stripe !== '#STRIPE_LINK' ? stripe : '[AJOUTER TON LIEN STRIPE ICI]'}
+
+═══════════════════════════════════════
+COPYWRITING À INTÉGRER
+═══════════════════════════════════════
+HOOK (section hero principale) :
+"${copyData.hook || d.promesse}"
+
+PROBLÈME (section 2 — juste après le hero) :
+"${copyData.probleme || (d.problemes||[]).join(' ')}"
+
+RÉVÉLATION (section 3 — la méthode) :
+"${(copyData.revelation||'').replace('[Nom ebook]', offre) || 'La méthode complète pour transformer ta situation.'}"
+
+═══════════════════════════════════════
+TÉMOIGNAGES À AFFICHER (section avis)
+═══════════════════════════════════════
+Avis 1 — ${avis1.n}, ${avis1.a} ans : "${avis1.t}"
+Avis 2 — ${avis2.n}, ${avis2.a} ans : "${avis2.t}"
+Avis 3 — ${avis3.n}, ${avis3.a} ans : "${avis3.t}"
+
+═══════════════════════════════════════
+CTA & URGENCE
+═══════════════════════════════════════
+CTA principal : "${copyData.cta1 || '⚡ Accès immédiat — Garanti ou remboursé.'}"
+CTA bonus : "${copyData.cta2 || '🎁 Offre spéciale — Disponible encore [X]h.'}"
+CTA lifetime : "${copyData.cta3 || '🔒 Accès Lifetime — Prix remonte ce soir.'}"
+
+═══════════════════════════════════════
+DESIGN
+═══════════════════════════════════════
+Couleur principale : ${theme.p}
+Couleur accent : ${theme.a}
+Fond : ${theme.bg}
+Ambiance : ${theme.n}
+Typographie : Titres en Bebas Neue, corps en DM Sans
+
+═══════════════════════════════════════
+MODIFICATIONS À EFFECTUER
+═══════════════════════════════════════
+1. Connecte le lien Stripe "${stripe !== '#STRIPE_LINK' ? stripe : '[LIEN STRIPE]'}" sur TOUS les boutons d'achat
+2. Intègre le HOOK ci-dessus dans le hero principal (h1 ou section hero)
+3. Remplace la section problème par le texte PROBLÈME ci-dessus
+4. Intègre la RÉVÉLATION dans la section méthode/solution
+5. Remplace les témoignages par les 3 AVIS ci-dessus avec prénom + âge
+6. Place les 3 CTA aux bons endroits (urgence, bonus, lifetime) avec les emojis ⚡ 🎁 🔒
+7. Ajoute un compte à rebours de 15 minutes sur la bannière d'urgence en haut de page
+8. Rends le site 100% responsive (desktop, tablette, mobile)
+9. Configure une page de confirmation simple après paiement Stripe
+10. Garde le design, les couleurs (${theme.p} / ${theme.a}), les animations et le CSS existants tels quels
+
+Commence par intégrer le code HTML de la page de vente, puis applique toutes ces modifications.`;
+
+  window._lovablePrompt = lovablePrompt;
+
+  // ── PROMPT CLAUDE EBOOK COMPLET DYNAMIQUE ──
+  const themeDesc = theme.n || 'Rouge Pirate';
+  const chapScript = (d.chapitres||[]).map(c=>`CHAPITRE ${c.n} : ${c.t}\nSous-titre : ${c.st}\n\n${c.c}`).join('\n\n---\n\n');
+
+  const promptClaudeEbook = `Tu vas réécrire et enrichir cet ebook en l'adaptant précisément aux paramètres ci-dessous. Garde la structure en 6 chapitres mais réécris TOUT le contenu pour qu'il soit parfaitement cohérent avec la niche, la sous-niche et la promesse de l'offre.
+
+═══════════════════════════════════════
+PARAMÈTRES DE L'EBOOK
+═══════════════════════════════════════
+Ebook : "${offre}"
+Marché : ${marche}
+Niche : ${niche}
+Sous-niche : ${sousniche}
+Promesse de l'offre : "${copyData.cta1 || d.promesse || 'Résultats garantis ou remboursé.'}"
+Prix : ${d.prix}€
+Lien d'achat : ${stripe !== '#STRIPE_LINK' ? stripe : '[TON LIEN STRIPE]'}
+
+═══════════════════════════════════════
+HOOK DE RÉFÉRENCE (à intégrer naturellement)
+═══════════════════════════════════════
+"${copyData.hook || d.promesse}"
+
+═══════════════════════════════════════
+INSTRUCTIONS DE RÉÉCRITURE
+═══════════════════════════════════════
+- Réécris chaque chapitre avec un contenu de 500 mots minimum
+- Chaque chapitre doit être 100% centré sur "${sousniche}"
+- Intègre des techniques CONCRÈTES et ACTIONNABLES, pas de théorie vague
+- Utilise des exemples réels, des chiffres et des situations vécues par la cible
+- Ton : ${marche === 'sante' ? 'bienveillant, motivant, scientifique' : marche === 'relations' ? 'direct, empathique, sans blabla' : 'pragmatique, orienté résultats, concret'}
+- Commence le chapitre 1 par une accroche situationnelle forte (une scène vécue)
+- Le chapitre 6 doit conclure avec un plan d'action clair et un rappel de la promesse
+- Intègre naturellement dans la conclusion : "${copyData.cta1 || '⚡ ' + d.promesse}"
+- Chaque chapitre se termine par un encadré "ACTION DU CHAPITRE" avec 1 exercice précis
+
+Structure demandée pour CHAQUE chapitre :
+[Titre accrocheur lié à "${sousniche}"]
+[Sous-titre intrigant]
+[Accroche situationnelle — 2-3 phrases]
+[Problème clé du chapitre — 1 paragraphe]
+[Technique 1 avec étapes précises — 150 mots]
+[Technique 2 avec exemple concret — 150 mots]
+[Technique 3 avec cas pratique — 150 mots]
+[Conclusion du chapitre — 1 paragraphe]
+[ACTION DU CHAPITRE : exercice en 3 étapes]
+
+═══════════════════════════════════════
+STYLE VISUEL POUR LE PDF (si tu génères aussi le PDF)
+═══════════════════════════════════════
+- Thème : ${themeDesc} (couleur principale : ${theme.p}, accent : ${theme.a}, fond : ${theme.bg})
+- Typographie : Titres Bebas Neue, corps DM Sans
+- Page de couverture premium avec le titre "${offre}"
+- Page sommaire avec numéros stylisés
+- Encadrés "Point Clé" avec bordure ${theme.a}
+- Page finale avec la garantie et le lien : ${stripe !== '#STRIPE_LINK' ? stripe : '[TON LIEN STRIPE]'}
+
+═══════════════════════════════════════
+SCRIPT DE BASE À RÉÉCRIRE
+═══════════════════════════════════════
+[Colle ton script ebook ici — copie le contenu de l'onglet Ebook de l'outil]
+
+TITRE : ${d.titre_produit}
+SOUS-TITRE : ${d.sous_titre}
+
+${chapScript}
+
+═══════════════════════════════════════
+LIVRABLE ATTENDU
+═══════════════════════════════════════
+Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les instructions ci-dessus. Si tu veux aussi générer le PDF, produis ensuite le code Python ReportLab directement exécutable avec le design ${themeDesc}.`;
+
+  const promptClaude = promptClaudeEbook;
+  window._promptClaude = promptClaude;
+
+  const temos=(d.temoignages||[]).map(tm=>`<div style="background:rgba(37,211,102,.03);border:1px solid rgba(37,211,102,.1);border-left:3px solid var(--green);padding:16px;"><div style="color:var(--purple);margin-bottom:6px;">⭐⭐⭐⭐⭐</div><p style="color:#bbb;font-size:14px;font-style:italic;margin-bottom:8px;">"${tm.t}"</p><strong style="color:var(--green);font-size:13px;">— ${tm.p}, ${tm.a} ans · ${tm.v}</strong></div>`).join('');
+
+  const ebookFullText = (d.chapitres||[]).map(c=>'CHAPITRE '+c.n+' : '+c.t+'\n'+c.st+'\n\n'+c.c).join('\n\n---\n\n');
+  window._ebookText = ebookFullText;
+  window._promptClaude = promptClaude;
+
+  const chapCards = (d.chapitres||[]).map(c=>`
+    <div class="chap-card">
+      <div class="chap-num">CHAPITRE ${c.n}</div>
+      <div class="chap-card-title">${c.t}</div>
+      <div class="chap-card-sub">${c.st}</div>
+      <div class="chap-card-body">${c.c}</div>
+      <div style="margin-top:14px;"><button class="copy-btn" class="copy-btn copy-btn-green" onclick="cpRaw(${JSON.stringify('CHAPITRE '+c.n+' : '+c.t+'\n'+c.st+'\n\n'+c.c)},this)">COPIER CE CHAPITRE</button></div>
+    </div>`).join('');
+
+  document.getElementById('resultsBody').innerHTML=`
+    <div class="tabs">
+      <button class="tab-btn tab-btn-ebook active" onclick="tab('ebook',this)">📖 Ebook</button>
+      <button class="tab-btn tab-btn-sales" onclick="tab('sales',this)">🖥️ Page de vente</button>
+      <button class="tab-btn tab-btn-pirate" onclick="tab('pirate',this)">🏴‍☠️ Méthode Dropdigital<span class="pirate-star s1">✦</span><span class="pirate-star s2">★</span><span class="pirate-star s3">✦</span></button>
+    </div>
+
+    <!-- EBOOK TAB -->
+    <div class="tab-content active" id="tab-ebook">
+      <div class="rc">
+        <div class="rch">
+          <div class="rct">📖 SCRIPT EBOOK COMPLET — 6 CHAPITRES</div>
+          <div class="btn-row">
+            <button class="copy-btn" id="btnCopyEbook" class="copy-btn copy-btn-green" onclick="cpRaw(window._ebookText,this);this.textContent='✅ COPIÉ!';">TOUT COPIER</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;margin-bottom:20px;">
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:white;">${d.titre_produit}</span>
+          <span style="color:#888;font-size:14px;">${d.sous_titre}</span>
+        </div>
+        ${chapCards}
+      </div>
+
+      <div class="rc" style="border-left-color:var(--green);">
+        <div class="rch"><div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">🤖 PROMPT CLAUDE — RÉÉCRIRE & AMÉLIORER L'EBOOK</div><button class="copy-btn copy-btn-green" id="btnCopyPromptClaude" onclick="cpRaw(window._promptClaude,this);">COPIER LE PROMPT</button></div>
+        <div style="background:rgba(179,102,255,.08);border:1px solid rgba(179,102,255,.25);padding:16px;margin-bottom:16px;">
+          <strong style="color:#c480ff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">🚀 COMMENT UTILISER CE PROMPT :</strong>
+          <span style="color:rgba(200,170,255,.75);font-size:13px;line-height:1.9;">1. Clique sur <strong style="color:white">TOUT COPIER</strong> dans la section script ebook ci-dessus<br>2. Clique sur <strong style="color:white">COPIER LE PROMPT</strong> ci-contre<br>3. Ouvre <strong style="color:white">claude.ai</strong> → Nouveau chat<br>4. Colle le PROMPT en premier<br>5. Remplace <strong style="color:white">[Colle ton script ebook ici]</strong> par le script copié<br>6. Claude réécrit l'ebook complet adapté à <strong style="color:#c480ff;">${sousniche}</strong></span>
+        </div>
+        <div class="prompt-claude-label" style="color:var(--green);">📋 APERÇU DU PROMPT (adapté à ton ebook "${offre}")</div>
+        <div class="prompt-claude-text" style="color:rgba(196,160,255,.8);">${promptClaude.slice(0,500)}...</div>
+        <p style="font-size:12px;color:rgba(179,102,255,.4);margin-top:10px;">Le prompt complet contient toutes tes variables : niche, sous-niche, hook, CTA, style visuel, instructions de réécriture.</p>
+      </div>
+    </div>
+
+    <!-- SALES TAB -->
+    <div class="tab-content" id="tab-sales">
+      <div class="rc">
+        <div class="rch"><div class="rct">🖥️ PAGE DE VENTE COMPLÈTE</div>
+          <div class="btn-row">
+            <button class="preview-btn" onclick="previewHTML(window._sHTML)">👁 PRÉVISUALISER</button>
+            <button class="copy-btn" id="btnCopyHTML" class="copy-btn copy-btn-green" onclick="cpRaw(window._sHTML,this);this.textContent='✅ COPIÉ!';">COPIER HTML</button>
+          </div>
+        </div>
+        <p style="color:#888;font-size:14px;margin-bottom:16px;">Inclut : histoire émotionnelle, douleurs, désirs, modules, témoignages, garantie, FAQ, double CTA.<br>Thème : <strong style="color:var(--green);">${theme.n}</strong></p>
+        <div class="code-block">${eh(window._sHTML.slice(0,700))}...</div>
+        <p style="font-size:12px;color:#444;margin-top:8px;">Aperçu — utilise COPIER pour le code complet</p>
+      </div>
+
+      <div class="rc" style="border-left-color:var(--green);">
+        <div class="rch"><div class="rct" style="color:var(--green);">⚓ PROMPT LOVABLE — PAGE DE VENTE COMPLÈTE</div><button class="copy-btn" id="btnCopyLovable" class="copy-btn copy-btn-green" onclick="cpRaw(window._lovablePrompt,this);">COPIER</button></div>
+        <div style="background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.12);padding:16px;margin-bottom:16px;">
+          <strong style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">COMMENT L'UTILISER :</strong>
+          <span style="color:#666;font-size:13px;line-height:1.9;">1. Copie le code HTML de ta page de vente ci-dessus (COPIER HTML)<br>2. Va sur <strong style="color:white">lovable.dev</strong> → Nouveau projet → colle le HTML<br>3. Clique sur <strong style="color:white">COPIER</strong> ci-contre pour récupérer le prompt<br>4. Colle le prompt dans le chat Lovable<br>5. Lovable intègre ton hook, tes avis, tes CTA et connecte Stripe automatiquement</span>
+        </div>
+        <div class="prompt-claude-label" style="color:var(--green);">📋 APERÇU DU PROMPT (personnalisé pour "${offre}")</div>
+        <div class="prompt-claude-text" style="color:#c8a800;">${window._lovablePrompt.slice(0,600)}...</div>
+        <p style="font-size:12px;color:#444;margin-top:10px;">Le prompt complet contient : hook, problème, révélation, 3 avis avec prénoms, 3 CTA avec emojis, couleurs, lien Stripe et toutes les instructions de modification.</p>
+      </div>
+    </div>
+
+    <!-- PIRATE METHOD TAB -->
+    <div class="tab-content" id="tab-pirate">
+      <div class="pirate-hero">
+        <div class="pirate-tag">🏴‍☠️ IL TE MANQUE UNE CHOSE</div>
+        <h2>Ton produit est prêt.<br>Ta page de vente est prête.<br>Mais sans <span>trafic,</span><br>tout ça <em>dort.</em></h2>
+        <p style="margin-top:24px;">Tu as fait le plus dur. Maintenant il te faut des yeux sur ta page. Des vrais. Des gens qui achètent.</p>
+      </div>
+
+      <div class="rc rc-red-aggressive">
+        <div class="rct" style="color:#ff2a2a;margin-bottom:20px;text-shadow:0 0 20px rgba(255,42,42,.8);">🎯 LE PROBLÈME QUE PERSONNE NE TE DIT</div>
+        <p style="font-size:16px;color:rgba(255,200,200,.85);line-height:1.85;margin-bottom:20px;">La plupart des gens qui créent un produit digital pensent qu'il suffit de le poster et d'attendre les ventes. Résultat : zéro. Pas parce que le produit est mauvais. Parce qu'ils n'ont pas de système de trafic qui <strong style="color:white">convertit</strong> des vues en argent.</p>
+        <p style="font-size:16px;color:rgba(255,200,200,.85);line-height:1.85;">TikTok est la seule plateforme en 2025 où un compte à <strong style="color:#ff4444;text-shadow:0 0 10px rgba(255,68,68,.8)">0 abonnés</strong> peut faire ses premières ventes en <strong style="color:#ff4444;text-shadow:0 0 10px rgba(255,68,68,.8)">72h</strong>. Même en anonyme. Même avec 1000 vues.</p>
+      </div>
+
+      <div class="pirate-stat-row">
+        <div class="pirate-stat pirate-stat-green"><div class="pirate-stat-num green-num">1 000</div><div class="pirate-stat-label green-label">vues suffisent</div></div>
+        <div class="pirate-stat pirate-stat-green"><div class="pirate-stat-num green-num">72H</div><div class="pirate-stat-label green-label">premières ventes</div></div>
+        <div class="pirate-stat pirate-stat-green"><div class="pirate-stat-num green-num">0</div><div class="pirate-stat-label green-label">abonnés requis</div></div>
+        <div class="pirate-stat pirate-stat-green"><div class="pirate-stat-num green-num">100%</div><div class="pirate-stat-label green-label">anonyme possible</div></div>
+      </div>
+
+      <div class="rc rc-green-full">
+        <div class="rct" style="color:#25D366;margin-bottom:20px;text-shadow:0 0 20px rgba(37,211,102,.8);">💡 POURQUOI LES CARROUSELS TIKTOK ?</div>
+        <div class="pirate-points">
+          <div class="pirate-point">
+            <div class="pirate-point-icon">🎠</div>
+            <div class="pirate-point-text"><strong>Le format qui vend sans montrer ton visage</strong>Les carrousels TikTok te permettent de vendre en 100% anonyme. Pas de caméra. Pas de voix. Juste des slides qui captivent et convertissent.</div>
+          </div>
+          <div class="pirate-point">
+            <div class="pirate-point-icon">⚡</div>
+            <div class="pirate-point-text"><strong>L'algorithme TikTok pousse les nouveaux comptes</strong>Contrairement à Instagram ou YouTube, TikTok montre tes contenus à des inconnus dès le premier post. Tu n'as pas besoin d'une audience existante.</div>
+          </div>
+          <div class="pirate-point">
+            <div class="pirate-point-icon">💰</div>
+            <div class="pirate-point-text"><strong>1000 vues peuvent générer des ventes réelles</strong>Avec la bonne structure de carrousel et le bon hook, 1% de conversion = 10 clics sur ton lien. À 27€ le produit, c'est 270€ par carrousel.</div>
+          </div>
+          <div class="pirate-point">
+            <div class="pirate-point-icon">🔁</div>
+            <div class="pirate-point-text"><strong>Un système qui tourne en automatique</strong>Poste 1 carrousel par jour. Chaque post travaille pour toi 24h/24. Les ventes arrivent même quand tu dors.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rc rc-gold" style="text-align:center;">
+        <div class="rct" style="color:#f0b429;margin-bottom:16px;text-shadow:0 0 20px rgba(240,180,41,.8);">⚡ DROPDIGITAL SYSTEM — LA MÉTHODE COMPLÈTE</div>
+        <p style="font-size:16px;color:rgba(240,210,150,.75);max-width:580px;margin:0 auto 24px;line-height:1.85;">Tu veux la structure exacte des carrousels qui vendent. Les hooks. Les templates. Le système complet pour transformer des vues TikTok en ventes — même avec un tout nouveau compte, même en anonyme.</p>
+        <a href="https://systemedigitalpirate.lovable.app" target="_blank" class="big-pirate-btn" style="display:block;max-width:600px;margin:0 auto;text-decoration:none;">⚡ OUI, JE VEUX LA MÉTHODE DROPDIGITAL</a>
+        <p style="font-size:13px;color:rgba(240,180,41,.4);margin-top:14px;">Rejoins les membres qui vendent dès la première semaine sur TikTok</p>
+      </div>
+    </div>
+
+    <div class="final-cta">
+      <div class="tag">⚡ TON PRODUIT EST PRÊT</div>
+      <h2>Ton site va<br><span>générer des ventes.</span><br>Il te manque<br><em>la stratégie TikTok.</em></h2>
+      <p>Tu as ton produit, ta page de vente, tout est en place.<br><strong>Mais quoi poster sur TikTok pour transformer tes vues en ventes ?</strong></p>
+      <a href="https://systemedigitalpirate.lovable.app" target="_blank" class="big-red-btn" style="text-decoration:none;">⚡ JE VEUX VOIR LA MÉTHODE DROPDIGITAL</a>
+      <p class="small-note">Rejoins les membres qui vendent dès la première semaine sur TikTok.</p>
+    </div>
+    <button class="restart-btn" onclick="restart()">↺ Recommencer depuis le début</button>
+  `;
+}
+
+// ── UTILS ──────────────────────────────────────────────
+function cw(html){document.getElementById('chatWrap').innerHTML=html;}
+function sel(btn){document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));if(btn)btn.classList.add('selected');}
+function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'\\"');}
+function eh(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+function cpRaw(text,btn){
+  const t=typeof text==='string'?text:String(text||'');
+  if(!t){if(btn){btn.textContent='❌ Erreur';setTimeout(()=>{btn.textContent=btn.dataset.orig||'COPIER';},2000);}return;}
+  navigator.clipboard.writeText(t).then(()=>{
+    if(btn){
+      if(!btn.dataset.orig) btn.dataset.orig=btn.textContent;
+      btn.textContent='✅ COPIÉ !';
+      btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent=btn.dataset.orig;btn.classList.remove('copied');},2500);
+    }
+  }).catch(()=>{
+    // Fallback
+    const ta=document.createElement('textarea');
+    ta.value=t;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    if(btn){
+      if(!btn.dataset.orig) btn.dataset.orig=btn.textContent;
+      btn.textContent='✅ COPIÉ !';btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent=btn.dataset.orig;btn.classList.remove('copied');},2500);
+    }
+  });
+}
+function restart(){S.step=0;S.a={};document.getElementById('resultsScreen').classList.remove('show');document.getElementById('chatWrap').style.display='';document.querySelector('.site-header').style.display='';init();window.scrollTo({top:0,behavior:'smooth'});}
+function previewHTML(html){
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  window.open(url,'_blank');
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+}
+
+init();
+</script>
+</body>
+</html>
