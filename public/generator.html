@@ -1546,6 +1546,69 @@ Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les in
   window._ebookText = ebookFullText;
   window._promptClaude = promptClaude;
 
+  const promptEbookUnifie = `Tu vas générer UNIQUEMENT LE TEXTE BRUT d'un ebook de 6 chapitres.
+Pas de mise en page, pas de PDF, pas de code, pas de markdown excessif.
+Uniquement le contenu textuel que l'auteur va coller dans Gamma pour créer le PDF visuel.
+
+═══════════════════════════════════════
+PARAMÈTRES
+═══════════════════════════════════════
+Titre de l'ebook : ${offre}
+Marché : ${marche}
+Niche : ${niche}
+Sous-niche : ${sousniche}
+
+═══════════════════════════════════════
+CONSIGNE PRINCIPALE
+═══════════════════════════════════════
+Écris 6 chapitres 100% centrés sur "${sousniche}".
+Chaque chapitre fait entre 400 et 500 mots exactement.
+Ton : direct, concret, zéro blabla. Pas de théorie vague.
+Uniquement des techniques actionnables avec exemples réels et chiffres.
+
+═══════════════════════════════════════
+STRUCTURE OBLIGATOIRE PAR CHAPITRE
+═══════════════════════════════════════
+TITRE DU CHAPITRE [accrocheur, lié à la sous-niche]
+SOUS-TITRE [intrigant]
+
+ACCROCHE [scène vécue par la cible, 2-3 phrases immersives]
+
+PROBLÈME CLÉ [1 paragraphe, nomme l'erreur principale]
+
+TECHNIQUE 1 [nom + étapes précises + exemple concret — ~150 mots]
+
+TECHNIQUE 2 [nom + exemple réel avec chiffres ou situation — ~150 mots]
+
+TECHNIQUE 3 [nom + cas pratique applicable immédiatement — ~150 mots]
+
+CONCLUSION DU CHAPITRE [1 paragraphe de synthèse]
+
+ACTION DU CHAPITRE [1 exercice en 3 étapes précises, applicable ce soir]
+
+---
+
+═══════════════════════════════════════
+INSTRUCTIONS SPÉCIFIQUES PAR CHAPITRE
+═══════════════════════════════════════
+Chapitre 1 : commence par une accroche situationnelle forte.
+             Pose les fondations du sujet.
+Chapitre 2 : révèle ce que les meilleurs font différemment.
+Chapitre 3 : parle de vitesse et de progression sans s'épuiser.
+Chapitre 4 : liste les 5 erreurs fatales et leurs solutions.
+Chapitre 5 : donne un plan d'action semaine par semaine sur 30 jours.
+Chapitre 6 : conclus avec un récap puissant + CTA motivationnel
+             pour passer à l'étape supérieure avec la formation complète.
+             Pas de prix, pas de lien. Juste l'élan.
+
+═══════════════════════════════════════
+FORMAT DE SORTIE
+═══════════════════════════════════════
+Commence directement par le Chapitre 1.
+Aucune introduction avant. Aucun commentaire après.
+Sépare chaque chapitre par : ---`;
+  window._promptEbookUnifie = promptEbookUnifie;
+
   const chapCards = (d.chapitres||[]).map(c=>`
     <div class="chap-card">
       <div class="chap-num">CHAPITRE ${c.n}</div>
@@ -1564,29 +1627,17 @@ Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les in
 
     <!-- EBOOK TAB -->
     <div class="tab-content active" id="tab-ebook">
-      <div class="rc">
+      <div class="rc" style="border-left-color:var(--purple);">
         <div class="rch">
-          <div class="rct">📖 SCRIPT EBOOK COMPLET — 6 CHAPITRES</div>
-          <div class="btn-row">
-            <button class="copy-btn" id="btnCopyEbook" class="copy-btn copy-btn-green" onclick="cpRaw(window._ebookText,this);this.textContent='✅ COPIÉ!';">TOUT COPIER</button>
-          </div>
+          <div class="rct" style="color:var(--purple);text-shadow:0 0 15px rgba(155,77,255,.5);">📖 PROMPT EBOOK — GÉNÉRER 6 CHAPITRES</div>
+          <button class="copy-btn" id="btnCopyEbook" onclick="cpRaw(window._promptEbookUnifie,this);this.textContent='✅ COPIÉ!';">COPIER</button>
         </div>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;margin-bottom:20px;">
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:white;">${d.titre_produit}</span>
-          <span style="color:#888;font-size:14px;">${d.sous_titre}</span>
+        <div style="background:rgba(155,77,255,.08);border:1px solid rgba(155,77,255,.25);padding:14px 16px;margin-bottom:20px;border-radius:6px;">
+          <strong style="color:#c480ff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:8px;">🚀 COMMENT UTILISER :</strong>
+          <span style="color:rgba(200,170,255,.75);font-size:13px;line-height:1.9;">1. Clique sur <strong style="color:white">COPIER</strong> ci-dessus<br>2. Ouvre <strong style="color:white">claude.ai</strong> → Nouveau chat<br>3. Colle le prompt et envoie<br>4. Claude génère l'ebook complet pour <strong style="color:#c480ff;">${sousniche}</strong></span>
         </div>
-        ${chapCards}
-      </div>
-
-      <div class="rc" style="border-left-color:var(--green);">
-        <div class="rch"><div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">🤖 PROMPT CLAUDE — RÉÉCRIRE & AMÉLIORER L'EBOOK</div><button class="copy-btn copy-btn-green" id="btnCopyPromptClaude" onclick="cpRaw(window._promptClaude,this);">COPIER LE PROMPT</button></div>
-        <div style="background:rgba(179,102,255,.08);border:1px solid rgba(179,102,255,.25);padding:16px;margin-bottom:16px;">
-          <strong style="color:#c480ff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">🚀 COMMENT UTILISER CE PROMPT :</strong>
-          <span style="color:rgba(200,170,255,.75);font-size:13px;line-height:1.9;">1. Clique sur <strong style="color:white">TOUT COPIER</strong> dans la section script ebook ci-dessus<br>2. Clique sur <strong style="color:white">COPIER LE PROMPT</strong> ci-contre<br>3. Ouvre <strong style="color:white">claude.ai</strong> → Nouveau chat<br>4. Colle le PROMPT en premier<br>5. Remplace <strong style="color:white">[Colle ton script ebook ici]</strong> par le script copié<br>6. Claude réécrit l'ebook complet adapté à <strong style="color:#c480ff;">${sousniche}</strong></span>
-        </div>
-        <div class="prompt-claude-label" style="color:var(--green);">📋 APERÇU DU PROMPT (adapté à ton ebook "${offre}")</div>
-        <div class="prompt-claude-text" style="color:rgba(196,160,255,.8);">${promptClaude.slice(0,500)}...</div>
-        <p style="font-size:12px;color:rgba(179,102,255,.4);margin-top:10px;">Le prompt complet contient toutes tes variables : niche, sous-niche, hook, CTA, style visuel, instructions de réécriture.</p>
+        <div class="prompt-claude-label">📋 PROMPT COMPLET — "${offre}"</div>
+        <div class="prompt-claude-text" style="max-height:520px;overflow-y:auto;padding:18px;background:rgba(0,0,0,.35);border:1px solid rgba(155,77,255,.2);border-radius:8px;">${promptEbookUnifie}</div>
       </div>
     </div>
 
