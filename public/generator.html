@@ -1459,16 +1459,12 @@ function rNiche(){
   cw(`<div class="q-block">
     <span class="q-label">⚓ ÉTAPE 3 / 7</span>
     <div class="q-title">Quelle niche<br><span>t'attire ?</span></div>
-    <p class="q-sub">Choisis ou écris la tienne.</p>
+    <p class="q-sub">Choisis ta niche dans la liste.</p>
     <div class="btn-grid">${ns.map(n=>`<button class="choice-btn" onclick="selN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
-    <div class="or-divider">OU MA PROPRE IDÉE</div>
-    <div class="text-input-wrap"><label>NICHE PERSO</label><input type="text" class="q-input" id="inp2" placeholder="Ex: méditation pour entrepreneurs..."/></div>
-    <button class="next-btn" id="nb2" onclick="go2()" disabled>VALIDER →</button>
   </div>`);
-  document.getElementById('inp2').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.niche='';}document.getElementById('nb2').disabled=!this.value.trim()&&!S.a.niche;});
 }
-function selN(n,b){S.a.niche=n;sel(b);document.getElementById('inp2').value='';document.getElementById('nb2').disabled=false;}
-function go2(){const c=document.getElementById('inp2').value.trim();if(c)S.a.niche=c;if(!S.a.niche)return;renderStep(3);}
+function selN(n,b){S.a.niche=n;sel(b);setTimeout(()=>renderStep(3),400);}
+function go2(){if(!S.a.niche)return;renderStep(3);}
 
 // ── STEP 4 : SOUS-NICHE (données fixes) ───────────
 function rSousNiche(){
@@ -1478,14 +1474,10 @@ function rSousNiche(){
     <div class="q-title">Quelle <span>sous-niche</span><br>tu vises ?</div>
     <p class="q-sub">Plus précis = plus de ventes. C'est le secret des produits qui vendent dès J1.</p>
     <div class="btn-grid">${subniches.map(n=>`<button class="choice-btn" onclick="selSN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
-    <div class="or-divider">OU MON IDÉE PRÉCISE</div>
-    <div class="text-input-wrap"><label>SOUS-NICHE PERSO</label><input type="text" class="q-input" id="inp3" placeholder="Ex: femmes de 35-50 ans..."/></div>
-    <button class="next-btn" id="nb3" onclick="go3()" disabled>VALIDER →</button>
   </div>`);
-  document.getElementById('inp3').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.sousniche='';}document.getElementById('nb3').disabled=!this.value.trim()&&!S.a.sousniche;});
 }
-function selSN(n,b){S.a.sousniche=n;sel(b);document.getElementById('inp3').value='';document.getElementById('nb3').disabled=false;}
-function go3(){const c=document.getElementById('inp3').value.trim();if(c)S.a.sousniche=c;if(!S.a.sousniche)return;renderStep(4);}
+function selSN(n,b){S.a.sousniche=n;sel(b);setTimeout(()=>renderStep(4),400);}
+function go3(){if(!S.a.sousniche)return;renderStep(4);}
 
 // ── STEP 5 : OFFRE (titres ebooks fixes) ────────────────
 function rOffre(){
