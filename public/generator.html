@@ -395,42 +395,6 @@
     color:#021a0a !important;
     box-shadow:0 0 20px rgba(37,211,102,.5) !important;
   }
-
-  /* ── API KEY & DIRECT CLAUDE GENERATION ─────────── */
-  .apikey-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(155,77,255,.07);border:1px solid rgba(155,77,255,.18);border-radius:8px;padding:12px 16px;margin:0 20px 20px}
-  .apikey-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:rgba(155,77,255,.8);white-space:nowrap}
-  .apikey-input{flex:1;min-width:180px;background:rgba(0,0,0,.45);border:1px solid rgba(155,77,255,.3);color:white;font-size:13px;font-family:monospace;padding:8px 12px;outline:none;border-radius:4px;transition:border-color .2s}
-  .apikey-input:focus{border-color:var(--purple);box-shadow:0 0 0 2px rgba(155,77,255,.15)}
-  .apikey-save{background:var(--purple);color:white;border:none;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;padding:9px 18px;cursor:pointer;border-radius:4px;white-space:nowrap;transition:opacity .2s}
-  .apikey-save:hover{opacity:.8}
-  .apikey-status{font-size:12px;min-height:16px;transition:color .3s}
-  .ai-gen-section{margin-top:22px;padding-top:20px;border-top:1px solid rgba(155,77,255,.12)}
-  .ai-gen-section.g{border-top-color:rgba(37,211,102,.15)}
-  .ai-gen-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;margin-bottom:10px;color:var(--purple)}
-  .ai-gen-title.g{color:var(--green)}
-  .ai-gen-ta{width:100%;min-height:68px;background:rgba(0,0,0,.35);border:1px solid rgba(155,77,255,.2);border-bottom:2px solid rgba(155,77,255,.35);color:white;font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;outline:none;border-radius:4px 4px 0 0;resize:vertical;line-height:1.6;transition:border-color .2s}
-  .ai-gen-ta:focus{border-color:rgba(155,77,255,.5);border-bottom-color:var(--purple)}
-  .ai-gen-ta.g{border-color:rgba(37,211,102,.2);border-bottom-color:rgba(37,211,102,.35)}
-  .ai-gen-ta.g:focus{border-color:rgba(37,211,102,.45);border-bottom-color:var(--green)}
-  .ai-gen-btn{display:inline-flex;align-items:center;gap:7px;background:var(--purple);color:white;border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:12px 28px;cursor:pointer;border-radius:0 0 4px 4px;margin-top:0;transition:opacity .2s}
-  .ai-gen-btn.g{background:var(--green);color:#021a0a}
-  .ai-gen-btn:disabled,.ai-gen-btn:disabled{opacity:.4;cursor:not-allowed}
-  .ai-gen-loader{display:none;align-items:center;gap:8px;color:#777;font-size:13px;margin-top:12px}
-  .ai-gen-loader.on{display:flex}
-  .ai-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:aiDot 1.2s ease-in-out infinite}
-  .ai-dot.g{background:var(--green)}
-  .ai-dot:nth-child(2){animation-delay:.15s}
-  .ai-dot:nth-child(3){animation-delay:.3s}
-  @keyframes aiDot{0%,80%,100%{transform:scale(.45);opacity:.25}40%{transform:scale(1.1);opacity:1}}
-  .ai-gen-result{display:none;margin-top:14px;background:rgba(0,0,0,.35);border:1px solid rgba(155,77,255,.2);border-radius:6px;padding:20px;max-height:560px;overflow-y:auto}
-  .ai-gen-result.g{border-color:rgba(37,211,102,.2)}
-  .ai-gen-result.on{display:block}
-  .ai-gen-result pre{white-space:pre-wrap;font-family:'DM Sans',sans-serif;font-size:13.5px;line-height:1.8;word-break:break-word;color:#d4c4ff}
-  .ai-gen-result.g pre{color:#b0efc8}
-  .ai-gen-copy{background:var(--green);color:#021a0a;border:none;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;padding:8px 18px;cursor:pointer;border-radius:4px;margin-top:12px;display:none}
-  .ai-gen-copy.on{display:inline-block}
-  .ai-gen-err{color:#ff6666;font-size:13px;margin-top:10px;padding:10px 14px;background:rgba(255,50,50,.07);border:1px solid rgba(255,50,50,.2);border-radius:4px;display:none}
-  .ai-gen-err.on{display:block}
 </style>
 </head>
 <body>
@@ -536,13 +500,6 @@
 </div>
 
 <div id="resultsScreen">
-  <div class="apikey-bar" id="apikeyPanel" style="display:none">
-    <span class="apikey-label">🔑 CLÉ API ANTHROPIC</span>
-    <input type="password" id="apikeyInput" class="apikey-input" placeholder="sk-ant-api03-..." autocomplete="off"/>
-    <button class="apikey-save" onclick="saveApiKey()">ENREGISTRER</button>
-    <span id="apikeyStatus" class="apikey-status"></span>
-    <span style="font-size:11px;color:#444;flex-basis:100%;margin-top:2px">Stockée uniquement dans ton navigateur · Obtiens-la sur <a href="https://console.anthropic.com" target="_blank" style="color:#555;text-decoration:underline">console.anthropic.com</a></span>
-  </div>
   <div class="results-header">
     <span class="check-anim">⚡</span>
     <h2>Ton produit est <span>prêt.</span><br>Ton site va <span>vendre.</span></h2>
@@ -1439,87 +1396,6 @@ function buildLovablePrompt(sousniche, offre, niche, theme) {
     +'Ne modifie pas le contenu (textes, témoignages, prix) — il est déjà personnalisé pour cette niche.';
 }
 
-// ── API KEY & DIRECT CLAUDE CALLS ─────────────────────────
-var _apiKey = localStorage.getItem('dd_api_key') || '';
-
-function saveApiKey() {
-  var v = (document.getElementById('apikeyInput') || {}).value || '';
-  v = v.trim();
-  if (!v) return;
-  _apiKey = v;
-  localStorage.setItem('dd_api_key', v);
-  var s = document.getElementById('apikeyStatus');
-  if (s) { s.textContent = '✅ Clé enregistrée'; s.style.color = 'var(--green)'; setTimeout(function(){ if (s) s.textContent = ''; }, 3000); }
-}
-
-async function callClaude(sysCtx, userMsg, btnEl, loaderEl, resultEl, copyEl, errEl) {
-  if (!_apiKey) {
-    alert('⚠️ Entre ta clé API Anthropic dans le panneau en haut (🔑 CLÉ API ANTHROPIC).');
-    return;
-  }
-  if (btnEl) btnEl.disabled = true;
-  if (loaderEl) loaderEl.classList.add('on');
-  if (resultEl) { resultEl.classList.remove('on'); resultEl.querySelector('pre').textContent = ''; }
-  if (copyEl) copyEl.classList.remove('on');
-  if (errEl) errEl.classList.remove('on');
-  try {
-    var body = { model: 'claude-sonnet-4-20250514', max_tokens: 8000, messages: [{ role: 'user', content: userMsg }] };
-    if (sysCtx) body.system = sysCtx;
-    var res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': _apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify(body)
-    });
-    var data = await res.json();
-    if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-    var text = (data.content || []).map(function(b){ return b.text || ''; }).join('');
-    if (resultEl) { resultEl.querySelector('pre').textContent = text; resultEl.classList.add('on'); }
-    if (copyEl) { copyEl._data = text; copyEl.classList.add('on'); }
-  } catch(err) {
-    if (errEl) { errEl.textContent = '❌ ' + err.message; errEl.classList.add('on'); }
-    else if (resultEl) { resultEl.querySelector('pre').textContent = '❌ ' + err.message; resultEl.classList.add('on'); }
-  } finally {
-    if (loaderEl) loaderEl.classList.remove('on');
-    if (btnEl) btnEl.disabled = false;
-  }
-}
-
-function genEbook() {
-  var p = window._promptEbookUnifie || '';
-  var extras = ((document.getElementById('aiEbookTa') || {}).value || '').trim();
-  var msg = p + (extras ? '\n\n— Instructions supplémentaires —\n' + extras : '');
-  callClaude(
-    null, msg,
-    document.getElementById('aiEbookBtn'),
-    document.getElementById('aiEbookLoader'),
-    document.getElementById('aiEbookResult'),
-    document.getElementById('aiEbookCopy'),
-    document.getElementById('aiEbookErr')
-  );
-}
-
-function genSalesCopy() {
-  var q = ((document.getElementById('aiSalesTa') || {}).value || '').trim();
-  if (!q) { alert('Écris une question ou une instruction.'); return; }
-  var a = S.a || {};
-  var sysCtx = 'Tu es un expert copywriter francophone spécialisé en infoproduits digitaux.'
-    + ' Le client crée un ebook "' + (a.offre || '') + '" dans la niche "' + (a.sousniche || '') + '" (marché : ' + (a.marche || '') + ').'
-    + ' Réponds en français, de façon concise, précise et directement copiable.';
-  callClaude(
-    sysCtx, q,
-    document.getElementById('aiSalesBtn'),
-    document.getElementById('aiSalesLoader'),
-    document.getElementById('aiSalesResult'),
-    document.getElementById('aiSalesCopy'),
-    document.getElementById('aiSalesErr')
-  );
-}
-
 // ── INIT ───────────────────────────────────────────────
 function init(){ buildDots(); renderStep(0); }
 
@@ -1761,7 +1637,7 @@ JSON EXACT à produire :
 }`;
 
   try {
-    if(!_apiKey){clearInterval(mi_);clearInterval(li_);showResults(fallback(),theme);return;}const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':_apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     const raw=data.content.map(b=>b.text||'').join('');
     let clean=raw.replace(/```json|```/g,'').trim();
@@ -1982,9 +1858,6 @@ h2.sh span{color:${t.a}}
 function showResults(d, theme) {
   document.getElementById('loadingScreen').classList.remove('show');
   document.getElementById('resultsScreen').classList.add('show');
-  // Show API key panel and populate from localStorage
-  var akp = document.getElementById('apikeyPanel'); if(akp) akp.style.display='flex';
-  var aki = document.getElementById('apikeyInput'); if(aki && _apiKey) aki.value=_apiKey;
   window.scrollTo({top:0,behavior:'smooth'});
 
   const stripe=S.a.stripe||'#STRIPE_LINK';
@@ -2237,16 +2110,6 @@ Sépare chaque chapitre par : ---`;
         </div>
         <div class="prompt-claude-label">📋 PROMPT COMPLET — "${offre}"</div>
         <div class="prompt-claude-text" style="max-height:520px;overflow-y:auto;padding:18px;background:rgba(0,0,0,.35);border:1px solid rgba(155,77,255,.2);border-radius:8px;">${promptEbookUnifie}</div>
-
-        <div class="ai-gen-section">
-          <div class="ai-gen-title">⚡ GÉNÉRER L'EBOOK DIRECTEMENT AVEC CLAUDE</div>
-          <p style="font-size:13px;color:#666;margin-bottom:10px;">Clique sur le bouton pour générer les 6 chapitres complets — ou ajoute des instructions supplémentaires.</p>
-          <textarea id="aiEbookTa" class="ai-gen-ta" placeholder="Instructions supplémentaires (optionnel) : ex. « Ajoute plus d'exemples concrets », « Cible les femmes de 35-50 ans », « Ton plus direct et motivant »..."></textarea>
-          <button id="aiEbookBtn" class="ai-gen-btn" onclick="genEbook()">⚡ GÉNÉRER L'EBOOK</button>
-          <div id="aiEbookLoader" class="ai-gen-loader"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>Génération des 6 chapitres en cours...</span></div>
-          <div id="aiEbookErr" class="ai-gen-err"></div>
-          <div id="aiEbookResult" class="ai-gen-result"><pre></pre><button class="ai-gen-copy" id="aiEbookCopy" onclick="cpRaw(this._data,this)">COPIER L'EBOOK</button></div>
-        </div>
       </div>
     </div>
 
@@ -2272,16 +2135,6 @@ Sépare chaque chapitre par : ---`;
         </div>
         <div class="prompt-claude-label">📋 PROMPT COMPLET (thème ${theme.n})</div>
         <div class="prompt-claude-text" style="max-height:380px;overflow-y:auto;padding:18px;background:rgba(0,0,0,.35);border:1px solid rgba(155,77,255,.2);border-radius:8px;">${window._lovablePromptNew}</div>
-
-        <div class="ai-gen-section g">
-          <div class="ai-gen-title g">🤖 ASSISTANT COPYWRITING — DEMANDE À CLAUDE</div>
-          <p style="font-size:13px;color:#666;margin-bottom:10px;">Pose une question ou une instruction pour affiner le texte de ta page de vente, générer des variantes d'accroche, améliorer les témoignages, etc.</p>
-          <textarea id="aiSalesTa" class="ai-gen-ta g" placeholder="Ex : « Génère 5 variantes d'accroche percutantes pour ce marché », « Écris un meilleur headline en 3 mots », « Améliore les 3 témoignages avec plus de détails chiffrés »..."></textarea>
-          <button id="aiSalesBtn" class="ai-gen-btn g" onclick="genSalesCopy()">⚡ DEMANDER À CLAUDE</button>
-          <div id="aiSalesLoader" class="ai-gen-loader on" style="display:none"><div class="ai-dot g"></div><div class="ai-dot g"></div><div class="ai-dot g"></div><span>Génération en cours...</span></div>
-          <div id="aiSalesErr" class="ai-gen-err"></div>
-          <div id="aiSalesResult" class="ai-gen-result g"><pre></pre><button class="ai-gen-copy on" id="aiSalesCopy" onclick="cpRaw(this._data,this)">COPIER</button></div>
-        </div>
       </div>
     </div>
 
