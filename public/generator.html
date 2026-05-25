@@ -937,119 +937,206 @@ const SALES_HTML_TEMPLATE = `<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--p:[[CP]];--a:[[CA]];--bg:[[CBG]];--bg2:[[CBG2]];--txt:[[CTXT]];--btn:[[CBTN]]}
-body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6}
+html{scroll-behavior:smooth}
+body{background:[[CBG]];color:[[CTXT]];font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6}
 a{color:inherit;text-decoration:none}
 .fn{font-family:'Bebas Neue',sans-serif;letter-spacing:2px}
-.tag{display:inline-block;background:var(--p);color:white;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;padding:6px 18px;margin-bottom:24px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
-.hero{min-height:100vh;background:var(--bg);background-image:radial-gradient(ellipse at 50% 0%,rgba(100,50,255,.12) 0%,transparent 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px;border-bottom:2px solid var(--p)}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,7vw,82px);line-height:.95;letter-spacing:-1px;color:white;margin-bottom:20px}
-.hero h1 span{color:var(--a)}
-.hero p{font-size:clamp(16px,2.5vw,20px);opacity:.85;max-width:680px;margin:0 auto 30px;line-height:1.6}
-.btn-cta{display:inline-block;background:var(--btn);color:white;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,4vw,36px);letter-spacing:2px;padding:20px 56px;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);box-shadow:0 8px 40px rgba(100,50,255,.4);animation:pulseCta 2s ease-in-out infinite;cursor:pointer;border:none}
-@keyframes pulseCta{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-.btn-sub{display:block;font-size:12px;color:#555;margin-top:10px}
-.divider{height:2px;background:linear-gradient(90deg,transparent,var(--p),transparent)}
 section{padding:80px 20px}
-.inner{max-width:860px;margin:0 auto}
-.pain-list{margin-top:32px;display:flex;flex-direction:column;gap:16px}
-.pain-item{display:flex;align-items:flex-start;gap:18px;background:var(--bg2);border-left:3px solid var(--p);padding:20px 24px}
-.pain-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--p);opacity:.4;line-height:1;flex-shrink:0;width:36px}
-.meca-box{background:rgba(100,50,255,.06);border:1px solid rgba(100,50,255,.2);padding:28px 32px;margin-bottom:32px}
-.meca-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,44px);color:var(--a);letter-spacing:3px;margin-bottom:8px}
-.rev-list{display:flex;flex-direction:column;gap:0}
-.rev-item{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(100,50,255,.1)}
-.rev-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--a);flex-shrink:0;width:28px}
-.avis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:32px}
-.avis-card{background:var(--bg2);border:1px solid rgba(100,50,255,.2);border-top:3px solid var(--a);padding:24px}
-.avis-stars{color:var(--a);font-size:18px;margin-bottom:10px}
-.avis-result{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--a);letter-spacing:1px;margin-bottom:10px}
-.avis-quote{font-size:14px;opacity:.8;font-style:italic;line-height:1.7;margin-bottom:12px}
-.avis-name{font-size:13px;color:var(--a);opacity:.7;font-weight:700}
-.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:32px}
-.mod-card{background:var(--bg2);border:1px solid rgba(100,50,255,.15);border-left:4px solid var(--p);padding:24px}
-.mod-num{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--p);opacity:.25;line-height:1;margin-bottom:6px}
-.mod-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:white;letter-spacing:1px;margin-bottom:12px}
-.mod-bullets{list-style:none;display:flex;flex-direction:column;gap:8px}
-.mod-bullets li{font-size:14px;opacity:.75;padding-left:18px;position:relative}
-.mod-bullets li::before{content:"→";position:absolute;left:0;color:var(--a)}
-.offre-box{background:var(--bg2);border:2px solid var(--p);padding:40px;text-align:center;max-width:560px;margin:32px auto 0;box-shadow:0 0 40px rgba(100,50,255,.2)}
-.price-old{font-size:22px;color:#555;text-decoration:line-through;margin-bottom:6px}
-.price-new{font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--a);line-height:1;letter-spacing:-2px}
-.price-sub{font-size:13px;color:#555;margin-top:4px;margin-bottom:24px}
-.orderbump{background:rgba(100,50,255,.05);border:1px dashed rgba(100,50,255,.3);padding:16px 20px;margin:20px 0;text-align:left}
-.ob-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--a);letter-spacing:2px;margin-bottom:6px}
-.ob-price{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--a);margin-top:8px}
-.garantie-section{text-align:center;background:var(--bg);border-top:2px solid rgba(100,50,255,.2);border-bottom:2px solid rgba(100,50,255,.2);padding:80px 20px}
-.garantie-medal{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--a),var(--p));display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 32px;box-shadow:0 0 0 12px rgba(100,50,255,.15),0 20px 60px rgba(100,50,255,.3)}
-.garantie-medal span{font-family:'Bebas Neue',sans-serif;color:white;font-size:13px;letter-spacing:3px;line-height:1.4;text-align:center}
-.garantie-medal .big{font-size:36px}
-.faq-list{margin-top:32px;display:flex;flex-direction:column;gap:16px}
-.faq-item{background:var(--bg2);border:1px solid rgba(100,50,255,.15);padding:24px}
-.faq-q{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--a);letter-spacing:1px;margin-bottom:10px}
-.faq-r{font-size:15px;opacity:.8;line-height:1.7}
-footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(100,50,255,.1);font-size:12px;color:#444}
-@media(max-width:600px){.hero h1{font-size:clamp(32px,8vw,54px)}.btn-cta{padding:16px 32px}.offre-box{padding:28px 20px}.price-new{font-size:64px}}
+.inner{max-width:900px;margin:0 auto}
+.divider{height:2px;background:linear-gradient(90deg,transparent,[[CP]],transparent);opacity:.45}
+.s-tag{display:inline-block;background:rgba(0,0,0,.3);border:1px solid [[CP]];color:[[CA]];font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:4px;padding:5px 16px;margin-bottom:24px;border-radius:2px}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,58px);color:white;line-height:1.05;margin-bottom:16px}
+.cta-btn{display:inline-block;background:[[CBTN]];color:white;font-family:'Bebas Neue',sans-serif;font-size:clamp(20px,3.5vw,30px);letter-spacing:3px;padding:22px 60px;border:none;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);box-shadow:0 8px 50px rgba(0,0,0,.4);animation:pulseCta 2.5s ease-in-out infinite;transition:filter .2s;text-decoration:none;position:relative;overflow:hidden}
+.cta-btn:hover{filter:brightness(1.15)}
+.cta-btn::after{content:'';position:absolute;top:0;left:-200%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:ctaShimmer 4s ease-in-out infinite}
+@keyframes ctaShimmer{0%{left:-200%}15%{left:200%}100%{left:200%}}
+@keyframes pulseCta{0%,100%{box-shadow:0 8px 40px rgba(0,0,0,.4)}50%{box-shadow:0 8px 70px rgba(0,0,0,.5)}}
+.cta-btn-full{width:100%;max-width:600px;margin:0 auto;display:block;text-align:center}
+.trust-badges{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.t-badge{display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(255,255,255,.55)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 20px 80px;background:[[CBG]];position:relative;overflow:hidden;border-bottom:1px solid rgba(128,80,255,.2)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(100,50,200,.15) 0%,transparent 65%);pointer-events:none;z-index:0}
+.hero>*{position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(100,50,200,.15);border:1px solid rgba(128,100,255,.35);color:[[CA]];font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;padding:6px 22px;margin-bottom:28px;border-radius:30px}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8.5vw,96px);line-height:.92;letter-spacing:-1px;color:white;margin-bottom:24px}
+.hero h1 span{color:[[CA]]}
+.hero-sub{font-size:clamp(16px,2.5vw,21px);opacity:.8;max-width:700px;margin:0 auto 36px;line-height:1.65}
+.hero-sub strong{color:[[CA]];font-weight:700}
+
+/* PROBLÈME */
+.pain-section{background:[[CBG2]]}
+.pain-intro{font-size:clamp(16px,2.5vw,20px);opacity:.8;line-height:1.75;margin-bottom:40px;max-width:700px}
+.pain-list{display:flex;flex-direction:column;gap:20px}
+.pain-item{display:flex;gap:20px;align-items:flex-start;background:[[CBG]];border:1px solid rgba(128,80,255,.15);border-left:4px solid [[CP]];padding:24px 28px;position:relative;overflow:hidden}
+.pain-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(128,100,255,.25),transparent)}
+.pain-num{font-family:'Bebas Neue',sans-serif;font-size:56px;color:[[CP]];opacity:.3;line-height:1;flex-shrink:0;width:44px}
+.pain-text{font-size:clamp(15px,2vw,17px);line-height:1.65;opacity:.85;padding-top:8px}
+.rassurance{margin-top:40px;padding:24px 32px;background:rgba(100,50,200,.07);border:1px solid rgba(128,80,255,.25);border-radius:4px;font-size:clamp(15px,2vw,17px);line-height:1.7;opacity:.85;text-align:center}
+.rassurance strong{color:[[CA]]}
+
+/* MÉCANISME */
+.meca-section{background:[[CBG]];text-align:center}
+.meca-name-badge{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,3.5vw,36px);letter-spacing:4px;color:[[CA]];background:rgba(100,50,200,.1);border:2px solid rgba(128,80,255,.35);padding:12px 32px;margin-bottom:48px;box-shadow:0 0 30px rgba(100,50,200,.15)}
+.rev-list{display:flex;flex-direction:column;gap:0;max-width:740px;margin:0 auto 40px;text-align:left}
+.rev-item{display:flex;gap:20px;align-items:flex-start;padding:24px 0;border-bottom:1px solid rgba(128,80,255,.12)}
+.rev-item:last-child{border-bottom:none}
+.rev-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:[[CA]];flex-shrink:0;width:36px;line-height:1}
+.rev-body{flex:1}
+.rev-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:white;letter-spacing:1px;margin-bottom:6px}
+.rev-text{font-size:15px;opacity:.78;line-height:1.65}
+.stat-sociale{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:clamp(15px,2.5vw,20px);letter-spacing:2px;color:[[CA]];background:rgba(100,50,200,.08);border:1px solid rgba(128,80,255,.3);padding:14px 28px;margin-top:8px}
+
+/* TÉMOIGNAGES */
+.temo-section{background:[[CBG2]]}
+.temo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:40px}
+.temo-card{background:[[CBG]];border:1px solid rgba(128,80,255,.18);border-top:3px solid [[CA]];padding:28px;position:relative;overflow:hidden}
+.temo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:40px;background:linear-gradient(180deg,rgba(100,50,200,.06),transparent)}
+.temo-stars{color:[[CA]];font-size:16px;margin-bottom:12px;letter-spacing:2px}
+.temo-res{font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,2.5vw,24px);color:[[CA]];letter-spacing:1px;margin-bottom:12px;line-height:1.1}
+.temo-quote{font-size:14px;opacity:.8;font-style:italic;line-height:1.75;margin-bottom:16px}
+.temo-author{display:flex;align-items:center;gap:10px}
+.temo-avatar{width:36px;height:36px;border-radius:50%;background:rgba(100,50,200,.2);border:2px solid [[CA]];display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:[[CA]];flex-shrink:0}
+.temo-name{font-size:13px;color:[[CA]];font-weight:700}
+.temo-age{font-size:12px;opacity:.5}
+
+/* PROGRAMME */
+.prog-section{background:[[CBG]]}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;margin-top:40px}
+.mod-card{background:[[CBG2]];border:1px solid rgba(128,80,255,.13);border-left:4px solid [[CP]];padding:28px;transition:transform .2s,box-shadow .2s}
+.mod-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(100,50,200,.15)}
+.mod-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:[[CP]];opacity:.2;line-height:1;margin-bottom:4px}
+.mod-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:white;letter-spacing:1px;margin-bottom:14px}
+.mod-bullets{list-style:none;display:flex;flex-direction:column;gap:9px}
+.mod-bullets li{font-size:13px;opacity:.72;padding-left:20px;position:relative;line-height:1.5}
+.mod-bullets li::before{content:"→";position:absolute;left:0;color:[[CA]]}
+
+/* CE QUE VOUS RECEVEZ */
+.recevez-section{background:[[CBG2]];text-align:center}
+.recevez-list{list-style:none;text-align:left;max-width:620px;margin:32px auto;display:flex;flex-direction:column;gap:14px}
+.recevez-list li{display:flex;align-items:flex-start;gap:14px;font-size:15px;line-height:1.6;opacity:.85}
+.recevez-check{width:22px;height:22px;border-radius:50%;background:rgba(100,50,200,.15);border:1.5px solid [[CA]];display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;color:[[CA]];font-size:11px;font-weight:700}
+.prix-badge{display:inline-block;background:linear-gradient(135deg,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a);background-size:200% 200%;animation:goldShift 3s ease-in-out infinite;color:#1a0a00;font-family:'Bebas Neue',sans-serif;font-size:clamp(14px,2.5vw,20px);letter-spacing:3px;padding:10px 28px;margin-top:32px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);box-shadow:0 0 30px rgba(240,180,41,.4)}
+@keyframes goldShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* COMMANDE */
+.commande-section{background:linear-gradient(135deg,#0d0600,#1a0e00,#0d0600);border-top:2px solid rgba(240,180,41,.35);border-bottom:2px solid rgba(240,180,41,.35);text-align:center}
+.commande-inner{max-width:580px;margin:0 auto}
+.price-old{font-size:20px;color:#666;text-decoration:line-through;margin-bottom:6px;letter-spacing:1px}
+.price-wrap{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:4px}
+.price-new{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,12vw,110px);color:#f0b429;line-height:1;letter-spacing:-2px;text-shadow:0 0 30px rgba(240,180,41,.5)}
+.price-cur{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#f0b429;opacity:.7;line-height:1.2}
+.price-sub{font-size:13px;color:#888;margin-bottom:28px;letter-spacing:1px}
+.orderbump{background:rgba(240,180,41,.07);border:1px dashed rgba(240,180,41,.35);padding:18px 22px;margin:24px 0;text-align:left}
+.ob-checkbox{display:flex;align-items:flex-start;gap:12px}
+.ob-check{width:22px;height:22px;border:2px solid rgba(240,180,41,.5);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;color:#f0b429;font-size:14px;font-weight:700}
+.ob-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#f0b429;letter-spacing:2px;margin-bottom:5px}
+.ob-desc{font-size:13px;opacity:.7;line-height:1.55}
+.ob-price{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#f0b429;margin-top:8px}
+.garantie-line{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;font-size:12px;opacity:.55;flex-wrap:wrap;text-align:center}
+
+/* FAQ */
+.faq-section{background:[[CBG2]]}
+.faq-list{margin-top:40px;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:[[CBG]];border:1px solid rgba(128,80,255,.15);overflow:hidden}
+.faq-toggle{display:flex;align-items:center;justify-content:space-between;padding:22px 26px;cursor:pointer;gap:16px;background:none;border:none;color:inherit;width:100%;text-align:left;font-family:inherit}
+.faq-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(17px,2.5vw,21px);color:[[CA]];letter-spacing:1px;flex:1;text-align:left}
+.faq-icon{flex-shrink:0;font-family:'Bebas Neue',sans-serif;font-size:26px;color:[[CA]];transition:transform .3s;line-height:1}
+.faq-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-body.open{max-height:500px}
+.faq-r{padding:0 26px 22px;font-size:15px;opacity:.8;line-height:1.72}
+.faq-item.active .faq-icon{transform:rotate(45deg)}
+
+/* CTA FINAL */
+.cta-final{background:[[CBG]];border-top:2px solid rgba(128,80,255,.25);text-align:center;padding:100px 20px;position:relative;overflow:hidden}
+.cta-final::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(100,50,200,.12) 0%,transparent 65%);pointer-events:none}
+.cta-final>*{position:relative;z-index:1}
+.urgence-tag{display:inline-block;background:rgba(255,50,50,.1);border:1px solid rgba(255,80,80,.35);color:#ff8888;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;padding:6px 18px;margin-bottom:24px;border-radius:2px;animation:urgencePulse 2s ease-in-out infinite}
+@keyframes urgencePulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* FOOTER */
+footer{text-align:center;padding:28px 20px;border-top:1px solid rgba(128,80,255,.1);font-size:12px;opacity:.3}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  section{padding:60px 16px}
+  .hero{padding:80px 16px 60px}
+  .temo-grid,.modules-grid{grid-template-columns:1fr}
+  .pain-item{padding:18px}
+  .cta-btn{padding:18px 32px}
+}
 </style>
 </head>
 <body>
 
-<section class="hero">
-  <span class="tag">⚡ MÉTHODE EXCLUSIVE</span>
+<!-- ============ 1. HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">🏆 Programme #1 — [[NICHE]]</div>
   <h1>[[HERO_L1]]<br><span>[[HERO_L2]]</span></h1>
-  <p>Découvre <strong>[[MECANISME]]</strong> — le protocole qui change tout en [[DELAI]].</p>
-  <a href="#offre" class="btn-cta">JE VEUX CETTE MÉTHODE ↓</a>
-  <span class="btn-sub">Accès immédiat · 17,80€ · Garanti 30 jours</span>
+  <p class="hero-sub">Découvre <strong>[[MECANISME]]</strong> — [[MECA_DESC]]</p>
+  <a href="#commande" class="cta-btn cta-btn-full">⚡ ACCÉDER MAINTENANT — [[DELAI]] ↓</a>
+  <div class="trust-badges">
+    <span class="t-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Accès immédiat</span>
+    <span class="t-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Paiement sécurisé</span>
+    <span class="t-badge"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Satisfait ou remboursé 30j</span>
+  </div>
 </section>
 <div class="divider"></div>
 
-<section style="background:var(--bg)">
+<!-- ============ 2. PROBLÈME ============ -->
+<section class="pain-section" id="probleme">
   <div class="inner">
-    <span class="tag">😤 SI TU TE RECONNAIS ICI</span>
-    <h2 class="fn" style="font-size:clamp(32px,5vw,56px);color:white;margin-bottom:8px">Tu n'es pas le problème.<br><span style="color:var(--a)">La méthode que tu utilises l'est.</span></h2>
+    <span class="s-tag">⚠ LE VRAI PROBLÈME</span>
+    <h2 class="s-title">Tu as tout essayé.<br><span style="color:[[CA]]">Rien n'a vraiment marché.</span></h2>
+    <p class="pain-intro">Ce n'est pas ta faute. La plupart des méthodes ignorent les vraies causes. Voici pourquoi tu bloques :</p>
     <div class="pain-list">
-      <div class="pain-item"><div class="pain-num">01</div><div>[[D1]]</div></div>
-      <div class="pain-item"><div class="pain-num">02</div><div>[[D2]]</div></div>
-      <div class="pain-item"><div class="pain-num">03</div><div>[[D3]]</div></div>
+      <div class="pain-item"><div class="pain-num">01</div><div class="pain-text">[[D1]]</div></div>
+      <div class="pain-item"><div class="pain-num">02</div><div class="pain-text">[[D2]]</div></div>
+      <div class="pain-item"><div class="pain-num">03</div><div class="pain-text">[[D3]]</div></div>
     </div>
+    <div class="rassurance">La bonne nouvelle ? <strong>Ce blocage a une cause précise — et une solution précise.</strong><br>[[MECANISME]] a été conçu exactement pour ça.</div>
   </div>
 </section>
 <div class="divider"></div>
 
-<section style="background:var(--bg2)">
+<!-- ============ 3. MÉCANISME ============ -->
+<section class="meca-section" id="mecanisme">
   <div class="inner">
-    <span class="tag">💡 LA RÉVÉLATION</span>
-    <div class="meca-box">
-      <div style="font-size:13px;color:var(--a);letter-spacing:4px;font-family:'Bebas Neue',sans-serif;margin-bottom:4px">LE MÉCANISME UNIQUE</div>
-      <div class="meca-name">[[MECANISME]]</div>
-      <p style="font-size:16px;opacity:.8;line-height:1.7">[[MECA_DESC]]</p>
-    </div>
+    <span class="s-tag">💡 LA SOLUTION</span>
+    <h2 class="s-title">Le mécanisme qui change tout</h2>
+    <div class="meca-name-badge">[[MECANISME]]</div>
     <div class="rev-list">
-      <div class="rev-item"><div class="rev-num">1</div><div>[[R1]]</div></div>
-      <div class="rev-item"><div class="rev-num">2</div><div>[[R2]]</div></div>
-      <div class="rev-item"><div class="rev-num">3</div><div>[[R3]]</div></div>
+      <div class="rev-item"><div class="rev-num">1</div><div class="rev-body"><div class="rev-title">La vraie cause</div><div class="rev-text">[[R1]]</div></div></div>
+      <div class="rev-item"><div class="rev-num">2</div><div class="rev-body"><div class="rev-title">La méthode</div><div class="rev-text">[[R2]]</div></div></div>
+      <div class="rev-item"><div class="rev-num">3</div><div class="rev-body"><div class="rev-title">Les résultats</div><div class="rev-text">[[R3]]</div></div></div>
     </div>
+    <div class="stat-sociale">[[STAT]]</div>
   </div>
 </section>
 <div class="divider"></div>
 
-<section style="background:var(--bg)">
-  <div class="inner" style="text-align:center">
-    <span class="tag">⭐ ILS ONT TESTÉ LA MÉTHODE</span>
-    <h2 class="fn" style="font-size:clamp(28px,4vw,48px);color:white">Des résultats réels.<br><span style="color:var(--a)">Pas des promesses.</span></h2>
-    <div class="avis-grid">
-      <div class="avis-card"><div class="avis-stars">⭐⭐⭐⭐⭐</div><div class="avis-result">[[A1_RES]]</div><p class="avis-quote">"[[A1_T]]"</p><div class="avis-name">— [[A1_N]], [[A1_AG]] ans</div></div>
-      <div class="avis-card"><div class="avis-stars">⭐⭐⭐⭐⭐</div><div class="avis-result">[[A2_RES]]</div><p class="avis-quote">"[[A2_T]]"</p><div class="avis-name">— [[A2_N]], [[A2_AG]] ans</div></div>
-      <div class="avis-card"><div class="avis-stars">⭐⭐⭐⭐⭐</div><div class="avis-result">[[A3_RES]]</div><p class="avis-quote">"[[A3_T]]"</p><div class="avis-name">— [[A3_N]], [[A3_AG]] ans</div></div>
-    </div>
-  </div>
-</section>
-<div class="divider"></div>
-
-<section style="background:var(--bg2)" id="programme">
+<!-- ============ 4. TÉMOIGNAGES ============ -->
+<section class="temo-section" id="temoignages">
   <div class="inner">
-    <span class="tag">📚 CE QUE TU REÇOIS</span>
-    <h2 class="fn" style="font-size:clamp(28px,4vw,48px);color:white;margin-bottom:8px">[[TITRE]] — <span style="color:var(--a)">6 modules complets</span></h2>
+    <span class="s-tag">⭐ ILS L'ONT DÉJÀ FAIT</span>
+    <h2 class="s-title" style="text-align:center">Des résultats réels.<br><span style="color:[[CA]]">Des gens comme toi.</span></h2>
+    <div class="temo-grid">
+      <div class="temo-card"><div class="temo-stars">★★★★★</div><div class="temo-res">[[A1_RES]]</div><div class="temo-quote">"[[A1_T]]"</div><div class="temo-author"><div class="temo-avatar">[[A1_INIT]]</div><div><div class="temo-name">[[A1_N]]</div><div class="temo-age">[[A1_AG]] ans</div></div></div></div>
+      <div class="temo-card"><div class="temo-stars">★★★★★</div><div class="temo-res">[[A2_RES]]</div><div class="temo-quote">"[[A2_T]]"</div><div class="temo-author"><div class="temo-avatar">[[A2_INIT]]</div><div><div class="temo-name">[[A2_N]]</div><div class="temo-age">[[A2_AG]] ans</div></div></div></div>
+      <div class="temo-card"><div class="temo-stars">★★★★★</div><div class="temo-res">[[A3_RES]]</div><div class="temo-quote">"[[A3_T]]"</div><div class="temo-author"><div class="temo-avatar">[[A3_INIT]]</div><div><div class="temo-name">[[A3_N]]</div><div class="temo-age">[[A3_AG]] ans</div></div></div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 5. PROGRAMME ============ -->
+<section class="prog-section" id="programme">
+  <div class="inner">
+    <span class="s-tag">📖 LE PROGRAMME COMPLET</span>
+    <h2 class="s-title">Ce que tu vas apprendre</h2>
+    <p style="font-size:clamp(15px,2vw,17px);opacity:.7;margin-bottom:0;line-height:1.7">6 modules structurés, progressifs et actionnables dès le premier jour.</p>
     <div class="modules-grid">
       <div class="mod-card"><div class="mod-num">01</div><div class="mod-title">[[M1]]</div><ul class="mod-bullets"><li>[[M1B1]]</li><li>[[M1B2]]</li><li>[[M1B3]]</li></ul></div>
       <div class="mod-card"><div class="mod-num">02</div><div class="mod-title">[[M2]]</div><ul class="mod-bullets"><li>[[M2B1]]</li><li>[[M2B2]]</li><li>[[M2B3]]</li></ul></div>
@@ -1062,61 +1149,106 @@ footer{text-align:center;padding:30px 20px;border-top:1px solid rgba(100,50,255,
 </section>
 <div class="divider"></div>
 
-<section style="background:var(--bg);text-align:center" id="offre">
+<!-- ============ 6. CE QUE VOUS RECEVEZ ============ -->
+<section class="recevez-section" id="recevez">
   <div class="inner">
-    <span class="tag">💥 OFFRE DE LANCEMENT</span>
-    <h2 class="fn" style="font-size:clamp(28px,4vw,48px);color:white;margin-bottom:8px">[[TITRE]]</h2>
-    <div class="offre-box">
-      <div class="price-old">Prix normal : 47€</div>
-      <div class="price-new">17,80€</div>
-      <div class="price-sub">Accès à vie · PDF immédiat · Garanti 30 jours</div>
-      <div class="orderbump">
-        <div class="ob-title">✚ PACK BONUS — AJOUTER À MA COMMANDE</div>
-        <p style="font-size:13px;opacity:.7">[[OB]]</p>
-        <div class="ob-price">+ 7,80€ seulement</div>
+    <span class="s-tag">📦 CONTENU COMPLET</span>
+    <h2 class="s-title">Tout ce que tu reçois</h2>
+    <ul class="recevez-list">
+      <li><div class="recevez-check">✓</div><span><strong>[[TITRE]]</strong> — Le guide principal en PDF, 100% actionnable</span></li>
+      <li><div class="recevez-check">✓</div><span><strong>[[MECANISME]]</strong> — Le protocole complet étape par étape</span></li>
+      <li><div class="recevez-check">✓</div><span><strong>Plan d'action [[DELAI]]</strong> — Calendrier jour par jour pour maximiser les résultats</span></li>
+      <li><div class="recevez-check">✓</div><span><strong>Bonus : [[OB]]</strong></span></li>
+      <li><div class="recevez-check">✓</div><span><strong>Accès à vie</strong> — Toutes les mises à jour incluses sans frais supplémentaires</span></li>
+      <li><div class="recevez-check">✓</div><span><strong>Garantie 30 jours</strong> — Remboursement intégral, sans question, sans condition</span></li>
+    </ul>
+    <div class="prix-badge">⚠️ Prix lancement : 17,80€ seulement — Offre limitée</div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ============ 7. COMMANDE ============ -->
+<section class="commande-section" id="commande">
+  <div class="inner commande-inner">
+    <span class="s-tag" style="border-color:rgba(240,180,41,.45);color:#f0b429">💳 COMMANDE SÉCURISÉE</span>
+    <h2 class="fn" style="font-size:clamp(28px,5vw,50px);color:white;margin-bottom:28px">[[TITRE]]</h2>
+    <div class="price-old">Prix normal : 47€</div>
+    <div class="price-wrap">
+      <div class="price-cur">€</div>
+      <div class="price-new">17<span style="font-size:.42em">,80</span></div>
+    </div>
+    <div class="price-sub">Accès à vie · PDF immédiat · Garantie 30 jours</div>
+    <div class="orderbump">
+      <div class="ob-checkbox">
+        <div class="ob-check">✓</div>
+        <div>
+          <div class="ob-title">✚ PACK BONUS — Ajouter à ma commande</div>
+          <div class="ob-desc">[[OB]]</div>
+          <div class="ob-price">+ 7,80€ seulement</div>
+        </div>
       </div>
-      <a href="#" class="btn-cta" style="display:block;margin-top:8px">JE VEUX [[MECANISME]] ↓</a>
-      <span class="btn-sub">Paiement 100% sécurisé · Accès immédiat après paiement</span>
+    </div>
+    <a href="[[STRIPE_LINK]]" class="cta-btn cta-btn-full" style="background:linear-gradient(135deg,#c8860a,#f0b429,#ffe066,#f0b429,#c8860a);background-size:200% 200%;animation:goldShift 3s ease-in-out infinite;color:#1a0a00;font-weight:700;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%)">🔒 JE COMMANDE MAINTENANT ↓</a>
+    <div class="garantie-line">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Paiement 100% sécurisé · Accès immédiat · Remboursé si insatisfait sous 30 jours
+    </div>
+    <div style="margin-top:48px;padding:32px;background:rgba(0,180,80,.07);border:1px solid rgba(0,200,80,.22);text-align:center">
+      <div style="font-size:44px;margin-bottom:12px">🛡️</div>
+      <div class="fn" style="font-size:clamp(22px,4vw,34px);color:#4dff88;margin-bottom:10px">Garantie 30 jours ou remboursé</div>
+      <p style="font-size:15px;opacity:.78;max-width:480px;margin:0 auto;line-height:1.7">Tu appliques la méthode pendant 30 jours. Si tu n'es pas satisfait, je te rembourse intégralement — sans question, sans justification. Un simple email suffit.</p>
     </div>
   </div>
 </section>
 <div class="divider"></div>
 
-<section class="garantie-section">
-  <div class="garantie-medal"><span>GARANTI</span><span class="big">✓</span><span>RÉSULTATS</span><span style="font-size:10px;letter-spacing:1px">30 JOURS</span></div>
-  <h2 class="fn" style="font-size:clamp(32px,5vw,56px);color:var(--a);margin-bottom:16px">Garanti 30 jours<br>ou remboursé</h2>
-  <p style="font-size:17px;max-width:580px;margin:0 auto;opacity:.8;line-height:1.7">Tu appliques la méthode pendant 30 jours. Si tu n'es pas satisfait, je te rembourse intégralement. Sans question. Sans délai. Tu repars avec ton argent.</p>
-</section>
-<div class="divider"></div>
-
-<section style="background:var(--bg2)">
+<!-- ============ 8. FAQ ============ -->
+<section class="faq-section" id="faq">
   <div class="inner">
-    <span class="tag">❓ QUESTIONS FRÉQUENTES</span>
-    <h2 class="fn" style="font-size:clamp(28px,4vw,44px);color:white;margin-bottom:8px">On répond à tout.</h2>
+    <span class="s-tag">❓ QUESTIONS FRÉQUENTES</span>
+    <h2 class="s-title" style="text-align:center">On répond à tout.</h2>
     <div class="faq-list">
-      <div class="faq-item"><div class="faq-q">[[FAQ1_Q]]</div><div class="faq-r">[[FAQ1_R]]</div></div>
-      <div class="faq-item"><div class="faq-q">[[FAQ2_Q]]</div><div class="faq-r">[[FAQ2_R]]</div></div>
-      <div class="faq-item"><div class="faq-q">[[FAQ3_Q]]</div><div class="faq-r">[[FAQ3_R]]</div></div>
-      <div class="faq-item"><div class="faq-q">[[FAQ4_Q]]</div><div class="faq-r">[[FAQ4_R]]</div></div>
-      <div class="faq-item"><div class="faq-q">[[FAQ5_Q]]</div><div class="faq-r">[[FAQ5_R]]</div></div>
+      <div class="faq-item"><button class="faq-toggle" onclick="toggleFaq(this)"><span class="faq-q">[[FAQ1_Q]]</span><span class="faq-icon">+</span></button><div class="faq-body"><p class="faq-r">[[FAQ1_R]]</p></div></div>
+      <div class="faq-item"><button class="faq-toggle" onclick="toggleFaq(this)"><span class="faq-q">[[FAQ2_Q]]</span><span class="faq-icon">+</span></button><div class="faq-body"><p class="faq-r">[[FAQ2_R]]</p></div></div>
+      <div class="faq-item"><button class="faq-toggle" onclick="toggleFaq(this)"><span class="faq-q">[[FAQ3_Q]]</span><span class="faq-icon">+</span></button><div class="faq-body"><p class="faq-r">[[FAQ3_R]]</p></div></div>
+      <div class="faq-item"><button class="faq-toggle" onclick="toggleFaq(this)"><span class="faq-q">[[FAQ4_Q]]</span><span class="faq-icon">+</span></button><div class="faq-body"><p class="faq-r">[[FAQ4_R]]</p></div></div>
+      <div class="faq-item"><button class="faq-toggle" onclick="toggleFaq(this)"><span class="faq-q">[[FAQ5_Q]]</span><span class="faq-icon">+</span></button><div class="faq-body"><p class="faq-r">[[FAQ5_R]]</p></div></div>
     </div>
   </div>
 </section>
 <div class="divider"></div>
 
-<section style="background:var(--bg);text-align:center;padding:100px 20px">
-  <div class="inner">
-    <h2 class="fn" style="font-size:clamp(36px,6vw,72px);color:white;margin-bottom:16px;line-height:1">Arrête de chercher.<br><span style="color:var(--a)">[[TITRE]] est la réponse.</span></h2>
-    <p style="font-size:18px;opacity:.7;margin-bottom:36px">17,80€ · Accès immédiat · Garanti 30 jours</p>
-    <a href="#offre" class="btn-cta">JE VEUX [[MECANISME]] ↓</a>
+<!-- ============ 9. CTA FINAL ============ -->
+<section class="cta-final" id="cta-final">
+  <div class="urgence-tag">🔥 OFFRE DE LANCEMENT — PLACES LIMITÉES</div>
+  <h2 class="fn" style="font-size:clamp(38px,7vw,80px);color:white;line-height:.92;margin-bottom:20px">Arrête de chercher.<br><span style="color:[[CA]]">[[TITRE]]<br>est la réponse.</span></h2>
+  <p style="font-size:clamp(16px,2.5vw,20px);opacity:.68;margin-bottom:36px">17,80€ · Accès immédiat · Garanti 30 jours</p>
+  <a href="[[STRIPE_LINK]]" class="cta-btn cta-btn-full">⚡ JE COMMENCE MAINTENANT ↓</a>
+  <div class="trust-badges" style="margin-top:24px">
+    <span class="t-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Accès immédiat</span>
+    <span class="t-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Paiement sécurisé</span>
+    <span class="t-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Satisfait ou remboursé 30j</span>
   </div>
 </section>
 
 <footer>
-  <p>© 2025 · [[TITRE]] · Tous droits réservés · <a href="#">Mentions légales</a> · <a href="#">CGV</a></p>
+  <p>© 2025 · [[TITRE]] · Tous droits réservés · <a href="#">Mentions légales</a> · <a href="#">CGV</a> · <a href="#">Contact</a></p>
 </footer>
+
+<script>
+function toggleFaq(btn){
+  var item=btn.closest('.faq-item');
+  var body=item.querySelector('.faq-body');
+  var isOpen=item.classList.contains('active');
+  document.querySelectorAll('.faq-item.active').forEach(function(el){
+    el.classList.remove('active');
+    el.querySelector('.faq-body').classList.remove('open');
+  });
+  if(!isOpen){item.classList.add('active');body.classList.add('open');}
+}
+</script>
 </body>
-</html>`;
+</html>`
 
 // ── SALES DATA (108 sous-niches) ──────────────────────────
 const SALES_DATA = {
@@ -1337,18 +1469,21 @@ const SALES_DATA = {
   'Générer des revenus avec l\'affiliation':{m:"Protocole Affiliation System",h:["Générer des revenus d'affiliation réguliers","sans produit ni service à soi"],d:["Tu veux faire de l'affiliation mais tu ne sais pas quels programmes choisir ni comment les promouvoir","Tu as posé des liens d'affiliation partout mais tu n'as presque aucun clic ni commission","Tu ne sais pas comment créer du contenu qui mène naturellement à l'affiliation sans être trop commercial"],r:["L'affiliation rentable repose sur un contenu de recommandation précis et des programmes à commission récurrente","Le Protocole Affiliation System identifie les 10 programmes les plus rentables de ta niche et crée le contenu","En 30 jours : système en place, premiers clics, premières commissions récurrentes"],a:[{n:"Sophie",ag:29,res:"400€ de commissions le premier mois",t:"J'avais des liens partout et 0€ de commission. Ce protocole m'a montré que c'est une question de méthode."},{n:"Kevin",ag:33,res:"Commissions récurrentes de 600€/mois",t:"Le passage aux programmes à commission récurrente a transformé mes revenus d'affiliation."},{n:"Lucie",ag:26,res:"Contenu d'affiliation naturel et efficace",t:"Je ne me sentais pas à l'aise avec l'affiliation. Ce guide m'a montré comment le faire authentiquement."}],mo:["Les Meilleurs Programmes d'Affiliation par Niche","Créer du Contenu de Recommandation Naturelle","Placer les Liens Stratégiquement","Programmes Récurrents vs One-Shot","Analyser et Optimiser ses Conversions","Plan 30 Jours Affiliation System"],ob:"La liste des 50 programmes d'affiliation récurrents + templates de reviews"}
 };
 
-function fillSalesTemplate(sousniche, offre, theme) {
+function fillSalesTemplate(sousniche, offre, theme, stripe, niche) {
   var sd = SALES_DATA[sousniche];
   if (!sd) return '<p style="color:red;padding:40px">Données manquantes : '+sousniche+'</p>';
   var btn=theme.btn||theme.p, bg=theme.bg||'#0a0a0a', bg2=theme.bg2||'#111', txt=theme.txt||'#f0eaff';
   var dm=(sd.h[0]+' '+sd.h[1]).match(/en (\d+\s*(?:jours?|semaines?|mois|heures?))/i);
   var delai=dm?dm[1]:'21 jours';
+  var stripeUrl=stripe||'#';
+  var nicheLabel=niche||sousniche;
+  var stat=sd.r[2]||'Des centaines de personnes ont déjà obtenu des résultats avec cette méthode';
   var faq=[
-    {q:'Est-ce que ça marche vraiment ?',r:'Oui. '+sd.r[1]+' En cas de doute, la garantie 30 jours te protège intégralement.'},
-    {q:"C'est pour quel niveau de départ ?",r:'Débutant ou non. La méthode est expliquée pas à pas. Tu appliques dès le premier jour.'},
-    {q:"Je reçois l'accès immédiatement ?",r:'Oui. Dès ta commande validée, tu reçois un lien de téléchargement instantané par email. Accès en moins de 2 minutes.'},
-    {q:'Et si je ne suis pas satisfait ?',r:'Garantie 30 jours ou remboursé. Sans question, sans justification. Un simple email et tu es remboursé intégralement.'},
-    {q:"C'est différent de ce que j'ai déjà essayé ?",r:'Oui. '+sd.r[0]+". C'est exactement ce qui fait la différence."}
+    {q:'Est-ce que ça marche vraiment ?',r:'Oui. '+sd.r[1]+' En cas de doute, la garantie 30 jours te protège intégralement.'},
+    {q:"C'est pour quel niveau de départ ?",r:'Débutant ou non. La méthode est expliquée pas à pas. Tu appliques dès le premier jour.'},
+    {q:"Je reçois l'accès immédiatement ?",r:'Oui. Dès ta commande validée, tu reçois un lien de téléchargement instantané par email. Accès en moins de 2 minutes.'},
+    {q:'Et si je ne suis pas satisfait ?',r:'Garantie 30 jours ou remboursé. Sans question, sans justification. Un simple email et tu es remboursé intégralement.'},
+    {q:"C'est différent de ce que j'ai déjà essayé ?",r:'Oui. '+sd.r[0]+". C'est exactement ce qui fait la différence."}
   ];
   var mb=['Techniques et méthodes concrètes','Exemples réels avec chiffres',"Plan d'action applicable immédiatement"];
   var h=SALES_HTML_TEMPLATE;
@@ -1359,23 +1494,26 @@ function fillSalesTemplate(sousniche, offre, theme) {
      .split('[[CBG2]]').join(bg2)
      .split('[[CTXT]]').join(txt)
      .split('[[CBTN]]').join(btn)
+     .split('[[NICHE]]').join(nicheLabel)
      .split('[[HERO_L1]]').join(sd.h[0])
      .split('[[HERO_L2]]').join(sd.h[1])
      .split('[[MECANISME]]').join(sd.m)
      .split('[[DELAI]]').join(delai)
      .split('[[MECA_DESC]]').join(sd.r[0])
+     .split('[[STAT]]').join(stat)
      .split('[[D1]]').join(sd.d[0])
      .split('[[D2]]').join(sd.d[1])
      .split('[[D3]]').join(sd.d[2])
      .split('[[R1]]').join(sd.r[0])
      .split('[[R2]]').join(sd.r[1])
      .split('[[R3]]').join(sd.r[2])
-     .split('[[A1_RES]]').join(sd.a[0].res).split('[[A1_T]]').join(sd.a[0].t).split('[[A1_N]]').join(sd.a[0].n).split('[[A1_AG]]').join(String(sd.a[0].ag))
-     .split('[[A2_RES]]').join(sd.a[1].res).split('[[A2_T]]').join(sd.a[1].t).split('[[A2_N]]').join(sd.a[1].n).split('[[A2_AG]]').join(String(sd.a[1].ag))
-     .split('[[A3_RES]]').join(sd.a[2].res).split('[[A3_T]]').join(sd.a[2].t).split('[[A3_N]]').join(sd.a[2].n).split('[[A3_AG]]').join(String(sd.a[2].ag))
+     .split('[[A1_RES]]').join(sd.a[0].res).split('[[A1_T]]').join(sd.a[0].t).split('[[A1_N]]').join(sd.a[0].n).split('[[A1_AG]]').join(String(sd.a[0].ag)).split('[[A1_INIT]]').join(sd.a[0].n.charAt(0))
+     .split('[[A2_RES]]').join(sd.a[1].res).split('[[A2_T]]').join(sd.a[1].t).split('[[A2_N]]').join(sd.a[1].n).split('[[A2_AG]]').join(String(sd.a[1].ag)).split('[[A2_INIT]]').join(sd.a[1].n.charAt(0))
+     .split('[[A3_RES]]').join(sd.a[2].res).split('[[A3_T]]').join(sd.a[2].t).split('[[A3_N]]').join(sd.a[2].n).split('[[A3_AG]]').join(String(sd.a[2].ag)).split('[[A3_INIT]]').join(sd.a[2].n.charAt(0))
      .split('[[M1]]').join(sd.mo[0]).split('[[M2]]').join(sd.mo[1]).split('[[M3]]').join(sd.mo[2])
      .split('[[M4]]').join(sd.mo[3]).split('[[M5]]').join(sd.mo[4]).split('[[M6]]').join(sd.mo[5])
-     .split('[[OB]]').join(sd.ob);
+     .split('[[OB]]').join(sd.ob)
+     .split('[[STRIPE_LINK]]').join(stripeUrl);
   for(var i=1;i<=6;i++) for(var j=1;j<=3;j++) h=h.split('[[M'+i+'B'+j+']]').join(mb[j-1]);
   faq.forEach(function(f,i){h=h.split('[[FAQ'+(i+1)+'_Q]]').join(f.q).split('[[FAQ'+(i+1)+'_R]]').join(f.r);});
   return h;
@@ -1927,7 +2065,7 @@ MODIFICATIONS À EFFECTUER
 Commence par intégrer le code HTML de la page de vente, puis applique toutes ces modifications.`;
 
   window._lovablePrompt = lovablePrompt;
-  window._sHTMLNew = fillSalesTemplate(sousniche, offre, theme);
+  window._sHTMLNew = fillSalesTemplate(sousniche, offre, theme, stripe, sousniche);
   window._lovablePromptNew = buildLovablePrompt(sousniche, offre, niche, theme);
 
   // ── PROMPT CLAUDE EBOOK COMPLET DYNAMIQUE ──
