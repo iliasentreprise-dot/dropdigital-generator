@@ -1,7 +1,7 @@
 const Index = () => (
   <iframe
-    src="https://dropdigital-automatise.lovable.app/orderbump"
-    title="Dropdigital Automatise Orderbump"
+    src="/generator.html"
+    title="Dropdigital Generator"
     className="w-screen h-screen border-0 block"
   />
 );
