@@ -290,6 +290,32 @@ mais jamais simplement décorer.
 
 Respecte réellement le type demandé.
 
+IMPORTANT — LISIBILITÉ DANS L'E-BOOK :
+
+Ce visuel sera affiché dans un cadre relativement petit à l'intérieur d'une page A4.
+
+Il doit donc rester parfaitement compréhensible lorsqu'il est réduit.
+
+Règles absolues :
+- UNE idée visuelle principale,
+- un sujet ou symbole central clairement identifiable,
+- 1 à 3 éléments secondaires maximum,
+- grandes formes,
+- silhouette claire,
+- contraste fort,
+- beaucoup d'espace respirant,
+- aucun micro-détail indispensable à la compréhension,
+- aucune infographie surchargée,
+- aucun tableau complexe intégré dans l'image,
+- aucun petit texte,
+- aucun paragraphe,
+- aucun ensemble de dizaines d'icônes.
+
+Les détails pédagogiques complexes seront ajoutés ensuite en HTML/CSS autour de l'image.
+
+L'image IA doit apporter l'impact visuel.
+Le HTML/CSS apporte l'information précise.
+
 Si le type est un diagramme :
 construis une composition pédagogique claire avec formes, flèches, zones, connexions et hiérarchie visuelle.
 

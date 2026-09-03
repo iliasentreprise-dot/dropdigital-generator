@@ -1185,6 +1185,37 @@ function buildProjectTheme(seed,context={}){
   };
 }
 
+function applyThemeOverrides(theme,overrides={}){
+  const allowed=[
+    'primaryDark',
+    'primaryLight',
+    'analogousLeft',
+    'analogousRight',
+    'complementary',
+    'accent',
+    'background',
+    'backgroundAlt'
+  ];
+
+  for(const key of allowed){
+    if(overrides?.[key]){
+      theme.colors[key]=normalizeHex(overrides[key]);
+    }
+  }
+
+  theme.p=theme.colors.primary;
+  theme.s=theme.colors.surface;
+  theme.a=theme.colors.accent;
+  theme.bg=theme.colors.background;
+  theme.bg2=theme.colors.backgroundAlt;
+  theme.txt=theme.colors.text;
+  theme.hl=theme.colors.complementary;
+  theme.btn=theme.colors.primary;
+  theme.btxt=hexLuminance(theme.colors.primary)>0.45?'#090909':'#ffffff';
+
+  return theme;
+}
+
 /*
   Compatibilité avec les anciens historiques.
   Les nouveaux projets passent par selectedTheme().
@@ -1214,7 +1245,10 @@ function selectedTheme(){
 
   const seed=S.a?.design?.primary||profile.defaultSeed;
 
-  return buildProjectTheme(seed,context);
+  return applyThemeOverrides(
+    buildProjectTheme(seed,context),
+    S.a?.design?.palette||{}
+  );
 }
 
 
@@ -1851,9 +1885,12 @@ function refreshDesignPreview(){
     offre:S.a?.offre||''
   };
 
-  const theme=buildProjectTheme(
-    input.value,
-    context
+  const theme=applyThemeOverrides(
+    buildProjectTheme(
+      input.value,
+      context
+    ),
+    S.a?.design?.palette||{}
   );
 
   preview.style.background=`
@@ -1902,27 +1939,57 @@ function refreshDesignPreview(){
 
   if(palette){
     const swatches=[
-      theme.colors.primary,
-      theme.colors.primaryDark,
-      theme.colors.primaryLight,
-      theme.colors.analogousLeft,
-      theme.colors.analogousRight,
-      theme.colors.complementary,
-      theme.colors.accent
+      {key:'primary',label:'Principale',color:theme.colors.primary},
+      {key:'primaryDark',label:'Sombre',color:theme.colors.primaryDark},
+      {key:'primaryLight',label:'Claire',color:theme.colors.primaryLight},
+      {key:'analogousLeft',label:'Analogue 1',color:theme.colors.analogousLeft},
+      {key:'analogousRight',label:'Analogue 2',color:theme.colors.analogousRight},
+      {key:'complementary',label:'Complément',color:theme.colors.complementary},
+      {key:'accent',label:'Accent',color:theme.colors.accent},
+      {key:'background',label:'Fond',color:theme.colors.background},
+      {key:'backgroundAlt',label:'Fond 2',color:theme.colors.backgroundAlt}
     ];
 
-    palette.innerHTML=swatches.map(color=>`
-      <span
-        title="${color}"
+    palette.innerHTML=swatches.map(item=>`
+      <label
+        title="${item.label} · ${item.color}"
         style="
-          width:24px;
-          height:24px;
-          border-radius:50%;
-          background:${color};
-          border:1px solid rgba(255,255,255,.22);
-          box-shadow:0 4px 12px rgba(0,0,0,.25);
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          gap:5px;
+          cursor:pointer;
+          position:relative;
         "
-      ></span>
+      >
+        <input
+          type="color"
+          value="${item.color}"
+          onchange="setDesignPaletteColor('${item.key}',this.value)"
+          style="
+            position:absolute;
+            width:1px;
+            height:1px;
+            opacity:0;
+            pointer-events:none;
+          "
+        >
+
+        <span style="
+          width:27px;
+          height:27px;
+          border-radius:50%;
+          background:${item.color};
+          border:1px solid rgba(255,255,255,.35);
+          box-shadow:0 4px 14px rgba(0,0,0,.32);
+        "></span>
+
+        <small style="
+          color:rgba(255,255,255,.48);
+          font-size:7px;
+          white-space:nowrap;
+        ">${item.label}</small>
+      </label>
     `).join('');
   }
 
@@ -1936,6 +2003,28 @@ function refreshDesignPreview(){
   }
 }
 
+function setDesignPaletteColor(key,value){
+  const color=normalizeHex(value);
+
+  if(!S.a.design){
+    S.a.design={};
+  }
+
+  if(key==='primary'){
+    S.a.design.primary=color;
+
+    const input=document.getElementById('designPrimary');
+    if(input)input.value=color;
+  }else{
+    S.a.design.palette={
+      ...(S.a.design.palette||{}),
+      [key]:color
+    };
+  }
+
+  refreshDesignPreview();
+}
+
 function goDesign(){
   const input=document.getElementById('designPrimary');
 
@@ -1946,7 +2035,11 @@ function goDesign(){
     Toute la palette est reconstruite par buildProjectTheme().
   */
   S.a.design={
-    primary:normalizeHex(input.value)
+    ...(S.a.design||{}),
+    primary:normalizeHex(input.value),
+    palette:{
+      ...(S.a.design?.palette||{})
+    }
   };
 
   renderStep(7);
