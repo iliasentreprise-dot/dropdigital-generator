@@ -93,6 +93,58 @@
   .progress-dot.active{background:var(--purple);box-shadow:0 0 8px rgba(155,77,255,.8)}
   .progress-dot.done{background:var(--purple-bright);box-shadow:0 0 6px rgba(179,102,255,.6)}
 
+  /* ACCÈS MEMBRE + HISTORIQUE */
+  .member-toolbar{position:fixed;top:18px;right:18px;z-index:80;display:flex;gap:9px;align-items:center}
+  .member-tool-btn{border:1px solid rgba(179,102,255,.42);background:rgba(13,0,24,.9);backdrop-filter:blur(14px);color:#dcbcff;padding:10px 14px;font:700 11px 'DM Sans',sans-serif;letter-spacing:.08em;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:.2s}
+  .member-tool-btn:hover{border-color:#b366ff;background:rgba(155,77,255,.17);transform:translateY(-1px)}
+  .member-email-label{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(220,188,255,.65);font-size:11px}
+  .app-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(3,0,8,.86);backdrop-filter:blur(16px);padding:20px;align-items:center;justify-content:center}
+  .app-modal.show{display:flex}
+  .modal-card{width:min(620px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#160529,#090010);border:1px solid rgba(179,102,255,.45);box-shadow:0 0 90px rgba(112,28,220,.35);padding:34px;position:relative}
+  .modal-eyebrow{font:400 12px 'Bebas Neue',sans-serif;letter-spacing:4px;color:#b366ff;margin-bottom:10px}
+  .modal-title{font:400 clamp(31px,7vw,52px)/1 'Bebas Neue',sans-serif;color:white;letter-spacing:1px;margin-bottom:12px}
+  .modal-title span{color:#c080ff;text-shadow:0 0 20px rgba(179,102,255,.7)}
+  .modal-copy{color:rgba(220,205,235,.7);font-size:14px;line-height:1.7;margin-bottom:22px}
+  .modal-error{display:none;color:#ff7b9b;font-size:12px;margin-top:9px}
+  .modal-close{position:absolute;right:16px;top:13px;border:0;background:transparent;color:#a98fbe;font-size:27px;cursor:pointer}
+  .history-list{display:grid;gap:12px;margin-top:20px}
+  .history-empty{border:1px dashed rgba(179,102,255,.25);padding:28px;text-align:center;color:rgba(220,188,255,.5);font-size:14px}
+  .history-item{border:1px solid rgba(179,102,255,.22);background:rgba(155,77,255,.055);padding:17px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+  .history-item h3{font:400 20px 'Bebas Neue',sans-serif;color:white;letter-spacing:.7px;margin-bottom:5px}
+  .history-meta{font-size:11px;color:rgba(220,188,255,.55);line-height:1.6}
+  .history-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+  .history-open,.history-delete{padding:8px 11px;border:1px solid rgba(179,102,255,.35);background:rgba(155,77,255,.1);color:#dcbcff;font:700 10px 'DM Sans',sans-serif;cursor:pointer;letter-spacing:.05em}
+  .history-delete{border-color:rgba(255,80,120,.25);color:#ff8ca8;background:rgba(255,70,110,.05)}
+  .privacy-note{font-size:11px;color:rgba(196,160,255,.38);line-height:1.55;margin-top:14px}
+  .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px}.auth-tab{border:1px solid rgba(179,102,255,.25);background:transparent;color:rgba(220,188,255,.55);padding:11px;font:700 11px 'DM Sans',sans-serif;letter-spacing:.08em;cursor:pointer}.auth-tab.active{background:rgba(155,77,255,.18);border-color:#a75cff;color:white}
+  .auth-message{display:none;margin-top:13px;padding:12px;border:1px solid rgba(82,232,137,.28);background:rgba(82,232,137,.06);color:#83efaa;font-size:12px;line-height:1.55}
+  .plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
+  .plan-card.discovery{border-color:rgba(179,102,255,.58);background:linear-gradient(155deg,rgba(179,102,255,.12),rgba(9,0,18,.8))}
+  .plan-cancel-note{margin-top:15px;color:#ad9bbd;font-size:12px;line-height:1.5}
+  .plan-card{border:1px solid rgba(179,102,255,.24);background:rgba(155,77,255,.045);padding:25px;position:relative;overflow:hidden}
+  .plan-card.pro{border-color:rgba(179,102,255,.65);background:linear-gradient(145deg,rgba(155,77,255,.18),rgba(90,20,154,.07));box-shadow:0 0 45px rgba(118,34,220,.18)}
+  .plan-badge{display:inline-block;border:1px solid rgba(179,102,255,.32);color:#c995ff;padding:5px 9px;font:700 10px 'DM Sans',sans-serif;letter-spacing:.12em;margin-bottom:15px}
+  .plan-card.pro .plan-badge{background:#9b4dff;color:white;border-color:#9b4dff}
+  .plan-name{font:400 31px 'Bebas Neue',sans-serif;color:white;letter-spacing:1px}
+  .plan-price{font:400 42px 'Bebas Neue',sans-serif;color:#c080ff;line-height:1;margin:9px 0 17px}.plan-price small{font:500 12px 'DM Sans',sans-serif;color:rgba(220,205,235,.5)}
+  .plan-features{list-style:none;display:grid;gap:10px;margin:0 0 22px}.plan-features li{color:rgba(230,215,242,.73);font-size:13px;line-height:1.45;padding-left:20px;position:relative}.plan-features li::before{content:'✓';position:absolute;left:0;color:#54e889;font-weight:800}
+  .plan-action{width:100%;border:1px solid rgba(179,102,255,.45);background:rgba(155,77,255,.1);color:#d9b4ff;padding:14px;font:400 17px 'Bebas Neue',sans-serif;letter-spacing:2px;cursor:pointer;transition:.2s}.plan-action:hover{background:rgba(155,77,255,.22)}
+  .plan-card.pro .plan-action{background:linear-gradient(135deg,#6921b5,#9b4dff,#bd7aff);border:0;color:white;box-shadow:0 5px 25px rgba(155,77,255,.4)}
+  .plan-action:disabled{cursor:default;opacity:1;background:rgba(82,232,137,.12)!important;border:1px solid rgba(82,232,137,.45)!important;color:#73eda3!important;box-shadow:none!important}
+  .history-new{width:100%;margin:2px 0 18px;padding:15px;border:1px solid #a85cff;background:linear-gradient(135deg,rgba(105,33,181,.55),rgba(155,77,255,.25));color:white;font:400 18px 'Bebas Neue',sans-serif;letter-spacing:2px;cursor:pointer}
+  .build-workspace{max-width:760px;margin:32px auto;border:1px solid rgba(179,102,255,.38);background:linear-gradient(145deg,rgba(24,6,44,.95),rgba(7,1,14,.96));padding:28px;box-shadow:0 24px 80px #0008}
+  .build-bar{height:7px;background:rgba(179,102,255,.12);overflow:hidden;margin:20px 0}.build-bar span{display:block;height:100%;width:22%;background:linear-gradient(90deg,#6b22bc,#bd79ff);box-shadow:0 0 16px rgba(189,121,255,.7);transition:width 1.2s ease}
+  .build-lines{display:grid;gap:10px}.build-lines div{padding:12px 14px;border:1px solid rgba(179,102,255,.14);color:#cbb5df;font-size:13px}.build-lines .done{color:#62e998;border-color:rgba(82,232,137,.22)}
+  .studio-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:20px}.studio-count{font:400 34px 'Bebas Neue',sans-serif;color:#c080ff;white-space:nowrap}.studio-pages{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.studio-page{aspect-ratio:2/3;border:1px solid rgba(179,102,255,.22);background:linear-gradient(145deg,#19072c,#08010f);position:relative;overflow:hidden;padding:12px;display:flex;align-items:flex-end}.studio-page img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.studio-page:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#08010fee,transparent 62%)}.studio-page span{position:relative;z-index:1;color:#d7c4e8;font-size:9px;line-height:1.35}.studio-page.ready{border-color:#57e78e;box-shadow:0 0 18px rgba(82,232,137,.14)}.studio-page.ready span{color:white}.studio-sales{margin-top:18px;padding:15px;border:1px solid rgba(85,214,255,.24);background:rgba(85,214,255,.035);color:#b9ddea;font-size:13px;line-height:1.6}@media(max-width:700px){.studio-pages{grid-template-columns:repeat(2,1fr)}.studio-head{align-items:flex-start;flex-direction:column}}
+  .studio-nav{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:10px;margin-bottom:24px}.studio-nav-btn{min-height:48px;border:1px solid rgba(179,102,255,.38);background:rgba(155,77,255,.08);color:#d9c2ee;font:400 16px 'Bebas Neue',sans-serif;letter-spacing:1.5px;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center}.studio-nav-btn.active{background:linear-gradient(135deg,#6720b5,#9b4dff);color:white}.studio-nav-btn.gold{border-color:#ffcd38;color:#1b1100;background:linear-gradient(135deg,#c98d00,#ffd84e,#ffb300);box-shadow:0 0 24px rgba(255,190,25,.28);font-weight:700}@media(max-width:700px){.studio-nav{grid-template-columns:1fr}.studio-nav-btn{min-height:44px}}
+  .studio-panel[hidden]{display:none}.sales-build{min-height:520px;border:1px solid rgba(179,102,255,.26);background:radial-gradient(circle at 50% 22%,rgba(155,77,255,.2),transparent 38%),#090111;padding:34px;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}.sales-build-logo{width:100px;height:100px;border:2px solid #b366ff;border-radius:24px;display:grid;place-items:center;font:400 38px 'Bebas Neue',sans-serif;color:white;letter-spacing:2px;background:#160427;box-shadow:0 0 42px rgba(155,77,255,.48);margin-bottom:25px;animation:robotFloat 3s ease-in-out infinite}.sales-thinking{display:flex;gap:7px;margin:18px 0 28px}.sales-thinking i{width:9px;height:9px;border-radius:50%;background:#b366ff;box-shadow:0 0 12px #9b4dff;animation:salesDot 1.25s infinite ease-in-out}.sales-thinking i:nth-child(2){animation-delay:.18s}.sales-thinking i:nth-child(3){animation-delay:.36s}@keyframes salesDot{0%,70%,100%{opacity:.25;transform:translateY(0)}35%{opacity:1;transform:translateY(-8px)}}.sales-build-steps{width:min(100%,520px);display:grid;gap:9px;text-align:left}.sales-build-step{padding:13px 15px;border:1px solid rgba(179,102,255,.17);color:#806d90;background:#10051b;font-size:12px;transition:.35s}.sales-build-step.active{color:#dfc8f4;border-color:#9b4dff;background:rgba(155,77,255,.1)}.sales-build-step.done{color:#62e998;border-color:rgba(82,232,137,.3)}.sales-build-note{margin-top:22px;color:#8f799f;font-size:11px;line-height:1.6}
+  .plan-config-note{display:none;margin-top:14px;padding:11px;border:1px solid rgba(255,170,70,.3);color:#ffc37a;background:rgba(255,160,50,.06);font-size:11px;line-height:1.5}
+  .design-preview{min-height:150px;border:1px solid rgba(255,255,255,.14);padding:24px;margin:18px 0;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;transition:.25s}
+  .design-preview::before{content:'';position:absolute;inset:0;background:var(--preview-pattern);opacity:.22;pointer-events:none}.design-preview>*{position:relative}.design-preview-kicker{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.7}.design-preview-title{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;margin-top:8px;letter-spacing:1px}.design-preview-line{width:70px;height:4px;margin-top:13px;border-radius:9px}
+  .design-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px}.design-field{display:block;color:#cbb78d;font-size:11px;font-weight:700;letter-spacing:.08em}.design-field select,.design-field input[type=color]{display:block;width:100%;height:46px;margin-top:8px;background:#120c1e;border:1px solid rgba(179,102,255,.3);color:#eee;padding:10px;font:13px 'DM Sans',sans-serif}.design-field input[type=color]{padding:4px;cursor:pointer}.recommended-tag{display:inline-block;margin-left:7px;padding:3px 6px;background:rgba(82,232,137,.1);border:1px solid rgba(82,232,137,.25);color:#72eaa0;font-size:9px;letter-spacing:.08em}
+  @media(max-width:650px){.member-toolbar{top:10px;right:10px}.member-email-label{display:none}.member-tool-btn{padding:9px 11px}.modal-card{padding:28px 20px}.history-item{grid-template-columns:1fr}.history-actions{justify-content:flex-start}.plan-grid{grid-template-columns:1fr}}
+  @media(max-width:560px){.design-controls{grid-template-columns:1fr}}
+
   .chat-wrap{max-width:700px;margin:0 auto;padding:40px 20px 100px;position:relative;z-index:2}
   .q-block{animation:fadeUp .5s ease forwards;opacity:0}
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -399,6 +451,53 @@
 </head>
 <body>
 
+<div class="member-toolbar" id="memberToolbar" hidden>
+  <span class="member-email-label" id="memberEmailLabel"></span>
+  <button class="member-tool-btn" type="button" onclick="openPlansModal()">💎 MON PLAN</button>
+  <button class="member-tool-btn" type="button" onclick="openHistory()">🕘 MES CRÉATIONS <span id="historyCount"></span></button>
+  <button class="member-tool-btn" type="button" onclick="signOutMember()">DÉCONNEXION</button>
+</div>
+
+<div class="app-modal show" id="emailGate" role="dialog" aria-modal="true" aria-labelledby="emailGateTitle">
+  <form class="modal-card" id="emailGateForm" onsubmit="submitMemberAuth(event)">
+    <div class="modal-eyebrow">⚡ ESPACE MEMBRE SÉCURISÉ</div>
+    <h2 class="modal-title" id="emailGateTitle">Retrouve toutes<br><span>tes créations.</span></h2>
+    <p class="modal-copy" id="authModalCopy">Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.</p>
+    <div class="auth-tabs"><button class="auth-tab active" id="authSignupTab" type="button" onclick="setAuthMode('signup')">CRÉER UN COMPTE</button><button class="auth-tab" id="authLoginTab" type="button" onclick="setAuthMode('login')">SE CONNECTER</button></div>
+    <div class="text-input-wrap" id="authFirstNameWrap"><label>TON PRÉNOM</label><input class="q-input" id="authFirstName" type="text" autocomplete="given-name" placeholder="Ton prénom"></div>
+    <div class="text-input-wrap"><label>TON E-MAIL</label><input class="q-input" id="memberEmailInput" type="email" autocomplete="email" placeholder="toi@exemple.com" required></div>
+    <div class="text-input-wrap"><label>TON MOT DE PASSE</label><input class="q-input" id="memberPasswordInput" type="password" autocomplete="new-password" minlength="8" placeholder="8 caractères minimum" required></div>
+    <div class="modal-error" id="emailGateError"></div>
+    <button id="forgotPasswordButton" type="button" onclick="sendPasswordReset()" style="display:none;margin-top:12px;border:0;background:transparent;color:#c080ff;font:700 12px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer;padding:0;">MOT DE PASSE OUBLIÉ ?</button>
+    <label id="memberConsentWrap" style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;color:rgba(220,205,235,.68);font-size:12px;line-height:1.5;cursor:pointer"><input id="memberConsent" type="checkbox" style="margin-top:3px;accent-color:#9b4dff">J’accepte la création de mon compte et l’enregistrement de mes créations.</label>
+    <button class="next-btn" id="authSubmitButton" type="submit">CRÉER MON COMPTE →</button>
+    <div class="auth-message" id="authMessage"></div>
+    <div id="authPendingActions" style="display:none;gap:10px;margin-top:14px;flex-wrap:wrap"><button type="button" class="member-tool-btn" onclick="resendConfirmation()">RENVOYER L’E-MAIL</button><button type="button" class="member-tool-btn" onclick="setAuthMode('login')">UTILISER UN AUTRE COMPTE</button></div>
+    <p class="privacy-note">Ton mot de passe est chiffré et géré par Supabase. Dropdigital ne peut jamais le consulter.</p>
+  </form>
+</div>
+
+<div class="app-modal" id="historyModal" role="dialog" aria-modal="true" aria-labelledby="historyTitle" onclick="closeHistoryOnBackdrop(event)">
+  <div class="modal-card">
+    <button class="modal-close" type="button" aria-label="Fermer" onclick="closeHistory()">×</button>
+    <div class="modal-eyebrow">🕘 ESPACE MEMBRE</div>
+    <h2 class="modal-title" id="historyTitle">Mes dernières<br><span>créations.</span></h2>
+    <p class="modal-copy">Rouvre un ancien résultat exactement là où tu l’avais laissé.</p>
+    <button class="history-new" type="button" onclick="closeHistory();restart()">＋ CRÉER UN NOUVEAU PRODUIT</button>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<div class="app-modal" id="plansModal" role="dialog" aria-modal="true" aria-labelledby="plansModalTitle" onclick="closePlansModalOnBackdrop(event)">
+  <div class="modal-card" style="width:min(820px,100%)">
+    <button class="modal-close" type="button" aria-label="Fermer" onclick="closePlansModal()">×</button>
+    <div class="modal-eyebrow">💎 TON ABONNEMENT</div>
+    <h2 class="modal-title" id="plansModalTitle">Choisis ton<br><span>niveau de création.</span></h2>
+    <p class="modal-copy">Ton choix est conservé sur ton compte. Un membre Pro ne repasse plus par cet écran à chaque produit.</p>
+    <div id="plansModalContent"></div>
+  </div>
+</div>
+
 <!-- Effets de fond -->
 <div class="scanlines"></div>
 <div class="particles" id="particles"></div>
@@ -460,7 +559,7 @@
   </div>
 
   <div class="header-badge">⚡ Outil Exclusif Membres</div>
-  <h1>Dropdigital <span>Generator</span><br><em>by IA</em></h1>
+  <h1>Dropdigital <span>Generator</span><br><em>by ilias</em></h1>
   <p>7 questions. Un produit digital complet. Une page de vente prête à encaisser.</p>
   <div class="progress-wrap"><div class="progress-steps" id="progressDots"></div></div>
 </div>
@@ -508,7 +607,12 @@
   <div class="results-body" id="resultsBody"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+if(location.protocol==='file:')location.replace('https://dropdigital-generator.vercel.app/generator.html');
 // Génération des particules violettes
 (function(){
   const container = document.getElementById('particles');
@@ -531,7 +635,171 @@
   }
 })();
 // ── STATE ──────────────────────────────────────────────
-const S = { step:0, total:7, a:{} };
+const S = { step:0, total:8, a:{} };
+const STORAGE_KEYS={email:'dropdigital_member_email_v1',history:'dropdigital_history_v1',profile:'dropdigital_member_profile_v1',draft:'dropdigital_pending_draft_v1'};
+// Ajoute ici l'URL de ton webhook (Brevo, MailerLite, Make, Zapier, etc.) pour centraliser les emails.
+const EMAIL_CAPTURE_ENDPOINT='';
+// Lien Stripe mensuel du Pack Découverte à 4,99 € (renseigné après création du tarif Stripe).
+const DISCOVERY_CHECKOUT_URL='';
+// Remplace par le lien de paiement de l'abonnement Pro à 19,99 €.
+const PRO_CHECKOUT_URL='https://buy.stripe.com/test_8x228k5y19Hwb988Nk6Zy00';
+const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';
+const recoveryParams=new URLSearchParams(location.search),recoveryHash=new URLSearchParams(location.hash.replace(/^#/,''));
+let passwordRecoveryRequested=recoveryParams.get('recovery')==='1'||recoveryHash.get('type')==='recovery';
+const dbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let currentMember=null,authMode='signup';
+let restoringHistory=false;
+function isPaidPlan(){return ['discovery','pro','business'].includes(S.a.plan);}
+
+function getMemberEmail(){try{return localStorage.getItem(STORAGE_KEYS.email)||'';}catch(_){return'';}}
+function getProfile(){try{return JSON.parse(localStorage.getItem(STORAGE_KEYS.profile)||'{}')||{};}catch(_){return{};}}
+function saveProfile(values){const profile={...getProfile(),...values};try{localStorage.setItem(STORAGE_KEYS.profile,JSON.stringify(profile));}catch(_){}
+  if(currentMember)dbClient.from('member_profiles').update({first_name:profile.prenom||null,revenue_goal:profile.revenus||null,updated_at:new Date().toISOString()}).eq('user_id',currentMember.id).then(()=>{});
+  return profile;
+}
+function getHistory(){try{const value=JSON.parse(localStorage.getItem(STORAGE_KEYS.history)||'[]');return Array.isArray(value)?value:[];}catch(_){return[];}}
+function setHistory(items){
+  let kept=items.slice(0,20);
+  while(kept.length){try{localStorage.setItem(STORAGE_KEYS.history,JSON.stringify(kept));break;}catch(_){kept=kept.slice(0,-1);}}
+  updateMemberToolbar();
+}
+function updateMemberToolbar(){
+  const email=getMemberEmail(),toolbar=document.getElementById('memberToolbar');toolbar.hidden=!email;
+  document.getElementById('memberEmailLabel').textContent=email;
+  const count=getHistory().length;document.getElementById('historyCount').textContent=count?'('+count+')':'';
+}
+function isValidEmail(value){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value||'').trim());}
+function setAuthMode(mode){
+  authMode=mode;const signup=mode==='signup',recovery=mode==='recovery',pending=mode==='pending';
+  document.getElementById('emailGateTitle').innerHTML=recovery?'Choisis ton nouveau<br><span>mot de passe.</span>':'Retrouve toutes<br><span>tes créations.</span>';
+  document.getElementById('authModalCopy').textContent=recovery?'Entre un nouveau mot de passe sécurisé. Il remplacera immédiatement l’ancien.':'Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.';
+  document.querySelector('.auth-tabs').style.display=recovery||pending?'none':'grid';
+  document.getElementById('authSignupTab').classList.toggle('active',signup);document.getElementById('authLoginTab').classList.toggle('active',!signup);
+  document.getElementById('authFirstNameWrap').style.display=signup?'block':'none';document.getElementById('memberConsentWrap').style.display=signup?'flex':'none';
+  document.getElementById('memberEmailInput').closest('.text-input-wrap').style.display=recovery||pending?'none':'block';document.getElementById('memberPasswordInput').closest('.text-input-wrap').style.display=pending?'none':'block';
+  document.getElementById('memberEmailInput').required=!recovery&&!pending;
+  document.getElementById('memberPasswordInput').autocomplete=signup||recovery?'new-password':'current-password';document.getElementById('memberPasswordInput').value=recovery?'':document.getElementById('memberPasswordInput').value;document.getElementById('authSubmitButton').textContent=recovery?'ENREGISTRER MON NOUVEAU MOT DE PASSE →':signup?'CRÉER MON COMPTE →':'ME CONNECTER →';
+  document.getElementById('forgotPasswordButton').style.display=!signup&&!recovery&&!pending?'inline-block':'none';document.getElementById('authSubmitButton').style.display=pending?'none':'block';document.getElementById('authPendingActions').style.display=pending?'flex':'none';
+  document.getElementById('emailGateError').style.display='none';if(!pending)document.getElementById('authMessage').style.display='none';
+}
+async function submitMemberAuth(event){
+  event.preventDefault();
+  const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),password=document.getElementById('memberPasswordInput').value,errorEl=document.getElementById('emailGateError'),button=document.getElementById('authSubmitButton');
+  const firstName=document.getElementById('authFirstName').value.trim();
+  if(authMode==='recovery'){
+    if(password.length<8){errorEl.textContent='Le nouveau mot de passe doit contenir au moins 8 caractères.';errorEl.style.display='block';return;}
+    button.disabled=true;button.textContent='ENREGISTREMENT…';const {data,error}=await dbClient.auth.updateUser({password});button.disabled=false;
+    if(error){errorEl.textContent='Le lien a expiré ou le mot de passe est invalide. Demande un nouveau lien.';errorEl.style.display='block';return;}
+    passwordRecoveryRequested=false;history.replaceState({},document.title,location.pathname);await initializeSignedInMember(data.user);return;
+  }
+  if(!isValidEmail(email)||password.length<8||(authMode==='signup'&&(!firstName||!document.getElementById('memberConsent').checked))){errorEl.textContent='Vérifie ton prénom, ton e-mail, ton mot de passe et ton consentement.';errorEl.style.display='block';return;}
+  errorEl.style.display='none';button.disabled=true;button.textContent='CONNEXION EN COURS…';
+  const result=authMode==='signup'
+    ?await dbClient.auth.signUp({email,password,options:{data:{first_name:firstName},emailRedirectTo:location.protocol==='https:'||location.protocol==='http:'?location.href:undefined}})
+    :await dbClient.auth.signInWithPassword({email,password});
+  button.disabled=false;setAuthMode(authMode);
+  if(result.error){errorEl.textContent=result.error.message==='Invalid login credentials'?'E-mail ou mot de passe incorrect. Utilise « Mot de passe oublié » si nécessaire.':result.error.message;errorEl.style.display='block';return;}
+  if(authMode==='signup'&&result.data.user&&Array.isArray(result.data.user.identities)&&result.data.user.identities.length===0){
+    setAuthMode('login');document.getElementById('memberEmailInput').value=email;errorEl.textContent='Un compte existe déjà avec cet e-mail. Connecte-toi ou clique sur « Mot de passe oublié ».';errorEl.style.display='block';return;
+  }
+  if(!result.data.session){setAuthMode('pending');const message=document.getElementById('authMessage');message.textContent='Compte créé ! Vérifie maintenant ta boîte e-mail. Dès que tu cliques sur le lien, tu reviens ici automatiquement connecté.';message.style.display='block';return;}
+  await initializeSignedInMember(result.data.user,authMode==='signup'?firstName:'');
+}
+async function sendPasswordReset(){
+  const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),errorEl=document.getElementById('emailGateError'),message=document.getElementById('authMessage'),button=document.getElementById('forgotPasswordButton');
+  errorEl.style.display='none';message.style.display='none';
+  if(!isValidEmail(email)){errorEl.textContent='Entre d’abord l’adresse e-mail de ton compte.';errorEl.style.display='block';document.getElementById('memberEmailInput').focus();return;}
+  const lastReset=Number(localStorage.getItem('dropdigital_last_password_reset')||0),remaining=60_000-(Date.now()-lastReset);
+  if(remaining>0){errorEl.textContent=`Un e-mail vient déjà d’être demandé. Réessaie dans ${Math.ceil(remaining/1000)} secondes.`;errorEl.style.display='block';return;}
+  button.disabled=true;button.textContent='ENVOI EN COURS…';
+  const recoveryUrl=location.origin+location.pathname+'?recovery=1';
+  const options=(location.protocol==='https:'||location.protocol==='http:')?{redirectTo:recoveryUrl}:{};
+  const {error}=await dbClient.auth.resetPasswordForEmail(email,options);
+  button.disabled=false;button.textContent='MOT DE PASSE OUBLIÉ ?';
+  if(error){const limited=error.status===429||error.code==='over_email_send_rate_limit'||/rate limit/i.test(error.message||'');errorEl.textContent=limited?'Limite temporaire d’e-mails Supabase atteinte. Attends environ une heure avant de réessayer.':'Impossible d’envoyer l’e-mail pour le moment. Réessaie dans quelques minutes.';errorEl.style.display='block';return;}
+  localStorage.setItem('dropdigital_last_password_reset',String(Date.now()));
+  message.textContent='E-mail envoyé. Ouvre le lien reçu pour choisir un nouveau mot de passe, puis reviens te connecter.';message.style.display='block';
+}
+async function resendConfirmation(){
+  const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),message=document.getElementById('authMessage'),errorEl=document.getElementById('emailGateError');
+  const options=(location.protocol==='https:'||location.protocol==='http:')?{emailRedirectTo:location.href.split('#')[0]}:{};
+  const {error}=await dbClient.auth.resend({type:'signup',email,options});
+  if(error){errorEl.textContent='Impossible de renvoyer l’e-mail maintenant. Attends une minute puis réessaie.';errorEl.style.display='block';return;}
+  message.textContent='E-mail de confirmation renvoyé. Vérifie aussi tes spams.';message.style.display='block';
+}
+function saveGeneration(data,theme){
+  if(restoringHistory)return;
+  const lightweightData={...data};delete lightweightData.illustrations;
+  const entry={id:data._generation_id||crypto.randomUUID(),createdAt:new Date().toISOString(),answers:{...S.a},data:lightweightData,theme};
+  const items=getHistory().filter(item=>item.id!==entry.id);items.unshift(entry);setHistory(items);
+  if(currentMember)dbClient.from('member_generations').upsert({id:entry.id,user_id:currentMember.id,title:S.a.offre||data.titre_produit||'Création sans titre',niche:S.a.niche||null,target_audience:S.a.sousniche||null,answers:entry.answers,generated_data:lightweightData,theme},{onConflict:'id'}).then(()=>{});
+}
+function openHistory(){renderHistory();document.getElementById('historyModal').classList.add('show');}
+function closeHistory(){document.getElementById('historyModal').classList.remove('show');}
+function closeHistoryOnBackdrop(event){if(event.target===event.currentTarget)closeHistory();}
+function planCardsMarkup(modal=false){
+  const plan=getProfile().plan||'free',paid=['discovery','pro','business'].includes(plan),isPro=plan==='pro'||plan==='business';
+  return `<div class="plan-grid"><section class="plan-card"><div class="plan-badge">POUR COMMENCER</div><div class="plan-name">PLAN FREE</div><div class="plan-price">0 €</div><ul class="plan-features"><li>Prompts ebook personnalisés</li><li>Prompts page de vente</li><li>Création manuelle avec ChatGPT</li><li>Historique de tes projets</li></ul><button class="plan-action" ${plan==='free'?'disabled':''} onclick="${modal?"closePlansModal();chooseFreePlan()":"chooseFreePlan()"}">${plan==='free'?'✓ SÉLECTIONNÉ':'UTILISER LE PLAN FREE'}</button></section><section class="plan-card discovery"><div class="plan-badge">POUR DÉCOUVRIR</div><div class="plan-name">PACK DÉCOUVERTE</div><div class="plan-price">4,99 € <small>/ mois</small></div><ul class="plan-features"><li>Ebook, page de vente et upsell par IA</li><li>3 créations complètes par mois</li><li>Historique complet</li><li>Aperçus et téléchargements</li></ul><button class="plan-action" ${plan==='discovery'?'disabled':''} onclick="${modal?"closePlansModal();chooseDiscoveryPlan()":"chooseDiscoveryPlan()"}">${plan==='discovery'?'✓ SÉLECTIONNÉ':paid?'CHOISIR DÉCOUVERTE':'CHOISIR LE PACK DÉCOUVERTE'}</button><p class="plan-cancel-note">* Sans engagement, annulable à tout moment.</p></section><section class="plan-card pro"><div class="plan-badge">CRÉATION AUTOMATIQUE</div><div class="plan-name">PLAN PRO</div><div class="plan-price">19,99 € <small>/ mois</small></div><ul class="plan-features"><li>Ebook, page de vente et upsell par IA</li><li>5 créations complètes par mois</li><li>Historique complet</li><li>Aperçus et téléchargements</li></ul><button class="plan-action" ${isPro?'disabled':''} onclick="${modal?"closePlansModal();chooseProPlan()":"chooseProPlan()"}">${isPro?'✓ SÉLECTIONNÉ':paid?'CHOISIR PRO':'PASSER AU PLAN PRO'}</button><p class="plan-cancel-note">* Sans engagement, annulable à tout moment.</p></section></div>`;
+}
+function openPlansModal(){document.getElementById('plansModalContent').innerHTML=planCardsMarkup(true);document.getElementById('plansModal').classList.add('show');}
+function closePlansModal(){document.getElementById('plansModal').classList.remove('show');}
+function closePlansModalOnBackdrop(event){if(event.target===event.currentTarget)closePlansModal();}
+function renderHistory(){
+  const list=document.getElementById('historyList'),items=getHistory();
+  if(!items.length){list.innerHTML='<div class="history-empty">Aucune création enregistrée pour le moment.<br>Ton prochain résultat apparaîtra ici.</div>';return;}
+  list.innerHTML=items.map(item=>{const a=item.answers||{},date=new Date(item.createdAt).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'});return `<article class="history-item"><div><h3>${eh(a.offre||item.data?.titre_produit||'Création sans titre')}</h3><div class="history-meta">${eh(a.niche||'Niche non renseignée')} · ${eh(a.sousniche||'Cible non renseignée')}<br>${eh(date)}</div></div><div class="history-actions"><button class="history-open" onclick="restoreGeneration('${ea(item.id)}')">OUVRIR</button><button class="history-delete" onclick="deleteGeneration('${ea(item.id)}')">SUPPRIMER</button></div></article>`;}).join('');
+}
+async function hydrateIllustrations(data){
+  const paths=Array.isArray(data?.illustration_paths)?data.illustration_paths:[];
+  if(!paths.length){data.illustrations=[];if(isPaidPlan())data.missing_images=Array.from({length:10},(_,i)=>i);return data;}
+  const urls=Array(10).fill(null),missing=[];
+  for(let i=0;i<10;i++){
+    const path=paths[i];if(!path){missing.push(i);continue;}
+    const {data:signed,error}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,3600);
+    if(error||!signed?.signedUrl)missing.push(i);else urls[i]=signed.signedUrl;
+  }
+  data.illustrations=urls;data.missing_images=missing;return data;
+}
+async function persistIllustration(dataUrl,generationId,index){
+  if(!currentMember)throw new Error('Compte utilisateur indisponible');
+  const response=await fetch(dataUrl),blob=await response.blob();
+  const extension=blob.type.includes('png')?'png':blob.type.includes('jpeg')?'jpg':'webp';
+  const path=`${currentMember.id}/${generationId}/page-${String(index+1).padStart(2,'0')}.${extension}`;
+  const {error}=await dbClient.storage.from('ebook-illustrations').upload(path,blob,{contentType:blob.type||'image/webp',upsert:true,cacheControl:'31536000'});
+  if(error)throw error;
+  const {data:signed,error:signedError}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,3600);
+  if(signedError||!signed?.signedUrl)throw signedError||new Error('Lien image indisponible');
+  return {path,url:signed.signedUrl};
+}
+async function restoreGeneration(id){
+  const item=getHistory().find(entry=>entry.id===id);if(!item)return;
+  restoringHistory=true;S.a={...(item.answers||{})};S.step=6;closeHistory();
+  document.getElementById('chatWrap').style.display='none';document.querySelector('.site-header').style.display='none';
+  await hydrateIllustrations(item.data);showResults(item.data,item.theme||getTheme(S.a.marche,S.a.niche));restoringHistory=false;
+}
+function deleteGeneration(id){setHistory(getHistory().filter(item=>item.id!==id));if(currentMember)dbClient.from('member_generations').delete().eq('id',id).then(()=>{});renderHistory();}
+async function syncMemberData(){
+  const [{data:profile},{data:subscription},{data:generations}]=await Promise.all([
+    dbClient.from('member_profiles').select('first_name,revenue_goal').single(),
+    dbClient.from('member_subscriptions').select('plan,status,current_period_end').single(),
+    dbClient.from('member_generations').select('id,created_at,answers,generated_data,theme').order('created_at',{ascending:false}).limit(20)
+  ]);
+  if(profile)saveProfile({prenom:profile.first_name||'',revenus:profile.revenue_goal||''});
+  if(subscription){const active=['active','trialing'].includes(subscription.status),storedPlan=subscription.plan,plan=active&&['discovery','pro','business'].includes(storedPlan)?(storedPlan==='business'?'pro':storedPlan):'free';saveProfile({plan,subscriptionStatus:subscription.status});}
+  setHistory((generations||[]).map(g=>({id:g.id,createdAt:g.created_at,answers:g.answers||{},data:g.generated_data||{},theme:g.theme||{}})));
+}
+async function initializeSignedInMember(user,firstName=''){currentMember=user;try{localStorage.setItem(STORAGE_KEYS.email,user.email||'');}catch(_){}
+  if(firstName)await dbClient.from('member_profiles').update({first_name:firstName,updated_at:new Date().toISOString()}).eq('user_id',user.id);
+  await syncMemberData();if(String(user.email||'').toLowerCase()==='ilias.entreprise@gmail.com')saveProfile({plan:'pro',subscriptionStatus:'active',adminUnlimited:true});document.getElementById('emailGate').classList.remove('show');updateMemberToolbar();restart();
+}
+async function initMemberAccess(){
+  const {data:{session}}=await dbClient.auth.getSession();
+  if(passwordRecoveryRequested){currentMember=session?.user||null;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),80);return;}
+  if(session?.user){await initializeSignedInMember(session.user);}else{currentMember=null;document.getElementById('emailGate').classList.add('show');setAuthMode('signup');setTimeout(()=>document.getElementById('authFirstName').focus(),80);}
+}
+dbClient.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){passwordRecoveryRequested=true;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),0);}});
+async function signOutMember(){await dbClient.auth.signOut();currentMember=null;try{localStorage.removeItem(STORAGE_KEYS.email);localStorage.removeItem(STORAGE_KEYS.profile);localStorage.removeItem(STORAGE_KEYS.history);}catch(_){}document.getElementById('memberToolbar').hidden=true;document.getElementById('emailGate').classList.add('show');setAuthMode('login');}
 
 // ── THEMES ─────────────────────────────────────────────
 function getTheme(marche, niche) {
@@ -561,6 +829,12 @@ function getTheme(marche, niche) {
   if (marche==='argent') return {p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'};
   return {p:'#8b3cf7',s:'#0a0018',a:'#ffffff',bg:'#0a0a0a',bg2:'#0d0a18',txt:'#f0eaff',hl:'#ffffff',btn:'#8b3cf7',btxt:'white',n:'Violet Pirate'};
 }
+
+const DESIGN_UNIVERSES={
+  business:{label:'Business premium',p:'#185adb',a:'#f5c518',bg:'#06101f'},fitness:{label:'Sport & performance',p:'#e85112',a:'#ffb067',bg:'#130703'},wellness:{label:'Bien-être organique',p:'#4a8c5c',a:'#a8d9b5',bg:'#07130b'},relation:{label:'Relations élégantes',p:'#bd3d58',a:'#ff9daf',bg:'#19070d'},finance:{label:'Finance & autorité',p:'#167443',a:'#d9b84f',bg:'#04110a'},tech:{label:'Tech futuriste',p:'#8147e8',a:'#55d6ff',bg:'#080516'},chrome:{label:'Chrome liquide',p:'#8696ad',a:'#e9f7ff',bg:'#080b12'},editorial:{label:'Magazine couture',p:'#a76b48',a:'#f3d6bb',bg:'#17100c'}
+};
+function suggestedUniverse(){const t=((S.a.niche||'')+' '+(S.a.sousniche||'')).toLowerCase();if(/muscu|sport|poids|fitness|nutrition/.test(t))return'fitness';if(/stress|sommeil|médit|bien-être|sante|santé/.test(t))return'wellness';if(/relation|amour|séduction|couple|parent/.test(t))return'relation';if(/invest|épargne|finance|argent/.test(t))return'finance';if(/automati|ia|réseau|tiktok|tech/.test(t))return'tech';return'business';}
+function selectedTheme(){if(S.a.design?.primary)return{p:S.a.design.primary,s:S.a.design.background,a:S.a.design.accent,bg:S.a.design.background,bg2:S.a.design.background,txt:'#f7f4ff',hl:S.a.design.accent,btn:S.a.design.primary,btxt:'white',n:S.a.design.universeLabel||'Sur mesure',motif:S.a.design.motif,typography:S.a.design.typography,layout:S.a.design.layout};return getTheme(S.a.marche,S.a.niche);}
 
 // ── NICHES (fixed — 6 par marché) ─────────────────────────────────────
 const NICHES = {
@@ -927,13 +1201,29 @@ const COPY = {
 };
 
 // ── INIT ───────────────────────────────────────────────
-function init(){ buildDots(); renderStep(0); }
+function init(){
+  const profile=getProfile(),latest=getHistory()[0]?.answers||{};
+  const prenom=profile.prenom||latest.prenom||S.a.prenom,revenus=profile.revenus||latest.revenus||S.a.revenus;
+  if((prenom&&!profile.prenom)||(revenus&&!profile.revenus))saveProfile({prenom,revenus});
+  S.a={...S.a,prenom,revenus};
+  const flow=getQuestionFlow();buildDots();renderStep(flow[0]??1);
+}
+
+function getQuestionFlow(){
+  const flow=[];
+  if(!S.a.prenom)flow.push(0);
+  flow.push(1,2,3,4);
+  if(!S.a.revenus)flow.push(5);
+  flow.push(6,7);
+  return flow;
+}
 
 function buildDots(){
   const w=document.getElementById('progressDots'); w.innerHTML='';
-  for(let i=0;i<S.total;i++){
+  const flow=getQuestionFlow(),current=Math.max(0,flow.indexOf(S.step));
+  for(let i=0;i<flow.length;i++){
     const d=document.createElement('div');
-    d.className='progress-dot'+(i<S.step?' done':i===S.step?' active':'');
+    d.className='progress-dot'+(i<current?' done':i===current?' active':'');
     w.appendChild(d);
   }
 }
@@ -941,7 +1231,7 @@ function buildDots(){
 function renderStep(n){
   S.step=n; buildDots();
   document.getElementById('chatWrap').innerHTML='';
-  [rPrenom,rMarche,rNiche,rSousNiche,rOffre,rRevenus,rStripe][n]?.();
+  [rPrenom,rMarche,rNiche,rSousNiche,rOffre,rRevenus,rDesign,rStripe][n]?.();
   setTimeout(function(){
     if(n===0){
       window.scrollTo({top:0,behavior:'smooth'});
@@ -952,21 +1242,26 @@ function renderStep(n){
   },60);
 }
 
+function backStep(){
+  const flow=getQuestionFlow(),current=flow.indexOf(S.step);
+  if(current>0)renderStep(flow[current-1]);
+}
+
 // ── STEP 1 : PRENOM ─────────────────────────────────────
 function rPrenom(){
   cw(`<div class="q-block">
     <span class="q-label">⚓ ÉTAPE 1 / 7</span>
     <div class="q-title">Comment tu t'appelles,<br><span>jeune pirate ?</span></div>
     <p class="q-sub">Dis-moi ton prénom, on va créer quelque chose de grand ensemble.</p>
-    <div class="text-input-wrap"><input type="text" class="q-input" id="inp0" placeholder="Ton prénom..." autocomplete="off"/></div>
-    <button class="next-btn" id="nb0" onclick="go0()" disabled>⚓ EMBARQUER →</button>
+    <div class="text-input-wrap"><input type="text" class="q-input" id="inp0" placeholder="Ton prénom..." autocomplete="off" value="${ea(S.a.prenom||'')}"/></div>
+    <button class="next-btn" id="nb0" onclick="go0()" ${S.a.prenom&&S.a.prenom.trim().length>=2?'':'disabled'}>⚓ EMBARQUER →</button>
   </div>`);
   const i=document.getElementById('inp0');
   i.addEventListener('input',()=>{document.getElementById('nb0').disabled=i.value.trim().length<2});
   i.addEventListener('keydown',e=>{if(e.key==='Enter'&&i.value.trim().length>=2)go0()});
   i.focus();
 }
-function go0(){const v=document.getElementById('inp0').value.trim();if(!v)return;S.a.prenom=v;renderStep(1);}
+function go0(){const v=document.getElementById('inp0').value.trim();if(!v)return;S.a.prenom=v;saveProfile({prenom:v});renderStep(1);}
 
 // ── STEP 2 : MARCHE ─────────────────────────────────────
 function rMarche(){
@@ -992,13 +1287,13 @@ function rNiche(){
     <p class="q-sub">Choisis ou écris la tienne.</p>
     <div class="btn-grid">${ns.map(n=>`<button class="choice-btn" onclick="selN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
     <div class="or-divider">OU MA PROPRE IDÉE</div>
-    <div class="text-input-wrap"><label>NICHE PERSO</label><input type="text" class="q-input" id="inp2" placeholder="Ex: méditation pour entrepreneurs..."/></div>
-    <button class="next-btn" id="nb2" onclick="go2()" disabled>VALIDER →</button>
+    <div class="text-input-wrap"><label>NICHE PERSO</label><input type="text" class="q-input" id="inp2" placeholder="Ex: méditation pour entrepreneurs..." value="${ea(S.a.niche||'')}"/></div>
+    <button class="next-btn" id="nb2" onclick="go2()" ${S.a.niche?'':'disabled'}>VALIDER →</button>
   </div>`);
   document.getElementById('inp2').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.niche='';}document.getElementById('nb2').disabled=!this.value.trim()&&!S.a.niche;});
 }
-function selN(n,b){S.a.niche=n;sel(b);document.getElementById('inp2').value='';document.getElementById('nb2').disabled=false;}
-function go2(){const c=document.getElementById('inp2').value.trim();if(c)S.a.niche=c;if(!S.a.niche)return;renderStep(3);}
+function selN(n,b){S.a.niche=n;S.a.customNiche=false;sel(b);document.getElementById('inp2').value='';document.getElementById('nb2').disabled=false;}
+function go2(){const c=document.getElementById('inp2').value.trim();if(c){S.a.niche=c;S.a.customNiche=true;}if(!S.a.niche)return;renderStep(3);}
 
 // ── STEP 4 : SOUS-NICHE (données fixes) ───────────
 function rSousNiche(){
@@ -1009,8 +1304,8 @@ function rSousNiche(){
     <p class="q-sub">Plus précis = plus de ventes. C'est le secret des produits qui vendent dès J1.</p>
     <div class="btn-grid">${subniches.map(n=>`<button class="choice-btn" onclick="selSN('${esc(n.l)}',this)"><span class="btn-emoji">${n.e}</span>${n.l}</button>`).join('')}</div>
     <div class="or-divider">OU MON IDÉE PRÉCISE</div>
-    <div class="text-input-wrap"><label>SOUS-NICHE PERSO</label><input type="text" class="q-input" id="inp3" placeholder="Ex: femmes de 35-50 ans..."/></div>
-    <button class="next-btn" id="nb3" onclick="go3()" disabled>VALIDER →</button>
+    <div class="text-input-wrap"><label>SOUS-NICHE PERSO</label><input type="text" class="q-input" id="inp3" placeholder="Ex: femmes de 35-50 ans..." value="${ea(S.a.sousniche||'')}"/></div>
+    <button class="next-btn" id="nb3" onclick="go3()" ${S.a.sousniche?'':'disabled'}>VALIDER →</button>
   </div>`);
   document.getElementById('inp3').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.sousniche='';}document.getElementById('nb3').disabled=!this.value.trim()&&!S.a.sousniche;});
 }
@@ -1034,13 +1329,13 @@ function rOffre(){
     <p class="q-sub">4 titres créés pour ta sous-niche. Choisis ou écris le tien.</p>
     <div class="btn-grid" style="grid-template-columns:1fr 1fr;">${ebookTitles.map((s,i)=>`<button class="choice-btn" onclick='selO(${JSON.stringify(s)},this)' style="text-align:left;"><span class="btn-emoji">📖</span><strong style="color:var(--purple);display:block;margin-bottom:4px;font-size:13px;">TITRE ${i+1}</strong>${s}</button>`).join('')}</div>
     <div class="or-divider">OU MON TITRE PERSO</div>
-    <div class="text-input-wrap"><label>MON TITRE PERSONNALISÉ</label><input type="text" class="q-input" id="inp4" placeholder="Ex: Ma Méthode Unique..."/></div>
-    <button class="next-btn" id="nb4" onclick="go4()" disabled>VALIDER MON TITRE →</button>
+    <div class="text-input-wrap"><label>MON TITRE PERSONNALISÉ</label><input type="text" class="q-input" id="inp4" placeholder="Ex: Ma Méthode Unique..." value="${ea(S.a.offre||'')}"/></div>
+    <button class="next-btn" id="nb4" onclick="go4()" ${S.a.offre?'':'disabled'}>VALIDER MON TITRE →</button>
   </div>`);
   document.getElementById('inp4').addEventListener('input',function(){if(this.value.trim()){sel(null);S.a.offre='';}document.getElementById('nb4').disabled=!this.value.trim()&&!S.a.offre;});
 }
 function selO(o,b){S.a.offre=o;sel(b);document.getElementById('inp4').value='';document.getElementById('nb4').disabled=false;}
-function go4(){const c=document.getElementById('inp4').value.trim();if(c)S.a.offre=c;if(!S.a.offre)return;renderStep(5);}
+function go4(){const c=document.getElementById('inp4').value.trim();if(c)S.a.offre=c;if(!S.a.offre)return;renderStep(S.a.revenus?6:5);}
 
 // ── STEP 6 : REVENUS ────────────────────────────────────
 function rRevenus(){
@@ -1056,27 +1351,91 @@ function rRevenus(){
     </div>
   </div>`);
 }
-function selR(r,b){S.a.revenus=r;sel(b);setTimeout(()=>renderStep(6),400);}
+function selR(r,b){S.a.revenus=r;saveProfile({revenus:r});sel(b);setTimeout(()=>renderStep(6),400);}
 
-// ── STEP 7 : STRIPE ─────────────────────────────────────
+// ── STEP 7 : DIRECTION ARTISTIQUE ─────────────────────
+function rDesign(){
+  const recommended=suggestedUniverse(),current=S.a.design?.universe||recommended,u=DESIGN_UNIVERSES[current]||DESIGN_UNIVERSES.business;
+  if(!S.a.design)S.a.design={universe:current,universeLabel:u.label,primary:u.p,accent:u.a,background:u.bg,motif:'Halos et dégradés subtils',typography:'Moderne et lisible',layout:'Éditorial aéré'};
+  cw(`<div class="q-block"><span class="q-label">⚓ ÉTAPE 7 / 8 — IDENTITÉ VISUELLE</span><div class="q-title">Choisis seulement <span>ta couleur.</span></div><p class="q-sub">C’est tout. GPT et Claude déduisent ensuite le thème, les textures, les polices, les images et la mise en page depuis ta niche.</p>
+  <div class="design-preview" id="designPreview"><span class="design-preview-kicker">${eh(S.a.niche)}</span><strong class="design-preview-title">${eh(S.a.offre)}</strong><span class="design-preview-line"></span></div>
+  <div class="design-controls" style="grid-template-columns:1fr"><label class="design-field">TA COULEUR PRINCIPALE<input id="designPrimary" type="color" value="${ea(S.a.design.primary)}" oninput="refreshDesignPreview()"></label></div><button class="next-btn" onclick="goDesign()">VALIDER MA COULEUR →</button></div>`);
+  refreshDesignPreview();
+}
+function chooseUniverse(key,b){const u=DESIGN_UNIVERSES[key];S.a.design={...(S.a.design||{}),universe:key,universeLabel:u.label,primary:u.p,accent:u.a,background:u.bg};sel(b);document.getElementById('designPrimary').value=u.p;document.getElementById('designAccent').value=u.a;document.getElementById('designBackground').value=u.bg;refreshDesignPreview();}
+function refreshDesignPreview(){const p=document.getElementById('designPreview');if(!p)return;const primary=document.getElementById('designPrimary').value;p.style.background=`radial-gradient(circle at 78% 18%,${primary},transparent 44%),linear-gradient(145deg,#090b12,#160d20)`;p.style.color='#fff';p.style.setProperty('--preview-pattern',`linear-gradient(125deg,transparent 35%,#ffffff24 50%,transparent 65%)`);p.querySelector('.design-preview-line').style.background=primary;}
+function goDesign(){const primary=document.getElementById('designPrimary').value,recommended=suggestedUniverse(),u=DESIGN_UNIVERSES[recommended]||DESIGN_UNIVERSES.business;S.a.design={universe:recommended,universeLabel:u.label,primary,accent:'#f4f7ff',background:'#090b12',motif:'Déduit automatiquement par l’IA',typography:'Déduite automatiquement par l’IA',layout:'Déduite automatiquement par l’IA'};renderStep(7);}
+
+// ── STEP 8 : STRIPE ─────────────────────────────────────
 function rStripe(){
   cw(`<div class="q-block">
-    <span class="q-label">⚓ ÉTAPE 7 / 7 — DERNIÈRE ÉTAPE</span>
+    <span class="q-label">⚓ ÉTAPE 8 / 8 — DERNIÈRE ÉTAPE</span>
     <div class="q-title">Ton lien <span>Stripe</span><br>pour encaisser</div>
     <p class="q-sub">Intégré directement dans ta page de vente.</p>
     <div class="stripe-note">💳 Crée ton lien sur <strong>dashboard.stripe.com → Liens de paiement</strong><br>Ressemble à : <code style="color:var(--purple);font-size:12px">https://buy.stripe.com/xxxx</code></div>
-    <div class="text-input-wrap"><label>TON LIEN STRIPE</label><input type="url" class="q-input" id="inp6" placeholder="https://buy.stripe.com/..."/></div>
+    <div class="text-input-wrap"><label>TON LIEN STRIPE</label><input type="url" class="q-input" id="inp6" placeholder="https://buy.stripe.com/..." value="${ea(S.a.stripe||'')}"/></div>
     <p style="font-size:12px;color:#444;margin-top:8px;">Pas encore de Stripe ? Laisse vide, tu l'ajouteras après.</p>
     <button class="next-btn" onclick="go6()" style="margin-top:24px;background:var(--purple);color:white;font-size:22px;">⚡ GÉNÉRER MON PRODUIT COMPLET</button>
   </div>`);
 }
-function go6(){S.a.stripe=document.getElementById('inp6').value.trim()||'#STRIPE_LINK';generate();}
+function go6(){S.a.stripe=document.getElementById('inp6').value.trim()||'#STRIPE_LINK';const plan=getProfile().plan;if(['discovery','pro','business'].includes(plan)){S.a.plan=plan;generate();}else showPlans();}
 
+function showPlans(){
+  S.step=7;buildDots();
+  const isPro=getProfile().plan==='pro';
+  cw(`<div class="q-block">
+    <span class="q-label">⚡ DERNIÈRE ÉTAPE — CHOISIS TON ACCÈS</span>
+    <div class="q-title">Comment veux-tu créer<br><span>ton produit ?</span></div>
+    <p class="q-sub">Tu peux tout réaliser manuellement avec nos prompts, ou laisser Dropdigital générer tes produits sans limite.</p>
+    ${planCardsMarkup(false)}
+  </div>`);
+}
+function chooseFreePlan(){S.a.plan='free';generateFree();}
+function generateFree(){
+  document.getElementById('chatWrap').style.display='none';document.querySelector('.site-header').style.display='none';
+  showResults(fallback(),selectedTheme());
+}
+function chooseProPlan(){
+  if(getProfile().plan==='pro'){S.a.plan='pro';generate();return;}
+  try{localStorage.setItem(STORAGE_KEYS.draft,JSON.stringify(S.a));}catch(_){}
+  if(PRO_CHECKOUT_URL){
+    const separator=PRO_CHECKOUT_URL.includes('?')?'&':'?';
+    const reference=currentMember?.id?separator+'client_reference_id='+encodeURIComponent(currentMember.id):'';
+    window.location.href=PRO_CHECKOUT_URL+reference;return;
+  }
+  const note=document.getElementById('planConfigNote');if(note)note.style.display='block';
+}
+function chooseDiscoveryPlan(){
+  saveProfile({plan:'free',subscriptionStatus:'checkout_pending'});
+  if(DISCOVERY_CHECKOUT_URL){
+    const separator=DISCOVERY_CHECKOUT_URL.includes('?')?'&':'?';
+    const reference=getMemberEmail()?`${separator}prefilled_email=${encodeURIComponent(getMemberEmail())}`:'';
+    window.location.href=DISCOVERY_CHECKOUT_URL+reference;return;
+  }
+  alert('Le paiement du Pack Découverte est en cours de connexion. Réessaie dans quelques instants.');
+}
 // ── GENERATE ───────────────────────────────────────────
+function showBuildWorkspace(){
+  document.getElementById('loadingScreen').classList.remove('show');
+  document.getElementById('resultsScreen').classList.add('show');
+  document.querySelector('.results-header h2').innerHTML='Ton produit est en <span>construction.</span>';
+  document.querySelector('.results-header p').textContent='Tu peux rester ici : le build continue automatiquement en arrière-plan.';
+  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">📖 EBOOK</button><button class="studio-nav-btn" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · EN ATTENTE</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton ebook prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT rédige actuellement le livre complet, chapitre par chapitre…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page"><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de l’ebook et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Claude commencera dès que le texte complet de l’ebook sera disponible.</p></div></section></div>`;
+  const methodButton=document.querySelector('.studio-nav-btn.gold');if(methodButton)methodButton.textContent='🏴‍☠️ MÉTHODE DROPDIGITAL';
+  setTimeout(()=>{const note=document.getElementById('buildLongNote');if(note)note.style.display='block';},15000);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+let salesProgressTimer=null;
+function setStudioTab(tab){const ebook=tab==='ebook';document.getElementById('studioEbookPanel')?.toggleAttribute('hidden',!ebook);document.getElementById('studioSalesPanel')?.toggleAttribute('hidden',ebook);document.getElementById('studioEbookButton')?.classList.toggle('active',ebook);document.getElementById('studioSalesButton')?.classList.toggle('active',!ebook);}
+function startSalesProgress(){clearInterval(salesProgressTimer);let step=0;salesProgressTimer=setInterval(()=>{if(step<3){document.getElementById('salesStep'+step)?.classList.replace('active','done');step++;document.getElementById('salesStep'+step)?.classList.add('active');}},8000);}
+function showTextReadyWorkspace(product){const pages=document.getElementById('studioPages'),message=document.getElementById('studioMessage'),sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(message)message.textContent='Le texte est terminé. GPT illustre maintenant chaque page pendant que Claude construit le site.';if(sales)sales.textContent='Claude analyse chaque chapitre pour écrire une page fidèle à ton produit.';if(button)button.textContent='🖥️ PAGE DE VENTE · CLAUDE TRAVAILLE';startSalesProgress();if(!pages)return;const labels=[product.titre_produit,'Sommaire',...(product.chapitres||[]).slice(0,6).map(c=>c.t),'Plan d’action','Conclusion'];pages.innerHTML=labels.slice(0,10).map((label,i)=>`<div class="studio-page" id="studioPage${i}"><span>PAGE ${String(i+1).padStart(2,'0')}<br>${eh(label)}</span></div>`).join('');}
+function updateStudioPage(index,src){const page=document.getElementById('studioPage'+index),count=document.getElementById('studioCount');if(page){page.classList.add('ready');page.insertAdjacentHTML('afterbegin',`<img src="${ea(src)}" alt="Illustration ${index+1}">`);}if(count)count.textContent=`${document.querySelectorAll('.studio-page.ready').length} / 10 PAGES`;}
+function updateStudioSales(){clearInterval(salesProgressTimer);for(let i=0;i<5;i++){const step=document.getElementById('salesStep'+i);if(step){step.classList.remove('active');step.classList.add('done');step.textContent='✓ '+step.textContent.replace(/^[◌✓]\s*/,'');}}const sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(sales){sales.textContent='✓ Page de vente terminée. Ton aperçu est prêt.';sales.style.color='#62e998';}if(button){button.textContent='✓ PAGE DE VENTE PRÊTE';button.style.borderColor='#57e78e';button.style.color='#62e998';}}
+function completeBuildWorkspace(){const count=document.getElementById('studioCount'),ready=document.querySelectorAll('.studio-page.ready').length;if(count)count.textContent=ready===10?'10 / 10 PAGES ✓':`${ready} / 10 PAGES`;}
 async function generate(){
   document.getElementById('chatWrap').style.display='none';
   document.querySelector('.site-header').style.display='none';
-  document.getElementById('loadingScreen').classList.add('show');
+  showBuildWorkspace();
 
   const msgs=['⚡ Analyse de ton marché...','⚓ Construction de l\'offre irrésistible...','🏴‍☠️ Rédaction du copywriting émotionnel...','📖 Génération du script ebook complet...','✨ Finalisation de ton empire...','💰 Derniers ajustements...'];
   let mi=0;const mel=document.getElementById('loadingMsg');
@@ -1090,7 +1449,7 @@ async function generate(){
   },3500);
 
   const {prenom,marche,niche,sousniche,offre,revenus,stripe}=S.a;
-  const theme=getTheme(marche,niche);
+  const theme=selectedTheme();
 
   // Récupérer le copywriting pré-écrit si disponible
   const copyData = COPY[sousniche];
@@ -1116,17 +1475,17 @@ Thème design: ${theme.n}
 ${copyBlock}
 
 RÈGLES STRICTES :
-1. "titre_produit" : 2-4 mots MAX, ultra-percutants, directement liés à l'offre "${offre}". Jamais générique.
+1. "titre_produit" doit être EXACTEMENT "${offre}", caractère pour caractère. Ne le raccourcis pas, ne le reformule pas et ne lui invente aucun autre nom. Tout le contenu, le sous-titre et les chapitres doivent traiter précisément la promesse exprimée par ce titre.
 2. "avatar" : UNE personne ultra-précise. Genre, âge exact, situation sociale, peur n°1 formulée en ses propres mots, désir profond.
 3. "histoire_cible" : Un paragraphe narratif de 5-7 phrases qui RACONTE L'HISTOIRE de cette personne — sa situation AVANT le produit. Commence par "Tu te souviens de ce soir où...", "C'est 23h, tu es encore devant ton écran..." ou autre accroche situationnelle. Douleur vécue, moment précis, émotion ressentie. Cette histoire servira d'intro émotionnelle pour la page de vente.
 4. "douleurs_profondes" : 3 douleurs émotionnelles très spécifiques formulées comme si c'est la cible qui parle, à la première personne ("Je me réveille chaque matin avec...")
 5. "desirs_profonds" : 3 désirs profonds formulés comme si c'est la cible qui les rêve à voix haute.
-6. Les 6 chapitres doivent avoir un contenu de 400 mots minimum CHACUN, avec des conseils RÉELS, des exemples CONCRETS et des techniques ACTIONNABLES liés à la niche. Pas de généralités. Du vrai contenu expert qui apporte de la valeur réelle.
-7. Les témoignages doivent être ultra-spécifiques avec des résultats chiffrés crédibles.
+6. Les 6 chapitres doivent avoir un contenu de 700 mots environ CHACUN, réellement spécifique à la niche. Chaque chapitre contient une scène concrète, une explication approfondie, au moins 3 méthodes actionnables avec étapes, un exemple réaliste, les erreurs à éviter, une mini-checklist et une action à réaliser. Aucun remplissage générique.
+7. N'invente jamais de statistiques, résultats ou témoignages présentés comme réels. Si une preuve manque, marque clairement « exemple à remplacer par une preuve client réelle ».
 
 JSON EXACT à produire :
 {
-  "titre_produit": "2-4 mots max directement liés à l'offre",
+  "titre_produit": "${offre}",
   "sous_titre": "phrase qui promet le résultat principal avec un délai",
   "prix": "prix en chiffre seul entre 17 et 97 adapté à ${revenus}",
   "prix_barre": "prix barré en chiffre seul, environ 2x le prix",
@@ -1156,32 +1515,60 @@ JSON EXACT à produire :
     {"q":"question sur la garantie","r":"réponse qui supprime tout risque perçu"}
   ],
   "chapitres": [
-    {"n":1,"t":"Titre chapitre 1 accrocheur lié à l'offre","st":"sous-titre intriguant","c":"Contenu DÉTAILLÉ de 400 mots minimum. Commence par une situation concrète vécue par la cible. Explique le problème clé de ce chapitre avec des données ou faits. Donne 3 techniques PRÉCISES avec des étapes claires et des exemples. Conclure sur la transformation possible."},
-    {"n":2,"t":"Titre chapitre 2","st":"sous-titre","c":"400 mots minimum. Même niveau de détail. Techniques avancées avec exemples concrets."},
-    {"n":3,"t":"Titre chapitre 3","st":"sous-titre","c":"400 mots minimum. Approfondir un aspect clé souvent négligé."},
-    {"n":4,"t":"Titre chapitre 4","st":"sous-titre","c":"400 mots minimum. Les erreurs à éviter avec leurs solutions exactes."},
-    {"n":5,"t":"Titre chapitre 5","st":"sous-titre","c":"400 mots minimum. Plan d'action concret semaine par semaine."},
-    {"n":6,"t":"Titre chapitre 6","st":"sous-titre","c":"400 mots minimum. Maintenir les résultats et aller encore plus loin. Vision long terme."}
+    {"n":1,"t":"Titre chapitre 1 accrocheur lié à l'offre","st":"sous-titre intriguant","c":"Environ 700 mots, expertise spécifique, exemple, méthodes pas à pas, erreurs, checklist et action."},
+    {"n":2,"t":"Titre chapitre 2","st":"sous-titre","c":"Environ 700 mots avec le même niveau de profondeur et des techniques différentes."},
+    {"n":3,"t":"Titre chapitre 3","st":"sous-titre","c":"Environ 700 mots, aspect clé négligé, cas pratique et checklist."},
+    {"n":4,"t":"Titre chapitre 4","st":"sous-titre","c":"Environ 700 mots, erreurs précises et solutions applicables."},
+    {"n":5,"t":"Titre chapitre 5","st":"sous-titre","c":"Environ 700 mots, plan d'action détaillé semaine par semaine."},
+    {"n":6,"t":"Titre chapitre 6","st":"sous-titre","c":"Environ 700 mots, maintien, progression et vision long terme."}
   ],
   "prompt_lovable": "Intègre ce fichier HTML comme page principale de mon site. Connecte le lien Stripe ${stripe||'[AJOUTER TON LIEN STRIPE ICI]'} sur TOUS les boutons d'achat. Rends le site entièrement responsive desktop, tablette et mobile. Ajoute un compteur de compte à rebours de 15 minutes sur la bannière d'urgence du haut. Configure une page de confirmation de paiement simple après le paiement Stripe. Garde le design, les couleurs, les animations et le CSS exactement tels quels."
 }`;
 
   try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:8000,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const raw=data.content.map(b=>b.text||'').join('');
-    let clean=raw.replace(/```json|```/g,'').trim();
-    const js=clean.indexOf('{'),je=clean.lastIndexOf('}');
-    if(js!==-1&&je!==-1)clean=clean.slice(js,je+1);
-    let parsed;try{parsed=JSON.parse(clean);}catch(e){parsed=fallback();}
+    const {data:sessionData}=await dbClient.auth.getSession();
+    const accessToken=sessionData?.session?.access_token;
+    if(!accessToken)throw new Error('Ta session a expiré. Reconnecte-toi puis relance la génération.');
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({prompt,brief:S.a})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'La génération n’a pas pu démarrer.');
+    const parsed=data.product;
+    if(!parsed||!Array.isArray(parsed.chapitres)||!parsed.chapitres.length)throw new Error('Le produit généré est incomplet. Réessaie dans un instant.');
+    // Le choix de l'utilisateur est la source de vérité, même si le modèle tente de le reformuler.
+    parsed.titre_produit=offre;parsed._generation_id=crypto.randomUUID();parsed.illustration_paths=Array(10).fill(null);
+    try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:parsed,brief:S.a,theme}));}catch(_){ }
+    showTextReadyWorkspace(parsed);
+    mel.textContent='🎨 Illustrations GPT et page de vente Claude...';
+    const salesPromise=fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product:parsed,brief:S.a,theme,lovablePrompt:parsed.prompt_lovable||''})}).then(async response=>({ok:response.ok,data:await response.json().catch(()=>({}))})).catch(()=>({ok:false,data:{error:'Connexion impossible avec le service Claude.'}}));
+    const illustrations=Array(10).fill(null),failedImages=[];
+    for(let index=0;index<10;index++){
+      try{
+        const imageRes=await fetch('/api/generate-images',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product:parsed,brief:S.a,theme,index})});
+        const imageData=await imageRes.json().catch(()=>({}));
+        if(!imageRes.ok||!imageData.illustration)throw new Error(imageData.error||'Illustration non générée');
+        const stored=await persistIllustration(imageData.illustration,parsed._generation_id,index);
+        parsed.illustration_paths[index]=stored.path;illustrations[index]=stored.url;updateStudioPage(index,stored.url);
+        try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:{...parsed,illustrations},brief:S.a,theme}));}catch(_){ }
+      }catch(_){failedImages.push(index);const page=document.getElementById('studioPage'+index);if(page)page.querySelector('span').insertAdjacentHTML('beforeend','<br><em style="color:#ff91ab">À reprendre</em>');}
+    }
+    const salesResult=await salesPromise;
+    parsed.illustrations=illustrations;
+    if(salesResult.ok&&salesResult.data.html&&salesResult.data.upsellHtml){parsed.sales_html=salesResult.data.html;parsed.upsell_html=salesResult.data.upsellHtml;updateStudioSales();}
+    else parsed.sales_error=salesResult.data?.error||'Claude n’a pas renvoyé le tunnel complet.';
+    parsed.missing_images=failedImages;
+    completeBuildWorkspace();
+    try{localStorage.removeItem('dropdigital_pending_product');}catch(_){ }
     clearInterval(mi_);clearInterval(li_);
     lids.forEach(id=>{const el=document.getElementById(id);el.classList.remove('active');el.classList.add('done');});
     setTimeout(()=>showResults(parsed,theme),800);
   } catch(err){
     clearInterval(mi_);clearInterval(li_);
-    showResults(fallback(),getTheme(S.a.marche,S.a.niche));
+    document.getElementById('loadingScreen').classList.remove('show');
+    const message=err?.message||'Une erreur est survenue pendant la génération.';
+    const body=document.getElementById('resultsBody');if(body)body.innerHTML=`<div class="build-workspace"><div class="modal-eyebrow">⚠️ CONNEXION INTERROMPUE</div><h3 style="font:400 42px 'Bebas Neue',sans-serif;color:white">Ta création est conservée.</h3><p style="color:#ff94ad;line-height:1.7">${eh(message)}</p><p style="color:#aaa;line-height:1.7">Aucun contenu déjà terminé ne sera régénéré inutilement.</p><button class="history-new" type="button" onclick="resumePendingProduct()">↻ REPRENDRE LES ÉLÉMENTS MANQUANTS</button></div>`;
   }
 }
+function resumePendingProduct(){let pending;try{pending=JSON.parse(localStorage.getItem('dropdigital_pending_product')||'null');}catch(_){ }if(!pending?.product){restart();return;}S.a=pending.brief||S.a;showResults(pending.product,pending.theme||selectedTheme());}
 
 function fallback(){
   return{titre_produit:"La Méthode Complète",sous_titre:"Résultats garantis dès la première semaine",prix:"17,80",prix_barre:"47",avatar:"Une personne motivée qui cherche des résultats concrets. Elle a déjà essayé sans succès et est prête à investir. Son problème numéro 1 est le manque de clarté sur quoi faire exactement. Elle achètera parce que la promesse est précise et la garantie lève tout risque.",histoire_cible:"C'est 23h, tu es seul·e face à ton écran, encore une fois. Tu as essayé des dizaines de méthodes, regardé des heures de vidéos YouTube, mais rien ne change vraiment. La frustration monte. Tu sais que la solution existe quelque part, mais tu ne la trouves pas. Ce sentiment d'être bloqué·e alors que d'autres avancent, c'est épuisant. Et cette nuit encore, tu te couches avec le même poids sur la poitrine.",douleurs_profondes:["Je me réveille chaque matin avec ce sentiment d'être à côté de ma vie","J'ai tout essayé et rien ne fonctionne pour moi, je dois être différent·e des autres","Chaque jour qui passe sans résultat me fait sentir que c'est trop tard"],desirs_profonds:["Je veux juste me lever un matin et me sentir fier·e de qui je suis devenu·e","Je rêve du jour où ça sera naturel, sans effort, sans me battre contre moi-même","Je veux prouver, surtout à moi-même, que je suis capable de transformer ma vie"],promesse:"Obtiens des résultats visibles en 7 jours — garanti ou remboursé intégralement.",garantie:"Si tu ne vois aucun résultat dans les 7 premiers jours en suivant la méthode, je te rembourse intégralement. Sans question, sans délai.",problemes:["Tu essaies depuis des mois sans voir de résultats durables","Tu ne sais pas par où commencer ni quelles étapes suivre dans l'ordre","Tu perds du temps avec des méthodes qui ne s'adaptent pas à ta situation"],modules:[{e:"🎯",t:"Le positionnement parfait",d:"Comment te démarquer dès le départ"},{e:"⚡",t:"La méthode accélérée",d:"Les raccourcis que les experts utilisent"},{e:"🔥",t:"Les erreurs fatales",d:"Ce qui fait échouer 90% des gens"},{e:"💪",t:"Passer à l'action",d:"Le plan concret jour par jour"},{e:"📈",t:"Scaler les résultats",d:"Aller encore plus loin"},{e:"🏆",t:"Maintenir sur la durée",d:"La transformation durable"}],temoignages:[{p:"Sophie",a:"34",v:"Lyon",t:"J'ai essayé des dizaines de méthodes avant celle-ci. En 5 jours j'ai vu une vraie différence. Ce guide m'a sauvé la mise."},{p:"Marc",a:"28",v:"Bordeaux",t:"Résultats en 4 jours. Les explications sont tellement claires que je me suis lancé sans hésiter."},{p:"Camille",a:"41",v:"Paris",t:"Simple, efficace, direct. Pas de blabla, que du concret. J'aurais voulu trouver ça 2 ans plus tôt."}],faq:[{q:"Est-ce adapté aux débutants complets ?",r:"Oui, 100%. Ce guide a été conçu pour que quelqu'un qui part de zéro obtienne des résultats."},{q:"En combien de temps vais-je voir des résultats ?",r:"La plupart voient une différence dès les 3-5 premiers jours."},{q:"Et si ça ne fonctionne pas pour moi ?",r:"Remboursement intégral dans les 7 jours, sans question posée."}],chapitres:[{n:1,t:"Les fondations que personne ne pose",st:"Pourquoi tu échoues depuis le début",c:"La plupart des gens qui n'obtiennent pas de résultats font la même erreur : ils sautent les fondations. Ils cherchent des raccourcis avant d'avoir posé les bases. Ce chapitre va changer ta façon d'approcher le problème.\n\nPremière technique : L'audit de point de départ. Avant de faire quoi que ce soit, tu dois savoir exactement où tu en es. Prends une feuille, réponds à ces 3 questions : Qu'est-ce qui fonctionne déjà ? Qu'est-ce qui bloque ? Quelle est la prochaine action la plus simple ? Cet exercice prend 15 minutes mais évite des semaines d'erreur.\n\nDeuxième technique : La règle des 80/20 appliquée. Dans chaque domaine, 20% des actions génèrent 80% des résultats. Ton travail est d'identifier ces 20% et de les exécuter en priorité absolue. Pour y arriver, liste toutes tes actions possibles, note-les de 1 à 10 en impact, et concentre-toi uniquement sur celles au-dessus de 7.\n\nTroisième technique : L'ancrage des habitudes. Un résultat durable vient d'une habitude, pas d'un effort ponctuel. Connecte la nouvelle action à une habitude existante (juste après le café du matin, juste avant de dormir). La neurologie confirme que ce mécanisme réduit de 60% l'effort mental nécessaire.\n\nConclusion : En appliquant ces trois bases, tu vas constater un changement dès la première semaine. Ce n'est pas de la magie, c'est de la mécanique."},{n:2,t:"La méthode que les experts cachent",st:"Ce que les meilleurs font différemment",c:"Il existe une différence fondamentale entre ceux qui obtiennent des résultats rapidement et ceux qui stagnent. Ce n'est pas le talent. Ce n'est pas la chance. C'est une façon spécifique de structurer leur progression.\n\nTechnique 1 : La progression par paliers. Au lieu de viser 100% d'un coup, découpe ton objectif en paliers de 25%. Chaque palier atteint déclenche de la dopamine et renforce la motivation. Exemple concret : si ton objectif est X, vise d'abord 25% de X, célèbre, puis avance.\n\nTechnique 2 : Le feedback loop quotidien. Chaque soir, pose-toi ces deux questions : Qu'est-ce qui a fonctionné aujourd'hui ? Qu'est-ce que je ferai différemment demain ? Ce rituel de 5 minutes accélère ton apprentissage par 3 selon les études sur la métacognition.\n\nTechnique 3 : L'environnement de succès. Tu ne peux pas te battre contre ton environnement. Les experts configurent leur espace pour rendre le succès facile et l'échec difficile. Identifie les 3 frictions qui te font abandonner et supprime-les physiquement de ton environnement.\n\nCe que tu vas ressentir en appliquant tout ça : une clarté nouvelle, une énergie différente le matin, et surtout des résultats qui s'accumulent plutôt que de stagner."},{n:3,t:"Accélérer sans se brûler",st:"La vitesse durable vs le sprint épuisant",c:"Le piège numéro 1 de ceux qui démarrent fort : ils confondent intensité et efficacité. Résultat : ils s'épuisent en 3 semaines, abandonnent, et restent convaincus que la méthode ne fonctionne pas.\n\nTechnique 1 : Le principe de récupération active. Dans chaque domaine de performance, les meilleurs intègrent des périodes de récupération délibérée. Ce n'est pas du repos passif mais une activité légère qui maintient le momentum sans drainer l'énergie.\n\nTechnique 2 : L'intensité variable. Au lieu de maintenir 100% tout le temps, alterne : 3 jours à 80% d'effort, 1 jour à 40%, 3 jours à 90%. Cette structure protège contre l'épuisement et améliore les résultats globaux de 40% comparé à l'effort constant.\n\nTechnique 3 : Les indicateurs d'alarme. Apprends à reconnaître les signaux qui précèdent l'abandon : irritabilité, perte de motivation, rationalisation. Quand tu les identifies, active immédiatement le protocole de récupération plutôt qu'attendre la rupture.\n\nLa vraie accélération vient de la constance sur 90 jours, pas de l'intensité sur 7 jours."},{n:4,t:"Les 5 erreurs qui tuent les résultats",st:"Et comment ne plus jamais les faire",c:"Ces 5 erreurs sont responsables de 90% des échecs. Tu en fais probablement au moins 3 en ce moment sans le savoir.\n\nErreur 1 : Vouloir tout changer en même temps. Solution : ne change qu'une seule chose à la fois. Quand elle est installée (21 jours minimum), ajoutes-en une autre.\n\nErreur 2 : Mesurer les mauvais indicateurs. La plupart mesurent les résultats finaux (trop lents à arriver) plutôt que les indicateurs avancés (immédiats). Identifie 2-3 indicateurs quotidiens qui précèdent les résultats finaux et suis-les.\n\nErreur 3 : Apprendre sans appliquer. La consommation de contenu sans action crée une illusion de progression. Règle : pour chaque heure d'apprentissage, 2 heures d'application minimum.\n\nErreur 4 : Ignorer le contexte personnel. Les méthodes génériques ne tiennent pas compte de ta situation, tes contraintes, ton rythme. Adapte chaque technique à ta réalité plutôt que de l'appliquer mécaniquement.\n\nErreur 5 : Abandonner trop tôt. La plupart abandonnent exactement 2-3 semaines avant que les résultats ne commencent à se matérialiser. La courbe d'apprentissage est non-linéaire : longue phase plate, puis croissance exponentielle."},{n:5,t:"Le plan d'action des 30 premiers jours",st:"Semaine par semaine, action par action",c:"Voici le plan concret. Pas de théorie, que des actions précises.\n\nSemaine 1 : Installation des fondations. Jour 1-2 : audit de situation et identification de tes 3 priorités absolues. Jour 3-4 : mise en place de l'environnement et suppression des frictions. Jour 5-7 : exécution du protocole minimal viable — la plus petite version de la méthode qui donne des résultats mesurables.\n\nSemaine 2 : Montée en puissance. Tu as maintenant une première semaine de données. Identifie ce qui a fonctionné et double dessus. Identifie ce qui n'a pas fonctionné et modifie ou supprime. Intègre 1 nouvelle technique de ce guide.\n\nSemaine 3 : Consolidation. C'est la semaine critique — beaucoup abandonnent ici car les résultats ne sont pas encore visibles au maximum. Continue. Le travail des semaines 1 et 2 est en train de s'installer en profondeur.\n\nSemaine 4 : Récolte et ajustement. Les premiers résultats significatifs apparaissent. Mesure précisément où tu en es. Planifie les 30 prochains jours en utilisant ce que tu as appris.\n\nRègle d'or : exécute d'abord, optimise ensuite."},{n:6,t:"Maintenir et dépasser",st:"La transformation qui dure toute une vie",c:"Félicitations d'être arrivé au dernier chapitre. Ce que tu as appris ici n'est pas une solution temporaire. C'est un système de vie.\n\nLa maintenance intelligente : Les résultats se maintiennent grâce à 3 piliers. Premier pilier : le rituel quotidien minimal (15-30 minutes par jour suffisent une fois les fondations posées). Deuxième pilier : la révision mensuelle (1h par mois pour analyser les résultats et ajuster). Troisième pilier : la montée de niveau semestrielle (tous les 6 mois, identifie le prochain palier et planifie comment l'atteindre).\n\nAller plus loin : Une fois les bases maîtrisées, voici comment aller au niveau supérieur. Trouve une communauté de personnes qui travaillent sur les mêmes objectifs — l'environnement social est le facteur de succès le plus sous-estimé. Enseigne ce que tu sais à d'autres — rien n'ancre mieux une compétence que de l'expliquer. Documente ton parcours — non pour les autres, mais pour toi, car voir ta progression sur 6 mois est le meilleur carburant à long terme.\n\nLa vérité finale : La transformation durable ne vient pas d'une méthode parfaite. Elle vient de l'identité. Quand tu passes de 'quelqu'un qui essaie' à 'quelqu'un qui est', rien ne peut t'arrêter. Ce guide t'a donné les outils. L'identité, tu la construis une action à la fois."}],prompt_lovable:"Intègre ce fichier HTML comme page principale. Connecte le lien Stripe sur tous les boutons d'achat. Rends le site responsive. Ajoute un timer de 15 minutes. Configure une page de confirmation après paiement. Garde le design tel quel."};
@@ -1384,15 +1771,63 @@ h2.sh span{color:${t.a}}
 </body></html>`;
 }
 
+function buildEbookHTML(d,t){
+  // L'ebook reste un produit éditorial : les arguments commerciaux sont réservés à la page de vente.
+  d={...d,garantie:'Tu as maintenant une méthode claire. Choisis la prochaine action la plus utile, applique-la avec régularité et mesure tes progrès pour continuer à avancer.'};
+  const images=Array.isArray(d.illustrations)?d.illustrations:[];
+  const image=(index,alt)=>images[index]?`<img src="${ea(images[index])}" alt="${ea(alt)}">`:'';
+  const typography=S.a.design?.typography||'Moderne et lisible';
+  const headingFont=/Éditoriale/.test(typography)?"'Playfair Display',serif":/Chrome/.test(typography)?"'Space Grotesk',sans-serif":"'Manrope',sans-serif";
+  const isChrome=/chrome/i.test((S.a.design?.universeLabel||'')+' '+(S.a.design?.motif||''));
+  const chapters=(d.chapitres||[]).map((c,index)=>`<section class="ebook-page chapter ${index%2?'reverse':''}"><div class="page-grid"><div class="chapter-visual">${image(index+2,c.t)}<div class="visual-shade"></div><span class="visual-index">0${index+1}</span></div><div class="chapter-heading"><div class="chapter-no">CHAPITRE ${eh(String(c.n||index+1))}</div><h2>${eh(c.t)}</h2><p class="subtitle">${eh(c.st)}</p><div class="heading-line"></div><div class="chapter-chip">GUIDE PRATIQUE · MÉTHODE · EXERCICES</div></div></div><div class="chapter-copy"><p>${eh(c.c).replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</p></div><div class="action-box"><strong>ACTION DU CHAPITRE</strong><span>Choisis une action précise dans ce chapitre, fixe son moment d’exécution et note le résultat obtenu.</span></div><div class="page-footer"><span>${eh(d.titre_produit)}</span><b>${index+3}</b></div></section>`).join('');
+  const toc=(d.chapitres||[]).map(c=>`<li><span>${eh(String(c.n))}</span>${eh(c.t)}</li>`).join('');
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${eh(d.titre_produit)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;700;800&family=Playfair+Display:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><style>@page{size:A4;margin:0}*{box-sizing:border-box}html{background:#090614}body{margin:0;padding:28px 0;background:radial-gradient(circle at top,${t.p}33,transparent 38%),#090614;color:${t.txt||'#eee'};font-family:'Inter',sans-serif}.ebook-document{width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}.ebook-page{width:210mm;min-height:297mm;padding:20mm 18mm;position:relative;overflow:hidden;page-break-after:always;background:radial-gradient(circle at 110% -10%,${t.p}66,transparent 38%),radial-gradient(circle at -10% 80%,${t.a}20,transparent 35%),linear-gradient(145deg,${t.bg},${t.bg2});box-shadow:0 24px 80px #0009;border:1px solid ${t.p}44}.ebook-page:before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.2;background:repeating-radial-gradient(circle at 0 0,#fff 0 1px,transparent 1px 7px);mix-blend-mode:overlay}.ebook-page:after{content:'';position:absolute;width:115mm;height:115mm;border:1px solid ${t.a}33;border-radius:50%;right:-70mm;top:-70mm;box-shadow:0 0 45px ${t.p}44;pointer-events:none}.ebook-page>*{position:relative;z-index:1}.cover{padding:0;display:grid;grid-template-columns:52% 48%;background:${t.bg}}.cover-art{position:relative;min-height:297mm;overflow:hidden}.cover-art img,.chapter-visual img,.toc-art img,.final-art img{width:100%;height:100%;object-fit:cover;display:block}.cover-art:after,.toc-art:after,.final-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,${t.bg}),linear-gradient(0deg,${t.bg}99,transparent 55%)}.cover-copy{padding:25mm 15mm 22mm 9mm;display:flex;flex-direction:column;justify-content:center;position:relative;backdrop-filter:blur(5px)}.kicker,.chapter-no{color:${t.a};font-size:11px;letter-spacing:4px;font-weight:700;text-transform:uppercase}.cover h1,.toc h2,.chapter h2,.visual-copy h2{font-family:${headingFont}}.cover h1{font-size:50px;line-height:.94;margin:24px 0 20px;text-transform:uppercase;color:${isChrome?'transparent':'#fff'};${isChrome?`background:linear-gradient(115deg,#fff 5%,#7f91a8 30%,#eefaff 48%,#59697f 68%,#fff 92%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 8px 22px #000)`:'text-shadow:0 10px 32px #0008'}}.cover .promise{font-size:18px;line-height:1.55;color:${t.txt||'#ddd'}cc}.cover .line,.heading-line{width:72px;height:4px;background:linear-gradient(90deg,${t.a},${t.p});margin:28px 0;box-shadow:0 0 18px ${t.a}88}.author{margin-top:auto;font-size:12px;color:${t.txt||'#ddd'}88}.toc{display:grid;grid-template-columns:42% 58%;padding:0}.toc-art{min-height:297mm;position:relative;overflow:hidden}.toc-copy{padding:24mm 16mm}.toc h2,.chapter h2{font-size:38px;line-height:1.02;margin:16px 0;color:#fff;text-transform:uppercase}.toc ul{list-style:none;padding:0;margin-top:30px}.toc li{padding:13px 0;border-bottom:1px solid ${t.p}44;font-size:15px;line-height:1.35}.toc li span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(145deg,${t.p},${t.a});margin-right:12px;color:#fff}.page-grid{display:grid;grid-template-columns:46% 54%;gap:12mm;align-items:center}.chapter.reverse .chapter-visual{order:2}.chapter-visual{height:105mm;position:relative;overflow:hidden;border-radius:10px;box-shadow:0 18px 55px #000b;border:1px solid ${t.a}55}.chapter-visual img{object-position:center}.visual-shade{position:absolute;inset:0;background:linear-gradient(0deg,${t.bg}cc,transparent 58%)}.visual-index{position:absolute;left:14px;bottom:9px;color:white;font:800 42px ${headingFont};opacity:.9}.subtitle{color:${t.a};font-size:17px;line-height:1.45;margin-bottom:18px}.chapter-chip{display:inline-block;padding:8px 10px;border:1px solid ${t.a}44;background:${t.p}18;color:${t.txt||'#ddd'}99;font-size:8px;letter-spacing:1.5px}.chapter-copy{columns:2;column-gap:11mm;font-size:11.6px;line-height:1.72;color:${t.txt||'#ddd'};margin-top:13mm;text-align:left}.chapter-copy p{margin:0 0 12px;break-inside:avoid}.chapter-copy p:first-child:first-letter{float:left;font:700 44px ${headingFont};line-height:.8;padding:7px 7px 0 0;color:${t.a}}.action-box{margin-top:10mm;padding:16px 18px;border:1px solid ${t.a};background:linear-gradient(120deg,${t.p}35,transparent);box-shadow:inset 0 1px #ffffff22}.action-box strong{display:block;color:${t.a};font-size:11px;letter-spacing:2px;margin-bottom:7px}.action-box span{font-size:12px;line-height:1.5}.page-footer{position:absolute;left:18mm;right:18mm;bottom:10mm;display:flex;justify-content:space-between;color:${t.txt||'#ddd'}55;font-size:9px;letter-spacing:1px}.page-footer b{color:${t.a}}.visual-page{padding:0;display:grid;grid-template-columns:55% 45%}.final-art{position:relative;min-height:297mm;overflow:hidden}.visual-copy{padding:25mm 14mm;display:flex;flex-direction:column;justify-content:center}.visual-copy h2{font-size:48px;line-height:1;margin:18px 0;text-transform:uppercase}.visual-copy p{font-size:17px;line-height:1.65;color:${t.txt||'#ddd'}bb}.visual-copy .steps{margin-top:24px;display:grid;gap:10px}.visual-copy .steps span{padding:12px;border-left:3px solid ${t.a};background:${t.p}22;font-size:12px}@media(max-width:850px){body{padding:0}.ebook-document{gap:8px}.ebook-page{width:100%;min-height:141vw;transform:none;box-shadow:none}.cover h1,.visual-copy h2{font-size:clamp(32px,7vw,48px)}}@media print{html,body{background:white;padding:0}.ebook-document{gap:0}.ebook-page{box-shadow:none;border:0;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><main class="ebook-document"><section class="ebook-page cover"><div class="cover-art">${image(0,d.titre_produit)}</div><div class="cover-copy"><div class="kicker">DROPDIGITAL ÉDITION · COLLECTION ${eh((S.a.design?.universeLabel||t.n||'PREMIUM').toUpperCase())}</div><h1>${eh(d.titre_produit)}</h1><p class="promise">${eh(d.sous_titre)}</p><div class="line"></div><p class="author">Créé pour ${eh(S.a.prenom||'toi')} · Édition premium illustrée</p></div></section><section class="ebook-page toc"><div class="toc-art">${image(1,'Vue d’ensemble de la méthode')}</div><div class="toc-copy"><div class="chapter-no">TON PARCOURS</div><h2>SOMMAIRE</h2><ul>${toc}</ul></div></section>${chapters}<section class="ebook-page visual-page"><div class="final-art">${image(8,'Plan d’action')}</div><div class="visual-copy"><div class="kicker">PLAN D’ACTION</div><h2>Transforme la lecture en résultat.</h2><p>Ne cherche pas à tout appliquer en même temps. Avance dans l’ordre, mesure ce qui change et ajuste sans abandonner.</p><div class="steps"><span>01 · Choisis ton premier levier.</span><span>02 · Bloque un créneau précis.</span><span>03 · Mesure un indicateur simple.</span><span>04 · Répète pendant sept jours.</span></div></div></section><section class="ebook-page visual-page"><div class="final-art">${image(9,'Conclusion et transformation')}</div><div class="visual-copy"><div class="kicker">CONCLUSION</div><h2>La suite commence maintenant.</h2><p>${eh(d.garantie||'Applique une étape à la fois, reste régulier et mesure tes progrès avec honnêteté.')}</p><div class="line"></div><p class="author">${eh(d.titre_produit)} · Dropdigital Édition</p></div></section></main></body></html>`;
+}
+
+async function downloadEbookPdf(){
+  if(!window._ebookHTML)return;
+  const parsed=new DOMParser().parseFromString(window._ebookHTML,'text/html');
+  const styles=parsed.querySelector('style')?.textContent||'';
+  const holder=document.createElement('div');holder.className='ebook-export-root';holder.innerHTML=`<style>${styles}</style><style>.ebook-export-root .ebook-page{width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:210mm!important;overflow:hidden!important}.ebook-export-root h1,.ebook-export-root h2{overflow-wrap:anywhere;word-break:normal;max-width:100%}</style>${parsed.querySelector('.ebook-document')?.outerHTML||''}`;holder.style.cssText='position:absolute;left:0;top:0;width:210mm;background:#090614;z-index:999999;pointer-events:none;overflow:hidden;';document.body.appendChild(holder);
+  await Promise.all([...holder.querySelectorAll('img')].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
+  if(document.fonts?.ready)await document.fonts.ready;
+  const filename=((window._productTitle||'ebook-dropdigital').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'ebook-dropdigital')+'.pdf';
+  try{
+    const pages=[...holder.querySelectorAll('.ebook-page')],Pdf=window.jspdf?.jsPDF;if(!pages.length||!Pdf||!window.html2canvas)throw new Error('Moteur PDF indisponible');
+    const pdf=new Pdf({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+    for(let i=0;i<pages.length;i++){const page=pages[i],width=page.offsetWidth,height=page.offsetHeight;const canvas=await window.html2canvas(page,{scale:1.25,useCORS:true,allowTaint:false,backgroundColor:null,logging:false,width,height,windowWidth:1200,windowHeight:height,scrollX:0,scrollY:0});if(i)pdf.addPage('a4','portrait');pdf.addImage(canvas.toDataURL('image/jpeg',.92),'JPEG',0,0,210,297,undefined,'FAST');}
+    pdf.save(filename);
+  }catch(error){console.error('PDF export failed',error);alert('L’export PDF a rencontré un problème. Recharge la page puis réessaie.');}finally{holder.remove();}
+}
+function downloadSalesPage(){
+  if(!window._sHTML)return;const blob=new Blob([window._sHTML],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='page-de-vente-'+((window._productTitle||'dropdigital').replace(/[^a-z0-9]+/gi,'-').toLowerCase())+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function downloadUpsellPage(){
+  if(!window._uHTML)return;const blob=new Blob([window._uHTML],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='upsell-1-'+((window._productTitle||'dropdigital').replace(/[^a-z0-9]+/gi,'-').toLowerCase())+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
 // ── SHOW RESULTS ───────────────────────────────────────
 function showResults(d, theme) {
   document.getElementById('loadingScreen').classList.remove('show');
   document.getElementById('resultsScreen').classList.add('show');
+  const resultTitle=document.querySelector('.results-header h2'),resultCopy=document.querySelector('.results-header p');
+  if(S.a.plan==='free'){
+    resultTitle.innerHTML='Tes prompts sont <span>prêts.</span><br>À toi de <span>créer.</span>';
+    resultCopy.textContent='Copie les prompts dans ChatGPT pour créer manuellement ton ebook et ta page de vente.';
+  }else{
+    resultTitle.innerHTML='Ton produit est <span>prêt.</span><br>Ton site va <span>vendre.</span>';
+    resultCopy.textContent='Ton ebook et ta page de vente ont été générés automatiquement.';
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 
   const stripe=S.a.stripe||'#STRIPE_LINK';
   const {prenom,marche,niche,sousniche,offre,revenus}=S.a;
-  window._sHTML=buildSalesHTML(d,theme,stripe);
+  window._sHTML=isPaidPlan()?(d.sales_html||''):buildSalesHTML(d,theme,stripe);
+  window._uHTML=d.upsell_html||'';
+  window._ebookHTML=buildEbookHTML(d,theme);
+  window._productTitle=d.titre_produit;
+  window._productData=d;window._productTheme=theme;
+  saveGeneration(d,theme);
 
   // ── PROMPT LOVABLE DYNAMIQUE COMPLET ──
   const copyData = COPY[sousniche] || {};
@@ -1470,18 +1905,25 @@ Commence par intégrer le code HTML de la page de vente, puis applique toutes ce
   const themeDesc = theme.n || 'Rouge Pirate';
   const chapScript = (d.chapitres||[]).map(c=>`CHAPITRE ${c.n} : ${c.t}\nSous-titre : ${c.st}\n\n${c.c}`).join('\n\n---\n\n');
 
-  const promptClaudeEbook = `Tu vas réécrire et enrichir cet ebook en l'adaptant précisément aux paramètres ci-dessous. Garde la structure en 6 chapitres mais réécris TOUT le contenu pour qu'il soit parfaitement cohérent avec la niche, la sous-niche et la promesse de l'offre.
+  const userBrief = `Marché : ${marche || '[non renseigné]'}
+Niche : ${niche || '[non renseignée]'}
+Sous-niche / cible précise : ${sousniche || '[non renseignée]'}
+Titre choisi : ${offre || '[non renseigné]'}
+Promesse actuelle : ${copyData.cta1 || d.promesse || '[à préciser]'}
+Hook actuel : ${copyData.hook || d.promesse || '[à créer]'}
+Notes libres à respecter : les éléments saisis manuellement par l'utilisateur dans la niche, la sous-niche et le titre sont prioritaires sur toute suggestion générique.`;
+
+  const promptClaudeEbook = `INSTRUCTION D'EXÉCUTION PRIORITAIRE
+Ne réponds jamais par une confirmation, une analyse, une question ou une phrase du type « J'ai accès à l'ebook », « Je peux travailler dessus », « Voici ce que je vais faire » ou « Veux-tu que… ». Ne décris pas ta méthode de travail.
+
+Réponds avec UN SEUL bloc de texte délimité par trois accents graves suivis du mot text au début, puis trois accents graves à la fin. Ce bloc contient l'ebook entier et permet de copier le livre complet avec le bouton Copier unique de ChatGPT. À l'intérieur de ce bloc, commence immédiatement par le titre de l'ebook, seul sur sa ligne, sans symbole # ni hashtag, suivi de « SOMMAIRE », puis rédige directement l'introduction et l'ebook complet. Même si le texte est long, commence la rédaction maintenant sans attendre de validation.
+
+Tu es un auteur-éditeur spécialisé dans les produits numériques utiles et responsables. Crée un ebook réellement sur mesure à partir du brief ci-dessous. Les réponses libres de l'utilisateur priment toujours sur les listes ou les exemples proposés par l'outil.
 
 ═══════════════════════════════════════
 PARAMÈTRES DE L'EBOOK
 ═══════════════════════════════════════
-Ebook : "${offre}"
-Marché : ${marche}
-Niche : ${niche}
-Sous-niche : ${sousniche}
-Promesse de l'offre : "${copyData.cta1 || d.promesse || 'Résultats garantis ou remboursé.'}"
-Prix : ${d.prix}€
-Lien d'achat : ${stripe !== '#STRIPE_LINK' ? stripe : '[TON LIEN STRIPE]'}
+${userBrief}
 
 ═══════════════════════════════════════
 HOOK DE RÉFÉRENCE (à intégrer naturellement)
@@ -1491,41 +1933,44 @@ HOOK DE RÉFÉRENCE (à intégrer naturellement)
 ═══════════════════════════════════════
 INSTRUCTIONS DE RÉÉCRITURE
 ═══════════════════════════════════════
-- Réécris chaque chapitre avec un contenu de 500 mots minimum
-- Chaque chapitre doit être 100% centré sur "${sousniche}"
+- Travaille immédiatement dès ce message : ne pose aucune question, ne demande aucune validation et ne propose pas d'étape intermédiaire.
+- Si une information manque, fais une hypothèse raisonnable et utile à partir de la niche, de la cible et du titre. Ne bloque jamais la rédaction pour demander une précision.
+- Rédige directement le livrable complet dans ta réponse, du sommaire à la conclusion.
+- Commence par concevoir le plan le plus pertinent pour ce produit : le nombre de chapitres peut être compris entre 5 et 8. Ne conserve pas mécaniquement les six chapitres ou les titres du script de base.
+- Chaque chapitre doit servir directement la cible "${sousniche}" et tenir compte de la niche, du titre choisi et de toute idée libre fournie.
+- Si le brief contient une idée originale, un angle, une cible, une méthode ou une promesse qui n'apparaît pas dans le script de base, construis l'ebook autour de cette idée. Ne la dilue pas dans un modèle générique.
+- Réécris chaque chapitre avec un contenu dense et utile (environ 500 mots minimum, davantage si nécessaire).
 - Intègre des techniques CONCRÈTES et ACTIONNABLES, pas de théorie vague
-- Utilise des exemples réels, des chiffres et des situations vécues par la cible
+- Utilise des exemples plausibles, sans inventer de résultats garantis, de sources ou de témoignages.
 - Ton : ${marche === 'sante' ? 'bienveillant, motivant, scientifique' : marche === 'relations' ? 'direct, empathique, sans blabla' : 'pragmatique, orienté résultats, concret'}
-- Commence le chapitre 1 par une accroche situationnelle forte (une scène vécue)
-- Le chapitre 6 doit conclure avec un plan d'action clair et un rappel de la promesse
-- Intègre naturellement dans la conclusion : "${copyData.cta1 || '⚡ ' + d.promesse}"
+- Commence le premier chapitre par une accroche situationnelle forte, adaptée au problème précis de la cible.
+- Termine par un plan d'action clair, réaliste et adapté au sujet.
 - Chaque chapitre se termine par un encadré "ACTION DU CHAPITRE" avec 1 exercice précis
 
-Structure demandée pour CHAQUE chapitre :
-[Titre accrocheur lié à "${sousniche}"]
-[Sous-titre intrigant]
-[Accroche situationnelle — 2-3 phrases]
-[Problème clé du chapitre — 1 paragraphe]
-[Technique 1 avec étapes précises — 150 mots]
-[Technique 2 avec exemple concret — 150 mots]
-[Technique 3 avec cas pratique — 150 mots]
-[Conclusion du chapitre — 1 paragraphe]
-[ACTION DU CHAPITRE : exercice en 3 étapes]
+FORMAT DE SORTIE IMPOSÉ — commence exactement dans cet ordre, sans préambule :
+${offre}
+SOMMAIRE
+Puis une introduction qui reformule la promesse sans promesse médicale, financière ou relationnelle irréaliste.
+Ensuite, rédige chaque chapitre dans l'ordre : titre, sous-titre, accroche, explications, méthodes, exemples, puis « ACTION DU CHAPITRE ».
+Termine par une conclusion éditoriale qui synthétise l'apprentissage et propose les prochaines étapes. N'inclus dans l'ebook aucune garantie commerciale, politique de remboursement, prix, urgence marketing ni lien de paiement : ces éléments sont réservés à la page de vente.
 
 ═══════════════════════════════════════
 STYLE VISUEL POUR LE PDF (si tu génères aussi le PDF)
 ═══════════════════════════════════════
 - Thème : ${themeDesc} (couleur principale : ${theme.p}, accent : ${theme.a}, fond : ${theme.bg})
+- Motifs : ${theme.motif||'éléments décoratifs cohérents avec la niche'}
+- Typographie : ${theme.typography||'moderne et lisible'}
+- Mise en page : ${theme.layout||'éditoriale et aérée'}
 - Typographie : Titres Bebas Neue, corps DM Sans
 - Page de couverture premium avec le titre "${offre}"
 - Page sommaire avec numéros stylisés
 - Encadrés "Point Clé" avec bordure ${theme.a}
-- Page finale avec la garantie et le lien : ${stripe !== '#STRIPE_LINK' ? stripe : '[TON LIEN STRIPE]'}
+- Page finale éditoriale avec un récapitulatif et les prochaines actions, sans garantie commerciale, remboursement, prix ni lien de paiement
 
 ═══════════════════════════════════════
-SCRIPT DE BASE À RÉÉCRIRE
+SCRIPT DE BASE À UTILISER UNIQUEMENT COMME MATIÈRE PREMIÈRE
 ═══════════════════════════════════════
-[Colle ton script ebook ici — copie le contenu de l'onglet Ebook de l'outil]
+Ne copie pas les titres ou la structure ci-dessous par réflexe. Garde seulement ce qui sert réellement le brief personnalisé. Réorganise, supprime et crée les sections nécessaires.
 
 TITRE : ${d.titre_produit}
 SOUS-TITRE : ${d.sous_titre}
@@ -1535,7 +1980,7 @@ ${chapScript}
 ═══════════════════════════════════════
 LIVRABLE ATTENDU
 ═══════════════════════════════════════
-Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les instructions ci-dessus. Si tu veux aussi générer le PDF, produis ensuite le code Python ReportLab directement exécutable avec le design ${themeDesc}.`;
+Réponds maintenant avec l'ebook complet, cohérent et original, avec un sommaire sur mesure et des chapitres adaptés à "${sousniche}". Ne génère ni code HTML ni code Python. Ne pose aucune question et ne demande pas de validation. Retourne uniquement un unique bloc de texte contenant tout le livre ; sa première ligne interne doit être exactement « ${offre} », sans # ni hashtag : rédige uniquement le contenu final de l'ebook.`;
 
   const promptClaude = promptClaudeEbook;
   window._promptClaude = promptClaude;
@@ -1545,15 +1990,87 @@ Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les in
   const ebookFullText = (d.chapitres||[]).map(c=>'CHAPITRE '+c.n+' : '+c.t+'\n'+c.st+'\n\n'+c.c).join('\n\n---\n\n');
   window._ebookText = ebookFullText;
   window._promptClaude = promptClaude;
+  window._lovableContext = {
+    offre, marche, niche, sousniche,
+    prix: d.prix,
+    prixBarre: d.prix_barre,
+    stripe: stripe !== '#STRIPE_LINK' ? stripe : '[AJOUTER LE LIEN STRIPE]',
+    theme,
+    baseHTML: window._sHTML
+  };
+  window._lovablePackage = '';
+  window._buildLovablePrompt = function(ebookSource){
+    const ebook = String(ebookSource || '').trim();
+    if(!ebook) return '';
+    const c = window._lovableContext;
+    return `Tu vas modifier et enrichir la page de vente HTML fournie à la fin de ce prompt pour l'adapter exactement à l'ebook final ci-dessous.
 
-  const chapCards = (d.chapitres||[]).map(c=>`
-    <div class="chap-card">
-      <div class="chap-num">CHAPITRE ${c.n}</div>
-      <div class="chap-card-title">${c.t}</div>
-      <div class="chap-card-sub">${c.st}</div>
-      <div class="chap-card-body">${c.c}</div>
-      <div style="margin-top:14px;"><button class="copy-btn" class="copy-btn copy-btn-green" onclick="cpRaw(${JSON.stringify('CHAPITRE '+c.n+' : '+c.t+'\n'+c.st+'\n\n'+c.c)},this)">COPIER CE CHAPITRE</button></div>
-    </div>`).join('');
+IMPORTANT — le code HTML fourni est le TEMPLATE DE BASE À CONSERVER. Ne recrée pas un nouveau site ni une nouvelle direction artistique. Garde la structure, la hiérarchie visuelle, le CSS, les animations, la mise en page, les composants, l'ambiance premium et les polices du template (titres Bebas Neue, texte DM Sans). Tu modifies le CONTENU, les textes, les sections et les données pour qu'ils correspondent à l'ebook ; tu conserves le squelette et le rendu visuel du site de base.
+
+═══════════════════════════════════════
+PARAMÈTRES DU PRODUIT
+═══════════════════════════════════════
+Ebook : ${c.offre}
+Marché : ${c.marche}
+Niche : ${c.niche}
+Sous-niche / cible précise : ${c.sousniche}
+Prix : ${c.prix}€ (prix de référence : ${c.prixBarre}€)
+Lien Stripe : ${c.stripe}
+Couleur principale : ${c.theme.p}
+Couleur accent : ${c.theme.a}
+Fond : ${c.theme.bg}
+Ambiance : ${c.theme.n}
+
+═══════════════════════════════════════
+EBOOK FINAL À UTILISER COMME RÉFÉRENCE
+═══════════════════════════════════════
+${ebook}
+
+═══════════════════════════════════════
+MODIFICATIONS À APPLIQUER AU TEMPLATE
+═══════════════════════════════════════
+1. Remplace le titre, le sous-titre, le hero et les CTA du template par une promesse fidèle à l'ebook final.
+2. Réécris la section problème, la méthode, les modules, les bénéfices, la FAQ et le CTA final à partir des chapitres réellement collés.
+3. Garde toutes les sections visuelles du template, mais adapte ou renomme chaque section si nécessaire pour que le parcours de vente corresponde vraiment au livre.
+4. Connecte le lien Stripe "${c.stripe}" sur TOUS les boutons d'achat ; ajoute une page de confirmation simple après paiement. Le bouton de paiement doit être très visible, fortement contrasté, répété aux moments clés de la page et clairement libellé pour que l'action d'achat soit immédiate.
+5. Conserve les couleurs et les polices du template. N'ajoute pas d'images photoréalistes aléatoires ni de nouvelles polices. Si un visuel doit changer, utilise une illustration abstraite discrète cohérente avec la niche.
+6. Garde le site 100% responsive, les états hover/focus et une navigation clavier propre.
+7. N'invente pas de résultats, statistiques, témoignages, urgences ou garanties. S'il manque une preuve, laisse un emplacement éditable clairement identifié.
+
+═══════════════════════════════════════
+CODE HTML DU TEMPLATE À MODIFIER
+═══════════════════════════════════════
+\`\`\`html
+${c.baseHTML}
+\`\`\`
+
+Réponds en modifiant ce template existant dans Lovable. Ne pars pas d'une page vierge et ne remplace pas son design par un autre.`;
+  };
+  // Le configurateur de page de vente part du livre final, pas d'un ancien
+  // squelette imposé. ChatGPT transforme ce brief en un prompt Lovable complet.
+  window._buildSalesArchitectPrompt = function(options){
+    const ebook = String(options.ebook || '').trim();
+    if(!ebook) return '';
+    const c = window._lovableContext;
+    const bump = String(options.bump || '').trim();
+    const notes = String(options.notes || '').trim();
+    return `Sans poser de question, écris uniquement UN prompt prêt à coller dans Lovable pour créer une page de vente premium, originale et responsive à partir de cet ebook :
+
+${ebook}
+
+Produit : ${c.offre} | Marché : ${c.marche} | Niche : ${c.niche} | Cible : ${c.sousniche}
+Style : ${options.direction}. Palette : ${options.primary} / ${options.accent} / fond ${options.background}. Motif : ${options.motif}.
+Order bump : ${bump || "propose-en un cohérent avec l'ebook"}.
+Notes : ${notes || 'aucune'}.
+
+Écris un prompt Lovable FINAL COURT (maximum 550 mots). Ne recopie pas le livre et n'écris ni code HTML ni explication. Vends toujours un programme ou une méthode — ne l'appelle jamais « ebook » dans le site. Le programme est toujours à 17,80 € et l'order bump est toujours à 7,80 €. Le prix affiché doit être dynamique : 17,80 € sans order bump, 25,60 € quand il est coché, et revenir immédiatement à 17,80 € s'il est retiré. Résume : produit, cible, hero, problème, méthode, chapitres, bénéfices, order bump, FAQ et CTA.
+
+Ajoute une bannière très visible « -50 % pendant 1 h » avec compte à rebours, mais rends la date, le prix et l'activation facilement modifiables et indique que l'offre doit correspondre à une promotion réelle. Ajoute une section « retours de la communauté » avec des maquettes de conversations WhatsApp élégantes : bulles vertes alignées à droite comme dans WhatsApp, avec avatars et horodatages. Génère 3 exemples positifs cohérents avec la méthode, mais conserve une mention discrète indiquant qu'ils sont à remplacer par de vrais retours avant publication.
+
+L'order bump doit être une case à cocher, non cochée par défaut, avec un titre et deux micro-textes personnalisables : « Oui, je veux être davantage accompagnée et guidée » et « Non, je préfère suivre la méthode seule ». Adapte le wording précisément à la niche.
+
+Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec le branding de la méthode, smartphone affichant WhatsApp / groupe élèves, et éléments décoratifs cohérents avec la niche (par exemple sérum capillaire stylisé, lignes de cheveux, calendrier ou texture soyeuse). Pas de livre ouvert ni de photo stock générique. Utilise la palette et le motif choisis, prévois un contenu modifiable et réponds seulement avec ce prompt Lovable concis, dans un seul bloc facile à copier.`;
+  };
 
   document.getElementById('resultsBody').innerHTML=`
     <div class="tabs">
@@ -1564,55 +2081,52 @@ Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les in
 
     <!-- EBOOK TAB -->
     <div class="tab-content active" id="tab-ebook">
-      <div class="rc">
+      ${isPaidPlan()?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON EBOOK PRO EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Le texte, la couverture, le sommaire et les chapitres sont conservés. ${d.missing_images?.length?`${d.missing_images.length} illustration(s) restent à reprendre sans régénérer le texte.`:'Les illustrations sont déjà mises en page.'}</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="downloadEbookPdf()">📥 TÉLÉCHARGER LE PDF</button><button class="copy-btn" onclick="previewHTML(window._ebookHTML)">👁 APERÇU DE L’EBOOK</button>${d.missing_images?.length?'<button class="copy-btn" onclick="retryMissingImages(this)">↻ REPRENDRE UNIQUEMENT LES IMAGES MANQUANTES</button>':''}</div></div>`:''}
+      <div class="rc" style="border-left-color:var(--green);${isPaidPlan()?'display:none;':''}">
         <div class="rch">
-          <div class="rct">📖 SCRIPT EBOOK COMPLET — 6 CHAPITRES</div>
+          <div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">📖 PROMPT À ENVOYER À CLAUDE OU CHATGPT</div>
+          <textarea id="ebookPromptPayload" hidden aria-hidden="true">${eh(promptClaude)}</textarea>
           <div class="btn-row">
-            <button class="copy-btn" id="btnCopyEbook" class="copy-btn copy-btn-green" onclick="cpRaw(window._ebookText,this);this.textContent='✅ COPIÉ!';">TOUT COPIER</button>
+            <button class="copy-btn copy-btn-green" id="btnCopyPromptClaude" onclick="copyAndOpen(document.getElementById('ebookPromptPayload').value,this,'https://chatgpt.com/');">COPIER & OUVRIR CHATGPT</button>
           </div>
         </div>
-        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;margin-bottom:20px;">
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:white;">${d.titre_produit}</span>
-          <span style="color:#888;font-size:14px;">${d.sous_titre}</span>
-        </div>
-        ${chapCards}
-      </div>
-
-      <div class="rc" style="border-left-color:var(--green);">
-        <div class="rch"><div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">🤖 PROMPT CLAUDE — RÉÉCRIRE & AMÉLIORER L'EBOOK</div><button class="copy-btn copy-btn-green" id="btnCopyPromptClaude" onclick="cpRaw(window._promptClaude,this);">COPIER LE PROMPT</button></div>
         <div style="background:rgba(179,102,255,.08);border:1px solid rgba(179,102,255,.25);padding:16px;margin-bottom:16px;">
-          <strong style="color:#c480ff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">🚀 COMMENT UTILISER CE PROMPT :</strong>
-          <span style="color:rgba(200,170,255,.75);font-size:13px;line-height:1.9;">1. Clique sur <strong style="color:white">TOUT COPIER</strong> dans la section script ebook ci-dessus<br>2. Clique sur <strong style="color:white">COPIER LE PROMPT</strong> ci-contre<br>3. Ouvre <strong style="color:white">claude.ai</strong> → Nouveau chat<br>4. Colle le PROMPT en premier<br>5. Remplace <strong style="color:white">[Colle ton script ebook ici]</strong> par le script copié<br>6. Claude réécrit l'ebook complet adapté à <strong style="color:#c480ff;">${sousniche}</strong></span>
+          <strong style="color:#c480ff;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">UTILISATION</strong>
+          <span style="color:rgba(200,170,255,.75);font-size:13px;line-height:1.9;">Copie ce seul bloc, ouvre Claude ou ChatGPT, colle-le puis envoie-le. Il contient déjà toutes les informations choisies : niche, cible, titre, idées libres et style visuel.</span>
         </div>
-        <div class="prompt-claude-label" style="color:var(--green);">📋 APERÇU DU PROMPT (adapté à ton ebook "${offre}")</div>
-        <div class="prompt-claude-text" style="color:rgba(196,160,255,.8);">${promptClaude.slice(0,500)}...</div>
-        <p style="font-size:12px;color:rgba(179,102,255,.4);margin-top:10px;">Le prompt complet contient toutes tes variables : niche, sous-niche, hook, CTA, style visuel, instructions de réécriture.</p>
+        <details style="border:1px solid rgba(179,102,255,.22);background:rgba(15,7,30,.45);padding:0 16px;">
+          <summary style="padding:15px 0;cursor:pointer;color:#d8b8ff;font-weight:700;font-size:13px;">Voir en détail le prompt</summary>
+          <div class="prompt-claude-text" style="color:rgba(196,160,255,.8);margin:0 0 16px;max-height:440px;overflow:auto;">${eh(promptClaude)}</div>
+        </details>
       </div>
     </div>
 
     <!-- SALES TAB -->
     <div class="tab-content" id="tab-sales">
-      <div class="rc">
-        <div class="rch"><div class="rct">🖥️ PAGE DE VENTE COMPLÈTE</div>
-          <div class="btn-row">
-            <button class="preview-btn" onclick="previewHTML(window._sHTML)">👁 PRÉVISUALISER</button>
-            <button class="copy-btn" id="btnCopyHTML" class="copy-btn copy-btn-green" onclick="cpRaw(window._sHTML,this);this.textContent='✅ COPIÉ!';">COPIER HTML</button>
-          </div>
+      ${isPaidPlan()?(d.sales_html&&d.upsell_html?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON TUNNEL CLAUDE EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Trois éléments sont prêts : la page de vente unique, son bloc de commande avec order bump fonctionnel, et une vraie page Upsell 1 séparée.</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="previewHTML(window._sHTML)">👁 PAGE DE VENTE + ORDER BUMP</button><button class="copy-btn copy-btn-green" onclick="previewHTML(window._uHTML)">👁 PAGE UPSELL 1</button><button class="copy-btn" onclick="downloadSalesPage()">📥 TÉLÉCHARGER LA PAGE</button><button class="copy-btn" onclick="downloadUpsellPage()">📥 TÉLÉCHARGER L’UPSELL</button><button class="copy-btn" onclick="regenerateSalesTunnel(this)">↻ RECRÉER AVEC CLAUDE</button></div><iframe id="salesPreviewFrame" title="Aperçu de la page de vente" style="width:100%;height:680px;border:1px solid rgba(179,102,255,.28);background:white;margin-top:20px;border-radius:8px"></iframe></div>`:`<div class="rc" style="border-left-color:#ff547c;background:rgba(255,84,124,.035);"><div class="rct" style="color:#ff8da8;">⚠️ LE TUNNEL CLAUDE N’A PAS ÉTÉ CRÉÉ</div><p style="color:#ff9bb2;line-height:1.8;margin:16px 0;">${eh(d.sales_error||'La clé API Claude est absente, invalide, sans crédit, ou Claude n’a pas terminé les deux pages.')}</p><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Ton ebook et tes images restent conservés. Cette action relance uniquement la page de vente, l’order bump et l’upsell.</p><button class="copy-btn copy-btn-green" onclick="regenerateSalesTunnel(this)">↻ GÉNÉRER LE TUNNEL AVEC CLAUDE</button></div>`):''}
+      <div class="rc" style="${isPaidPlan()?'display:none;':''}">
+        <div class="rch"><div class="rct">🖥️ CONSTRUIRE LA DIRECTION ARTISTIQUE</div></div>
+        <div style="background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.12);padding:16px;margin-bottom:20px;">
+          <strong style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">ÉTAPE 1 — COLLE L'EBOOK FINAL</strong>
+          <span style="color:#aaa;font-size:13px;line-height:1.9;">Choisis ensuite l'univers visuel. ChatGPT recevra le livre et ces choix pour écrire le prompt Lovable sur mesure — sans ancien template imposé.</span>
         </div>
-        <p style="color:#888;font-size:14px;margin-bottom:16px;">Inclut : histoire émotionnelle, douleurs, désirs, modules, témoignages, garantie, FAQ, double CTA.<br>Thème : <strong style="color:var(--green);">${theme.n}</strong></p>
-        <div class="code-block">${eh(window._sHTML.slice(0,700))}...</div>
-        <p style="font-size:12px;color:#444;margin-top:8px;">Aperçu — utilise COPIER pour le code complet</p>
-      </div>
-
-      <div class="rc" style="border-left-color:var(--green);">
-        <div class="rch"><div class="rct" style="color:var(--green);">⚓ PROMPT LOVABLE — PAGE DE VENTE COMPLÈTE</div><button class="copy-btn" id="btnCopyLovable" class="copy-btn copy-btn-green" onclick="cpRaw(window._lovablePrompt,this);">COPIER</button></div>
-        <div style="background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.12);padding:16px;margin-bottom:16px;">
-          <strong style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;display:block;margin-bottom:10px;">COMMENT L'UTILISER :</strong>
-          <span style="color:#666;font-size:13px;line-height:1.9;">1. Copie le code HTML de ta page de vente ci-dessus (COPIER HTML)<br>2. Va sur <strong style="color:white">lovable.dev</strong> → Nouveau projet → colle le HTML<br>3. Clique sur <strong style="color:white">COPIER</strong> ci-contre pour récupérer le prompt<br>4. Colle le prompt dans le chat Lovable<br>5. Lovable intègre ton hook, tes avis, tes CTA et connecte Stripe automatiquement</span>
+        <textarea id="ebookForSalesDesigner" placeholder="Colle ici l'ebook final personnalisé…" style="width:100%;min-height:260px;resize:vertical;background:rgba(5,3,10,.72);border:1px solid rgba(179,102,255,.3);color:#eee;padding:18px;font:14px/1.7 'DM Sans',sans-serif;outline:none;"></textarea>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0;">
+          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR PRINCIPALE<input id="salesPrimary" type="color" value="${theme.p}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
+          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR ACCENT<input id="salesAccent" type="color" value="${theme.a}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
+          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR DE FOND<input id="salesBackground" type="color" value="${theme.bg}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
         </div>
-        <div class="prompt-claude-label" style="color:var(--green);">📋 APERÇU DU PROMPT (personnalisé pour "${offre}")</div>
-        <div class="prompt-claude-text" style="color:#c8a800;">${window._lovablePrompt.slice(0,600)}...</div>
-        <p style="font-size:12px;color:#444;margin-top:10px;">Le prompt complet contient : hook, problème, révélation, 3 avis avec prénoms, 3 CTA avec emojis, couleurs, lien Stripe et toutes les instructions de modification.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">STYLE VISUEL<select id="salesDirection" style="width:100%;margin-top:8px;background:#120c1e;border:1px solid rgba(179,102,255,.3);color:#eee;padding:13px;font:14px 'DM Sans',sans-serif;"><option>Éditorial premium et lumineux</option><option>Wellness doux et organique</option><option>Tech propre et futuriste</option><option>Minimaliste contrasté</option><option>Énergique et coloré</option></select></label>
+          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">MOTIF DANS LE DÉCOR<select id="salesMotif" style="width:100%;margin-top:8px;background:#120c1e;border:1px solid rgba(179,102,255,.3);color:#eee;padding:13px;font:14px 'DM Sans',sans-serif;"><option>Dégradés lumineux et halos subtils</option><option>Feuilles / lignes botaniques discrètes</option><option>Grille douce et texture papier</option><option>Formes géométriques abstraites</option><option>Grain élégant, sans illustration</option></select></label>
+        </div>
+        <label style="display:block;color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">IDÉE D'ORDER BUMP <span style="font-weight:400;color:#897c99;letter-spacing:0;">(facultatif : ChatGPT en propose un si vide)</span><textarea id="salesOrderBump" placeholder="Ex. checklist imprimable, mini-guide bonus, pack de modèles…" style="width:100%;min-height:82px;resize:vertical;margin-top:8px;background:rgba(5,3,10,.72);border:1px solid rgba(179,102,255,.3);color:#eee;padding:13px;font:14px/1.6 'DM Sans',sans-serif;outline:none;"></textarea></label>
+        <label style="display:block;color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;margin-top:14px;">NOTE OU RÉFÉRENCE VISUELLE <span style="font-weight:400;color:#897c99;letter-spacing:0;">(facultatif)</span><textarea id="salesNotes" placeholder="Ce que tu veux absolument voir ou éviter sur le site…" style="width:100%;min-height:76px;resize:vertical;margin-top:8px;background:rgba(5,3,10,.72);border:1px solid rgba(179,102,255,.3);color:#eee;padding:13px;font:14px/1.6 'DM Sans',sans-serif;outline:none;"></textarea></label>
+        <div class="btn-row" style="margin-top:16px;justify-content:flex-end;"><button class="copy-btn copy-btn-green" onclick="generateSalesArchitectPrompt()">PRÉPARER LE PROMPT CHATGPT</button></div>
+        <div id="salesArchitectResult" hidden style="margin-top:22px;border:1px solid rgba(37,211,102,.24);background:rgba(37,211,102,.035);padding:18px;">
+          <div class="rch"><div class="rct" style="color:var(--green);">PROMPT À ENVOYER À CHATGPT</div><button class="copy-btn copy-btn-green" id="btnCopySalesArchitect" onclick="copyAndOpen(window._salesArchitectPrompt,this,'https://chatgpt.com/');">COPIER & OUVRIR CHATGPT</button></div>
+          <details style="border-top:1px solid rgba(37,211,102,.16);margin-top:14px;"><summary style="padding:14px 0;cursor:pointer;color:#83efaa;font-weight:700;font-size:13px;">Voir en détail le prompt</summary><div class="prompt-claude-text" id="salesArchitectText" style="color:#c8a800;margin-bottom:4px;max-height:440px;overflow:auto;"></div></details>
+        </div>
       </div>
     </div>
 
@@ -1676,14 +2190,114 @@ Réécris les 6 chapitres complets adaptés à "${sousniche}" avec toutes les in
     </div>
     <button class="restart-btn" onclick="restart()">↺ Recommencer depuis le début</button>
   `;
+  if(isPaidPlan()&&window._sHTML)setTimeout(()=>{const frame=document.getElementById('salesPreviewFrame');if(frame)frame.srcdoc=window._sHTML;},0);
 }
 
 // ── UTILS ──────────────────────────────────────────────
-function cw(html){document.getElementById('chatWrap').innerHTML=html;}
+function cw(html){
+  const flow=getQuestionFlow(),canGoBack=flow.indexOf(S.step)>0;
+  const back=canGoBack?`<button type="button" onclick="backStep()" aria-label="Revenir à l'étape précédente" title="Revenir à l'étape précédente" style="display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;border:1px solid rgba(179,102,255,.45);border-radius:999px;background:rgba(18,8,35,.75);color:#d8b8ff;padding:10px 16px;font:700 12px 'DM Sans',sans-serif;letter-spacing:.05em;cursor:pointer;transition:transform .2s,background .2s;">← RETOUR À L'ÉTAPE PRÉCÉDENTE</button>`:'';
+  document.getElementById('chatWrap').innerHTML=back+html;
+}
 function sel(btn){document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));if(btn)btn.classList.add('selected');}
 function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'\\"');}
 function eh(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function ea(s){return eh(String(s||'')).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function tab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+async function retryMissingImages(btn){
+  const product=window._productData,missing=Array.isArray(product?.missing_images)?[...product.missing_images]:[];if(!missing.length)return;
+  const original=btn.textContent;btn.disabled=true;const {data:sessionData}=await dbClient.auth.getSession();const accessToken=sessionData?.session?.access_token;
+  if(!accessToken){btn.disabled=false;btn.textContent=original;alert('Reconnecte-toi pour reprendre les images.');return;}
+  const stillMissing=[];product.illustrations=Array.isArray(product.illustrations)?product.illustrations:Array(10).fill(null);
+  for(let n=0;n<missing.length;n++){const index=missing[n];btn.textContent=`IMAGE ${n+1} / ${missing.length}…`;try{const response=await fetch('/api/generate-images',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product,brief:S.a,theme:window._productTheme,index})});const payload=await response.json().catch(()=>({}));if(!response.ok||!payload.illustration)throw new Error();const generationId=product._generation_id||crypto.randomUUID();product._generation_id=generationId;product.illustration_paths=Array.isArray(product.illustration_paths)?product.illustration_paths:Array(10).fill(null);const stored=await persistIllustration(payload.illustration,generationId,index);product.illustration_paths[index]=stored.path;product.illustrations[index]=stored.url;}catch(_){stillMissing.push(index);}}
+  product.missing_images=stillMissing;window._ebookHTML=buildEbookHTML(product,window._productTheme);btn.disabled=false;if(stillMissing.length){btn.textContent=`⚠️ ${stillMissing.length} IMAGE(S) ENCORE MANQUANTE(S)`;setTimeout(()=>btn.textContent=original,3000);}else{btn.textContent='✅ TOUTES LES IMAGES SONT PRÊTES';setTimeout(()=>showResults(product,window._productTheme),900);}
+}
+async function regenerateSalesTunnel(btn){
+  const product=window._productData;if(!product)return;
+  const original=btn.textContent;btn.disabled=true;btn.textContent='CLAUDE CONSTRUIT LE TUNNEL…';
+  try{
+    const {data:sessionData}=await dbClient.auth.getSession(),accessToken=sessionData?.session?.access_token;
+    if(!accessToken)throw new Error('Reconnecte-toi avant de relancer Claude.');
+    const response=await fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product,brief:S.a,theme:window._productTheme,lovablePrompt:product.prompt_lovable||''})});
+    const payload=await response.json().catch(()=>({}));
+    if(!response.ok||!payload.html||!payload.upsellHtml)throw new Error(payload.error||'Claude n’a pas renvoyé le tunnel complet.');
+    product.sales_html=payload.html;product.upsell_html=payload.upsellHtml;delete product.sales_error;
+    window._sHTML=payload.html;window._uHTML=payload.upsellHtml;
+    const wasRestoring=restoringHistory;restoringHistory=true;showResults(product,window._productTheme);restoringHistory=wasRestoring;
+    setTimeout(()=>{const salesButton=document.querySelector('.tab-btn-sales');if(salesButton)tab('sales',salesButton);},50);
+  }catch(error){product.sales_error=error?.message||'Impossible de joindre Claude.';btn.disabled=false;btn.textContent='⚠️ '+product.sales_error;setTimeout(()=>btn.textContent=original,5000);}
+}
+function generateSalesArchitectPrompt(){
+  const ebook=document.getElementById('ebookForSalesDesigner');
+  const result=document.getElementById('salesArchitectResult');
+  const text=document.getElementById('salesArchitectText');
+  if(!ebook||!result||!text)return;
+  const opt={
+    ebook:ebook.value,
+    primary:document.getElementById('salesPrimary').value,
+    accent:document.getElementById('salesAccent').value,
+    background:document.getElementById('salesBackground').value,
+    direction:document.getElementById('salesDirection').value,
+    motif:document.getElementById('salesMotif').value,
+    bump:document.getElementById('salesOrderBump').value,
+    notes:document.getElementById('salesNotes').value
+  };
+  const prompt=window._buildSalesArchitectPrompt?window._buildSalesArchitectPrompt(opt):'';
+  if(!prompt){
+    ebook.focus();
+    ebook.style.borderColor='#ff4d7a';
+    setTimeout(()=>{ebook.style.borderColor='rgba(179,102,255,.3)';},1200);
+    return;
+  }
+  window._salesArchitectPrompt=prompt;
+  text.textContent=prompt;
+  result.hidden=false;
+  result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function prepareAndOpenSalesPrompt(btn){
+  if(!window._salesArchitectPrompt)generateSalesArchitectPrompt();
+  copyAndOpen(window._salesArchitectPrompt,btn,'https://chatgpt.com/');
+}
+function copyAndOpen(text,btn,url){
+  if(!text){return;}
+  const prompt=typeof text==='string'?text:String(text||'');
+  // La source copiée est le même textarea caché que le bloc « Voir en détail ».
+  window.__lastCopiedPrompt=prompt;
+  const copied=copyNow(prompt);
+  showCopyState(btn,prompt.length,copied);
+  // L'ouverture doit rester dans le clic utilisateur pour ne pas être bloquée.
+  const tab=window.open(url,'_blank','noopener');
+  if(!tab && btn){
+    const original=btn.textContent;
+    btn.textContent='COPIÉ — OUVRE LE SITE';
+    setTimeout(()=>{btn.textContent=original;},2200);
+  }
+}
+function copyNow(text){
+  // Le fallback synchrone est nécessaire avec une page locale file:// :
+  // certaines versions de Chrome refusent navigator.clipboard dans ce contexte.
+  let legacyCopied=false;
+  const ta=document.createElement('textarea');
+  ta.value=text;ta.setAttribute('readonly','');
+  ta.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0;pointer-events:none;';
+  document.body.appendChild(ta);
+  ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);
+  try{legacyCopied=document.execCommand('copy');}catch(_){legacyCopied=false;}
+  document.body.removeChild(ta);
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).catch(()=>{});
+    }
+  }catch(_){}
+  return legacyCopied;
+}
+function showCopyState(btn,length,copied){
+  if(!btn)return;
+  if(!btn.dataset.orig)btn.dataset.orig=btn.textContent;
+  btn.textContent=copied?'✅ '+length+' CARACTÈRES COPIÉS':'⚠️ COPIE À VÉRIFIER';
+  btn.classList.add('copied');
+  setTimeout(()=>{btn.textContent=btn.dataset.orig;btn.classList.remove('copied');},3500);
+}
 function cpRaw(text,btn){
   const t=typeof text==='string'?text:String(text||'');
   if(!t){if(btn){btn.textContent='❌ Erreur';setTimeout(()=>{btn.textContent=btn.dataset.orig||'COPIER';},2000);}return;}
@@ -1707,7 +2321,7 @@ function cpRaw(text,btn){
     }
   });
 }
-function restart(){S.step=0;S.a={};document.getElementById('resultsScreen').classList.remove('show');document.getElementById('chatWrap').style.display='';document.querySelector('.site-header').style.display='';init();window.scrollTo({top:0,behavior:'smooth'});}
+function restart(){const profile=getProfile();S.step=0;S.a={prenom:profile.prenom||'',revenus:profile.revenus||''};document.getElementById('resultsScreen').classList.remove('show');document.getElementById('chatWrap').style.display='';document.querySelector('.site-header').style.display='';init();window.scrollTo({top:0,behavior:'smooth'});}
 function previewHTML(html){
   const blob=new Blob([html],{type:'text/html'});
   const url=URL.createObjectURL(blob);
@@ -1716,6 +2330,7 @@ function previewHTML(html){
 }
 
 init();
+initMemberAccess();
 </script>
 </body>
 </html>
