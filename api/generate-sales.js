@@ -874,7 +874,7 @@ Aucun texte hors HTML.
     // PAGE PRINCIPALE D'ABORD.
     // On ne dépense aucun token pour l'upsell tant que la sales page
     // n'est pas correctement terminée.
-    const salesResult = await callClaude(salesPrompt, 16000);
+    const salesResult = await callClaude(salesPrompt, 32000);
     const html = salesResult.text;
 
     if (!isCompleteHtml(html, 3000)) {
@@ -902,7 +902,7 @@ Aucun texte hors HTML.
     });
 
     // L'upsell ne démarre qu'après validation de la page principale.
-    const upsellResult = await callClaude(upsellPrompt, 6000);
+    const upsellResult = await callClaude(upsellPrompt, 12000);
     const upsellHtml = upsellResult.text;
 
     if (!isCompleteHtml(upsellHtml, 1800)) {
