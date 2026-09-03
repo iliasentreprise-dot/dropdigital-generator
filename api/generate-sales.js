@@ -46,12 +46,24 @@ async function hasProAccess(token) {
 }
 
 function cleanClaudeHtml(text) {
-  return String(text || '')
+  let value = String(text || '')
     .trim()
     .replace(/^```html\s*/i, '')
     .replace(/^```\s*/i, '')
     .replace(/```\s*$/i, '')
     .trim();
+
+  // Si Claude ajoute accidentellement une phrase avant/après le HTML,
+  // on extrait uniquement le vrai document.
+  const start = value.search(/<!doctype html>/i);
+  const lower = value.toLowerCase();
+  const end = lower.lastIndexOf('</html>');
+
+  if (start >= 0 && end >= start) {
+    value = value.slice(start, end + '</html>'.length);
+  }
+
+  return value.trim();
 }
 
 function isCompleteHtml(html, minimumLength) {
@@ -723,6 +735,29 @@ Aucun texte avant le doctype.
 Aucun texte après </html>.
 
 Ne génère PAS l'upsell ici.
+
+CONTRAINTE DE TAILLE ABSOLUE :
+
+La page doit être riche visuellement mais le code doit rester COMPACT.
+
+Objectif :
+- environ 20 000 à 35 000 caractères HTML maximum,
+- CSS mutualisé avec des classes réutilisables,
+- aucun style inline gigantesque répété,
+- aucun commentaire HTML inutile,
+- aucun code dupliqué,
+- JavaScript minimal,
+- 8 à 11 sections principales maximum.
+
+La priorité absolue est de TERMINER le document.
+
+Tu dois réserver suffisamment de sortie pour toujours écrire :
+
+</body>
+</html>
+
+Si tu dois choisir entre ajouter une section supplémentaire et terminer correctement le HTML :
+TERMINE LE HTML.
 `;
 
     const upsellPrompt = `
@@ -836,26 +871,39 @@ Aucun texte hors HTML.
 
     console.log('Starting Claude funnel generation');
 
-    const [salesResult, upsellResult] = await Promise.all([
-      callClaude(salesPrompt, 16000),
-      callClaude(upsellPrompt, 6000),
-    ]);
-
+    // PAGE PRINCIPALE D'ABORD.
+    // On ne dépense aucun token pour l'upsell tant que la sales page
+    // n'est pas correctement terminée.
+    const salesResult = await callClaude(salesPrompt, 16000);
     const html = salesResult.text;
-    const upsellHtml = upsellResult.text;
 
     if (!isCompleteHtml(html, 3000)) {
-      console.error('Incomplete sales page returned by Claude', {
+      const diagnostic = {
         length: html.length,
         startsWithDoctype: /^<!doctype html>/i.test(html),
         endsWithHtml: /<\/html>\s*$/i.test(html),
-        stopReason: salesResult.stopReason,
-      });
+        stopReason: salesResult.stopReason || 'unknown',
+      };
+
+      console.error('Incomplete sales page returned by Claude', diagnostic);
 
       return send(res, 502, {
-        error: 'Claude a renvoyé une page de vente incomplète.',
+        error:
+          diagnostic.stopReason === 'max_tokens'
+            ? 'Claude a atteint sa limite avant de terminer la page de vente.'
+            : 'Claude a renvoyé une page de vente incomplète.',
+        diagnostic,
       });
     }
+
+    console.log('Sales page validated', {
+      length: html.length,
+      stopReason: salesResult.stopReason,
+    });
+
+    // L'upsell ne démarre qu'après validation de la page principale.
+    const upsellResult = await callClaude(upsellPrompt, 6000);
+    const upsellHtml = upsellResult.text;
 
     if (!isCompleteHtml(upsellHtml, 1800)) {
       console.error('Incomplete upsell page returned by Claude', {
