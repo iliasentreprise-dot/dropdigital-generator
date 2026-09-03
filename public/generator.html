@@ -3708,6 +3708,373 @@ function buildEbookHTML(d,t){
     </div>`;
   };
 
+  // ── AI VECTOR ENGINE V5 REAL ─────────────────────────
+  // GPT choisit la famille visuelle et les éléments.
+  // Le navigateur les dessine gratuitement en CSS/SVG.
+
+  const cssVisual=(index,alt='')=>{
+    const meta=visualPlan.find(v=>Number(v?.index)===Number(index))||{};
+
+    const family=String(
+      meta.visual_family||
+      meta.type||
+      meta.role||
+      'network'
+    ).toLowerCase();
+
+    const title=short(
+      meta.visual_intent||
+      meta.objectif||
+      alt||
+      'Schéma visuel'
+    );
+
+    const rawElements=Array.isArray(meta.elements)
+      ? meta.elements
+      : [];
+
+    const elements=rawElements.length
+      ? rawElements.slice(0,6)
+      : [
+          {label:'Point de départ',icon_concept:'target'},
+          {label:mechanism.nom||'Mécanisme',icon_concept:'system'},
+          {label:'Application',icon_concept:'action'},
+          {label:'Résultat',icon_concept:'progress'}
+        ];
+
+    const center=short(
+      meta.centerpiece?.label||
+      mechanism.nom||
+      alt||
+      'Mécanisme'
+    );
+
+    const iconSvg=(concept='',n=0)=>{
+      const c=String(concept||'').toLowerCase();
+
+      if(/respir|poumon|souffle/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M22 12v24M26 12v24"/>
+          <path d="M21 20C13 15 9 23 10 32c1 6 7 7 11 3"/>
+          <path d="M27 20c8-5 12 3 11 12-1 6-7 7-11 3"/>
+        </svg>`;
+      }
+
+      if(/clock|temps|timing|heure|chrono/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="17"/>
+          <path d="M24 14v11l8 5"/>
+        </svg>`;
+      }
+
+      if(/body|corps|posture|silhouette|person/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="9" r="5"/>
+          <path d="M24 15v17M15 23l9-5 9 5M17 41l7-9 7 9"/>
+        </svg>`;
+      }
+
+      if(/brain|cerveau|mental|mind/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 11c-5-6-13-1-11 5-6 1-6 10-1 12-2 7 7 11 12 5"/>
+          <path d="M24 11c5-6 13-1 11 5 6 1 6 10 1 12 2 7-7 11-12 5"/>
+          <path d="M24 11v22"/>
+        </svg>`;
+      }
+
+      if(/energy|énergie|battery|batterie/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <rect x="8" y="15" width="29" height="19" rx="3"/>
+          <path d="M37 20h4v9h-4M22 18l-5 9h6l-2 5 10-12h-7l2-2"/>
+        </svg>`;
+      }
+
+      if(/heart|coeur|cœur|cardio/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 39S8 30 8 18c0-8 10-11 16-4 6-7 16-4 16 4 0 12-16 21-16 21z"/>
+        </svg>`;
+      }
+
+      if(/food|nutrition|repas|aliment/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M13 8v14M19 8v14M13 16h6M16 22v18"/>
+          <path d="M31 8c7 5 7 15 0 20v12M31 8v20"/>
+        </svg>`;
+      }
+
+      if(/sleep|sommeil|lune|night/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M34 34A17 17 0 1 1 26 8c-5 12-2 21 8 26z"/>
+          <path d="M36 9v6M33 12h6"/>
+        </svg>`;
+      }
+
+      if(/target|cible|objectif|goal/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="17"/>
+          <circle cx="24" cy="24" r="10"/>
+          <circle cx="24" cy="24" r="3"/>
+        </svg>`;
+      }
+
+      if(/money|argent|revenu|vente|euro/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="17"/>
+          <path d="M29 16c-2-2-11-2-11 3 0 7 13 2 13 9 0 6-10 6-14 2M24 12v24"/>
+        </svg>`;
+      }
+
+      if(/growth|progress|croissance|résultat|result/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M8 36l10-11 7 6 14-18"/>
+          <path d="M30 13h9v9"/>
+        </svg>`;
+      }
+
+      if(/shield|protection|sécurité|security/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M24 7l15 6v10c0 10-6 16-15 20-9-4-15-10-15-20V13z"/>
+          <path d="M17 24l5 5 10-11"/>
+        </svg>`;
+      }
+
+      if(/gear|engrenage|system|système|mécanisme/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="7"/>
+          <path d="M24 7v6M24 35v6M7 24h6M35 24h6M12 12l5 5M31 31l5 5M36 12l-5 5M17 31l-5 5"/>
+        </svg>`;
+      }
+
+      if(/action|check|validation/.test(c)){
+        return `<svg viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="17"/>
+          <path d="M15 24l6 6 13-14"/>
+        </svg>`;
+      }
+
+      const fallback=[
+        `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="15"/><circle cx="24" cy="24" r="5"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7"/></svg>`,
+        `<svg viewBox="0 0 48 48"><path d="M24 7l16 17-16 17L8 24z"/><circle cx="24" cy="24" r="5"/></svg>`,
+        `<svg viewBox="0 0 48 48"><rect x="8" y="9" width="32" height="30" rx="7"/><path d="M14 31l7-9 6 5 8-11"/></svg>`,
+        `<svg viewBox="0 0 48 48"><circle cx="12" cy="24" r="5"/><circle cx="36" cy="13" r="5"/><circle cx="36" cy="35" r="5"/><path d="M17 22l14-7M17 26l14 7"/></svg>`
+      ];
+
+      return fallback[n%fallback.length];
+    };
+
+    const icon=(el,n)=>`
+      <div class="ai-vector-icon">
+        ${iconSvg(el?.icon_concept||el?.label||'',n)}
+      </div>
+    `;
+
+    const node=(el,n)=>`
+      <div class="vector-node">
+        ${icon(el,n)}
+        <span>${eh(short(el?.label||`Étape ${n+1}`))}</span>
+      </div>
+    `;
+
+    // ── ORBITES / CONSTELLATIONS / MOLÉCULES
+    if(/orbit|orbite|constellation|molecule|molécule|planet/.test(family)){
+      return `<div class="css-visual ai-vector ai-orbit">
+        <div class="vector-kicker">SYSTÈME</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="orbit-stage">
+          <div class="orbit-ring orbit-a"></div>
+          <div class="orbit-ring orbit-b"></div>
+
+          <div class="orbit-center">
+            ${icon({icon_concept:center},0)}
+            <b>${eh(center)}</b>
+          </div>
+
+          ${elements.slice(0,4).map((el,n)=>`
+            <div class="orbit-node orbit-node-${n}">
+              ${icon(el,n)}
+              <span>${eh(short(el.label||''))}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── CYCLES / LOOPS / FEEDBACK
+    if(/cycle|spiral|feedback|boucle|loop/.test(family)){
+      return `<div class="css-visual ai-vector ai-cycle">
+        <div class="vector-kicker">BOUCLE</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="cycle-stage">
+          <svg viewBox="0 0 320 175" class="cycle-arrows">
+            <path d="M83 40 Q160 3 237 40"/>
+            <path d="M260 58 Q300 88 260 119"/>
+            <path d="M237 139 Q160 173 83 139"/>
+            <path d="M60 119 Q20 88 60 58"/>
+          </svg>
+
+          <div class="cycle-core">${eh(center)}</div>
+
+          ${elements.slice(0,4).map((el,n)=>`
+            <div class="cycle-node cycle-node-${n}">
+              ${icon(el,n)}
+              <span>${eh(short(el.label||''))}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── TIMELINES / ROADMAP / ESCALIER
+    if(/timeline|roadmap|checkpoint|stairs|escalier|mountain|montagne|progression/.test(family)){
+      return `<div class="css-visual ai-vector ai-timeline">
+        <div class="vector-kicker">PROGRESSION</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="timeline-track">
+          ${elements.slice(0,5).map((el,n)=>`
+            <div class="timeline-item">
+              <b>${String(n+1).padStart(2,'0')}</b>
+              ${icon(el,n)}
+              <span>${eh(short(el.label||''))}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── FUNNEL
+    if(/funnel|entonnoir/.test(family)){
+      return `<div class="css-visual ai-vector ai-funnel">
+        <div class="vector-kicker">CONVERSION</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="funnel-stack">
+          ${elements.slice(0,5).map((el,n)=>`
+            <div style="width:${100-(n*13)}%">
+              ${icon(el,n)}
+              <span>${eh(short(el.label||''))}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── PYRAMIDE / COUCHES / ICEBERG
+    if(/pyramid|pyramide|iceberg|layer|couche|stack/.test(family)){
+      return `<div class="css-visual ai-vector ai-pyramid">
+        <div class="vector-kicker">ARCHITECTURE</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="pyramid-stack">
+          ${elements.slice(0,5).map((el,n)=>`
+            <div style="width:${48+(n*12)}%">
+              ${icon(el,n)}
+              <span>${eh(short(el.label||''))}</span>
+            </div>
+          `).reverse().join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── GAUGE / SCORE / BATTERIE
+    if(/gauge|jauge|score|battery|batterie|thermo|anneau|ring/.test(family)){
+      const value=62+((index*11)%31);
+
+      return `<div class="css-visual ai-vector ai-gauge">
+        <div class="vector-kicker">INDICATEUR</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="gauge-layout">
+          <div class="gauge-ring" style="--score:${value}">
+            <b>${value}</b>
+            <small>/100</small>
+          </div>
+
+          <div class="gauge-items">
+            ${elements.slice(0,3).map((el,n)=>node(el,n)).join('')}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // ── MATRICE / TABLE / DASHBOARD / SCORECARD
+    if(/matrix|table|compar|scorecard|dashboard|bars|barres|grid/.test(family)){
+      return `<div class="css-visual ai-vector ai-matrix">
+        <div class="vector-kicker">LECTURE RAPIDE</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="matrix-grid">
+          ${elements.slice(0,6).map((el,n)=>`
+            <div class="matrix-cell">
+              ${icon(el,n)}
+              <div>
+                <b>${String(n+1).padStart(2,'0')}</b>
+                <span>${eh(short(el.label||''))}</span>
+              </div>
+              <i style="width:${42+((n*17)%52)}%"></i>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+
+    // ── AVANT / APRÈS
+    if(/before|after|avant|après|transformation|comparison/.test(family)){
+      const first=elements[0]||{label:'Avant'};
+      const last=elements[elements.length-1]||{label:'Après'};
+
+      return `<div class="css-visual ai-vector ai-before-after">
+        <div class="vector-kicker">TRANSFORMATION</div>
+        <strong>${eh(title)}</strong>
+
+        <div class="before-after-grid">
+          <div>
+            ${icon(first,0)}
+            <small>AVANT</small>
+            <b>${eh(short(first.label||'Point de départ'))}</b>
+          </div>
+
+          <div class="transformation-arrow">→</div>
+
+          <div>
+            ${icon(last,1)}
+            <small>APRÈS</small>
+            <b>${eh(short(last.label||'Résultat'))}</b>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // ── DEFAULT : NETWORK / FLOW / CAUSE → MÉCANISME → ACTION → RÉSULTAT
+    return `<div class="css-visual ai-vector ai-network">
+      <div class="vector-kicker">CARTE DU MÉCANISME</div>
+      <strong>${eh(title)}</strong>
+
+      <div class="network-stage">
+        <svg viewBox="0 0 400 220" preserveAspectRatio="none" class="network-lines">
+          <path d="M73 48 C145 50 155 103 200 110"/>
+          <path d="M327 48 C255 50 245 103 200 110"/>
+          <path d="M73 172 C145 168 155 117 200 110"/>
+          <path d="M327 172 C255 168 245 117 200 110"/>
+        </svg>
+
+        <div class="network-center">
+          ${icon({icon_concept:center},0)}
+          <b>${eh(center)}</b>
+        </div>
+
+        ${elements.slice(0,4).map((el,n)=>`
+          <div class="network-node network-node-${n}">
+            ${icon(el,n)}
+            <span>${eh(short(el.label||''))}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  };
+
   const renderMechanism=()=>{
     const name=mechanism.nom||'Le mécanisme central';
     const idea=mechanism.idee||mechanism.fonctionnement||d.angle_central||'';
@@ -3801,8 +4168,8 @@ function buildEbookHTML(d,t){
     return `<section class="ebook-page chapter ${index%2?'reverse':''}">
       <div class="chapter-top">
         <div class="chapter-visual">
-          ${image(chapterVisualIndex(index),c.t)}
-          <div class="visual-shade"></div>
+          ${image(chapterVisualIndex(index),c.t) || cssVisual(chapterVisualIndex(index),c.t)}
+          ${images[chapterVisualIndex(index)] ? '<div class="visual-shade"></div>' : ''}
           <span class="visual-index">${String(index+1).padStart(2,'0')}</span>
         </div>
 
@@ -4329,6 +4696,563 @@ h1,h2,h3{font-family:${headingFont}}
   width:100%;
   height:100%;
 }
+
+
+/* ── AI VECTOR ENGINE V5 REAL ── */
+
+.ai-vector{
+  width:100%;
+  height:100%;
+  min-height:100%;
+  position:relative;
+  overflow:hidden;
+  padding:15px;
+  color:${t.txt};
+  background:
+    radial-gradient(circle at 83% 14%,${t.p}2f,transparent 32%),
+    radial-gradient(circle at 15% 90%,${t.a}18,transparent 28%),
+    linear-gradient(145deg,${t.bg2},${t.bg});
+}
+
+.vector-kicker{
+  color:${t.a};
+  font-size:8px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:2px;
+  margin-bottom:6px;
+}
+
+.ai-vector>strong{
+  position:relative;
+  z-index:3;
+  display:block;
+  max-width:88%;
+  font-family:${headingFont};
+  font-size:15px;
+  line-height:1.12;
+  text-transform:uppercase;
+}
+
+.ai-vector-icon{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+  display:grid;
+  place-items:center;
+}
+
+.ai-vector-icon svg{
+  width:100%;
+  height:100%;
+  fill:none;
+  stroke:${t.a};
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px ${t.a}55);
+}
+
+.vector-node{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:42px;
+  padding:6px;
+  border:1px solid ${t.p}2f;
+  background:${t.p}0c;
+}
+
+.vector-node span{
+  font-size:7px;
+  line-height:1.3;
+}
+
+
+/* NETWORK */
+
+.network-stage{
+  height:168px;
+  margin-top:6px;
+  position:relative;
+}
+
+.network-lines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.network-lines path{
+  fill:none;
+  stroke:${t.p}70;
+  stroke-width:1.6;
+  stroke-dasharray:6 5;
+}
+
+.network-center{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:108px;
+  min-height:64px;
+  padding:7px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:${t.bg2}f5;
+  border:1px solid ${t.a};
+  box-shadow:0 0 25px ${t.a}26;
+}
+
+.network-center b{
+  color:${t.a};
+  font-size:7px;
+  line-height:1.2;
+}
+
+.network-node{
+  position:absolute;
+  z-index:2;
+  width:105px;
+  min-height:51px;
+  padding:6px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  background:${t.bg2}e8;
+  border:1px solid ${t.p}45;
+}
+
+.network-node .ai-vector-icon{
+  width:23px;
+  height:23px;
+  flex-basis:23px;
+}
+
+.network-node span{
+  font-size:6.5px;
+  line-height:1.25;
+}
+
+.network-node-0{left:0;top:5px}
+.network-node-1{right:0;top:5px}
+.network-node-2{left:0;bottom:3px}
+.network-node-3{right:0;bottom:3px}
+
+
+/* ORBIT */
+
+.orbit-stage{
+  height:172px;
+  position:relative;
+  margin-top:4px;
+}
+
+.orbit-ring{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border:1px solid ${t.p}60;
+  border-radius:50%;
+}
+
+.orbit-a{
+  width:240px;
+  height:105px;
+  transform:translate(-50%,-50%) rotate(-14deg);
+}
+
+.orbit-b{
+  width:155px;
+  height:145px;
+  transform:translate(-50%,-50%) rotate(38deg);
+}
+
+.orbit-center{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:70px;
+  height:70px;
+  border:1px solid ${t.a};
+  border-radius:50%;
+  background:${t.bg2};
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.orbit-center .ai-vector-icon{
+  width:25px;
+  height:25px;
+}
+
+.orbit-center b{
+  max-width:60px;
+  font-size:6.5px;
+  color:${t.a};
+}
+
+.orbit-node{
+  position:absolute;
+  z-index:4;
+  width:86px;
+  display:flex;
+  gap:4px;
+  align-items:center;
+}
+
+.orbit-node .ai-vector-icon{
+  width:21px;
+  height:21px;
+  flex-basis:21px;
+}
+
+.orbit-node span{
+  font-size:6px;
+  line-height:1.2;
+}
+
+.orbit-node-0{left:2px;top:16px}
+.orbit-node-1{right:0;top:24px}
+.orbit-node-2{left:19px;bottom:8px}
+.orbit-node-3{right:15px;bottom:5px}
+
+
+/* CYCLE */
+
+.cycle-stage{
+  height:170px;
+  position:relative;
+}
+
+.cycle-arrows{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.cycle-arrows path{
+  fill:none;
+  stroke:${t.p}75;
+  stroke-width:2;
+  stroke-dasharray:7 5;
+}
+
+.cycle-core{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:92px;
+  min-height:48px;
+  display:grid;
+  place-items:center;
+  padding:6px;
+  text-align:center;
+  color:${t.a};
+  font-size:7px;
+  font-weight:800;
+  border:1px solid ${t.a};
+  background:${t.bg2};
+}
+
+.cycle-node{
+  position:absolute;
+  z-index:3;
+  width:92px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.cycle-node .ai-vector-icon{
+  width:22px;
+  height:22px;
+  flex-basis:22px;
+}
+
+.cycle-node span{
+  font-size:6px;
+}
+
+.cycle-node-0{left:2px;top:10px}
+.cycle-node-1{right:2px;top:10px}
+.cycle-node-2{right:2px;bottom:6px}
+.cycle-node-3{left:2px;bottom:6px}
+
+
+/* TIMELINE */
+
+.timeline-track{
+  margin-top:12px;
+  display:grid;
+  gap:5px;
+  position:relative;
+}
+
+.timeline-track:before{
+  content:'';
+  position:absolute;
+  left:15px;
+  top:10px;
+  bottom:10px;
+  width:1px;
+  background:${t.p}55;
+}
+
+.timeline-item{
+  min-height:30px;
+  display:grid;
+  grid-template-columns:30px 25px 1fr;
+  gap:6px;
+  align-items:center;
+  position:relative;
+  z-index:2;
+}
+
+.timeline-item>b{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:${t.a};
+  background:${t.bg2};
+  border:1px solid ${t.a};
+  font-size:6px;
+}
+
+.timeline-item .ai-vector-icon{
+  width:22px;
+  height:22px;
+}
+
+.timeline-item span{
+  font-size:7px;
+  line-height:1.25;
+}
+
+
+/* FUNNEL */
+
+.funnel-stack{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+}
+
+.funnel-stack>div{
+  min-height:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid ${t.p}45;
+  background:linear-gradient(90deg,${t.p}24,${t.a}10);
+}
+
+.funnel-stack .ai-vector-icon{
+  width:20px;
+  height:20px;
+  flex-basis:20px;
+}
+
+.funnel-stack span{
+  font-size:7px;
+  font-weight:700;
+}
+
+
+/* PYRAMID */
+
+.pyramid-stack{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+}
+
+.pyramid-stack>div{
+  min-height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid ${t.p}45;
+  background:linear-gradient(90deg,${t.p}10,${t.p}2e);
+}
+
+.pyramid-stack .ai-vector-icon{
+  width:20px;
+  height:20px;
+  flex-basis:20px;
+}
+
+.pyramid-stack span{
+  font-size:7px;
+  font-weight:700;
+}
+
+
+/* GAUGE */
+
+.gauge-layout{
+  margin-top:17px;
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:14px;
+  align-items:center;
+}
+
+.gauge-ring{
+  --score:75;
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    radial-gradient(circle,${t.bg} 55%,transparent 57%),
+    conic-gradient(${t.a} calc(var(--score)*1%),${t.p}20 0);
+}
+
+.gauge-ring b{
+  color:${t.a};
+  font-size:24px;
+}
+
+.gauge-ring small{
+  font-size:7px;
+}
+
+.gauge-items{
+  display:grid;
+  gap:6px;
+}
+
+
+/* MATRIX */
+
+.matrix-grid{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+}
+
+.matrix-cell{
+  min-height:65px;
+  padding:6px;
+  display:grid;
+  grid-template-columns:24px 1fr;
+  gap:5px;
+  position:relative;
+  align-items:center;
+  border:1px solid ${t.p}30;
+  background:${t.p}0b;
+}
+
+.matrix-cell .ai-vector-icon{
+  width:22px;
+  height:22px;
+}
+
+.matrix-cell div{
+  display:grid;
+  gap:2px;
+}
+
+.matrix-cell b{
+  color:${t.a};
+  font-size:7px;
+}
+
+.matrix-cell span{
+  font-size:6px;
+  line-height:1.25;
+}
+
+.matrix-cell i{
+  position:absolute;
+  left:6px;
+  bottom:4px;
+  height:2px;
+  background:${t.a};
+}
+
+
+/* BEFORE AFTER */
+
+.before-after-grid{
+  height:150px;
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 40px 1fr;
+  align-items:center;
+  gap:6px;
+}
+
+.before-after-grid>div:not(.transformation-arrow){
+  height:125px;
+  padding:9px;
+  border:1px solid ${t.p}3d;
+  background:${t.p}0b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.before-after-grid .ai-vector-icon{
+  width:42px;
+  height:42px;
+  margin-bottom:8px;
+}
+
+.before-after-grid small{
+  color:${t.a};
+  font-size:6px;
+  letter-spacing:1.5px;
+}
+
+.before-after-grid b{
+  font-size:7px;
+  margin-top:4px;
+}
+
+.transformation-arrow{
+  color:${t.a};
+  font-size:25px;
+  text-align:center;
+}
+
+
+/* suppression vraie des placeholders */
+.chapter-visual:empty,
+.mechanism-art:empty{
+  display:none !important;
+}
+
 </style>
 </head>
 <body>
