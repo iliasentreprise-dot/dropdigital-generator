@@ -464,6 +464,65 @@ Aucun visuel de transformation OpenAI n'est disponible.
 N'affiche aucun placeholder vide.
 `}
 
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RÈGLE ABSOLUE — PRÉNOM DU CRÉATEUR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Le champ "prenom" présent dans le brief appartient au CRÉATEUR du produit.
+
+Ce prénom est une donnée interne de génération.
+
+INTERDICTION ABSOLUE de l'afficher dans le HTML final.
+
+Il ne doit apparaître NULLE PART :
+- page de vente,
+- hero,
+- footer,
+- badge,
+- signature,
+- crédit auteur,
+- "créé par",
+- "par [prénom]",
+- confirmation,
+- checkout,
+- upsell,
+- témoignage,
+- FAQ,
+- CTA,
+- métadonnée visible.
+
+Même si le prénom semble pertinent comme auteur ou vendeur :
+NE L'AFFICHE PAS.
+
+Ne tente jamais de deviner le prénom de l'acheteur.
+
+Si aucun prénom acheteur distinct n'est explicitement fourni,
+n'affiche aucun prénom humain personnalisé.
+
+INTERDIT :
+"Créé par Ilias"
+
+INTERDIT :
+"Ilias présente Femme FATAL"
+
+INTERDIT :
+"ILIAS — ACCÈS CONFIRMÉ"
+
+INTERDIT :
+"Bienvenue Ilias"
+
+AUTORISÉ :
+"✓ ACCÈS CONFIRMÉ"
+
+AUTORISÉ :
+"FEMME FATAL — ACCÈS CONFIRMÉ"
+
+Le produit doit fonctionner comme une marque autonome,
+sans afficher l'identité personnelle de son créateur.
+
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 5. IDENTITÉ VISUELLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -878,6 +937,65 @@ Donc :
 Le montant final produit principal + upsell doit être présenté comme 47,00 EUR.
 
 N'invente aucun autre prix.
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RÈGLE ABSOLUE — PRÉNOM DU CRÉATEUR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Le champ "prenom" présent dans le brief appartient au CRÉATEUR du produit.
+
+Ce prénom est une donnée interne de génération.
+
+INTERDICTION ABSOLUE de l'afficher dans le HTML final.
+
+Il ne doit apparaître NULLE PART :
+- page de vente,
+- hero,
+- footer,
+- badge,
+- signature,
+- crédit auteur,
+- "créé par",
+- "par [prénom]",
+- confirmation,
+- checkout,
+- upsell,
+- témoignage,
+- FAQ,
+- CTA,
+- métadonnée visible.
+
+Même si le prénom semble pertinent comme auteur ou vendeur :
+NE L'AFFICHE PAS.
+
+Ne tente jamais de deviner le prénom de l'acheteur.
+
+Si aucun prénom acheteur distinct n'est explicitement fourni,
+n'affiche aucun prénom humain personnalisé.
+
+INTERDIT :
+"Créé par Ilias"
+
+INTERDIT :
+"Ilias présente Femme FATAL"
+
+INTERDIT :
+"ILIAS — ACCÈS CONFIRMÉ"
+
+INTERDIT :
+"Bienvenue Ilias"
+
+AUTORISÉ :
+"✓ ACCÈS CONFIRMÉ"
+
+AUTORISÉ :
+"FEMME FATAL — ACCÈS CONFIRMÉ"
+
+Le produit doit fonctionner comme une marque autonome,
+sans afficher l'identité personnelle de son créateur.
+
 
 Crée UNE offre complémentaire logique répondant à :
 
