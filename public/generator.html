@@ -2348,6 +2348,54 @@ async function connectStripeAccount(){
   }
 }
 
+
+async function disconnectStripeAccount(){
+  const ok=confirm(
+    'Déconnecter ce compte Stripe de Dropdigital ?\n\n' +
+    'Ton compte Stripe ne sera pas supprimé. ' +
+    'Dropdigital cessera simplement de l’utiliser.'
+  );
+
+  if(!ok)return;
+
+  try{
+    const {data}=await dbClient.auth.getSession();
+    const token=data?.session?.access_token;
+
+    if(!token){
+      throw new Error('Reconnecte-toi.');
+    }
+
+    const response=await fetch('/api/stripe-connect-disconnect',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:'Bearer '+token
+      }
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok){
+      throw new Error(
+        result.error||
+        'Impossible de déconnecter Stripe.'
+      );
+    }
+
+    S.a.stripeConnected=false;
+    S.a.stripe='';
+
+    await refreshStripeStep();
+
+  }catch(error){
+    alert(
+      error?.message||
+      'Impossible de déconnecter Stripe.'
+    );
+  }
+}
+
 async function refreshStripeStep(){
   const box=document.getElementById('stripeConnectionState');
 
@@ -2391,6 +2439,24 @@ async function refreshStripeStep(){
           Tes paiements seront configurés automatiquement
           sur ton propre compte Stripe.
         </div>
+
+        <button
+          type="button"
+          onclick="disconnectStripeAccount()"
+          style="
+            margin-top:14px;
+            padding:10px 14px;
+            width:100%;
+            border:1px solid rgba(255,90,120,.35);
+            background:rgba(255,70,100,.06);
+            color:#ff91aa;
+            cursor:pointer;
+            font-weight:700;
+            font-size:12px;
+          "
+        >
+          DÉCONNECTER STRIPE
+        </button>
       </div>
     `;
 
