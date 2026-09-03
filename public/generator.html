@@ -2242,17 +2242,13 @@ function buildSalesGenerationPayload(product,theme){
     ].join('\n');
   }).join('\n\n────────────────────────────────────\n\n');
 
-  const rawMainPrice=String(product?.prix??'')
-    .replace(',','.')
-    .trim();
-
-  const parsedMainPrice=Number.parseFloat(rawMainPrice);
-
-  const mainPrice=Number.isFinite(parsedMainPrice)
-    ? parsedMainPrice
-    : null;
-
+  // PRIX OFFICIELS — jamais décidés par l'IA
+  const mainPrice=17.80;
   const orderBumpPrice=7.80;
+  const upsellAddonPrice=29.20;
+  const mainPlusBumpTotal=25.60;
+  const mainPlusUpsellTotal=47.00;
+  const fullFunnelTotal=54.80;
 
   const bumpField=document.getElementById('salesOrderBump');
 
@@ -2322,13 +2318,9 @@ function buildSalesGenerationPayload(product,theme){
         product?.sous_titre||
         '',
 
-      price:
-        product?.prix||
-        '',
+      price:mainPrice.toFixed(2),
 
-      referencePrice:
-        product?.prix_barre||
-        '',
+      referencePrice:'',
 
       currency:'EUR'
     },
@@ -2341,8 +2333,23 @@ function buildSalesGenerationPayload(product,theme){
       idea:bumpIdea,
 
       price:orderBumpPrice,
+      totalWithMain:mainPlusBumpTotal,
 
       currency:'EUR'
+    },
+
+    upsell:{
+      addonPrice:upsellAddonPrice,
+      totalWithMain:mainPlusUpsellTotal,
+      totalWithMainAndBump:fullFunnelTotal,
+      currency:'EUR'
+    },
+
+    salesVisuals:{
+      cover:coverUrl,
+      transformation:
+        product?.illustrations?.[9]||
+        ''
     },
 
     brief:S.a,
@@ -3094,7 +3101,11 @@ Retourne maintenant UNIQUEMENT le JSON.`;
     const parsed=data.product;
     if(!parsed||!Array.isArray(parsed.chapitres)||!parsed.chapitres.length)throw new Error('Le produit généré est incomplet. Réessaie dans un instant.');
     // Le choix de l'utilisateur est la source de vérité, même si le modèle tente de le reformuler.
-    parsed.titre_produit=offre;parsed._generation_id=crypto.randomUUID();parsed.illustration_paths=Array(10).fill(null);
+    parsed.titre_produit=offre;
+    parsed.prix='17.80';
+    parsed.prix_barre='';
+    parsed._generation_id=crypto.randomUUID();
+    parsed.illustration_paths=Array(10).fill(null);
     try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:parsed,brief:S.a,theme}));}catch(_){ }
     showTextReadyWorkspace(parsed);
 
@@ -3705,11 +3716,18 @@ function buildEbookHTML(d,t){
     const classic=mechanism.pourquoi_classique_echoue||'';
 
     return `<section class="ebook-page mechanism-page">
-      <div class="mechanism-art">
-        ${image(1,name)}
-        <div class="art-overlay"></div>
-      </div>
+      ${images[1] ? `
+        <div class="mechanism-art has-real-image">
+          ${image(1,name)}
+          <div class="art-overlay"></div>
+        </div>
+      ` : ''}
       <div class="mechanism-content">
+        ${!images[1] ? `
+          <div class="mechanism-css-hero">
+            ${cssVisual(1,name)}
+          </div>
+        ` : ''}
         <div class="kicker">LE PRINCIPE CENTRAL</div>
         <h2>${eh(name)}</h2>
         ${idea?`<p class="lead">${eh(idea)}</p>`:''}
@@ -4128,6 +4146,189 @@ h1,h2,h3{font-family:${headingFont}}
   }
 }
 
+
+
+/* ── EBOOK RESPONSIVE READING MODE V4 ── */
+
+/* FORMAT DES VISUELS : stable sur desktop / PDF */
+.chapter-top{
+  grid-template-columns:76mm minmax(0,1fr);
+  align-items:center;
+}
+
+.chapter-visual{
+  width:76mm;
+  height:76mm;
+  min-width:76mm;
+  min-height:76mm;
+  max-width:76mm;
+  max-height:76mm;
+  justify-self:start;
+}
+
+.chapter.reverse .chapter-visual{
+  justify-self:end;
+}
+
+.chapter-visual img,
+.chapter-visual .css-visual{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* écran ordinateur/tablette/mobile */
+@media screen and (max-width:900px){
+
+  html,
+  body{
+    width:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    padding:0;
+  }
+
+  .ebook-document{
+    width:100%;
+    gap:12px;
+  }
+
+  .ebook-page{
+    width:100%;
+    min-height:auto;
+    height:auto;
+    padding:34px 26px 60px;
+    overflow:visible;
+    box-shadow:none;
+    border-left:0;
+    border-right:0;
+    page-break-after:auto;
+  }
+
+  .cover{
+    min-height:100svh;
+  }
+
+  .chapter-top{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  .chapter.reverse .chapter-visual{
+    order:0;
+  }
+
+  .chapter-visual{
+    width:min(76mm,100%);
+    height:auto;
+    aspect-ratio:1/1;
+    min-width:0;
+    min-height:0;
+    max-width:76mm;
+    max-height:none;
+    justify-self:center !important;
+  }
+
+  .chapter-heading{
+    width:100%;
+  }
+
+  .chapter-copy{
+    columns:1;
+    column-gap:0;
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  .chapter-lead{
+    font-size:15px;
+  }
+
+  .subtitle{
+    font-size:18px;
+  }
+
+  .mechanism-grid,
+  .pillar-grid,
+  .checklist,
+  .method-cards,
+  .micro-panel{
+    grid-template-columns:1fr;
+  }
+
+  .mechanism-content{
+    padding:34px 26px 65px;
+  }
+
+  .mechanism-page{
+    padding:0;
+  }
+
+  .mechanism-flow{
+    flex-wrap:wrap;
+  }
+
+  .progress-line{
+    grid-template-columns:1fr;
+  }
+
+  .page-footer{
+    left:26px;
+    right:26px;
+    bottom:20px;
+  }
+}
+
+/* téléchargement / impression = vrai A4 propre */
+@media print{
+
+  html,
+  body{
+    background:white !important;
+    padding:0;
+    margin:0;
+  }
+
+  .ebook-document{
+    gap:0;
+  }
+
+  .ebook-page{
+    width:210mm;
+    height:297mm;
+    min-height:297mm;
+    max-height:297mm;
+    margin:0;
+    box-shadow:none;
+    page-break-after:always;
+    break-after:page;
+  }
+
+  .chapter-visual{
+    width:76mm;
+    height:76mm;
+    min-width:76mm;
+    min-height:76mm;
+    max-width:76mm;
+    max-height:76mm;
+  }
+}
+
+.mechanism-css-hero{
+  width:100%;
+  height:72mm;
+  margin:0 0 10mm;
+  overflow:hidden;
+  border:1px solid ${t.p}55;
+  background:${t.bg2};
+}
+
+.mechanism-css-hero .css-visual{
+  width:100%;
+  height:100%;
+}
 </style>
 </head>
 <body>
