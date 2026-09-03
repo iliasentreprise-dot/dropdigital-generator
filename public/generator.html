@@ -2570,22 +2570,97 @@ JSON EXACT À PRODUIRE
       },
       "composition": "description de la hiérarchie et de la composition"
     },
-
     {
       "index": 1,
-      "role": "explication",
+      "role": "vue d'ensemble",
       "type": "diagramme / lifestyle / timeline / cycle / autre",
-      "objectif": "ce que cette image doit faire comprendre",
+      "objectif": "faire comprendre le mécanisme ou la méthode",
       "scene": "description spécifique",
-      "concept": "information ou idée représentée",
-      "texte_image": {
-        "titre": "",
-        "mecanisme": "",
-        "sous_titre": ""
-      },
+      "concept": "idée représentée",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
       "composition": "composition différente de la cover"
+    },
+    {
+      "index": 2,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 3,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 4,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 5,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 6,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 7,
+      "role": "explication",
+      "type": "visuel adapté",
+      "objectif": "illustrer une idée importante",
+      "scene": "description spécifique",
+      "concept": "concept utile au produit",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "composition adaptée"
+    },
+    {
+      "index": 8,
+      "role": "plan d'action",
+      "type": "protocole / checklist / routine / timeline",
+      "objectif": "montrer quoi faire concrètement",
+      "scene": "description précise du plan d'action",
+      "concept": "routine ou protocole final",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "lecture simple et actionnable"
+    },
+    {
+      "index": 9,
+      "role": "transformation",
+      "type": "projection / conclusion / lifestyle",
+      "objectif": "visualiser la transformation finale",
+      "scene": "description précise du résultat final",
+      "concept": "projection après application de la méthode",
+      "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
+      "composition": "finale forte et premium"
     }
-  ],
+  ]
 
   "prompt_lovable": "Conserve l'identité visuelle et le mécanisme unique du produit. Connecte le lien Stripe ${stripe||'[AJOUTER TON LIEN STRIPE ICI]'} sur les boutons d'achat et rends la page responsive."
 }
@@ -2612,6 +2687,14 @@ Avant de retourner le JSON, vérifie silencieusement :
 Retourne maintenant UNIQUEMENT le JSON.`;
 
   try {
+    // CREDIT GUARD — empêche deux générations Product Brain simultanées.
+    if(window._productGenerationInFlight){
+      console.log('[credit-guard] Product Brain déjà en cours — second appel OpenAI bloqué');
+      return;
+    }
+
+    window._productGenerationInFlight=true;
+
     const {data:sessionData}=await dbClient.auth.getSession();
     const accessToken=sessionData?.session?.access_token;
     if(!accessToken)throw new Error('Ta session a expiré. Reconnecte-toi puis relance la génération.');
@@ -2740,10 +2823,35 @@ Retourne maintenant UNIQUEMENT le JSON.`;
         buildSalesGenerationPayload(parsed,theme)
       )
 
-    }).then(async response=>({
-      ok:response.ok,
-      data:await response.json().catch(()=>({}))
-    })).catch(()=>({
+    }).then(async response=>{
+      const data=await response.json().catch(()=>({}));
+
+      // CREDIT GUARD — sauvegarde Claude immédiatement après réception.
+      if(response.ok&&data.html&&data.upsellHtml){
+        parsed.sales_html=data.html;
+        parsed.upsell_html=data.upsellHtml;
+        delete parsed.sales_error;
+
+        try{
+          localStorage.setItem(
+            'dropdigital_pending_product',
+            JSON.stringify({
+              product:{...parsed,illustrations},
+              brief:S.a,
+              theme
+            })
+          );
+        }catch(_){}
+
+        console.log('[credit-guard] tunnel Claude sauvegardé immédiatement');
+      }
+
+      return {
+        ok:response.ok,
+        data
+      };
+
+    }).catch(()=>({
       ok:false,
       data:{
         error:'Connexion impossible avec le service Claude.'
@@ -2864,6 +2972,8 @@ Retourne maintenant UNIQUEMENT le JSON.`;
     document.getElementById('loadingScreen').classList.remove('show');
     const message=err?.message||'Une erreur est survenue pendant la génération.';
     const body=document.getElementById('resultsBody');if(body)body.innerHTML=`<div class="build-workspace"><div class="modal-eyebrow">⚠️ CONNEXION INTERROMPUE</div><h3 style="font:400 42px 'Bebas Neue',sans-serif;color:white">Ta création est conservée.</h3><p style="color:#ff94ad;line-height:1.7">${eh(message)}</p><p style="color:#aaa;line-height:1.7">Aucun contenu déjà terminé ne sera régénéré inutilement.</p><button class="history-new" type="button" onclick="resumePendingProduct()">↻ REPRENDRE LES ÉLÉMENTS MANQUANTS</button></div>`;
+  } finally {
+    window._productGenerationInFlight=false;
   }
 }
 function resumePendingProduct(){let pending;try{pending=JSON.parse(localStorage.getItem('dropdigital_pending_product')||'null');}catch(_){ }if(!pending?.product){restart();return;}S.a=pending.brief||S.a;showResults(pending.product,pending.theme||selectedTheme());}
@@ -3911,11 +4021,40 @@ async function retryMissingImages(btn){
   const original=btn.textContent;btn.disabled=true;const {data:sessionData}=await dbClient.auth.getSession();const accessToken=sessionData?.session?.access_token;
   if(!accessToken){btn.disabled=false;btn.textContent=original;alert('Reconnecte-toi pour reprendre les images.');return;}
   const stillMissing=[];product.illustrations=Array.isArray(product.illustrations)?product.illustrations:Array(10).fill(null);
-  for(let n=0;n<missing.length;n++){const index=missing[n];btn.textContent=`IMAGE ${n+1} / ${missing.length}…`;try{const response=await fetch('/api/generate-images',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product,brief:S.a,theme:window._productTheme,index})});const payload=await response.json().catch(()=>({}));if(!response.ok||!payload.illustration)throw new Error();const generationId=product._generation_id||crypto.randomUUID();product._generation_id=generationId;product.illustration_paths=Array.isArray(product.illustration_paths)?product.illustration_paths:Array(10).fill(null);const stored=await persistIllustration(payload.illustration,generationId,index);product.illustration_paths[index]=stored.path;product.illustrations[index]=stored.url;}catch(_){stillMissing.push(index);}}
+  for(let n=0;n<missing.length;n++){const index=missing[n];
+
+    // CREDIT GUARD — une image déjà sauvegardée ne doit jamais être repayée.
+    const existingPath=product.illustration_paths?.[index];
+    const existingUrl=product.illustrations?.[index];
+
+    if(existingPath||existingUrl){
+      console.log(`[credit-guard] image ${index} déjà présente — API ignorée`);
+      continue;
+    }
+
+    btn.textContent=`IMAGE ${n+1} / ${missing.length}…`;try{const response=await fetch('/api/generate-images',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product,brief:S.a,theme:window._productTheme,index})});const payload=await response.json().catch(()=>({}));if(!response.ok||!payload.illustration)throw new Error();const generationId=product._generation_id||crypto.randomUUID();product._generation_id=generationId;product.illustration_paths=Array.isArray(product.illustration_paths)?product.illustration_paths:Array(10).fill(null);const stored=await persistIllustration(payload.illustration,generationId,index);product.illustration_paths[index]=stored.path;product.illustrations[index]=stored.url;}catch(_){stillMissing.push(index);}}
   product.missing_images=stillMissing;window._ebookHTML=buildEbookHTML(product,window._productTheme);btn.disabled=false;if(stillMissing.length){btn.textContent=`⚠️ ${stillMissing.length} IMAGE(S) ENCORE MANQUANTE(S)`;setTimeout(()=>btn.textContent=original,3000);}else{btn.textContent='✅ TOUTES LES IMAGES SONT PRÊTES';setTimeout(()=>showResults(product,window._productTheme),900);}
 }
 async function regenerateSalesTunnel(btn){
   const product=window._productData;if(!product)return;
+
+  // CREDIT GUARD — ne jamais repayer Claude si le tunnel complet existe déjà.
+  if(product.sales_html && product.upsell_html){
+    console.log('[credit-guard] tunnel Claude déjà généré — API ignorée');
+    window._sHTML=product.sales_html;
+    window._uHTML=product.upsell_html;
+    showResults(product,window._productTheme);
+    return;
+  }
+
+  // Empêche deux appels Claude simultanés.
+  if(window._claudeGenerationInFlight){
+    console.log('[credit-guard] appel Claude déjà en cours — second appel bloqué');
+    return;
+  }
+
+  window._claudeGenerationInFlight=true;
+
   const original=btn.textContent;btn.disabled=true;btn.textContent='CLAUDE CONSTRUIT LE TUNNEL…';
   try{
     const {data:sessionData}=await dbClient.auth.getSession(),accessToken=sessionData?.session?.access_token;
@@ -3927,7 +4066,14 @@ async function regenerateSalesTunnel(btn){
     window._sHTML=payload.html;window._uHTML=payload.upsellHtml;
     const wasRestoring=restoringHistory;restoringHistory=true;showResults(product,window._productTheme);restoringHistory=wasRestoring;
     setTimeout(()=>{const salesButton=document.querySelector('.tab-btn-sales');if(salesButton)tab('sales',salesButton);},50);
-  }catch(error){product.sales_error=error?.message||'Impossible de joindre Claude.';btn.disabled=false;btn.textContent='⚠️ '+product.sales_error;setTimeout(()=>btn.textContent=original,5000);}
+  }catch(error){
+    product.sales_error=error?.message||'Impossible de joindre Claude.';
+    btn.disabled=false;
+    btn.textContent='⚠️ '+product.sales_error;
+    setTimeout(()=>btn.textContent=original,5000);
+  }finally{
+    window._claudeGenerationInFlight=false;
+  }
 }
 function generateSalesArchitectPrompt(){
   const ebook=document.getElementById('ebookForSalesDesigner');
