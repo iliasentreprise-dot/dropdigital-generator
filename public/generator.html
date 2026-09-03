@@ -889,6 +889,114 @@ async function resendConfirmation(){
   if(error){errorEl.textContent='Impossible de renvoyer l’e-mail maintenant. Attends une minute puis réessaie.';errorEl.style.display='block';return;}
   message.textContent='E-mail de confirmation renvoyé. Vérifie aussi tes spams.';message.style.display='block';
 }
+
+function beginGenerationHistory(theme){
+  if(restoringHistory)return null;
+
+  const id=crypto.randomUUID();
+
+  const placeholder={
+    _generation_id:id,
+    _status:'building',
+    _progress:'Initialisation',
+    titre_produit:S.a.offre||'Création en cours',
+    illustration_paths:Array(10).fill(null)
+  };
+
+  const entry={
+    id,
+    createdAt:new Date().toISOString(),
+    answers:{...S.a},
+    data:placeholder,
+    theme
+  };
+
+  const items=getHistory().filter(item=>item.id!==id);
+  items.unshift(entry);
+  setHistory(items);
+
+  if(currentMember){
+    dbClient.from('member_generations').upsert({
+      id,
+      user_id:currentMember.id,
+      title:S.a.offre||'Création en cours',
+      niche:S.a.niche||null,
+      target_audience:S.a.sousniche||null,
+      answers:entry.answers,
+      generated_data:placeholder,
+      theme
+    },{onConflict:'id'}).then(({error})=>{
+      if(error)console.warn('[history] sauvegarde build initiale',error);
+    });
+  }
+
+  window._activeGenerationId=id;
+
+  return id;
+}
+
+function updateGenerationHistory(data,theme,progress='Construction en cours'){
+  if(!data)return;
+
+  const id=
+    data._generation_id||
+    window._activeGenerationId;
+
+  if(!id)return;
+
+  data._generation_id=id;
+  data._status=data._status||'building';
+  data._progress=progress;
+
+  const lightweightData={...data};
+  delete lightweightData.illustrations;
+
+  const existing=getHistory();
+  const previous=existing.find(item=>item.id===id);
+
+  const entry={
+    id,
+    createdAt:previous?.createdAt||new Date().toISOString(),
+    answers:{...S.a},
+    data:lightweightData,
+    theme
+  };
+
+  const items=existing.filter(item=>item.id!==id);
+  items.unshift(entry);
+  setHistory(items);
+
+  if(currentMember){
+    dbClient.from('member_generations').upsert({
+      id,
+      user_id:currentMember.id,
+      title:S.a.offre||data.titre_produit||'Création en cours',
+      niche:S.a.niche||null,
+      target_audience:S.a.sousniche||null,
+      answers:entry.answers,
+      generated_data:lightweightData,
+      theme
+    },{onConflict:'id'}).then(({error})=>{
+      if(error)console.warn('[history] mise à jour build',error);
+    });
+  }
+}
+
+function finishGenerationHistory(data,theme){
+  if(!data)return;
+
+  data._status='ready';
+  data._progress='Terminé';
+
+  updateGenerationHistory(
+    data,
+    theme,
+    'Terminé'
+  );
+
+  window._activeGenerationId=null;
+}
+
 function saveGeneration(data,theme){
   if(restoringHistory)return;
   const lightweightData={...data};delete lightweightData.illustrations;
@@ -909,7 +1017,14 @@ function closePlansModalOnBackdrop(event){if(event.target===event.currentTarget)
 function renderHistory(){
   const list=document.getElementById('historyList'),items=getHistory();
   if(!items.length){list.innerHTML='<div class="history-empty">Aucune création enregistrée pour le moment.<br>Ton prochain résultat apparaîtra ici.</div>';return;}
-  list.innerHTML=items.map(item=>{const a=item.answers||{},date=new Date(item.createdAt).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'});return `<article class="history-item"><div><h3>${eh(a.offre||item.data?.titre_produit||'Création sans titre')}</h3><div class="history-meta">${eh(a.niche||'Niche non renseignée')} · ${eh(a.sousniche||'Cible non renseignée')}<br>${eh(date)}</div></div><div class="history-actions"><button class="history-open" onclick="restoreGeneration('${ea(item.id)}')">OUVRIR</button><button class="history-delete" onclick="deleteGeneration('${ea(item.id)}')">SUPPRIMER</button></div></article>`;}).join('');
+  list.innerHTML=items.map(item=>{const a=item.answers||{},date=new Date(item.createdAt).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'});return `<article class="history-item"><div><h3>${eh(a.offre||item.data?.titre_produit||'Création sans titre')}</h3><div class="history-meta">
+${eh(a.niche||'Niche non renseignée')} · ${eh(a.sousniche||'Cible non renseignée')}
+<br>${eh(date)}
+${item.data?._status==='building'
+  ? `<br><strong style="color:#c080ff">● EN CONSTRUCTION · ${eh(item.data?._progress||'Préparation')}</strong>`
+  : `<br><strong style="color:#62e998">✓ TERMINÉ</strong>`
+}
+</div></div><div class="history-actions"><button class="history-open" onclick="restoreGeneration('${ea(item.id)}')">OUVRIR</button><button class="history-delete" onclick="deleteGeneration('${ea(item.id)}')">SUPPRIMER</button></div></article>`;}).join('');
 }
 async function hydrateIllustrations(data){
   const paths=Array.isArray(data?.illustration_paths)?data.illustration_paths:[];
@@ -2522,6 +2637,9 @@ async function generate(){
   const {prenom,marche,niche,sousniche,offre,revenus,stripe}=S.a;
   const theme=selectedTheme();
 
+  // HISTORIQUE : la création existe dès la première seconde.
+  const activeGenerationId=beginGenerationHistory(theme);
+
   // Récupérer le copywriting pré-écrit si disponible
   const copyData = COPY[sousniche];
   const copyBlock = copyData ? `
@@ -3104,8 +3222,16 @@ Retourne maintenant UNIQUEMENT le JSON.`;
     parsed.titre_produit=offre;
     parsed.prix='17.80';
     parsed.prix_barre='';
-    parsed._generation_id=crypto.randomUUID();
+    parsed._generation_id=activeGenerationId||window._activeGenerationId||crypto.randomUUID();
+    parsed._status='building';
+    parsed._progress='Texte terminé';
     parsed.illustration_paths=Array(10).fill(null);
+
+    updateGenerationHistory(
+      parsed,
+      theme,
+      'Texte terminé · illustrations en cours'
+    );
     try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:parsed,brief:S.a,theme}));}catch(_){ }
     showTextReadyWorkspace(parsed);
 
@@ -3169,6 +3295,12 @@ Retourne maintenant UNIQUEMENT le JSON.`;
       };
 
       updateStudioPage(0,storedCover.url);
+
+      updateGenerationHistory(
+        {...parsed,illustrations},
+        theme,
+        'Cover terminée · construction du tunnel'
+      );
 
       try{
         localStorage.setItem(
@@ -3246,6 +3378,12 @@ Retourne maintenant UNIQUEMENT le JSON.`;
           );
         }catch(_){}
 
+        updateGenerationHistory(
+          {...parsed,illustrations},
+          theme,
+          'Page de vente terminée · finalisation'
+        );
+
         console.log('[credit-guard] tunnel Claude sauvegardé immédiatement');
       }
 
@@ -3318,6 +3456,12 @@ Retourne maintenant UNIQUEMENT le JSON.`;
             stored.url
           );
 
+          updateGenerationHistory(
+            {...parsed,illustrations},
+            theme,
+            'Illustrations et page de vente en cours'
+          );
+
           try{
             localStorage.setItem(
               'dropdigital_pending_product',
@@ -3379,6 +3523,12 @@ Retourne maintenant UNIQUEMENT le JSON.`;
 
     completeStudioCssPages();
     completeBuildWorkspace();
+
+    finishGenerationHistory(
+      parsed,
+      theme
+    );
+
     try{localStorage.removeItem('dropdigital_pending_product');}catch(_){ }
     clearInterval(mi_);clearInterval(li_);
     lids.forEach(id=>{const el=document.getElementById(id);el.classList.remove('active');el.classList.add('done');});
