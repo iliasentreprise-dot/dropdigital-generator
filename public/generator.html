@@ -2281,19 +2281,238 @@ function goDesign(){
 }
 
 
-// ── STEP 8 : STRIPE ─────────────────────────────────────
+// ── STEP 8 : STRIPE CONNECT ─────────────────────────────
+
+async function stripeConnectStatus(){
+  try{
+    const {data}=await dbClient.auth.getSession();
+    const token=data?.session?.access_token;
+
+    if(!token)return {connected:false};
+
+    const response=await fetch('/api/stripe-connect-status',{
+      headers:{
+        Authorization:'Bearer '+token
+      }
+    });
+
+    return await response.json();
+
+  }catch(_){
+    return {connected:false};
+  }
+}
+
+async function connectStripeAccount(){
+  const button=document.getElementById('stripeConnectButton');
+
+  if(button){
+    button.disabled=true;
+    button.textContent='CONNEXION À STRIPE…';
+  }
+
+  try{
+    const {data}=await dbClient.auth.getSession();
+    const token=data?.session?.access_token;
+
+    if(!token){
+      throw new Error('Reconnecte-toi.');
+    }
+
+    const response=await fetch('/api/stripe-connect-start',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:'Bearer '+token
+      }
+    });
+
+    const result=await response.json().catch(()=>({}));
+
+    if(!response.ok||!result.url){
+      throw new Error(
+        result.error||
+        'Impossible de connecter Stripe.'
+      );
+    }
+
+    location.href=result.url;
+
+  }catch(error){
+    alert(error.message||'Impossible de connecter Stripe.');
+
+    if(button){
+      button.disabled=false;
+      button.textContent='CONNECTER MON COMPTE STRIPE →';
+    }
+  }
+}
+
+async function refreshStripeStep(){
+  const box=document.getElementById('stripeConnectionState');
+
+  if(!box)return;
+
+  box.innerHTML=`
+    <div style="
+      padding:18px;
+      border:1px solid rgba(179,102,255,.25);
+      color:#bda7ce;
+    ">
+      Vérification de ton compte Stripe…
+    </div>
+  `;
+
+  const status=await stripeConnectStatus();
+
+  if(status.connected){
+    S.a.stripeConnected=true;
+
+    box.innerHTML=`
+      <div style="
+        padding:20px;
+        border:1px solid rgba(82,232,137,.5);
+        background:rgba(82,232,137,.07);
+      ">
+        <div style="
+          color:#72eda3;
+          font-weight:800;
+          font-size:16px;
+          margin-bottom:5px;
+        ">
+          ✓ COMPTE STRIPE CONNECTÉ
+        </div>
+
+        <div style="
+          color:#aa99b9;
+          font-size:12px;
+          line-height:1.6;
+        ">
+          Tes paiements seront configurés automatiquement
+          sur ton propre compte Stripe.
+        </div>
+      </div>
+    `;
+
+    const generate=document.getElementById('stripeGenerateButton');
+
+    if(generate){
+      generate.disabled=false;
+      generate.style.opacity='1';
+    }
+
+    return;
+  }
+
+  S.a.stripeConnected=false;
+
+  const label=status.started
+    ? 'TERMINER LA CONFIGURATION STRIPE →'
+    : 'CONNECTER MON COMPTE STRIPE →';
+
+  box.innerHTML=`
+    <div style="
+      padding:20px;
+      border:1px solid rgba(179,102,255,.25);
+      background:rgba(155,77,255,.05);
+    ">
+      <div style="
+        color:white;
+        font-weight:800;
+        margin-bottom:7px;
+      ">
+        💳 STRIPE
+      </div>
+
+      <div style="
+        color:#aa99b9;
+        font-size:13px;
+        line-height:1.6;
+        margin-bottom:16px;
+      ">
+        Connecte ton compte une seule fois.
+        Dropdigital utilisera ensuite ton Stripe
+        automatiquement pour tes produits.
+        <br><br>
+        Aucune clé API à copier.
+      </div>
+
+      <button
+        id="stripeConnectButton"
+        class="next-btn"
+        onclick="connectStripeAccount()"
+        style="
+          margin:0;
+          background:var(--purple);
+          color:white;
+          font-size:18px;
+          width:100%;
+        "
+      >
+        ${label}
+      </button>
+    </div>
+  `;
+}
+
 function rStripe(){
   cw(`<div class="q-block">
-    <span class="q-label">⚓ ÉTAPE 8 / 8 — DERNIÈRE ÉTAPE</span>
-    <div class="q-title">Ton lien <span>Stripe</span><br>pour encaisser</div>
-    <p class="q-sub">Intégré directement dans ta page de vente.</p>
-    <div class="stripe-note">💳 Crée ton lien sur <strong>dashboard.stripe.com → Liens de paiement</strong><br>Ressemble à : <code style="color:var(--purple);font-size:12px">https://buy.stripe.com/xxxx</code></div>
-    <div class="text-input-wrap"><label>TON LIEN STRIPE</label><input type="url" class="q-input" id="inp6" placeholder="https://buy.stripe.com/..." value="${ea(S.a.stripe||'')}"/></div>
-    <p style="font-size:12px;color:#444;margin-top:8px;">Pas encore de Stripe ? Laisse vide, tu l'ajouteras après.</p>
-    <button class="next-btn" onclick="go6()" style="margin-top:24px;background:var(--purple);color:white;font-size:22px;">⚡ GÉNÉRER MON PRODUIT COMPLET</button>
+
+    <span class="q-label">
+      ⚓ ÉTAPE 8 / 8 — PAIEMENTS
+    </span>
+
+    <div class="q-title">
+      Connecte ton
+      <span>Stripe.</span>
+    </div>
+
+    <p class="q-sub">
+      Une seule connexion.
+      Ensuite Dropdigital configure automatiquement
+      les paiements de tes produits.
+    </p>
+
+    <div id="stripeConnectionState"></div>
+
+    <button
+      id="stripeGenerateButton"
+      class="next-btn"
+      onclick="go6()"
+      disabled
+      style="
+        margin-top:24px;
+        background:var(--purple);
+        color:white;
+        font-size:22px;
+        opacity:.45;
+      "
+    >
+      ⚡ GÉNÉRER MON PRODUIT COMPLET
+    </button>
+
   </div>`);
+
+  refreshStripeStep();
 }
-function go6(){S.a.stripe=document.getElementById('inp6').value.trim()||'#STRIPE_LINK';const plan=getProfile().plan;if(['discovery','pro','business'].includes(plan)){S.a.plan=plan;generate();}else showPlans();}
+
+function go6(){
+  if(!S.a.stripeConnected){
+    alert('Connecte d’abord ton compte Stripe.');
+    return;
+  }
+
+  S.a.stripe='STRIPE_CONNECT';
+
+  const plan=getProfile().plan;
+
+  if(['discovery','pro','business'].includes(plan)){
+    S.a.plan=plan;
+    generate();
+  }else{
+    showPlans();
+  }
+}
 
 function showPlans(){
   S.step=7;buildDots();
