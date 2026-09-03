@@ -144,9 +144,32 @@ export default async function handler(req, res) {
     const theme = req.body?.theme || {};
     const offer = req.body?.offer || {};
     const orderBump = req.body?.orderBump || {};
+    const cover = req.body?.cover || product?.cover || {};
 
     const colors = theme?.colors || {};
     const artDirection = theme?.artDirection || {};
+
+    const mechanism = product?.mecanisme_unique || {};
+    const proprietaryMethod = product?.methode_proprietaire || {};
+    const visualPlan = Array.isArray(product?.visual_plan)
+      ? product.visual_plan
+      : [];
+
+    const coverUrl = String(
+      cover?.url ||
+      product?.cover_url ||
+      ''
+    ).trim();
+
+    const productType = String(
+      product?.type_produit ||
+      'méthode'
+    ).trim();
+
+    const centralAngle = String(
+      product?.angle_central ||
+      ''
+    ).trim();
 
     const freeLovablePrompt = String(
       req.body?.lovablePrompt || product.prompt_lovable || ''
@@ -288,6 +311,92 @@ Le copywriting doit montrer que la page a été conçue APRÈS lecture de l'eboo
 Évite les formulations génériques lorsqu'une formulation spécifique au contenu existe.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4B. ARCHITECTURE INTELLECTUELLE DU PRODUIT
+
+Tu ne vends PAS un contenu générique.
+
+TYPE DE PRODUIT :
+${productType}
+
+ANGLE CENTRAL :
+${centralAngle}
+
+MÉCANISME UNIQUE :
+${JSON.stringify(mechanism, null, 2)}
+
+MÉTHODE PROPRIÉTAIRE :
+${JSON.stringify(proprietaryMethod, null, 2)}
+
+PLAN VISUEL CONÇU EN AMONT :
+${JSON.stringify(visualPlan, null, 2)}
+
+Ces données sont prioritaires.
+
+Toute la page doit donner l'impression qu'une vraie propriété intellectuelle a été créée :
+- une grande idée,
+- un mécanisme identifiable,
+- une méthode structurée,
+- des étapes cohérentes,
+- une logique pédagogique,
+- une transformation.
+
+La page doit expliquer POURQUOI la méthode est différente avant de simplement énumérer son contenu.
+
+Ne transforme pas le mécanisme en jargon artificiel.
+Explique-le simplement puis matérialise-le visuellement.
+
+RÈGLE DE VOCABULAIRE PROSPECT :
+
+Dans tout le HTML visible par le prospect, ne présente jamais automatiquement le produit comme :
+- un ebook,
+- un PDF,
+- un guide numérique,
+- un fichier à télécharger.
+
+Utilise naturellement :
+${productType}
+
+ou selon le contexte :
+méthode, protocole, système, rituel, programme, plan, formule ou framework.
+
+Le visiteur doit avoir l'impression d'acheter une MÉTHODE, pas un fichier.
+
+4C. COVER OFFICIELLE DU PRODUIT
+
+URL COVER :
+${coverUrl || 'COVER INDISPONIBLE'}
+
+Nom du mécanisme :
+${String(cover?.mechanismName || mechanism?.nom || '')}
+
+Concept :
+${String(cover?.visualConcept || mechanism?.metaphore_visuelle || '')}
+
+${coverUrl ? `
+LA COVER EXISTE RÉELLEMENT.
+
+Tu DOIS utiliser exactement cette URL dans le HTML :
+
+${coverUrl}
+
+Règles :
+- utilise un véritable <img src="${coverUrl}">
+- affiche cette cover au-dessus de la ligne de flottaison
+- elle doit être immédiatement visible dans le HERO
+- utilise-la comme représentation principale du produit
+- tu peux la placer dans un mockup CSS premium, perspective, profondeur, glow subtil ou environnement graphique
+- mais NE recrée PAS une autre couverture
+- ne remplace pas cette cover par une fausse boîte 3D
+- ne remplace pas cette cover par un rectangle CSS contenant le titre
+- ne modifie pas l'URL
+- conserve un ratio naturel
+- utilise object-fit: cover ou contain selon la composition
+` : `
+La cover n'a pas pu être générée.
+Crée uniquement une représentation CSS temporaire cohérente avec la direction artistique.
+Ne prétends pas qu'une image réelle existe.
+`}
+
 5. IDENTITÉ VISUELLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -418,7 +527,7 @@ Le hero doit immédiatement faire comprendre :
 Crée une représentation premium du produit.
 
 Selon la niche, tu peux construire en HTML/CSS :
-- couverture ebook
+- cover officielle de la méthode
 - stack de pages
 - modules
 - cartes

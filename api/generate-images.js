@@ -29,9 +29,15 @@ function clean(value, max = 500) {
 }
 
 function visualPrompts(product, brief, theme) {
-  const chapters = Array.isArray(product.chapitres) ? product.chapitres.slice(0, 6) : [];
   const colors = theme?.colors || {};
   const artDirection = theme?.artDirection || {};
+
+  const visualPlan = Array.isArray(product?.visual_plan)
+    ? product.visual_plan
+    : [];
+
+  const mechanism = product?.mecanisme_unique || {};
+  const method = product?.methode_proprietaire || {};
 
   const style = clean(
     artDirection?.label ||
@@ -64,76 +70,273 @@ function visualPrompts(product, brief, theme) {
     .filter(Boolean)
     .map(color => clean(color, 20))
     .join(', ');
-  const topic=`${clean(brief?.niche)} ${clean(brief?.sousniche)}`.toLowerCase();
-  const illustrated=/illustr|dessin|anime|graphique|pastel/i.test(`${style} ${motif}`);
-  const base = `Série éditoriale cohérente de niveau magazine international pour un ebook français intitulé « ${clean(product.titre_produit)} », sur ${clean(brief?.niche)} pour ${clean(brief?.sousniche)}.
 
-IDENTITÉ VISUELLE GLOBALE :
-- univers : ${style}
-- ambiance : ${mood}
-- palette : ${palette}
-- motif / matière : ${motif}
+  const globalIdentity = `
+IDENTITÉ DE LA MÉTHODE
 
-Toutes les images appartiennent à la même marque et à la même campagne visuelle.
+Nom commercial :
+${clean(product?.titre_produit, 300)}
 
-La couleur primaire et ses nuances construisent l'identité principale.
+Type :
+${clean(product?.type_produit || 'méthode', 120)}
+
+Promesse :
+${clean(product?.promesse || product?.sous_titre, 500)}
+
+Mécanisme unique :
+${clean(mechanism?.nom, 200)}
+
+Idée du mécanisme :
+${clean(mechanism?.idee || mechanism?.fonctionnement, 900)}
+
+Métaphore visuelle :
+${clean(mechanism?.metaphore_visuelle, 600)}
+
+Méthode propriétaire :
+${clean(method?.nom, 200)}
+
+Marché :
+${clean(brief?.niche, 200)}
+
+Cible :
+${clean(brief?.sousniche, 300)}
+
+DIRECTION ARTISTIQUE GLOBALE
+
+Univers :
+${style}
+
+Ambiance :
+${mood}
+
+Motif / matière :
+${motif}
+
+Palette :
+${palette}
+
+Toutes les créations appartiennent EXACTEMENT à la même marque.
+
+La couleur primaire construit l'identité.
+Les nuances primaryDark et primaryLight apportent profondeur et hiérarchie.
 Les couleurs analogues servent aux variations naturelles.
-La couleur complémentaire et l'accent servent uniquement aux points d'attention, lumières, accessoires ou petits contrastes.
+La couleur complémentaire et l'accent servent uniquement aux points d'attention.
 
-Ne mets pas toutes les couleurs partout.
-Le résultat doit rester élégant, cohérent et reconnaissable.
+Ne transforme jamais la palette en arc-en-ciel.
 
 La palette doit influencer naturellement :
-- les vêtements
-- les accessoires
-- les objets
-- les lumières
-- les décors
-- les matières
-- les arrière-plans
-- les détails graphiques
+vêtements, lumière, objets, matières, décors, interfaces, détails graphiques et environnement.
 
-Composition verticale 2:3.
-Profondeur réelle.
-Lumière travaillée.
-Matières tactiles.
-Cadrage sophistiqué.
-Détails très fins.
-Espace négatif utile pour la mise en page.
+Qualité :
+direction artistique de campagne publicitaire premium,
+composition sophistiquée,
+profondeur,
+lumière travaillée,
+textures crédibles,
+détails fins,
+hiérarchie visuelle forte.
 
-Chaque image doit avoir un sujet, un lieu, un angle et une composition différents tout en conservant exactement le même langage visuel global.
+Format vertical 2:3.
+`;
 
-Diversité naturelle des personnes, âges et morphologies lorsque pertinent.
+  const prompts = [];
 
-Aucun texte lisible.
-Aucune lettre.
-Aucun logo.
-Aucun filigrane.`;
-  const realism = illustrated ? 'Illustration éditoriale haut de gamme, dessin riche et crédible, textures détaillées, jamais enfantin.' : 'Photographie éditoriale photoréaliste, peau et aliments naturels, optique professionnelle, pas de rendu 3D plastique ni de photo stock générique.';
-  const weightLoss=/poids|mince|ventre|nutrition|maigr|graisse|silhouette/.test(topic);
-  const scenes=weightLoss?[
-    'couverture lifestyle : personne confiante préparant une nouvelle routine saine dans une cuisine lumineuse, ingrédients frais au premier plan',
-    'table vue du dessus avec planification hebdomadaire, carnet, eau, légumes, protéines et portions équilibrées',
-    'assiette équilibrée réellement appétissante, aliments variés et colorés, geste de préparation culinaire',
-    'séance de renforcement accessible à la maison, mouvement correct, décor réaliste et dynamique',
-    'courses au marché ou au supermarché, comparaison concrète de produits frais et lecture des ingrédients',
-    'meal prep réaliste : plusieurs repas différents, contenants élégants, textures alimentaires naturelles',
-    'activité cardio douce en extérieur, marche active ou vélo, environnement vivant et lumière matinale',
-    'récupération globale : hydratation, sommeil et gestion du stress dans une scène calme sans cliché médical',
-    'plan d’action sur sept jours mêlant repas, mouvement et suivi, composition overhead premium',
-    'conclusion lifestyle durable : repas partagé, énergie et mouvement, ambiance sincère et accomplie'
-  ]:[
-    `couverture iconique incarnant ${clean(product.promesse||product.sous_titre)}`,
-    'vue d’ensemble de la méthode sous forme de scène réelle organisée et immédiatement compréhensible',
-    ...chapters.map(c=>`scène pratique propre au chapitre « ${clean(c.t)} » : ${clean(c.st)}`),
-    'plan d’action concret, outils organisés et dynamique de passage à l’action',
-    'conclusion ambitieuse et apaisée, résultat durable et nouvelle trajectoire'
-  ];
-  const prompts = [
-    ...scenes.slice(0,10).map((scene,index)=>`${base} ${realism} Image ${index+1} de la série : ${scene}. Ne répète aucun personnage, accessoire dominant ou cadrage des autres images.`)
-  ];
-  while (prompts.length < 10) prompts.splice(prompts.length - 1, 0, `${base} ${realism} Interlude visuel cohérent sur la progression et la transformation.`);
-  return prompts.slice(0, 10);
+  for (let index = 0; index < 10; index++) {
+    const item = visualPlan.find(v => Number(v?.index) === index) || visualPlan[index] || {};
+
+    const role = clean(item?.role || '', 160);
+    const type = clean(item?.type || '', 160);
+    const objective = clean(item?.objectif || '', 600);
+    const scene = clean(item?.scene || '', 1200);
+    const concept = clean(item?.concept || '', 900);
+    const composition = clean(item?.composition || '', 900);
+
+    if (index === 0) {
+      const title = clean(
+        item?.texte_image?.titre ||
+        product?.titre_produit,
+        220
+      );
+
+      const mechanismName = clean(
+        item?.texte_image?.mecanisme ||
+        mechanism?.nom,
+        180
+      );
+
+      const subtitle = clean(
+        item?.texte_image?.sous_titre ||
+        product?.sous_titre,
+        220
+      );
+
+      prompts.push(`
+${globalIdentity}
+
+IMAGE 1 — COVER OFFICIELLE / MINIATURE PRODUIT
+
+C'est LA couverture finale elle-même.
+Ce n'est PAS la photographie d'un livre.
+Ce n'est PAS un mockup.
+Ce n'est PAS une page posée sur une table.
+
+Elle doit fonctionner comme une affiche publicitaire cinématique verticale extrêmement premium.
+
+PROMESSE À INCARNER :
+${clean(product?.titre_produit, 300)}
+
+SCÈNE PRINCIPALE :
+${scene}
+
+CONCEPT VISUEL :
+${concept}
+
+COMPOSITION :
+${composition}
+
+OBJECTIF :
+${objective}
+
+Le sujet principal doit immédiatement faire comprendre la promesse.
+
+Le mécanisme « ${clean(mechanism?.nom, 200)} » doit être perceptible visuellement à travers la scène, les effets, les symboles, l'environnement ou les éléments graphiques.
+
+Par exemple, si la méthode parle de perte de poids pendant le sommeil :
+ne montre PAS une personne faisant du sport ou préparant une salade.
+Montre une personne dormant, dans un environnement nocturne, avec une représentation élégante et pédagogique de ce qui se passe pendant cette période.
+
+Même logique pour n'importe quelle autre niche :
+l'image doit illustrer l'IDÉE CENTRALE exacte, pas seulement la catégorie générale.
+
+TYPOGRAPHIE INTÉGRÉE À LA COVER :
+
+Titre principal EXACT :
+« ${title} »
+
+Nom du mécanisme :
+« ${mechanismName} »
+
+Sous-titre éventuel :
+« ${subtitle} »
+
+Le titre doit être très lisible, dominant, intégré à la composition et traité comme une vraie identité éditoriale premium.
+
+Le texte ne doit pas être minuscule.
+Évite les paragraphes.
+Maximum quelques lignes puissantes.
+
+Ajoute seulement si pertinent :
+courbes,
+petits indicateurs,
+symboles,
+chrono,
+diagrammes subtils,
+badges,
+annotations très courtes,
+éléments scientifiques ou techniques stylisés.
+
+Référence de niveau :
+campagne de lancement premium,
+cover de programme haut de gamme,
+poster éditorial moderne,
+publicité digitale cinématique.
+
+Pas de template Canva générique.
+Pas de document Word.
+Pas de couverture minimaliste vide.
+Pas de livre ouvert.
+Pas de photo stock générique.
+`);
+
+      continue;
+    }
+
+    prompts.push(`
+${globalIdentity}
+
+IMAGE ${index + 1} — VISUEL ÉDITORIAL
+
+Rôle :
+${role}
+
+Type :
+${type}
+
+Objectif pédagogique / narratif :
+${objective}
+
+Scène :
+${scene}
+
+Concept à faire comprendre :
+${concept}
+
+Composition :
+${composition}
+
+Ce visuel doit être directement relié au mécanisme unique et à la méthode propriétaire.
+
+Il doit soit :
+- expliquer,
+- démontrer,
+- contextualiser,
+- montrer une étape,
+- représenter un processus,
+- visualiser une routine,
+- comparer,
+- symboliser une transformation,
+
+mais jamais simplement décorer.
+
+Respecte réellement le type demandé.
+
+Si le type est un diagramme :
+construis une composition pédagogique claire avec formes, flèches, zones, connexions et hiérarchie visuelle.
+
+Si le type est une timeline :
+fais comprendre une progression temporelle.
+
+Si le type est lifestyle :
+montre une vraie situation humaine directement liée à l'action.
+
+Si le type est process :
+représente visuellement les étapes du mécanisme.
+
+Si le type est comparaison :
+crée deux états visuellement distincts sans tomber dans le cliché.
+
+Si le type est routine :
+montre les actions, objets et environnement nécessaires.
+
+Si le type est conceptuel :
+matérialise graphiquement l'idée abstraite.
+
+VARIATION OBLIGATOIRE :
+
+Ce visuel ne doit pas avoir la même fonction, le même cadrage, le même décor ou la même composition dominante que le précédent.
+
+Évite la répétition :
+personne centrée devant caméra,
+portrait identique,
+même chambre,
+même cuisine,
+même bureau,
+même angle,
+même symbole.
+
+Utilise le langage visuel commun de la marque sans répéter la même image.
+
+Pas de logo.
+Pas de filigrane.
+Pas de faux texte illisible.
+
+Si du texte est absolument nécessaire pour comprendre un diagramme,
+utilise seulement quelques labels français très courts.
+Sinon, aucun texte.
+`);
+  }
+
+  return prompts;
 }
 
 async function generateOne(prompt) {

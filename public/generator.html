@@ -756,7 +756,7 @@ async function hydrateIllustrations(data){
   const urls=Array(10).fill(null),missing=[];
   for(let i=0;i<10;i++){
     const path=paths[i];if(!path){missing.push(i);continue;}
-    const {data:signed,error}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,3600);
+    const {data:signed,error}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,31536000);
     if(error||!signed?.signedUrl)missing.push(i);else urls[i]=signed.signedUrl;
   }
   data.illustrations=urls;data.missing_images=missing;return data;
@@ -768,7 +768,7 @@ async function persistIllustration(dataUrl,generationId,index){
   const path=`${currentMember.id}/${generationId}/page-${String(index+1).padStart(2,'0')}.${extension}`;
   const {error}=await dbClient.storage.from('ebook-illustrations').upload(path,blob,{contentType:blob.type||'image/webp',upsert:true,cacheControl:'31536000'});
   if(error)throw error;
-  const {data:signed,error:signedError}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,3600);
+  const {data:signed,error:signedError}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,31536000);
   if(signedError||!signed?.signedUrl)throw signedError||new Error('Lien image indisponible');
   return {path,url:signed.signedUrl};
 }
@@ -1966,7 +1966,7 @@ function showBuildWorkspace(){
   document.getElementById('resultsScreen').classList.add('show');
   document.querySelector('.results-header h2').innerHTML='Ton produit est en <span>construction.</span>';
   document.querySelector('.results-header p').textContent='Tu peux rester ici : le build continue automatiquement en arrière-plan.';
-  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">📖 EBOOK</button><button class="studio-nav-btn" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · EN ATTENTE</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton ebook prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT rédige actuellement le livre complet, chapitre par chapitre…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page"><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de l’ebook et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Claude commencera dès que le texte complet de l’ebook sera disponible.</p></div></section></div>`;
+  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">✨ PRODUIT</button><button class="studio-nav-btn" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · EN ATTENTE</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton produit prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT construit actuellement ta méthode, son contenu et son univers visuel…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page"><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de ta méthode et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Claude commencera dès que le produit et sa cover seront prêts.</p></div></section></div>`;
   const methodButton=document.querySelector('.studio-nav-btn.gold');if(methodButton)methodButton.textContent='🏴‍☠️ MÉTHODE DROPDIGITAL';
   setTimeout(()=>{const note=document.getElementById('buildLongNote');if(note)note.style.display='block';},15000);
   window.scrollTo({top:0,behavior:'smooth'});
@@ -2006,8 +2006,55 @@ function buildSalesGenerationPayload(product,theme){
     ? String(bumpField.value||'').trim()
     : '';
 
+  const coverUrl =
+    product?.cover_url ||
+    product?.cover?.url ||
+    product?.illustrations?.[0] ||
+    '';
+
+  const coverPlan =
+    Array.isArray(product?.visual_plan)
+      ? (
+          product.visual_plan.find(item=>Number(item?.index)===0) ||
+          product.visual_plan[0] ||
+          null
+        )
+      : null;
+
+  const productForSales = {
+    ...product,
+
+    cover:{
+      url:coverUrl,
+      path:product?.cover_path||'',
+      available:Boolean(coverUrl),
+
+      title:
+        coverPlan?.texte_image?.titre ||
+        product?.titre_produit ||
+        '',
+
+      mechanismName:
+        coverPlan?.texte_image?.mecanisme ||
+        product?.mecanisme_unique?.nom ||
+        '',
+
+      visualConcept:
+        coverPlan?.concept ||
+        product?.mecanisme_unique?.metaphore_visuelle ||
+        '',
+
+      usage:
+        coverUrl
+          ? 'Utilise cette URL EXACTE comme image réelle du produit dans le hero et les mockups principaux. Ne recrée pas une autre couverture générique.'
+          : 'La cover réelle est indisponible. Construis un mockup cohérent à partir du mécanisme et de la direction artistique.'
+    }
+  };
+
   return {
-    product,
+    product:productForSales,
+
+    cover:productForSales.cover,
 
     ebookContent,
 
@@ -2093,64 +2140,476 @@ CTA Offre 2 : ${copyData.cta2}
 CTA Offre 3 : ${copyData.cta3}
 ` : '';
 
-  const prompt=`Tu es un expert copywriter et infoproduit francophone de niveau mondial. Génère UNIQUEMENT un objet JSON valide, sans backticks ni markdown, sans aucun texte avant ou après.
+  const prompt=`Tu es à la fois :
+- stratège senior en création d'infoproduits,
+- concepteur de méthodes propriétaires,
+- expert pédagogique,
+- copywriter direct-response francophone,
+- directeur éditorial,
+- directeur artistique capable de transformer une idée abstraite en univers visuel.
 
-Données client :
-Prénom: ${prenom} | Marché: ${marche} | Niche: ${niche} | Sous-niche: ${sousniche}
-Offre choisie: ${offre} | Objectif revenus: ${revenus}
-Thème design: ${theme.n}
+Ta mission n'est PAS de remplir un template de chapitres.
+
+Tu dois inventer un PRODUIT INTELLECTUEL COHÉRENT, mémorable et spécifique à la promesse choisie.
+
+Retourne UNIQUEMENT un objet JSON valide.
+Aucun Markdown.
+Aucun texte avant ou après.
+
+════════════════════════════════════
+DONNÉES DU PROJET
+════════════════════════════════════
+
+Prénom : ${prenom}
+Marché : ${marche}
+Niche : ${niche}
+Sous-niche : ${sousniche}
+Offre choisie : ${offre}
+Objectif revenus : ${revenus}
+
+Direction artistique :
+${JSON.stringify(theme, null, 2)}
+
 ${copyBlock}
 
-RÈGLES STRICTES :
-1. "titre_produit" doit être EXACTEMENT "${offre}", caractère pour caractère. Ne le raccourcis pas, ne le reformule pas et ne lui invente aucun autre nom. Tout le contenu, le sous-titre et les chapitres doivent traiter précisément la promesse exprimée par ce titre.
-2. "avatar" : UNE personne ultra-précise. Genre, âge exact, situation sociale, peur n°1 formulée en ses propres mots, désir profond.
-3. "histoire_cible" : Un paragraphe narratif de 5-7 phrases qui RACONTE L'HISTOIRE de cette personne — sa situation AVANT le produit. Commence par "Tu te souviens de ce soir où...", "C'est 23h, tu es encore devant ton écran..." ou autre accroche situationnelle. Douleur vécue, moment précis, émotion ressentie. Cette histoire servira d'intro émotionnelle pour la page de vente.
-4. "douleurs_profondes" : 3 douleurs émotionnelles très spécifiques formulées comme si c'est la cible qui parle, à la première personne ("Je me réveille chaque matin avec...")
-5. "desirs_profonds" : 3 désirs profonds formulés comme si c'est la cible qui les rêve à voix haute.
-6. Les 6 chapitres doivent avoir un contenu de 700 mots environ CHACUN, réellement spécifique à la niche. Chaque chapitre contient une scène concrète, une explication approfondie, au moins 3 méthodes actionnables avec étapes, un exemple réaliste, les erreurs à éviter, une mini-checklist et une action à réaliser. Aucun remplissage générique.
-7. N'invente jamais de statistiques, résultats ou témoignages présentés comme réels. Si une preuve manque, marque clairement « exemple à remplacer par une preuve client réelle ».
+════════════════════════════════════
+RÈGLE ABSOLUE SUR LE NOM
+════════════════════════════════════
 
-JSON EXACT à produire :
+"titre_produit" doit être EXACTEMENT :
+
+"${offre}"
+
+caractère pour caractère.
+
+Mais dans le contenu marketing et éditorial, ne présente jamais le produit comme un simple "ebook", "PDF", "guide numérique" ou "livre électronique".
+
+Présente-le naturellement comme, selon le concept créé :
+
+- une méthode,
+- un protocole,
+- un système,
+- un rituel,
+- un secret,
+- un plan,
+- une stratégie,
+- un programme,
+- une formule,
+- un framework.
+
+Choisis le vocabulaire réellement adapté au sujet.
+
+════════════════════════════════════
+1. INVENTE D'ABORD LE MÉCANISME UNIQUE
+════════════════════════════════════
+
+AVANT d'imaginer les chapitres, analyse la promesse "${offre}".
+
+Détermine :
+
+- ce que la cible veut réellement obtenir,
+- ce qu'elle pense être son problème,
+- ce qui peut réellement expliquer son blocage,
+- pourquoi les approches classiques lui semblent insuffisantes,
+- quelle nouvelle manière de comprendre le problème peut rendre la méthode mémorable.
+
+Crée ensuite UN mécanisme unique central.
+
+Il doit avoir :
+
+- un nom court et mémorable,
+- une idée centrale compréhensible en quelques secondes,
+- une explication logique,
+- une représentation visuelle possible,
+- un lien direct avec la promesse,
+- une utilité pédagogique réelle.
+
+IMPORTANT :
+Le mécanisme ne doit pas être un simple nom marketing collé sur des conseils génériques.
+
+Tout le produit doit ensuite découler de ce mécanisme.
+
+N'invente pas de mécanisme biologique, médical, financier ou scientifique comme s'il était scientifiquement établi lorsqu'il ne l'est pas.
+
+Lorsque le sujet touche à la santé, distingue clairement :
+- les principes établis,
+- les hypothèses ou modèles pédagogiques,
+- les éléments purement marketing.
+
+════════════════════════════════════
+2. CONSTRUIS UNE MÉTHODE PROPRIÉTAIRE
+════════════════════════════════════
+
+À partir du mécanisme unique, invente une méthode structurée.
+
+Elle doit comprendre :
+
+- un nom,
+- 3 à 6 piliers ou phases,
+- un ordre logique,
+- des actions concrètes,
+- des routines ou exercices lorsque pertinent,
+- des erreurs à éviter,
+- une progression mesurable lorsque pertinent,
+- un plan permettant au lecteur de réellement appliquer la méthode.
+
+Chaque pilier doit jouer un rôle différent.
+
+Pas de :
+"fondations → secrets → erreurs → passage à l'action → maintenir les résultats"
+par défaut.
+
+La structure doit être INVENTÉE POUR "${offre}".
+
+════════════════════════════════════
+3. CRÉE ENSUITE LE PLAN ÉDITORIAL
+════════════════════════════════════
+
+Seulement après avoir créé le mécanisme et la méthode, construis les chapitres.
+
+Nombre de chapitres :
+entre 5 et 8 selon ce qui sert réellement le produit.
+
+Ne force jamais artificiellement 6 chapitres.
+
+Chaque chapitre doit avoir une fonction précise dans la progression.
+
+Le contenu doit donner une VRAIE méthode applicable et non une succession de conseils génériques.
+
+Chaque chapitre doit contenir, lorsque pertinent :
+
+- une ouverture concrète,
+- l'explication d'une partie du mécanisme,
+- des instructions,
+- des étapes,
+- des exemples,
+- des exercices,
+- des erreurs fréquentes,
+- des décisions à prendre,
+- une checklist,
+- une action finale.
+
+Les chapitres doivent se compléter sans répéter la même idée.
+
+Vise environ 600 à 900 mots utiles par chapitre.
+
+La précision et la pertinence priment sur le remplissage.
+
+════════════════════════════════════
+4. PENSE VISUELLEMENT
+════════════════════════════════════
+
+Le produit final sera fortement illustré.
+
+Tu dois donc créer un "visual_plan".
+
+RÈGLE ABSOLUE :
+"visual_plan" doit contenir EXACTEMENT 10 objets.
+
+Les index sont obligatoirement :
+
+- index 0 = COVER officielle premium du produit
+- index 1 = vue d'ensemble du mécanisme ou de la méthode
+- index 2 = visuel éditorial / pédagogique 1
+- index 3 = visuel éditorial / pédagogique 2
+- index 4 = visuel éditorial / pédagogique 3
+- index 5 = visuel éditorial / pédagogique 4
+- index 6 = visuel éditorial / pédagogique 5
+- index 7 = visuel éditorial / pédagogique 6
+- index 8 = plan d'action / protocole / routine finale
+- index 9 = transformation / conclusion / projection finale
+
+Même si le produit possède 5, 6, 7 ou 8 chapitres :
+TU FOURNIS TOUJOURS EXACTEMENT 10 VISUELS.
+
+Les visuels 2 à 7 ne doivent pas forcément correspondre à un chapitre chacun.
+Ils représentent les 6 concepts visuels les plus utiles pour comprendre et appliquer le produit.
+
+Chaque visuel doit avoir une FONCTION différente.
+
+Types possibles :
+
+- couverture cinématique,
+- scène lifestyle,
+- schéma pédagogique,
+- diagramme du mécanisme,
+- timeline,
+- cycle,
+- comparaison avant/après conceptuelle,
+- anatomie d'un système,
+- étapes numérotées,
+- routine visuelle,
+- checklist illustrée,
+- tableau conceptuel,
+- métaphore visuelle,
+- environnement,
+- objet symbolique,
+- infographie,
+- visualisation d'une transformation.
+
+Ne choisis pas mécaniquement les mêmes types.
+
+Adapte-les au sujet.
+
+EXEMPLE DE RAISONNEMENT :
+
+Si le produit parle de perdre du poids pendant le sommeil, une illustration pertinente pourrait représenter une femme dormant la nuit avec une visualisation élégante et pédagogique de l'activité métabolique nocturne.
+
+Une autre pourrait expliquer le mécanisme sous forme de cycle.
+
+Une autre pourrait représenter une routine du soir.
+
+Une autre pourrait être une timeline de la nuit.
+
+Donc :
+les images doivent EXPLIQUER ou RENFORCER le contenu, pas simplement décorer les pages.
+
+════════════════════════════════════
+5. COVER / MINIATURE — ULTRA PRIORITAIRE
+════════════════════════════════════
+
+Le premier visuel est différent de tous les autres.
+
+"visual_plan[0]" représente la COVER officielle du produit.
+
+Elle doit être conçue comme une affiche publicitaire / couverture premium extrêmement désirable.
+
+Elle doit :
+
+- occuper visuellement tout le format vertical,
+- être immédiatement compréhensible,
+- représenter directement la promesse,
+- représenter ou symboliser le mécanisme unique,
+- avoir un sujet principal fort,
+- utiliser la direction artistique du projet,
+- posséder une vraie profondeur,
+- avoir un éclairage cinématique,
+- avoir une composition premium,
+- pouvoir servir ensuite de miniature et de mockup sur la page de vente.
+
+Elle peut intégrer dans l'image :
+
+- le titre EXACT "${offre}",
+- le nom du mécanisme,
+- un sous-titre court,
+- de petits éléments graphiques pertinents,
+- graphiques,
+- courbes,
+- indicateurs,
+- symboles,
+- annotations courtes.
+
+Mais la composition doit rester lisible et premium.
+
+Elle ne doit PAS ressembler à :
+- un document Word,
+- un template Canva basique,
+- une couverture minimaliste générique,
+- une simple photo avec du texte posé dessus.
+
+Elle doit évoquer une vraie campagne publicitaire premium.
+
+════════════════════════════════════
+6. AVATAR ET COPY
+════════════════════════════════════
+
+"avatar" :
+une personne extrêmement précise :
+âge, genre lorsque pertinent, situation, contexte quotidien, peur principale, désir, blocage, déclencheur d'achat.
+
+"histoire_cible" :
+une vraie scène vécue avant la découverte de la méthode.
+
+"douleurs_profondes" :
+formulées avec le vocabulaire naturel de la cible.
+
+"desirs_profonds" :
+concrets, émotionnels et identitaires.
+
+La promesse, les problèmes, les bénéfices, les modules et la FAQ doivent tous être cohérents avec LE MÊME mécanisme unique.
+
+════════════════════════════════════
+7. PREUVES ET EXEMPLES
+════════════════════════════════════
+
+Tu peux créer des témoignages fictifs uniquement comme MAQUETTES CRÉATIVES destinées à prévisualiser le projet.
+
+Ils doivent être explicitement marqués dans les données comme fictifs / placeholders et ne doivent pas être présentés comme des preuves réelles.
+
+N'invente pas de statistiques scientifiques ou d'autorités inexistantes.
+
+════════════════════════════════════
+JSON EXACT À PRODUIRE
+════════════════════════════════════
+
 {
   "titre_produit": "${offre}",
-  "sous_titre": "phrase qui promet le résultat principal avec un délai",
+
+  "type_produit": "Méthode / Protocole / Système / Rituel / Secret / autre terme choisi",
+
+  "sous_titre": "sous-titre spécifique directement lié au mécanisme",
+
   "prix": "prix en chiffre seul entre 17 et 97 adapté à ${revenus}",
-  "prix_barre": "prix barré en chiffre seul, environ 2x le prix",
-  "avatar": "Paragraphe de 5 phrases : genre+âge+situation sociale précise / peur numéro 1 en ses propres mots / désir profond / blocage actuel / raison d'achat aujourd'hui",
-  "histoire_cible": "Paragraphe narratif immersif de 6-8 phrases qui raconte l'histoire de la cible AVANT le produit. Accroche situationnelle forte, douleur vécue en scène précise, émotion authentique. Écriture directe, tu/toi, comme si tu parles à quelqu'un.",
-  "douleurs_profondes": ["douleur émotionnelle à la première personne ultra-spécifique à ${sousniche}", "deuxième douleur profonde formulée authentiquement", "troisième douleur avec une situation précise"],
-  "desirs_profonds": ["désir profond formulé comme un rêve à voix haute ultra-spécifique", "deuxième désir concret et émotionnel", "troisième désir lié à l'identité et la transformation"],
-  "promesse": "1 phrase choc ultra-spécifique avec résultat précis + délai précis",
-  "garantie": "garantie 7 jours formulée de façon rassurante et naturelle",
-  "problemes": ["problème émotionnel douloureux lié à ${sousniche}", "problème pratique quotidien", "frustration face aux autres méthodes"],
+
+  "prix_barre": "prix barré en chiffre seul",
+
+  "angle_central": "la grande idée utilisée pour présenter le problème différemment",
+
+  "mecanisme_unique": {
+    "nom": "nom propriétaire court et mémorable",
+    "idee": "explication simple du mécanisme",
+    "probleme_percu": "ce que la cible pense être son problème",
+    "probleme_reel": "la nouvelle explication proposée",
+    "pourquoi_classique_echoue": "pourquoi les approches habituelles semblent insuffisantes",
+    "fonctionnement": "explication détaillée et pédagogique",
+    "transformation": "ce qui change lorsque la méthode est appliquée",
+    "metaphore_visuelle": "façon simple de représenter visuellement le mécanisme"
+  },
+
+  "methode_proprietaire": {
+    "nom": "nom de la méthode",
+    "promesse_methode": "résultat recherché",
+    "piliers": [
+      {
+        "n": 1,
+        "nom": "nom du pilier",
+        "role": "fonction exacte",
+        "actions": ["action concrète", "action concrète"]
+      }
+    ],
+    "routine": "routine d'application concrète si pertinente",
+    "mesure_progression": "comment constater ou suivre la progression sans inventer de résultat"
+  },
+
+  "avatar": "description ultra précise",
+
+  "histoire_cible": "scène narrative immersive",
+
+  "douleurs_profondes": [
+    "douleur 1",
+    "douleur 2",
+    "douleur 3"
+  ],
+
+  "desirs_profonds": [
+    "désir 1",
+    "désir 2",
+    "désir 3"
+  ],
+
+  "promesse": "promesse principale spécifique",
+
+  "garantie": "garantie formulée naturellement",
+
+  "problemes": [
+    "problème 1",
+    "problème 2",
+    "problème 3"
+  ],
+
   "modules": [
-    {"e":"emoji pertinent","t":"titre module 1","d":"bénéfice concret que l'acheteur va obtenir"},
-    {"e":"emoji","t":"titre module 2","d":"bénéfice concret"},
-    {"e":"emoji","t":"titre module 3","d":"bénéfice concret"},
-    {"e":"emoji","t":"titre module 4","d":"bénéfice concret"},
-    {"e":"emoji","t":"titre module 5","d":"bénéfice concret"},
-    {"e":"emoji","t":"titre module 6","d":"bénéfice concret"}
+    {
+      "e": "emoji pertinent",
+      "t": "nom dérivé de la vraie méthode",
+      "d": "bénéfice concret"
+    }
   ],
+
   "temoignages": [
-    {"p":"prénom cohérent avec la niche","a":"âge réaliste","v":"ville française","t":"témoignage de 4 phrases TRÈS spécifique avec résultat chiffré crédible et histoire personnelle"},
-    {"p":"autre prénom","a":"âge différent","v":"autre ville","t":"parcours différent, résultat différent mais précis"},
-    {"p":"troisième prénom","a":"âge","v":"ville","t":"témoignage qui lève une objection courante de la niche"}
+    {
+      "p": "prénom",
+      "a": "âge",
+      "v": "ville",
+      "t": "maquette de témoignage spécifique",
+      "fictif": true
+    },
+    {
+      "p": "prénom",
+      "a": "âge",
+      "v": "ville",
+      "t": "maquette différente",
+      "fictif": true
+    },
+    {
+      "p": "prénom",
+      "a": "âge",
+      "v": "ville",
+      "t": "maquette levant une objection",
+      "fictif": true
+    }
   ],
+
   "faq": [
-    {"q":"question très spécifique à ${sousniche}","r":"réponse rassurante de 2-3 phrases"},
-    {"q":"question sur le temps nécessaire ou la difficulté","r":"réponse concrète avec chiffres"},
-    {"q":"question sur la garantie","r":"réponse qui supprime tout risque perçu"}
+    {
+      "q": "question spécifique",
+      "r": "réponse concrète"
+    }
   ],
+
   "chapitres": [
-    {"n":1,"t":"Titre chapitre 1 accrocheur lié à l'offre","st":"sous-titre intriguant","c":"Environ 700 mots, expertise spécifique, exemple, méthodes pas à pas, erreurs, checklist et action."},
-    {"n":2,"t":"Titre chapitre 2","st":"sous-titre","c":"Environ 700 mots avec le même niveau de profondeur et des techniques différentes."},
-    {"n":3,"t":"Titre chapitre 3","st":"sous-titre","c":"Environ 700 mots, aspect clé négligé, cas pratique et checklist."},
-    {"n":4,"t":"Titre chapitre 4","st":"sous-titre","c":"Environ 700 mots, erreurs précises et solutions applicables."},
-    {"n":5,"t":"Titre chapitre 5","st":"sous-titre","c":"Environ 700 mots, plan d'action détaillé semaine par semaine."},
-    {"n":6,"t":"Titre chapitre 6","st":"sous-titre","c":"Environ 700 mots, maintien, progression et vision long terme."}
+    {
+      "n": 1,
+      "t": "titre réellement dérivé du mécanisme et de la méthode",
+      "st": "fonction du chapitre",
+      "c": "600 à 900 mots de contenu spécifique, pédagogique et actionnable"
+    }
   ],
-  "prompt_lovable": "Intègre ce fichier HTML comme page principale de mon site. Connecte le lien Stripe ${stripe||'[AJOUTER TON LIEN STRIPE ICI]'} sur TOUS les boutons d'achat. Rends le site entièrement responsive desktop, tablette et mobile. Ajoute un compteur de compte à rebours de 15 minutes sur la bannière d'urgence du haut. Configure une page de confirmation de paiement simple après le paiement Stripe. Garde le design, les couleurs, les animations et le CSS exactement tels quels."
-}`;
+
+  "visual_plan": [
+    {
+      "index": 0,
+      "role": "cover",
+      "type": "cinematic_cover",
+      "objectif": "créer la miniature officielle du produit",
+      "scene": "description extrêmement précise de la scène principale",
+      "concept": "comment le mécanisme unique est représenté visuellement",
+      "texte_image": {
+        "titre": "${offre}",
+        "mecanisme": "nom court du mécanisme",
+        "sous_titre": "micro sous-titre éventuel"
+      },
+      "composition": "description de la hiérarchie et de la composition"
+    },
+
+    {
+      "index": 1,
+      "role": "explication",
+      "type": "diagramme / lifestyle / timeline / cycle / autre",
+      "objectif": "ce que cette image doit faire comprendre",
+      "scene": "description spécifique",
+      "concept": "information ou idée représentée",
+      "texte_image": {
+        "titre": "",
+        "mecanisme": "",
+        "sous_titre": ""
+      },
+      "composition": "composition différente de la cover"
+    }
+  ],
+
+  "prompt_lovable": "Conserve l'identité visuelle et le mécanisme unique du produit. Connecte le lien Stripe ${stripe||'[AJOUTER TON LIEN STRIPE ICI]'} sur les boutons d'achat et rends la page responsive."
+}
+
+════════════════════════════════════
+CONTRÔLE FINAL AVANT RÉPONSE
+════════════════════════════════════
+
+Avant de retourner le JSON, vérifie silencieusement :
+
+1. Le produit possède réellement UNE grande idée.
+2. Le mécanisme unique n'est pas un simple renommage marketing.
+3. La méthode découle du mécanisme.
+4. Les chapitres découlent de la méthode.
+5. Les chapitres ne pourraient pas être copiés-collés dans une autre niche.
+6. Les conseils sont spécifiques à "${offre}".
+7. Le visual_plan explique réellement le produit.
+8. visual_plan[0] est une COVER exceptionnelle et non une illustration normale.
+9. Les autres visuels varient en fonction : lifestyle, schéma, processus, timeline, comparaison, etc. selon pertinence.
+10. Aucun produit n'est présenté comme un simple ebook.
+11. Le titre reste exactement "${offre}".
+12. Le JSON est valide.
+
+Retourne maintenant UNIQUEMENT le JSON.`;
 
   try {
     const {data:sessionData}=await dbClient.auth.getSession();
@@ -2165,20 +2624,231 @@ JSON EXACT à produire :
     parsed.titre_produit=offre;parsed._generation_id=crypto.randomUUID();parsed.illustration_paths=Array(10).fill(null);
     try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:parsed,brief:S.a,theme}));}catch(_){ }
     showTextReadyWorkspace(parsed);
-    mel.textContent='🎨 Illustrations GPT et page de vente Claude...';
-    const salesPromise=fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify(buildSalesGenerationPayload(parsed,theme))}).then(async response=>({ok:response.ok,data:await response.json().catch(()=>({}))})).catch(()=>({ok:false,data:{error:'Connexion impossible avec le service Claude.'}}));
-    const illustrations=Array(10).fill(null),failedImages=[];
-    for(let index=0;index<10;index++){
+
+    const illustrations=Array(10).fill(null);
+    const failedImages=[];
+
+    // ───────────────────────────────────────────────────
+    // ÉTAPE 1 — COVER PRIORITAIRE
+    // Claude ne démarre qu'après cette tentative.
+    // ───────────────────────────────────────────────────
+
+    mel.textContent='🎨 Création de la cover officielle...';
+
+    try{
+      const coverRes=await fetch('/api/generate-images',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+accessToken
+        },
+        body:JSON.stringify({
+          product:parsed,
+          brief:S.a,
+          theme,
+          index:0
+        })
+      });
+
+      const coverData=await coverRes.json().catch(()=>({}));
+
+      if(!coverRes.ok||!coverData.illustration){
+        throw new Error(
+          coverData.error ||
+          'Cover non générée'
+        );
+      }
+
+      const storedCover=await persistIllustration(
+        coverData.illustration,
+        parsed._generation_id,
+        0
+      );
+
+      parsed.illustration_paths[0]=storedCover.path;
+      illustrations[0]=storedCover.url;
+
+      parsed.cover_path=storedCover.path;
+      parsed.cover_url=storedCover.url;
+
+      parsed.cover={
+        path:storedCover.path,
+        url:storedCover.url,
+        visualPlan:
+          Array.isArray(parsed.visual_plan)
+            ? (
+                parsed.visual_plan.find(item=>Number(item?.index)===0) ||
+                parsed.visual_plan[0] ||
+                null
+              )
+            : null
+      };
+
+      updateStudioPage(0,storedCover.url);
+
       try{
-        const imageRes=await fetch('/api/generate-images',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product:parsed,brief:S.a,theme,index})});
-        const imageData=await imageRes.json().catch(()=>({}));
-        if(!imageRes.ok||!imageData.illustration)throw new Error(imageData.error||'Illustration non générée');
-        const stored=await persistIllustration(imageData.illustration,parsed._generation_id,index);
-        parsed.illustration_paths[index]=stored.path;illustrations[index]=stored.url;updateStudioPage(index,stored.url);
-        try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:{...parsed,illustrations},brief:S.a,theme}));}catch(_){ }
-      }catch(_){failedImages.push(index);const page=document.getElementById('studioPage'+index);if(page)page.querySelector('span').insertAdjacentHTML('beforeend','<br><em style="color:#ff91ab">À reprendre</em>');}
+        localStorage.setItem(
+          'dropdigital_pending_product',
+          JSON.stringify({
+            product:{...parsed,illustrations},
+            brief:S.a,
+            theme
+          })
+        );
+      }catch(_){}
+
+    }catch(error){
+      console.warn(
+        'Cover prioritaire indisponible',
+        error?.message||error
+      );
+
+      failedImages.push(0);
+
+      const coverPage=document.getElementById('studioPage0');
+
+      if(coverPage){
+        const span=coverPage.querySelector('span');
+
+        if(span){
+          span.insertAdjacentHTML(
+            'beforeend',
+            '<br><em style="color:#ff91ab">Cover à reprendre</em>'
+          );
+        }
+      }
     }
-    const salesResult=await salesPromise;
+
+    // ───────────────────────────────────────────────────
+    // ÉTAPE 2 — CLAUDE DÉMARRE MAINTENANT
+    // Il reçoit la cover réelle si elle existe.
+    // ───────────────────────────────────────────────────
+
+    mel.textContent=parsed.cover_url
+      ? '🖥️ Cover prête · Claude construit la page de vente...'
+      : '🖥️ Claude construit la page de vente...';
+
+    const salesPromise=fetch('/api/generate-sales',{
+      method:'POST',
+
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+accessToken
+      },
+
+      body:JSON.stringify(
+        buildSalesGenerationPayload(parsed,theme)
+      )
+
+    }).then(async response=>({
+      ok:response.ok,
+      data:await response.json().catch(()=>({}))
+    })).catch(()=>({
+      ok:false,
+      data:{
+        error:'Connexion impossible avec le service Claude.'
+      }
+    }));
+
+    // ───────────────────────────────────────────────────
+    // ÉTAPE 3 — IMAGES 1 À 9 EN PARALLÈLE
+    // avec Claude.
+    // ───────────────────────────────────────────────────
+
+    mel.textContent='✨ Claude construit le site pendant que GPT illustre la méthode...';
+
+    const imageJobs=[];
+
+    for(let index=1;index<10;index++){
+
+      imageJobs.push((async()=>{
+
+        try{
+
+          const imageRes=await fetch('/api/generate-images',{
+            method:'POST',
+
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization':'Bearer '+accessToken
+            },
+
+            body:JSON.stringify({
+              product:parsed,
+              brief:S.a,
+              theme,
+              index
+            })
+          });
+
+          const imageData=await imageRes.json().catch(()=>({}));
+
+          if(!imageRes.ok||!imageData.illustration){
+            throw new Error(
+              imageData.error ||
+              'Illustration non générée'
+            );
+          }
+
+          const stored=await persistIllustration(
+            imageData.illustration,
+            parsed._generation_id,
+            index
+          );
+
+          parsed.illustration_paths[index]=stored.path;
+          illustrations[index]=stored.url;
+
+          updateStudioPage(
+            index,
+            stored.url
+          );
+
+          try{
+            localStorage.setItem(
+              'dropdigital_pending_product',
+              JSON.stringify({
+                product:{...parsed,illustrations},
+                brief:S.a,
+                theme
+              })
+            );
+          }catch(_){}
+
+        }catch(error){
+
+          console.warn(
+            'Illustration '+index+' indisponible',
+            error?.message||error
+          );
+
+          failedImages.push(index);
+
+          const page=document.getElementById(
+            'studioPage'+index
+          );
+
+          if(page){
+
+            const span=page.querySelector('span');
+
+            if(span){
+              span.insertAdjacentHTML(
+                'beforeend',
+                '<br><em style="color:#ff91ab">À reprendre</em>'
+              );
+            }
+          }
+        }
+
+      })());
+
+    }
+
+    const [,salesResult]=await Promise.all([
+      Promise.all(imageJobs),
+      salesPromise
+    ]);
     parsed.illustrations=illustrations;
     if(salesResult.ok&&salesResult.data.html&&salesResult.data.upsellHtml){parsed.sales_html=salesResult.data.html;parsed.upsell_html=salesResult.data.upsellHtml;updateStudioSales();}
     else parsed.sales_error=salesResult.data?.error||'Claude n’a pas renvoyé le tunnel complet.';
@@ -2399,16 +3069,423 @@ h2.sh span{color:${t.a}}
 }
 
 function buildEbookHTML(d,t){
-  // L'ebook reste un produit éditorial : les arguments commerciaux sont réservés à la page de vente.
-  d={...d,garantie:'Tu as maintenant une méthode claire. Choisis la prochaine action la plus utile, applique-la avec régularité et mesure tes progrès pour continuer à avancer.'};
+  // Premium Product Renderer V2
+  // Le contenu reste éditorial : prix, urgence et arguments commerciaux restent sur la page de vente.
+  d={...d,garantie:'Tu as maintenant un système clair. Applique la prochaine action utile, observe ce qui change et ajuste progressivement.'};
+
   const images=Array.isArray(d.illustrations)?d.illustrations:[];
-  const image=(index,alt)=>images[index]?`<img src="${ea(images[index])}" alt="${ea(alt)}">`:'';
+  const mechanism=d.mecanisme_unique||{};
+  const method=d.methode_proprietaire||{};
+  const visualPlan=Array.isArray(d.visual_plan)?d.visual_plan:[];
+  const chapters=Array.isArray(d.chapitres)?d.chapitres:[];
+
+  const image=(index,alt,cls='')=>images[index]
+    ? `<img class="${cls}" src="${ea(images[index])}" alt="${ea(alt||'Illustration')}">`
+    : '';
+
   const typography=S.a.design?.typography||'Moderne et lisible';
-  const headingFont=/Éditoriale/.test(typography)?"'Playfair Display',serif":/Chrome/.test(typography)?"'Space Grotesk',sans-serif":"'Manrope',sans-serif";
+  const headingFont=/Éditoriale/.test(typography)
+    ? "'Playfair Display',serif"
+    : /Chrome/.test(typography)
+      ? "'Space Grotesk',sans-serif"
+      : "'Manrope',sans-serif";
+
   const isChrome=/chrome/i.test((S.a.design?.universeLabel||'')+' '+(S.a.design?.motif||''));
-  const chapters=(d.chapitres||[]).map((c,index)=>`<section class="ebook-page chapter ${index%2?'reverse':''}"><div class="page-grid"><div class="chapter-visual">${image(index+2,c.t)}<div class="visual-shade"></div><span class="visual-index">0${index+1}</span></div><div class="chapter-heading"><div class="chapter-no">CHAPITRE ${eh(String(c.n||index+1))}</div><h2>${eh(c.t)}</h2><p class="subtitle">${eh(c.st)}</p><div class="heading-line"></div><div class="chapter-chip">GUIDE PRATIQUE · MÉTHODE · EXERCICES</div></div></div><div class="chapter-copy"><p>${eh(c.c).replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</p></div><div class="action-box"><strong>ACTION DU CHAPITRE</strong><span>Choisis une action précise dans ce chapitre, fixe son moment d’exécution et note le résultat obtenu.</span></div><div class="page-footer"><span>${eh(d.titre_produit)}</span><b>${index+3}</b></div></section>`).join('');
-  const toc=(d.chapitres||[]).map(c=>`<li><span>${eh(String(c.n))}</span>${eh(c.t)}</li>`).join('');
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${eh(d.titre_produit)}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;700;800&family=Playfair+Display:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><style>@page{size:A4;margin:0}*{box-sizing:border-box}html{background:#090614}body{margin:0;padding:28px 0;background:radial-gradient(circle at top,${t.p}33,transparent 38%),#090614;color:${t.txt||'#eee'};font-family:'Inter',sans-serif}.ebook-document{width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}.ebook-page{width:210mm;min-height:297mm;padding:20mm 18mm;position:relative;overflow:hidden;page-break-after:always;background:radial-gradient(circle at 110% -10%,${t.p}66,transparent 38%),radial-gradient(circle at -10% 80%,${t.a}20,transparent 35%),linear-gradient(145deg,${t.bg},${t.bg2});box-shadow:0 24px 80px #0009;border:1px solid ${t.p}44}.ebook-page:before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.2;background:repeating-radial-gradient(circle at 0 0,#fff 0 1px,transparent 1px 7px);mix-blend-mode:overlay}.ebook-page:after{content:'';position:absolute;width:115mm;height:115mm;border:1px solid ${t.a}33;border-radius:50%;right:-70mm;top:-70mm;box-shadow:0 0 45px ${t.p}44;pointer-events:none}.ebook-page>*{position:relative;z-index:1}.cover{padding:0;display:grid;grid-template-columns:52% 48%;background:${t.bg}}.cover-art{position:relative;min-height:297mm;overflow:hidden}.cover-art img,.chapter-visual img,.toc-art img,.final-art img{width:100%;height:100%;object-fit:cover;display:block}.cover-art:after,.toc-art:after,.final-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,${t.bg}),linear-gradient(0deg,${t.bg}99,transparent 55%)}.cover-copy{padding:25mm 15mm 22mm 9mm;display:flex;flex-direction:column;justify-content:center;position:relative;backdrop-filter:blur(5px)}.kicker,.chapter-no{color:${t.a};font-size:11px;letter-spacing:4px;font-weight:700;text-transform:uppercase}.cover h1,.toc h2,.chapter h2,.visual-copy h2{font-family:${headingFont}}.cover h1{font-size:50px;line-height:.94;margin:24px 0 20px;text-transform:uppercase;color:${isChrome?'transparent':'#fff'};${isChrome?`background:linear-gradient(115deg,#fff 5%,#7f91a8 30%,#eefaff 48%,#59697f 68%,#fff 92%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 8px 22px #000)`:'text-shadow:0 10px 32px #0008'}}.cover .promise{font-size:18px;line-height:1.55;color:${t.txt||'#ddd'}cc}.cover .line,.heading-line{width:72px;height:4px;background:linear-gradient(90deg,${t.a},${t.p});margin:28px 0;box-shadow:0 0 18px ${t.a}88}.author{margin-top:auto;font-size:12px;color:${t.txt||'#ddd'}88}.toc{display:grid;grid-template-columns:42% 58%;padding:0}.toc-art{min-height:297mm;position:relative;overflow:hidden}.toc-copy{padding:24mm 16mm}.toc h2,.chapter h2{font-size:38px;line-height:1.02;margin:16px 0;color:#fff;text-transform:uppercase}.toc ul{list-style:none;padding:0;margin-top:30px}.toc li{padding:13px 0;border-bottom:1px solid ${t.p}44;font-size:15px;line-height:1.35}.toc li span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(145deg,${t.p},${t.a});margin-right:12px;color:#fff}.page-grid{display:grid;grid-template-columns:46% 54%;gap:12mm;align-items:center}.chapter.reverse .chapter-visual{order:2}.chapter-visual{height:105mm;position:relative;overflow:hidden;border-radius:10px;box-shadow:0 18px 55px #000b;border:1px solid ${t.a}55}.chapter-visual img{object-position:center}.visual-shade{position:absolute;inset:0;background:linear-gradient(0deg,${t.bg}cc,transparent 58%)}.visual-index{position:absolute;left:14px;bottom:9px;color:white;font:800 42px ${headingFont};opacity:.9}.subtitle{color:${t.a};font-size:17px;line-height:1.45;margin-bottom:18px}.chapter-chip{display:inline-block;padding:8px 10px;border:1px solid ${t.a}44;background:${t.p}18;color:${t.txt||'#ddd'}99;font-size:8px;letter-spacing:1.5px}.chapter-copy{columns:2;column-gap:11mm;font-size:11.6px;line-height:1.72;color:${t.txt||'#ddd'};margin-top:13mm;text-align:left}.chapter-copy p{margin:0 0 12px;break-inside:avoid}.chapter-copy p:first-child:first-letter{float:left;font:700 44px ${headingFont};line-height:.8;padding:7px 7px 0 0;color:${t.a}}.action-box{margin-top:10mm;padding:16px 18px;border:1px solid ${t.a};background:linear-gradient(120deg,${t.p}35,transparent);box-shadow:inset 0 1px #ffffff22}.action-box strong{display:block;color:${t.a};font-size:11px;letter-spacing:2px;margin-bottom:7px}.action-box span{font-size:12px;line-height:1.5}.page-footer{position:absolute;left:18mm;right:18mm;bottom:10mm;display:flex;justify-content:space-between;color:${t.txt||'#ddd'}55;font-size:9px;letter-spacing:1px}.page-footer b{color:${t.a}}.visual-page{padding:0;display:grid;grid-template-columns:55% 45%}.final-art{position:relative;min-height:297mm;overflow:hidden}.visual-copy{padding:25mm 14mm;display:flex;flex-direction:column;justify-content:center}.visual-copy h2{font-size:48px;line-height:1;margin:18px 0;text-transform:uppercase}.visual-copy p{font-size:17px;line-height:1.65;color:${t.txt||'#ddd'}bb}.visual-copy .steps{margin-top:24px;display:grid;gap:10px}.visual-copy .steps span{padding:12px;border-left:3px solid ${t.a};background:${t.p}22;font-size:12px}@media(max-width:850px){body{padding:0}.ebook-document{gap:8px}.ebook-page{width:100%;min-height:141vw;transform:none;box-shadow:none}.cover h1,.visual-copy h2{font-size:clamp(32px,7vw,48px)}}@media print{html,body{background:white;padding:0}.ebook-document{gap:0}.ebook-page{box-shadow:none;border:0;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}}</style></head><body><main class="ebook-document"><section class="ebook-page cover"><div class="cover-art">${image(0,d.titre_produit)}</div><div class="cover-copy"><div class="kicker">DROPDIGITAL ÉDITION · COLLECTION ${eh((S.a.design?.universeLabel||t.n||'PREMIUM').toUpperCase())}</div><h1>${eh(d.titre_produit)}</h1><p class="promise">${eh(d.sous_titre)}</p><div class="line"></div><p class="author">Créé pour ${eh(S.a.prenom||'toi')} · Édition premium illustrée</p></div></section><section class="ebook-page toc"><div class="toc-art">${image(1,'Vue d’ensemble de la méthode')}</div><div class="toc-copy"><div class="chapter-no">TON PARCOURS</div><h2>SOMMAIRE</h2><ul>${toc}</ul></div></section>${chapters}<section class="ebook-page visual-page"><div class="final-art">${image(8,'Plan d’action')}</div><div class="visual-copy"><div class="kicker">PLAN D’ACTION</div><h2>Transforme la lecture en résultat.</h2><p>Ne cherche pas à tout appliquer en même temps. Avance dans l’ordre, mesure ce qui change et ajuste sans abandonner.</p><div class="steps"><span>01 · Choisis ton premier levier.</span><span>02 · Bloque un créneau précis.</span><span>03 · Mesure un indicateur simple.</span><span>04 · Répète pendant sept jours.</span></div></div></section><section class="ebook-page visual-page"><div class="final-art">${image(9,'Conclusion et transformation')}</div><div class="visual-copy"><div class="kicker">CONCLUSION</div><h2>La suite commence maintenant.</h2><p>${eh(d.garantie||'Applique une étape à la fois, reste régulier et mesure tes progrès avec honnêteté.')}</p><div class="line"></div><p class="author">${eh(d.titre_produit)} · Dropdigital Édition</p></div></section></main></body></html>`;
+
+  const cleanText=value=>String(value||'').trim();
+
+  const paragraphs=value=>cleanText(value)
+    .split(/\n\s*\n/)
+    .map(x=>x.trim())
+    .filter(Boolean);
+
+  const sentences=value=>cleanText(value)
+    .replace(/\n+/g,' ')
+    .split(/(?<=[.!?])\s+/)
+    .map(x=>x.trim())
+    .filter(x=>x.length>18);
+
+  const short=value=>{
+    const txt=cleanText(value);
+    return txt.length>185?txt.slice(0,182).trim()+'…':txt;
+  };
+
+  const extractAction=value=>{
+    const txt=cleanText(value);
+    const explicit=txt.match(/(?:ACTION DU CHAPITRE|EXERCICE|À FAIRE|ACTION)\s*:?\s*([\s\S]{20,500})$/i);
+    if(explicit)return short(explicit[1]);
+    const ps=paragraphs(txt);
+    return short(ps[ps.length-1]||'Choisis une action précise, planifie-la et note ce que tu observes.');
+  };
+
+  const extractItems=value=>{
+    const txt=cleanText(value);
+    const found=[];
+
+    const patterns=[
+      /(?:étape|phase|pilier|principe|technique|erreur|semaine|jour|règle)\s*(?:n[°º]?\s*)?(\d+)?\s*[:\-–—]\s*([^.\n]{12,180})/gi,
+      /(?:premier|deuxième|troisième|quatrième|cinquième|sixième)\s+(?:pilier|principe|levier|étape|technique)\s*[:\-–—]?\s*([^.\n]{12,180})/gi
+    ];
+
+    for(const pattern of patterns){
+      let m;
+      while((m=pattern.exec(txt))&&found.length<6){
+        const label=(m[2]||m[1]||'').trim();
+        if(label&&!found.includes(label))found.push(label);
+      }
+    }
+
+    if(found.length<3){
+      for(const sentence of sentences(txt)){
+        if(found.length>=5)break;
+        if(sentence.length<145&&!found.includes(sentence))found.push(sentence);
+      }
+    }
+
+    return found.slice(0,6);
+  };
+
+  const renderCards=(items,label='ÉTAPES CLÉS')=>{
+    if(!items.length)return '';
+    return `<div class="editorial-block">
+      <div class="block-label">${eh(label)}</div>
+      <div class="method-cards">
+        ${items.map((item,i)=>`<div class="method-card">
+          <b>${String(i+1).padStart(2,'0')}</b>
+          <span>${eh(short(item))}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  };
+
+  const renderChecklist=items=>{
+    if(!items.length)return '';
+    return `<div class="editorial-block checklist-block">
+      <div class="block-label">CHECKLIST D’APPLICATION</div>
+      <div class="checklist">
+        ${items.slice(0,5).map(item=>`<div><i></i><span>${eh(short(item))}</span></div>`).join('')}
+      </div>
+    </div>`;
+  };
+
+  const renderProgress=items=>{
+    if(!items.length)return '';
+    return `<div class="editorial-block">
+      <div class="block-label">PROGRESSION</div>
+      <div class="progress-line">
+        ${items.slice(0,5).map((item,i)=>`<div class="progress-step">
+          <b>${String(i+1).padStart(2,'0')}</b>
+          <span>${eh(short(item))}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  };
+
+  const renderMechanism=()=>{
+    const name=mechanism.nom||'Le mécanisme central';
+    const idea=mechanism.idee||mechanism.fonctionnement||d.angle_central||'';
+    const metaphor=mechanism.metaphore_visuelle||'';
+    const problem=mechanism.probleme_reel||'';
+    const classic=mechanism.pourquoi_classique_echoue||'';
+
+    return `<section class="ebook-page mechanism-page">
+      <div class="mechanism-art">
+        ${image(1,name)}
+        <div class="art-overlay"></div>
+      </div>
+      <div class="mechanism-content">
+        <div class="kicker">LE PRINCIPE CENTRAL</div>
+        <h2>${eh(name)}</h2>
+        ${idea?`<p class="lead">${eh(idea)}</p>`:''}
+        <div class="mechanism-grid">
+          ${problem?`<div class="insight-card"><small>LE VRAI BLOCAGE</small><p>${eh(short(problem))}</p></div>`:''}
+          ${classic?`<div class="insight-card"><small>POURQUOI L’APPROCHE CLASSIQUE BLOQUE</small><p>${eh(short(classic))}</p></div>`:''}
+          ${metaphor?`<div class="insight-card wide"><small>IMAGE MENTALE</small><p>${eh(short(metaphor))}</p></div>`:''}
+        </div>
+        <div class="mechanism-flow">
+          <span>PROBLÈME</span><i>→</i><span>${eh(name)}</span><i>→</i><span>APPLICATION</span><i>→</i><span>PROGRESSION</span>
+        </div>
+      </div>
+      <div class="page-footer"><span>${eh(d.titre_produit)}</span><b>02</b></div>
+    </section>`;
+  };
+
+  const renderMethod=()=>{
+    const pillars=Array.isArray(method.piliers)?method.piliers:[];
+    if(!pillars.length)return '';
+
+    return `<section class="ebook-page method-page">
+      <div class="kicker">LA MÉTHODE PROPRIÉTAIRE</div>
+      <h2>${eh(method.nom||'Ton système')}</h2>
+      ${method.promesse_methode?`<p class="method-intro">${eh(method.promesse_methode)}</p>`:''}
+
+      <div class="pillar-grid">
+        ${pillars.slice(0,6).map((p,i)=>`
+          <div class="pillar">
+            <b>${String(i+1).padStart(2,'0')}</b>
+            <h3>${eh(p.nom||`Pilier ${i+1}`)}</h3>
+            ${p.role?`<p>${eh(short(p.role))}</p>`:''}
+            ${Array.isArray(p.actions)&&p.actions.length
+              ? `<ul>${p.actions.slice(0,3).map(a=>`<li>${eh(short(a))}</li>`).join('')}</ul>`
+              : ''}
+          </div>`).join('')}
+      </div>
+
+      ${method.routine?`<div class="routine-strip"><small>RITUEL D’APPLICATION</small><strong>${eh(short(method.routine))}</strong></div>`:''}
+      ${method.mesure_progression?`<div class="metric-strip"><small>COMMENT MESURER TA PROGRESSION</small><strong>${eh(short(method.mesure_progression))}</strong></div>`:''}
+
+      <div class="page-footer"><span>${eh(d.titre_produit)}</span><b>03</b></div>
+    </section>`;
+  };
+
+  const chapterVisualIndex=index=>{
+    // Les visuels 2 à 7 sont réservés aux chapitres.
+    // Si le produit contient 7 ou 8 chapitres, on réutilise intelligemment
+    // ces visuels au lieu de voler 8 et 9 au plan d'action / conclusion.
+    return 2+(index%6);
+  };
+
+  const renderChapter=(c,index)=>{
+    const ps=paragraphs(c.c);
+    const intro=ps[0]||'';
+    const rest=ps.slice(1);
+    const items=extractItems(c.c);
+    const action=extractAction(c.c);
+
+    const visualMeta=visualPlan.find(v=>Number(v?.index)===chapterVisualIndex(index))||{};
+    const type=String(visualMeta.type||'').toLowerCase();
+
+    let component='';
+    if(/timeline|process|cycle|étape|etape/.test(type)){
+      component=renderProgress(items);
+    }else if(/checklist|routine|action/.test(type)){
+      component=renderChecklist(items);
+    }else{
+      component=renderCards(items,'POINTS CLÉS');
+    }
+
+    return `<section class="ebook-page chapter ${index%2?'reverse':''}">
+      <div class="chapter-top">
+        <div class="chapter-visual">
+          ${image(chapterVisualIndex(index),c.t)}
+          <div class="visual-shade"></div>
+          <span class="visual-index">${String(index+1).padStart(2,'0')}</span>
+        </div>
+
+        <div class="chapter-heading">
+          <div class="chapter-no">CHAPITRE ${eh(String(c.n||index+1))}</div>
+          <h2>${eh(c.t||'')}</h2>
+          <p class="subtitle">${eh(c.st||'')}</p>
+          <div class="heading-line"></div>
+          ${intro?`<p class="chapter-lead">${eh(short(intro))}</p>`:''}
+        </div>
+      </div>
+
+      ${component}
+
+      <div class="chapter-copy">
+        ${rest.map(p=>`<p>${eh(p).replace(/\n/g,'<br>')}</p>`).join('')}
+      </div>
+
+      <div class="action-box">
+        <div class="action-icon">✓</div>
+        <div>
+          <strong>ACTION DU CHAPITRE</strong>
+          <span>${eh(action)}</span>
+        </div>
+      </div>
+
+      <div class="page-footer">
+        <span>${eh(d.titre_produit)}</span>
+        <b>${String(index+4).padStart(2,'0')}</b>
+      </div>
+    </section>`;
+  };
+
+  const chapterHTML=chapters.map(renderChapter).join('');
+
+  const toc=chapters.map((c,index)=>`
+    <li>
+      <span>${String(index+1).padStart(2,'0')}</span>
+      <div><b>${eh(c.t||'')}</b><small>${eh(c.st||'')}</small></div>
+    </li>`).join('');
+
+  const methodName=method.nom||mechanism.nom||d.type_produit||'MÉTHODE';
+
+  return `<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${eh(d.titre_produit)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;700;800&family=Playfair+Display:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+html{background:#090614}
+body{margin:0;padding:28px 0;background:radial-gradient(circle at top,${t.p}33,transparent 38%),#090614;color:${t.txt||'#eee'};font-family:'Inter',sans-serif}
+.ebook-document{width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}
+.ebook-page{width:210mm;min-height:297mm;padding:18mm 17mm;position:relative;overflow:hidden;page-break-after:always;background:radial-gradient(circle at 110% -10%,${t.p}66,transparent 38%),radial-gradient(circle at -10% 80%,${t.a}20,transparent 35%),linear-gradient(145deg,${t.bg},${t.bg2});box-shadow:0 24px 80px #0009;border:1px solid ${t.p}44}
+.ebook-page:before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.16;background:repeating-radial-gradient(circle at 0 0,#fff 0 1px,transparent 1px 7px);mix-blend-mode:overlay}
+.ebook-page>*{position:relative;z-index:1}
+.kicker,.chapter-no,.block-label{color:${t.a};font-size:10px;letter-spacing:3px;font-weight:800;text-transform:uppercase}
+h1,h2,h3{font-family:${headingFont}}
+.page-footer{position:absolute;left:17mm;right:17mm;bottom:9mm;display:flex;justify-content:space-between;color:${t.txt||'#ddd'}55;font-size:8px;letter-spacing:1px}
+.page-footer b{color:${t.a}}
+
+.cover{padding:0;display:block;background:${t.bg}}
+.cover-art{position:absolute;inset:0}
+.cover-art img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-art:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,${t.bg}f2 0%,${t.bg}88 38%,transparent 72%),linear-gradient(90deg,${t.bg}99,transparent 65%)}
+.cover-copy{position:absolute;left:17mm;right:17mm;bottom:24mm;max-width:155mm}
+.cover h1{font-size:54px;line-height:.92;margin:18px 0;text-transform:uppercase;color:${isChrome?'transparent':'#fff'};${isChrome?`background:linear-gradient(115deg,#fff 5%,#7f91a8 30%,#eefaff 48%,#59697f 68%,#fff 92%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 8px 22px #000)`:'text-shadow:0 10px 32px #0008'}}
+.cover .promise{max-width:125mm;font-size:18px;line-height:1.5;color:${t.txt||'#eee'}dd}
+.cover-badge{display:inline-flex;padding:8px 12px;border:1px solid ${t.a}88;background:${t.bg}aa;backdrop-filter:blur(8px);color:${t.a};font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.author{margin-top:24px;font-size:10px;color:${t.txt||'#ddd'}88}
+
+.toc h2,.mechanism-page h2,.method-page h2,.chapter h2{font-size:37px;line-height:1;margin:12px 0 18px;color:#fff;text-transform:uppercase}
+.toc ul{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:8px}
+.toc li{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid ${t.p}44}
+.toc li>span{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,${t.p},${t.a});font-size:10px;font-weight:800}
+.toc li b{display:block;font-size:13px;color:#fff}
+.toc li small{display:block;margin-top:3px;color:${t.txt||'#ddd'}77;font-size:9px}
+
+.mechanism-page{padding:0}
+.mechanism-art{height:105mm;position:relative;overflow:hidden}
+.mechanism-art img{width:100%;height:100%;object-fit:cover}
+.art-overlay{position:absolute;inset:0;background:linear-gradient(0deg,${t.bg},transparent 65%)}
+.mechanism-content{padding:12mm 17mm 20mm}
+.mechanism-content .lead,.method-intro{font-size:14px;line-height:1.6;color:${t.txt||'#ddd'}cc;max-width:165mm}
+.mechanism-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.insight-card{padding:13px;border:1px solid ${t.a}44;background:${t.p}16}
+.insight-card.wide{grid-column:1/-1}
+.insight-card small,.routine-strip small,.metric-strip small{display:block;color:${t.a};font-size:8px;letter-spacing:1.6px;font-weight:800;margin-bottom:6px}
+.insight-card p{margin:0;font-size:10px;line-height:1.5}
+.mechanism-flow{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:12px;padding:10px;border:1px solid ${t.p}55;background:#0002}
+.mechanism-flow span{font-size:8px;font-weight:800;text-align:center}
+.mechanism-flow i{color:${t.a};font-style:normal}
+
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12mm}
+.pillar{padding:14px;border:1px solid ${t.p}55;background:linear-gradient(145deg,${t.p}20,transparent);min-height:40mm}
+.pillar>b{color:${t.a};font-size:22px}
+.pillar h3{font-size:15px;margin:7px 0;color:#fff}
+.pillar p,.pillar li{font-size:9px;line-height:1.5;color:${t.txt||'#ddd'}bb}
+.pillar ul{padding-left:16px;margin:8px 0 0}
+.routine-strip,.metric-strip{margin-top:10px;padding:12px 14px;border-left:3px solid ${t.a};background:${t.p}22}
+.routine-strip strong,.metric-strip strong{font-size:10px;line-height:1.5;color:#fff}
+
+.chapter-top{display:grid;grid-template-columns:44% 56%;gap:10mm;align-items:center}
+.chapter.reverse .chapter-visual{order:2}
+.chapter-visual{height:88mm;position:relative;overflow:hidden;border-radius:9px;box-shadow:0 18px 55px #000b;border:1px solid ${t.a}55}
+.chapter-visual img{width:100%;height:100%;object-fit:cover}
+.visual-shade{position:absolute;inset:0;background:linear-gradient(0deg,${t.bg}dd,transparent 60%)}
+.visual-index{position:absolute;left:12px;bottom:7px;color:white;font:800 38px ${headingFont}}
+.subtitle{color:${t.a};font-size:14px;line-height:1.4}
+.heading-line{width:60px;height:3px;background:linear-gradient(90deg,${t.a},${t.p});margin:18px 0}
+.chapter-lead{font-size:10px;line-height:1.55;color:${t.txt||'#ddd'}aa}
+
+.editorial-block{margin-top:9mm}
+.method-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
+.method-card{padding:10px;border:1px solid ${t.p}55;background:${t.p}18;min-height:24mm}
+.method-card b{display:block;color:${t.a};font-size:17px;margin-bottom:5px}
+.method-card span{font-size:8.5px;line-height:1.4}
+
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.checklist>div{display:flex;gap:8px;align-items:flex-start;padding:9px;background:${t.p}18;border:1px solid ${t.p}44}
+.checklist i{width:13px;height:13px;flex:0 0 13px;border:1px solid ${t.a};margin-top:1px}
+.checklist span{font-size:8.5px;line-height:1.4}
+
+.progress-line{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:8px}
+.progress-step{padding:8px;border-top:2px solid ${t.a};background:${t.p}18}
+.progress-step b{display:block;color:${t.a};font-size:14px}
+.progress-step span{font-size:7.7px;line-height:1.35}
+
+.chapter-copy{columns:2;column-gap:9mm;font-size:9.8px;line-height:1.58;color:${t.txt||'#ddd'};margin-top:8mm}
+.chapter-copy p{margin:0 0 9px;break-inside:avoid}
+.action-box{margin-top:7mm;padding:11px 13px;border:1px solid ${t.a};background:linear-gradient(120deg,${t.p}35,transparent);display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center}
+.action-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:${t.a};color:${t.bg};font-weight:900}
+.action-box strong{display:block;color:${t.a};font-size:9px;letter-spacing:2px;margin-bottom:4px}
+.action-box span{font-size:9.5px;line-height:1.45}
+
+.visual-page{padding:0;display:grid;grid-template-columns:55% 45%}
+.final-art{position:relative;min-height:297mm;overflow:hidden}
+.final-art img{width:100%;height:100%;object-fit:cover}
+.final-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,${t.bg})}
+.visual-copy{padding:23mm 13mm;display:flex;flex-direction:column;justify-content:center}
+.visual-copy h2{font-size:42px;line-height:1;margin:16px 0;text-transform:uppercase}
+.visual-copy p{font-size:14px;line-height:1.6;color:${t.txt||'#ddd'}bb}
+.steps{display:grid;gap:8px;margin-top:20px}
+.steps span{padding:10px;border-left:3px solid ${t.a};background:${t.p}22;font-size:10px}
+
+@media(max-width:850px){
+  body{padding:0}
+  .ebook-document{gap:8px}
+  .ebook-page{width:100%;min-height:141vw;box-shadow:none}
+  .cover h1{font-size:clamp(34px,8vw,54px)}
+}
+@media print{
+  html,body{background:white;padding:0}
+  .ebook-document{gap:0}
+  .ebook-page{box-shadow:none;border:0;margin:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<main class="ebook-document">
+
+<section class="ebook-page cover">
+  <div class="cover-art">${image(0,d.titre_produit)}</div>
+  <div class="cover-copy">
+    <div class="cover-badge">${eh(String(d.type_produit||'MÉTHODE').toUpperCase())} · ${eh(String(methodName).toUpperCase())}</div>
+    <h1>${eh(d.titre_produit)}</h1>
+    <p class="promise">${eh(d.sous_titre||d.promesse||'')}</p>
+    <p class="author">Créé pour ${eh(S.a.prenom||'toi')} · Dropdigital Édition</p>
+  </div>
+</section>
+
+<section class="ebook-page toc">
+  <div class="kicker">TON PARCOURS</div>
+  <h2>LA FEUILLE DE ROUTE</h2>
+  ${mechanism.nom?`<div class="insight-card wide"><small>MÉCANISME CENTRAL</small><p>${eh(mechanism.nom)}</p></div>`:''}
+  ${method.nom?`<div class="insight-card wide"><small>MÉTHODE</small><p>${eh(method.nom)}</p></div>`:''}
+  <ul>${toc}</ul>
+  <div class="page-footer"><span>${eh(d.titre_produit)}</span><b>01</b></div>
+</section>
+
+${renderMechanism()}
+${renderMethod()}
+${chapterHTML}
+
+<section class="ebook-page visual-page">
+  <div class="final-art">${image(8,'Plan d’action')}</div>
+  <div class="visual-copy">
+    <div class="kicker">MISE EN PRATIQUE</div>
+    <h2>Passe du concept au protocole.</h2>
+    <p>${eh(method.routine||'Commence par la version la plus simple de la méthode. Exécute-la, mesure ce qui change, puis augmente progressivement le niveau.')}</p>
+    <div class="steps">
+      <span>01 · Identifie ton point de départ.</span>
+      <span>02 · Choisis le premier pilier à appliquer.</span>
+      <span>03 · Exécute une action mesurable.</span>
+      <span>04 · Observe et ajuste.</span>
+    </div>
+  </div>
+</section>
+
+<section class="ebook-page visual-page">
+  <div class="final-art">${image(9,'Transformation finale')}</div>
+  <div class="visual-copy">
+    <div class="kicker">LA SUITE</div>
+    <h2>Fais vivre la méthode.</h2>
+    <p>${eh(d.garantie)}</p>
+    ${method.mesure_progression?`<div class="metric-strip"><small>TON INDICATEUR</small><strong>${eh(short(method.mesure_progression))}</strong></div>`:''}
+    <p class="author">${eh(d.titre_produit)} · Dropdigital Édition</p>
+  </div>
+</section>
+
+</main>
+</body>
+</html>`;
 }
 
 async function downloadEbookPdf(){
@@ -2443,7 +3520,7 @@ function showResults(d, theme) {
     resultCopy.textContent='Copie les prompts dans ChatGPT pour créer manuellement ton ebook et ta page de vente.';
   }else{
     resultTitle.innerHTML='Ton produit est <span>prêt.</span><br>Ton site va <span>vendre.</span>';
-    resultCopy.textContent='Ton ebook et ta page de vente ont été générés automatiquement.';
+    resultCopy.textContent='Ton produit et ta page de vente ont été générés automatiquement.';
   }
   window.scrollTo({top:0,behavior:'smooth'});
 
@@ -2708,7 +3785,7 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
 
     <!-- EBOOK TAB -->
     <div class="tab-content active" id="tab-ebook">
-      ${isPaidPlan()?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON EBOOK PRO EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Le texte, la couverture, le sommaire et les chapitres sont conservés. ${d.missing_images?.length?`${d.missing_images.length} illustration(s) restent à reprendre sans régénérer le texte.`:'Les illustrations sont déjà mises en page.'}</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="downloadEbookPdf()">📥 TÉLÉCHARGER LE PDF</button><button class="copy-btn" onclick="previewHTML(window._ebookHTML)">👁 APERÇU DE L’EBOOK</button>${d.missing_images?.length?'<button class="copy-btn" onclick="retryMissingImages(this)">↻ REPRENDRE UNIQUEMENT LES IMAGES MANQUANTES</button>':''}</div></div>`:''}
+      ${isPaidPlan()?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON PRODUIT PRO EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Le texte, la couverture, le sommaire et les chapitres sont conservés. ${d.missing_images?.length?`${d.missing_images.length} illustration(s) restent à reprendre sans régénérer le texte.`:'Les illustrations sont déjà mises en page.'}</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="downloadEbookPdf()">📥 TÉLÉCHARGER LE PDF</button><button class="copy-btn" onclick="previewHTML(window._ebookHTML)">👁 APERÇU DU PRODUIT</button>${d.missing_images?.length?'<button class="copy-btn" onclick="retryMissingImages(this)">↻ REPRENDRE UNIQUEMENT LES IMAGES MANQUANTES</button>':''}</div></div>`:''}
       <div class="rc" style="border-left-color:var(--green);${isPaidPlan()?'display:none;':''}">
         <div class="rch">
           <div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">📖 PROMPT À ENVOYER À CLAUDE OU CHATGPT</div>
@@ -2739,9 +3816,6 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
         </div>
         <textarea id="ebookForSalesDesigner" placeholder="Colle ici l'ebook final personnalisé…" style="width:100%;min-height:260px;resize:vertical;background:rgba(5,3,10,.72);border:1px solid rgba(179,102,255,.3);color:#eee;padding:18px;font:14px/1.7 'DM Sans',sans-serif;outline:none;"></textarea>
         <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0;">
-          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR PRINCIPALE<input id="salesPrimary" type="color" value="${theme.p}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
-          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR ACCENT<input id="salesAccent" type="color" value="${theme.a}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
-          <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">COULEUR DE FOND<input id="salesBackground" type="color" value="${theme.bg}" style="display:block;width:100%;height:42px;margin-top:8px;background:transparent;border:1px solid rgba(179,102,255,.3);cursor:pointer;"></label>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
           <label style="color:#cbb78d;font-size:12px;font-weight:700;letter-spacing:.06em;">STYLE VISUEL<select id="salesDirection" style="width:100%;margin-top:8px;background:#120c1e;border:1px solid rgba(179,102,255,.3);color:#eee;padding:13px;font:14px 'DM Sans',sans-serif;"><option>Éditorial premium et lumineux</option><option>Wellness doux et organique</option><option>Tech propre et futuriste</option><option>Minimaliste contrasté</option><option>Énergique et coloré</option></select></label>
@@ -2861,9 +3935,9 @@ function generateSalesArchitectPrompt(){
   if(!ebook||!result||!text)return;
   const opt={
     ebook:ebook.value,
-    primary:document.getElementById('salesPrimary').value,
-    accent:document.getElementById('salesAccent').value,
-    background:document.getElementById('salesBackground').value,
+    primary:(window._productTheme?.colors?.primary || window._productTheme?.p || '#7a00ff'),
+    accent:(window._productTheme?.colors?.accent || window._productTheme?.a || '#f0b429'),
+    background:(window._productTheme?.colors?.background || window._productTheme?.bg || '#0d0018'),
     direction:document.getElementById('salesDirection').value,
     motif:document.getElementById('salesMotif').value,
     bump:document.getElementById('salesOrderBump').value,
