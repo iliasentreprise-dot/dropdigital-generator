@@ -2758,8 +2758,9 @@ Retourne maintenant UNIQUEMENT le JSON.`;
     mel.textContent='✨ Claude construit le site pendant que GPT illustre la méthode...';
 
     const imageJobs=[];
+    const aiImageIndexes=[2,5,9];
 
-    for(let index=1;index<10;index++){
+    for(const index of aiImageIndexes){
 
       imageJobs.push((async()=>{
 

@@ -187,6 +187,17 @@ export default async function handler(req, res) {
         : '')
     ).trim();
 
+    const salesContentBrief = Array.isArray(product.chapitres)
+      ? product.chapitres.map(chapter => {
+          const content = String(chapter.c || '').replace(/\s+/g, ' ').trim();
+          return [
+            `CHAPITRE ${chapter.n || ''} : ${chapter.t || ''}`,
+            chapter.st ? `Objectif : ${chapter.st}` : '',
+            content ? `Résumé : ${content.slice(0, 900)}` : ''
+          ].filter(Boolean).join('\n');
+        }).join('\n\n')
+      : ebookContent.slice(0, 6000);
+
     const productTitle = String(
       offer.title ||
       product.titre_produit ||
@@ -280,7 +291,7 @@ Voici le véritable contenu vendu.
 
 ===== DÉBUT EBOOK =====
 
-${ebookContent}
+${salesContentBrief}
 
 ===== FIN EBOOK =====
 
@@ -737,7 +748,7 @@ ${JSON.stringify({
 }, null, 2)}
 
 EXTRAIT DU CONTENU :
-${ebookContent.slice(0,18000)}
+${salesContentBrief.slice(0,6000)}
 
 IDENTITÉ VISUELLE :
 
@@ -826,8 +837,8 @@ Aucun texte hors HTML.
     console.log('Starting Claude funnel generation');
 
     const [salesResult, upsellResult] = await Promise.all([
-      callClaude(salesPrompt, 32000),
-      callClaude(upsellPrompt, 12000),
+      callClaude(salesPrompt, 16000),
+      callClaude(upsellPrompt, 6000),
     ]);
 
     const html = salesResult.text;
