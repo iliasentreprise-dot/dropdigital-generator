@@ -156,6 +156,8 @@ export default async function handler(req, res) {
     const theme = req.body?.theme || {};
     const offer = req.body?.offer || {};
     const orderBump = req.body?.orderBump || {};
+    const upsell = req.body?.upsell || {};
+    const salesVisuals = req.body?.salesVisuals || {};
     const cover = req.body?.cover || product?.cover || {};
 
     const colors = theme?.colors || {};
@@ -218,24 +220,24 @@ export default async function handler(req, res) {
       ''
     ).trim();
 
-    const productPrice = String(
-      offer.price ||
-      product.prix ||
-      ''
-    ).trim();
-
-    const referencePrice = String(
-      offer.referencePrice ||
-      product.prix_barre ||
-      ''
-    ).trim();
+    // SOURCES DE VÉRITÉ — Claude ne choisit jamais les prix
+    const productPrice = '17.80';
+    const referencePrice = '';
+    const bumpPrice = 7.80;
+    const mainPlusBumpTotal = 25.60;
+    const upsellAddonPrice = 29.20;
+    const mainPlusUpsellTotal = 47.00;
+    const fullFunnelTotal = 54.80;
 
     const currency = String(
       offer.currency || 'EUR'
     ).trim();
 
-    const bumpPrice = Number(orderBump.price) || 7.8;
     const bumpIdea = String(orderBump.idea || '').trim();
+
+    const transformationUrl = String(
+      salesVisuals?.transformation || ''
+    ).trim();
 
     const salesPrompt = `
 TU ES UNE ÉQUIPE SENIOR COMPLÈTE :
@@ -269,6 +271,28 @@ ${referencePrice || 'non défini'} ${currency}
 
 Le prix réel ci-dessus est la source de vérité.
 Ne le remplace jamais par un prix inventé.
+
+RÈGLES DE PRIX ABSOLUES :
+
+Produit seul :
+17,80 EUR
+
+Order bump :
++7,80 EUR
+
+Produit + order bump :
+25,60 EUR
+
+Upsell additionnel après achat :
++29,20 EUR
+
+Produit principal + upsell :
+47,00 EUR
+
+Produit + order bump + upsell :
+54,80 EUR
+
+Tu n'as AUCUNE autorisation pour inventer, arrondir ou modifier ces montants.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. QUESTIONNAIRE
@@ -420,6 +444,27 @@ Crée uniquement une représentation CSS temporaire cohérente avec la direction
 Ne prétends pas qu'une image réelle existe.
 `}
 
+4D. VISUEL OPENAI DE TRANSFORMATION
+
+URL :
+${transformationUrl || 'INDISPONIBLE'}
+
+${transformationUrl ? `
+Cette image a déjà été générée par OpenAI pour CE produit.
+
+Utilise exactement cette URL dans une section pertinente de transformation,
+projection, résultat attendu ou explication visuelle.
+
+Ne la recrée pas en CSS.
+Ne modifie pas son URL.
+Ne l'utilise pas comme minuscule décoration.
+Elle doit avoir un vrai rôle visuel dans la page.
+` : `
+Aucun visuel de transformation OpenAI n'est disponible.
+N'affiche aucun placeholder vide.
+`}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 5. IDENTITÉ VISUELLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -819,6 +864,20 @@ L'upsell appartient exactement à la même marque que la page principale.
 Il doit être plus concentré et direct.
 
 Tu n'es PAS obligé d'utiliser un fond blanc.
+
+PRIX DE L'UPSELL :
+
+L'upsell ajoute EXACTEMENT :
+29,20 EUR
+
+Le client a déjà payé 17,80 EUR pour le produit principal.
+
+Donc :
+17,80 + 29,20 = 47,00 EUR
+
+Le montant final produit principal + upsell doit être présenté comme 47,00 EUR.
+
+N'invente aucun autre prix.
 
 Crée UNE offre complémentaire logique répondant à :
 
