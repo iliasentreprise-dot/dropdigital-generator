@@ -802,39 +802,380 @@ dbClient.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){passwo
 async function signOutMember(){await dbClient.auth.signOut();currentMember=null;try{localStorage.removeItem(STORAGE_KEYS.email);localStorage.removeItem(STORAGE_KEYS.profile);localStorage.removeItem(STORAGE_KEYS.history);}catch(_){}document.getElementById('memberToolbar').hidden=true;document.getElementById('emailGate').classList.add('show');setAuthMode('login');}
 
 // ── THEMES ─────────────────────────────────────────────
-function getTheme(marche, niche) {
-  const T = {
-    'Parentalité & éducation':  {p:'#9b7fa6',s:'#2a1535',a:'#f5a7c7',bg:'#1a0a1f',bg2:'#220d2a',txt:'#f0e8f8',hl:'#f5a7c7',btn:'#9b7fa6',btxt:'white',n:'Violet Pastel'},
-    'Vie sociale':              {p:'#9b7fa6',s:'#2a1535',a:'#f5a7c7',bg:'#1a0a1f',bg2:'#220d2a',txt:'#f0e8f8',hl:'#f5a7c7',btn:'#9b7fa6',btxt:'white',n:'Violet Pastel'},
-    'Séduction & dating':       {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Bordeaux'},
-    'Reconquête amoureuse':     {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Bordeaux'},
-    'Confiance en soi & estime personnelle':{p:'#7a6fa6',s:'#1a1535',a:'#b0a0f0',bg:'#0f0e1a',bg2:'#181630',txt:'#e8e5f8',hl:'#b0a0f0',btn:'#7a6fa6',btxt:'white',n:'Indigo'},
-    'Statut & charisme':        {p:'#7a6fa6',s:'#1a1535',a:'#b0a0f0',bg:'#0f0e1a',bg2:'#181630',txt:'#e8e5f8',hl:'#b0a0f0',btn:'#7a6fa6',btxt:'white',n:'Indigo'},
-    'Alimentation saine / nutrition':{p:'#4a8c5c',s:'#0a1f12',a:'#7fca95',bg:'#070f0a',bg2:'#0f2018',txt:'#e8f5ec',hl:'#7fca95',btn:'#4a8c5c',btxt:'white',n:'Vert Sauge'},
-    'Réduction du stress / anxiété':{p:'#4a8c5c',s:'#0a1f12',a:'#7fca95',bg:'#070f0a',bg2:'#0f2018',txt:'#e8f5ec',hl:'#7fca95',btn:'#4a8c5c',btxt:'white',n:'Vert Sauge'},
-    'Sommeil & récupération':   {p:'#2a5c8a',s:'#050f1a',a:'#c4a0ff',bg:'#030810',bg2:'#071020',txt:'#e0ecff',hl:'#c4a0ff',btn:'#2a5c8a',btxt:'white',n:'Bleu Nuit'},
-    'Perte de poids':           {p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'},
-    'Musculation / prise de masse':{p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'},
-    'Looksmaxxing':             {p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Premium'},
-    'Monétisation TikTok / réseaux sociaux':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
-    'Freelance & vendre ses compétences':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
-    'Marketing digital & vente en ligne':{p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'},
-    'Achat-revente':            {p:'#c8960a',s:'#1a1200',a:'#ffd700',bg:'#0a0800',bg2:'#141000',txt:'#fff8e0',hl:'#ffd700',btn:'#c8960a',btxt:'black',n:'Or Pirate'},
-    'Investissement & épargne': {p:'#1a7a3a',s:'#051205',a:'#4dff88',bg:'#020a04',bg2:'#051008',txt:'#e0fff0',hl:'#4dff88',btn:'#1a7a3a',btxt:'white',n:'Vert Finance'},
-    'Business automatisé / revenus passifs':{p:'#7a1abf',s:'#12051e',a:'#c07aff',bg:'#090310',bg2:'#100518',txt:'#f0e0ff',hl:'#c07aff',btn:'#7a1abf',btxt:'white',n:'Violet Tech'},
-  };
-  if (T[niche]) return T[niche];
-  if (marche==='sante') return {p:'#d4410a',s:'#1a0800',a:'#ff8a50',bg:'#0d0400',bg2:'#1a0a00',txt:'#fce8e0',hl:'#ff8a50',btn:'#d4410a',btxt:'white',n:'Orange Sport'};
-  if (marche==='relations') return {p:'#c0394b',s:'#200810',a:'#ff7a8a',bg:'#140508',bg2:'#1e0810',txt:'#fce8ea',hl:'#ff7a8a',btn:'#c0394b',btxt:'white',n:'Rouge Passion'};
-  if (marche==='argent') return {p:'#1a6abf',s:'#05101e',a:'#f5c518',bg:'#040810',bg2:'#08121f',txt:'#e0e8ff',hl:'#f5c518',btn:'#1a6abf',btxt:'white',n:'Bleu Business'};
-  return {p:'#8b3cf7',s:'#0a0018',a:'#ffffff',bg:'#0a0a0a',bg2:'#0d0a18',txt:'#f0eaff',hl:'#ffffff',btn:'#8b3cf7',btxt:'white',n:'Violet Pirate'};
+
+/* ═══════════════════════════════════════════════════════════════
+   DROPDIGITAL — PROJECT THEME ENGINE
+   Une seule source de vérité pour :
+   - Ebook
+   - Illustrations OpenAI
+   - Page de vente Claude
+   - Images de page de vente
+   - Upsell
+═══════════════════════════════════════════════════════════════ */
+
+const THEME_PROFILES = {
+  business:{
+    label:'Business premium',
+    defaultSeed:'#185adb',
+    mood:'premium, structuré, crédible, ambitieux',
+    typography:'moderne, nette, forte hiérarchie',
+    motif:'grilles éditoriales, lignes fines, halos maîtrisés',
+    layout:'structuré, spacieux, conversion premium'
+  },
+
+  fitness:{
+    label:'Sport & performance',
+    defaultSeed:'#e85112',
+    mood:'énergique, puissant, contrasté, dynamique',
+    typography:'impactante, sportive, très lisible',
+    motif:'diagonales, mouvement, contrastes, énergie',
+    layout:'rythmé, visuel, sections fortes'
+  },
+
+  wellness:{
+    label:'Bien-être organique',
+    defaultSeed:'#4a8c5c',
+    mood:'apaisant, organique, chaleureux, premium',
+    typography:'élégante, douce, très lisible',
+    motif:'formes organiques, halos doux, respiration',
+    layout:'éditorial, aéré, calme et rassurant'
+  },
+
+  relation:{
+    label:'Relations élégantes',
+    defaultSeed:'#bd3d58',
+    mood:'émotionnel, élégant, intime, éditorial',
+    typography:'raffinée, humaine, expressive',
+    motif:'courbes subtiles, profondeur, détails éditoriaux',
+    layout:'immersif, narratif, émotionnel'
+  },
+
+  finance:{
+    label:'Finance & autorité',
+    defaultSeed:'#167443',
+    mood:'autoritaire, premium, institutionnel, rassurant',
+    typography:'sobre, précise, professionnelle',
+    motif:'lignes, données, repères, détails premium',
+    layout:'structuré, rationnel, très lisible'
+  },
+
+  tech:{
+    label:'Tech futuriste',
+    defaultSeed:'#8147e8',
+    mood:'technologique, sophistiqué, innovant, précis',
+    typography:'géométrique, contemporaine, nette',
+    motif:'lueurs contrôlées, interfaces, grilles techniques',
+    layout:'modulaire, dynamique, produit-first'
+  }
+};
+
+function clampThemeValue(value,min,max){
+  return Math.min(max,Math.max(min,value));
 }
 
-const DESIGN_UNIVERSES={
-  business:{label:'Business premium',p:'#185adb',a:'#f5c518',bg:'#06101f'},fitness:{label:'Sport & performance',p:'#e85112',a:'#ffb067',bg:'#130703'},wellness:{label:'Bien-être organique',p:'#4a8c5c',a:'#a8d9b5',bg:'#07130b'},relation:{label:'Relations élégantes',p:'#bd3d58',a:'#ff9daf',bg:'#19070d'},finance:{label:'Finance & autorité',p:'#167443',a:'#d9b84f',bg:'#04110a'},tech:{label:'Tech futuriste',p:'#8147e8',a:'#55d6ff',bg:'#080516'},chrome:{label:'Chrome liquide',p:'#8696ad',a:'#e9f7ff',bg:'#080b12'},editorial:{label:'Magazine couture',p:'#a76b48',a:'#f3d6bb',bg:'#17100c'}
-};
-function suggestedUniverse(){const t=((S.a.niche||'')+' '+(S.a.sousniche||'')).toLowerCase();if(/muscu|sport|poids|fitness|nutrition/.test(t))return'fitness';if(/stress|sommeil|médit|bien-être|sante|santé/.test(t))return'wellness';if(/relation|amour|séduction|couple|parent/.test(t))return'relation';if(/invest|épargne|finance|argent/.test(t))return'finance';if(/automati|ia|réseau|tiktok|tech/.test(t))return'tech';return'business';}
-function selectedTheme(){if(S.a.design?.primary)return{p:S.a.design.primary,s:S.a.design.background,a:S.a.design.accent,bg:S.a.design.background,bg2:S.a.design.background,txt:'#f7f4ff',hl:S.a.design.accent,btn:S.a.design.primary,btxt:'white',n:S.a.design.universeLabel||'Sur mesure',motif:S.a.design.motif,typography:S.a.design.typography,layout:S.a.design.layout};return getTheme(S.a.marche,S.a.niche);}
+function normalizeHex(hex){
+  let value=String(hex||'').trim().replace('#','');
+
+  if(value.length===3){
+    value=value.split('').map(char=>char+char).join('');
+  }
+
+  if(!/^[0-9a-fA-F]{6}$/.test(value)){
+    return '#185adb';
+  }
+
+  return '#'+value.toLowerCase();
+}
+
+function hexToHsl(hex){
+  const clean=normalizeHex(hex).slice(1);
+
+  const r=parseInt(clean.slice(0,2),16)/255;
+  const g=parseInt(clean.slice(2,4),16)/255;
+  const b=parseInt(clean.slice(4,6),16)/255;
+
+  const max=Math.max(r,g,b);
+  const min=Math.min(r,g,b);
+
+  let h=0;
+  let s=0;
+  const l=(max+min)/2;
+
+  if(max!==min){
+    const d=max-min;
+
+    s=l>0.5
+      ? d/(2-max-min)
+      : d/(max+min);
+
+    switch(max){
+      case r:
+        h=(g-b)/d+(g<b?6:0);
+        break;
+      case g:
+        h=(b-r)/d+2;
+        break;
+      default:
+        h=(r-g)/d+4;
+    }
+
+    h*=60;
+  }
+
+  return {
+    h,
+    s:s*100,
+    l:l*100
+  };
+}
+
+function hslToHex(h,s,l){
+  h=((h%360)+360)%360;
+  s=clampThemeValue(s,0,100)/100;
+  l=clampThemeValue(l,0,100)/100;
+
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+
+  let r=0;
+  let g=0;
+  let b=0;
+
+  if(h<60){
+    r=c;g=x;
+  }else if(h<120){
+    r=x;g=c;
+  }else if(h<180){
+    g=c;b=x;
+  }else if(h<240){
+    g=x;b=c;
+  }else if(h<300){
+    r=x;b=c;
+  }else{
+    r=c;b=x;
+  }
+
+  const component=value=>
+    Math.round((value+m)*255)
+      .toString(16)
+      .padStart(2,'0');
+
+  return '#'+component(r)+component(g)+component(b);
+}
+
+function hexLuminance(hex){
+  const clean=normalizeHex(hex).slice(1);
+
+  const rgb=[
+    parseInt(clean.slice(0,2),16),
+    parseInt(clean.slice(2,4),16),
+    parseInt(clean.slice(4,6),16)
+  ].map(value=>{
+    const channel=value/255;
+    return channel<=0.03928
+      ? channel/12.92
+      : Math.pow((channel+0.055)/1.055,2.4);
+  });
+
+  return 0.2126*rgb[0]+0.7152*rgb[1]+0.0722*rgb[2];
+}
+
+function inferThemeProfile(context={}){
+  const source=[
+    context.marche,
+    context.niche,
+    context.sousniche,
+    context.offre
+  ].filter(Boolean).join(' ').toLowerCase();
+
+  if(/muscu|sport|fitness|poids|nutrition|performance|masse|entraînement/.test(source)){
+    return 'fitness';
+  }
+
+  if(/stress|sommeil|médit|bien.?être|sante|santé|récupération|respiration/.test(source)){
+    return 'wellness';
+  }
+
+  if(/relation|amour|séduction|dating|couple|parent|rupture|reconquête/.test(source)){
+    return 'relation';
+  }
+
+  if(/invest|épargne|finance|argent|bourse|budget|immobilier/.test(source)){
+    return 'finance';
+  }
+
+  if(/automati|intelligence artificielle|\bia\b|réseau|tiktok|tech|saas|logiciel/.test(source)){
+    return 'tech';
+  }
+
+  return 'business';
+}
+
+function buildProjectTheme(seed,context={}){
+  const profileKey=inferThemeProfile(context);
+  const profile=THEME_PROFILES[profileKey]||THEME_PROFILES.business;
+
+  const normalizedSeed=normalizeHex(seed||profile.defaultSeed);
+  const base=hexToHsl(normalizedSeed);
+
+  const saturation=clampThemeValue(base.s,42,86);
+
+  const colors={
+    seed:normalizedSeed,
+
+    primary:normalizedSeed,
+
+    primaryDark:hslToHex(
+      base.h,
+      clampThemeValue(saturation+4,42,90),
+      clampThemeValue(base.l-24,16,34)
+    ),
+
+    primaryLight:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.58,28,65),
+      82
+    ),
+
+    complementary:hslToHex(
+      base.h+180,
+      clampThemeValue(saturation*0.82,45,78),
+      58
+    ),
+
+    analogousLeft:hslToHex(
+      base.h-30,
+      clampThemeValue(saturation*0.84,40,82),
+      clampThemeValue(base.l+5,48,65)
+    ),
+
+    analogousRight:hslToHex(
+      base.h+30,
+      clampThemeValue(saturation*0.84,40,82),
+      clampThemeValue(base.l+5,48,65)
+    ),
+
+    accent:hslToHex(
+      base.h+180,
+      clampThemeValue(saturation*0.78,45,74),
+      62
+    ),
+
+    background:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.18,8,24),
+      5
+    ),
+
+    backgroundAlt:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.22,10,28),
+      8
+    ),
+
+    surface:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.20,9,26),
+      12
+    ),
+
+    surfaceElevated:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.22,10,28),
+      16
+    ),
+
+    border:hslToHex(
+      base.h,
+      clampThemeValue(saturation*0.25,12,32),
+      25
+    ),
+
+    text:'#f8f7fb',
+
+    textMuted:hslToHex(
+      base.h,
+      10,
+      68
+    )
+  };
+
+  const artDirection={
+    key:profileKey,
+    label:profile.label,
+    mood:profile.mood,
+    typography:profile.typography,
+    motif:profile.motif,
+    layout:profile.layout
+  };
+
+  /*
+    Compatibilité temporaire avec l'ancien code.
+
+    Toutes les nouvelles fonctionnalités doivent utiliser :
+    theme.colors.primary
+    theme.colors.accent
+    theme.colors.background
+    etc.
+
+    Ces alias seront supprimés lorsque tous les consommateurs
+    auront été migrés.
+  */
+  return {
+    seed:normalizedSeed,
+    colors,
+    artDirection,
+
+    p:colors.primary,
+    s:colors.surface,
+    a:colors.accent,
+    bg:colors.background,
+    bg2:colors.backgroundAlt,
+    txt:colors.text,
+    hl:colors.complementary,
+    btn:colors.primary,
+    btxt:hexLuminance(colors.primary)>0.45?'#090909':'#ffffff',
+
+    n:artDirection.label,
+    motif:artDirection.motif,
+    typography:artDirection.typography,
+    layout:artDirection.layout
+  };
+}
+
+/*
+  Compatibilité avec les anciens historiques.
+  Les nouveaux projets passent par selectedTheme().
+*/
+function getTheme(marche,niche){
+  const context={
+    marche,
+    niche,
+    sousniche:S.a?.sousniche||'',
+    offre:S.a?.offre||''
+  };
+
+  const profile=THEME_PROFILES[inferThemeProfile(context)]||THEME_PROFILES.business;
+
+  return buildProjectTheme(profile.defaultSeed,context);
+}
+
+function selectedTheme(){
+  const context={
+    marche:S.a?.marche||'',
+    niche:S.a?.niche||'',
+    sousniche:S.a?.sousniche||'',
+    offre:S.a?.offre||''
+  };
+
+  const profile=THEME_PROFILES[inferThemeProfile(context)]||THEME_PROFILES.business;
+
+  const seed=S.a?.design?.primary||profile.defaultSeed;
+
+  return buildProjectTheme(seed,context);
+}
+
 
 // ── NICHES (fixed — 6 par marché) ─────────────────────────────────────
 const NICHES = {
@@ -1353,18 +1694,223 @@ function rRevenus(){
 }
 function selR(r,b){S.a.revenus=r;saveProfile({revenus:r});sel(b);setTimeout(()=>renderStep(6),400);}
 
-// ── STEP 7 : DIRECTION ARTISTIQUE ─────────────────────
+// ── STEP 7 : IDENTITÉ VISUELLE ─────────────────────
+
 function rDesign(){
-  const recommended=suggestedUniverse(),current=S.a.design?.universe||recommended,u=DESIGN_UNIVERSES[current]||DESIGN_UNIVERSES.business;
-  if(!S.a.design)S.a.design={universe:current,universeLabel:u.label,primary:u.p,accent:u.a,background:u.bg,motif:'Halos et dégradés subtils',typography:'Moderne et lisible',layout:'Éditorial aéré'};
-  cw(`<div class="q-block"><span class="q-label">⚓ ÉTAPE 7 / 8 — IDENTITÉ VISUELLE</span><div class="q-title">Choisis seulement <span>ta couleur.</span></div><p class="q-sub">C’est tout. GPT et Claude déduisent ensuite le thème, les textures, les polices, les images et la mise en page depuis ta niche.</p>
-  <div class="design-preview" id="designPreview"><span class="design-preview-kicker">${eh(S.a.niche)}</span><strong class="design-preview-title">${eh(S.a.offre)}</strong><span class="design-preview-line"></span></div>
-  <div class="design-controls" style="grid-template-columns:1fr"><label class="design-field">TA COULEUR PRINCIPALE<input id="designPrimary" type="color" value="${ea(S.a.design.primary)}" oninput="refreshDesignPreview()"></label></div><button class="next-btn" onclick="goDesign()">VALIDER MA COULEUR →</button></div>`);
+  const context={
+    marche:S.a?.marche||'',
+    niche:S.a?.niche||'',
+    sousniche:S.a?.sousniche||'',
+    offre:S.a?.offre||''
+  };
+
+  const profile=THEME_PROFILES[inferThemeProfile(context)]||THEME_PROFILES.business;
+
+  const currentPrimary=
+    S.a?.design?.primary||
+    profile.defaultSeed;
+
+  if(!S.a.design){
+    S.a.design={
+      primary:currentPrimary
+    };
+  }
+
+  cw(`
+    <div class="q-block">
+      <span class="q-label">⚓ ÉTAPE 7 / 8 — IDENTITÉ VISUELLE</span>
+
+      <div class="q-title">
+        Choisis seulement <span>ta couleur.</span>
+      </div>
+
+      <p class="q-sub">
+        DropDigital construit automatiquement toute l’identité visuelle autour :
+        couleurs complémentaires, nuances, fonds, contrastes et direction artistique adaptée à ta niche.
+      </p>
+
+      <div
+        class="design-preview"
+        id="designPreview"
+        style="position:relative;overflow:hidden;"
+      >
+        <span class="design-preview-kicker">
+          ${eh(S.a.niche)}
+        </span>
+
+        <strong class="design-preview-title">
+          ${eh(S.a.offre)}
+        </strong>
+
+        <span class="design-preview-line"></span>
+
+        <div
+          id="designPalettePreview"
+          style="
+            display:flex;
+            gap:7px;
+            margin-top:18px;
+            position:relative;
+            z-index:2;
+          "
+        ></div>
+
+        <small
+          id="designMoodPreview"
+          style="
+            display:block;
+            margin-top:12px;
+            color:rgba(255,255,255,.62);
+            font-size:10px;
+            line-height:1.5;
+            position:relative;
+            z-index:2;
+          "
+        ></small>
+      </div>
+
+      <div
+        class="design-controls"
+        style="grid-template-columns:1fr"
+      >
+        <label class="design-field">
+          TA COULEUR PRINCIPALE
+
+          <input
+            id="designPrimary"
+            type="color"
+            value="${ea(currentPrimary)}"
+            oninput="refreshDesignPreview()"
+          >
+        </label>
+      </div>
+
+      <button
+        class="next-btn"
+        onclick="goDesign()"
+      >
+        VALIDER MON IDENTITÉ VISUELLE →
+      </button>
+    </div>
+  `);
+
   refreshDesignPreview();
 }
-function chooseUniverse(key,b){const u=DESIGN_UNIVERSES[key];S.a.design={...(S.a.design||{}),universe:key,universeLabel:u.label,primary:u.p,accent:u.a,background:u.bg};sel(b);document.getElementById('designPrimary').value=u.p;document.getElementById('designAccent').value=u.a;document.getElementById('designBackground').value=u.bg;refreshDesignPreview();}
-function refreshDesignPreview(){const p=document.getElementById('designPreview');if(!p)return;const primary=document.getElementById('designPrimary').value;p.style.background=`radial-gradient(circle at 78% 18%,${primary},transparent 44%),linear-gradient(145deg,#090b12,#160d20)`;p.style.color='#fff';p.style.setProperty('--preview-pattern',`linear-gradient(125deg,transparent 35%,#ffffff24 50%,transparent 65%)`);p.querySelector('.design-preview-line').style.background=primary;}
-function goDesign(){const primary=document.getElementById('designPrimary').value,recommended=suggestedUniverse(),u=DESIGN_UNIVERSES[recommended]||DESIGN_UNIVERSES.business;S.a.design={universe:recommended,universeLabel:u.label,primary,accent:'#f4f7ff',background:'#090b12',motif:'Déduit automatiquement par l’IA',typography:'Déduite automatiquement par l’IA',layout:'Déduite automatiquement par l’IA'};renderStep(7);}
+
+function refreshDesignPreview(){
+  const preview=document.getElementById('designPreview');
+  const input=document.getElementById('designPrimary');
+
+  if(!preview||!input)return;
+
+  const context={
+    marche:S.a?.marche||'',
+    niche:S.a?.niche||'',
+    sousniche:S.a?.sousniche||'',
+    offre:S.a?.offre||''
+  };
+
+  const theme=buildProjectTheme(
+    input.value,
+    context
+  );
+
+  preview.style.background=`
+    radial-gradient(
+      circle at 82% 15%,
+      ${theme.colors.primary}88,
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      ${theme.colors.analogousLeft}44,
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      ${theme.colors.background},
+      ${theme.colors.backgroundAlt}
+    )
+  `;
+
+  preview.style.color=theme.colors.text;
+
+  preview.style.setProperty(
+    '--preview-pattern',
+    `linear-gradient(
+      125deg,
+      transparent 35%,
+      ${theme.colors.complementary}22 50%,
+      transparent 65%
+    )`
+  );
+
+  const line=preview.querySelector('.design-preview-line');
+
+  if(line){
+    line.style.background=`
+      linear-gradient(
+        90deg,
+        ${theme.colors.primary},
+        ${theme.colors.accent}
+      )
+    `;
+  }
+
+  const palette=document.getElementById('designPalettePreview');
+
+  if(palette){
+    const swatches=[
+      theme.colors.primary,
+      theme.colors.primaryDark,
+      theme.colors.primaryLight,
+      theme.colors.analogousLeft,
+      theme.colors.analogousRight,
+      theme.colors.complementary,
+      theme.colors.accent
+    ];
+
+    palette.innerHTML=swatches.map(color=>`
+      <span
+        title="${color}"
+        style="
+          width:24px;
+          height:24px;
+          border-radius:50%;
+          background:${color};
+          border:1px solid rgba(255,255,255,.22);
+          box-shadow:0 4px 12px rgba(0,0,0,.25);
+        "
+      ></span>
+    `).join('');
+  }
+
+  const mood=document.getElementById('designMoodPreview');
+
+  if(mood){
+    mood.textContent=
+      theme.artDirection.label+
+      ' · '+
+      theme.artDirection.mood;
+  }
+}
+
+function goDesign(){
+  const input=document.getElementById('designPrimary');
+
+  if(!input)return;
+
+  /*
+    On stocke uniquement le choix humain.
+    Toute la palette est reconstruite par buildProjectTheme().
+  */
+  S.a.design={
+    primary:normalizeHex(input.value)
+  };
+
+  renderStep(7);
+}
+
 
 // ── STEP 8 : STRIPE ─────────────────────────────────────
 function rStripe(){
@@ -1427,6 +1973,87 @@ function showBuildWorkspace(){
 }
 let salesProgressTimer=null;
 function setStudioTab(tab){const ebook=tab==='ebook';document.getElementById('studioEbookPanel')?.toggleAttribute('hidden',!ebook);document.getElementById('studioSalesPanel')?.toggleAttribute('hidden',ebook);document.getElementById('studioEbookButton')?.classList.toggle('active',ebook);document.getElementById('studioSalesButton')?.classList.toggle('active',!ebook);}
+
+function buildSalesGenerationPayload(product,theme){
+  const chapters=Array.isArray(product?.chapitres)
+    ? product.chapitres
+    : [];
+
+  const ebookContent=chapters.map(chapter=>{
+    return [
+      `CHAPITRE ${chapter.n||''} : ${chapter.t||''}`,
+      chapter.st||'',
+      '',
+      chapter.c||''
+    ].join('\n');
+  }).join('\n\n────────────────────────────────────\n\n');
+
+  const rawMainPrice=String(product?.prix??'')
+    .replace(',','.')
+    .trim();
+
+  const parsedMainPrice=Number.parseFloat(rawMainPrice);
+
+  const mainPrice=Number.isFinite(parsedMainPrice)
+    ? parsedMainPrice
+    : null;
+
+  const orderBumpPrice=7.80;
+
+  const bumpField=document.getElementById('salesOrderBump');
+
+  const bumpIdea=bumpField
+    ? String(bumpField.value||'').trim()
+    : '';
+
+  return {
+    product,
+
+    ebookContent,
+
+    offer:{
+      title:
+        product?.titre_produit||
+        S.a?.offre||
+        'Produit digital',
+
+      subtitle:
+        product?.sous_titre||
+        '',
+
+      price:
+        product?.prix||
+        '',
+
+      referencePrice:
+        product?.prix_barre||
+        '',
+
+      currency:'EUR'
+    },
+
+    orderBump:{
+      mode:bumpIdea
+        ? 'manual'
+        : 'automatic',
+
+      idea:bumpIdea,
+
+      price:orderBumpPrice,
+
+      currency:'EUR'
+    },
+
+    brief:S.a,
+
+    theme,
+
+    lovablePrompt:
+      product?.prompt_lovable||
+      ''
+  };
+}
+
 function startSalesProgress(){clearInterval(salesProgressTimer);let step=0;salesProgressTimer=setInterval(()=>{if(step<3){document.getElementById('salesStep'+step)?.classList.replace('active','done');step++;document.getElementById('salesStep'+step)?.classList.add('active');}},8000);}
 function showTextReadyWorkspace(product){const pages=document.getElementById('studioPages'),message=document.getElementById('studioMessage'),sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(message)message.textContent='Le texte est terminé. GPT illustre maintenant chaque page pendant que Claude construit le site.';if(sales)sales.textContent='Claude analyse chaque chapitre pour écrire une page fidèle à ton produit.';if(button)button.textContent='🖥️ PAGE DE VENTE · CLAUDE TRAVAILLE';startSalesProgress();if(!pages)return;const labels=[product.titre_produit,'Sommaire',...(product.chapitres||[]).slice(0,6).map(c=>c.t),'Plan d’action','Conclusion'];pages.innerHTML=labels.slice(0,10).map((label,i)=>`<div class="studio-page" id="studioPage${i}"><span>PAGE ${String(i+1).padStart(2,'0')}<br>${eh(label)}</span></div>`).join('');}
 function updateStudioPage(index,src){const page=document.getElementById('studioPage'+index),count=document.getElementById('studioCount');if(page){page.classList.add('ready');page.insertAdjacentHTML('afterbegin',`<img src="${ea(src)}" alt="Illustration ${index+1}">`);}if(count)count.textContent=`${document.querySelectorAll('.studio-page.ready').length} / 10 PAGES`;}
@@ -1539,7 +2166,7 @@ JSON EXACT à produire :
     try{localStorage.setItem('dropdigital_pending_product',JSON.stringify({product:parsed,brief:S.a,theme}));}catch(_){ }
     showTextReadyWorkspace(parsed);
     mel.textContent='🎨 Illustrations GPT et page de vente Claude...';
-    const salesPromise=fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product:parsed,brief:S.a,theme,lovablePrompt:parsed.prompt_lovable||''})}).then(async response=>({ok:response.ok,data:await response.json().catch(()=>({}))})).catch(()=>({ok:false,data:{error:'Connexion impossible avec le service Claude.'}}));
+    const salesPromise=fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify(buildSalesGenerationPayload(parsed,theme))}).then(async response=>({ok:response.ok,data:await response.json().catch(()=>({}))})).catch(()=>({ok:false,data:{error:'Connexion impossible avec le service Claude.'}}));
     const illustrations=Array(10).fill(null),failedImages=[];
     for(let index=0;index<10;index++){
       try{
@@ -2218,7 +2845,7 @@ async function regenerateSalesTunnel(btn){
   try{
     const {data:sessionData}=await dbClient.auth.getSession(),accessToken=sessionData?.session?.access_token;
     if(!accessToken)throw new Error('Reconnecte-toi avant de relancer Claude.');
-    const response=await fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify({product,brief:S.a,theme:window._productTheme,lovablePrompt:product.prompt_lovable||''})});
+    const response=await fetch('/api/generate-sales',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessToken},body:JSON.stringify(buildSalesGenerationPayload(product,window._productTheme))});
     const payload=await response.json().catch(()=>({}));
     if(!response.ok||!payload.html||!payload.upsellHtml)throw new Error(payload.error||'Claude n’a pas renvoyé le tunnel complet.');
     product.sales_html=payload.html;product.upsell_html=payload.upsellHtml;delete product.sales_error;

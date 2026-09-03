@@ -30,12 +30,85 @@ function clean(value, max = 500) {
 
 function visualPrompts(product, brief, theme) {
   const chapters = Array.isArray(product.chapitres) ? product.chapitres.slice(0, 6) : [];
-  const style = clean(theme?.universeLabel || theme?.n || brief?.design?.universeLabel || 'éditorial premium');
-  const motif = clean(brief?.design?.motif || theme?.motif || 'formes graphiques élégantes');
-  const palette = `${clean(theme?.p || brief?.design?.primary || '#7a00ff', 20)}, ${clean(theme?.a || brief?.design?.accent || '#f0b429', 20)}, ${clean(theme?.bg || brief?.design?.background || '#0d0018', 20)}`;
+  const colors = theme?.colors || {};
+  const artDirection = theme?.artDirection || {};
+
+  const style = clean(
+    artDirection?.label ||
+    theme?.n ||
+    'éditorial premium'
+  );
+
+  const mood = clean(
+    artDirection?.mood ||
+    'premium, cohérent, éditorial'
+  );
+
+  const motif = clean(
+    artDirection?.motif ||
+    theme?.motif ||
+    'formes graphiques élégantes'
+  );
+
+  const palette = [
+    colors?.primary || theme?.p || '#7a00ff',
+    colors?.primaryDark || '',
+    colors?.primaryLight || '',
+    colors?.analogousLeft || '',
+    colors?.analogousRight || '',
+    colors?.complementary || '',
+    colors?.accent || theme?.a || '#f0b429',
+    colors?.background || theme?.bg || '#0d0018',
+    colors?.surface || ''
+  ]
+    .filter(Boolean)
+    .map(color => clean(color, 20))
+    .join(', ');
   const topic=`${clean(brief?.niche)} ${clean(brief?.sousniche)}`.toLowerCase();
   const illustrated=/illustr|dessin|anime|graphique|pastel/i.test(`${style} ${motif}`);
-  const base = `Série éditoriale de niveau magazine international pour un ebook français intitulé « ${clean(product.titre_produit)} », sur ${clean(brief?.niche)} pour ${clean(brief?.sousniche)}. Direction artistique ${style}, palette ${palette}, texture ${motif}. Composition verticale 2:3, profondeur réelle, lumière cinématographique, matières tactiles, cadrage sophistiqué, détails très fins, espace négatif utile à la mise en page. Chaque image doit avoir un sujet, un lieu, un angle et une composition différents. Diversité naturelle des personnes, des âges et des morphologies lorsque pertinent. Aucun texte, aucune lettre, aucun logo, aucun filigrane, aucun faux témoignage.`;
+  const base = `Série éditoriale cohérente de niveau magazine international pour un ebook français intitulé « ${clean(product.titre_produit)} », sur ${clean(brief?.niche)} pour ${clean(brief?.sousniche)}.
+
+IDENTITÉ VISUELLE GLOBALE :
+- univers : ${style}
+- ambiance : ${mood}
+- palette : ${palette}
+- motif / matière : ${motif}
+
+Toutes les images appartiennent à la même marque et à la même campagne visuelle.
+
+La couleur primaire et ses nuances construisent l'identité principale.
+Les couleurs analogues servent aux variations naturelles.
+La couleur complémentaire et l'accent servent uniquement aux points d'attention, lumières, accessoires ou petits contrastes.
+
+Ne mets pas toutes les couleurs partout.
+Le résultat doit rester élégant, cohérent et reconnaissable.
+
+La palette doit influencer naturellement :
+- les vêtements
+- les accessoires
+- les objets
+- les lumières
+- les décors
+- les matières
+- les arrière-plans
+- les détails graphiques
+
+Composition verticale 2:3.
+Profondeur réelle.
+Lumière travaillée.
+Matières tactiles.
+Cadrage sophistiqué.
+Détails très fins.
+Espace négatif utile pour la mise en page.
+
+Chaque image doit avoir un sujet, un lieu, un angle et une composition différents tout en conservant exactement le même langage visuel global.
+
+Diversité naturelle des personnes, âges et morphologies lorsque pertinent.
+
+Aucun texte lisible.
+Aucune lettre.
+Aucun logo.
+Aucun filigrane.`;
   const realism = illustrated ? 'Illustration éditoriale haut de gamme, dessin riche et crédible, textures détaillées, jamais enfantin.' : 'Photographie éditoriale photoréaliste, peau et aliments naturels, optique professionnelle, pas de rendu 3D plastique ni de photo stock générique.';
   const weightLoss=/poids|mince|ventre|nutrition|maigr|graisse|silhouette/.test(topic);
   const scenes=weightLoss?[
