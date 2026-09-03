@@ -488,6 +488,126 @@
 @keyframes studioImageReveal{0%{opacity:0;filter:blur(20px) saturate(.5);transform:scale(1.09)}45%{opacity:1;filter:blur(8px) saturate(.8)}100%{opacity:1;filter:blur(0) saturate(1);transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.studio-page.generating::before,.studio-page.generating::after,.studio-gen-badge i,.studio-page.generating span,.studio-page.ready img{animation:none}}
 
+/* ── SALES PAGE AI BUILD ANIMATION ── */
+.sales-build{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+.sales-build>*{
+  position:relative;
+  z-index:3;
+}
+.sales-build.generating::before{
+  content:'';
+  position:absolute;
+  z-index:0;
+  inset:-35%;
+  background:
+    radial-gradient(circle at 25% 25%,rgba(192,126,255,.40),transparent 24%),
+    radial-gradient(circle at 76% 64%,rgba(83,32,255,.38),transparent 29%),
+    radial-gradient(circle at 48% 42%,rgba(255,255,255,.09),transparent 18%),
+    linear-gradient(145deg,#0c0016,#21003d,#08010f);
+  filter:blur(22px);
+  animation:salesDream 4s ease-in-out infinite alternate;
+}
+.sales-build.generating::after{
+  content:'';
+  position:absolute;
+  z-index:1;
+  inset:-20% -80%;
+  background:
+    linear-gradient(
+      105deg,
+      transparent 39%,
+      rgba(205,158,255,.04) 44%,
+      rgba(255,255,255,.18) 50%,
+      rgba(178,98,255,.06) 56%,
+      transparent 62%
+    );
+  animation:salesSweep 2.4s ease-in-out infinite;
+}
+.sales-build.ready{
+  border-color:rgba(82,232,137,.42);
+  box-shadow:inset 0 0 55px rgba(82,232,137,.04);
+}
+.sales-build.failed{
+  border-color:rgba(255,91,130,.45);
+  box-shadow:inset 0 0 55px rgba(255,70,110,.04);
+}
+.studio-nav-btn.working{
+  position:relative;
+  overflow:hidden;
+  border-color:#a85cff;
+  color:#e6cdff;
+  box-shadow:0 0 20px rgba(155,77,255,.16);
+}
+.studio-nav-btn.working::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255,255,255,.18) 50%,
+    transparent 70%
+  );
+  transform:translateX(-120%);
+  animation:salesTabSweep 2s infinite;
+}
+@keyframes salesDream{
+  0%{transform:translate(-4%,-2%) rotate(-3deg) scale(1)}
+  50%{transform:translate(4%,3%) rotate(2deg) scale(1.08)}
+  100%{transform:translate(-2%,5%) rotate(5deg) scale(1.13)}
+}
+@keyframes salesSweep{
+  0%{transform:translateX(-48%)}
+  55%,100%{transform:translateX(48%)}
+}
+@keyframes salesTabSweep{
+  0%{transform:translateX(-120%)}
+  55%,100%{transform:translateX(120%)}
+}
+
+/* mini aperçu pour les pages fabriquées en HTML/CSS */
+.studio-css-preview{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  padding:18px 11px 35px;
+  background:
+    radial-gradient(circle at 80% 15%,rgba(155,77,255,.22),transparent 35%),
+    linear-gradient(145deg,#150425,#08010f);
+  animation:studioImageReveal .8s cubic-bezier(.2,.8,.2,1) both;
+}
+.studio-css-preview .mini-title{
+  width:58%;
+  height:8px;
+  background:rgba(220,185,255,.62);
+  margin-bottom:11px;
+}
+.studio-css-preview .mini-line{
+  height:3px;
+  background:rgba(220,185,255,.15);
+  margin:5px 0;
+}
+.studio-css-preview .mini-line:nth-child(2){width:88%}
+.studio-css-preview .mini-line:nth-child(3){width:72%}
+.studio-css-preview .mini-line:nth-child(4){width:81%}
+.studio-css-preview .mini-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-top:13px;
+}
+.studio-css-preview .mini-grid i{
+  display:block;
+  height:28px;
+  border:1px solid rgba(179,102,255,.23);
+  background:rgba(155,77,255,.08);
+}
+
+
 </style>
 </head>
 <body>
@@ -2100,7 +2220,7 @@ function showBuildWorkspace(){
   document.getElementById('resultsScreen').classList.add('show');
   document.querySelector('.results-header h2').innerHTML='Ton produit est en <span>construction.</span>';
   document.querySelector('.results-header p').textContent='Tu peux rester ici : le build continue automatiquement en arrière-plan.';
-  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">✨ E-BOOK</button><button class="studio-nav-btn" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · EN ATTENTE</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton produit prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT construit actuellement ta méthode, son contenu et son univers visuel…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page"><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de ta méthode et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Claude commencera dès que le produit et sa cover seront prêts.</p></div></section></div>`;
+  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">✨ E-BOOK</button><button class="studio-nav-btn working" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · PRÉPARATION</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton produit prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT construit actuellement ta méthode, son contenu et son univers visuel…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page generating" id="studioPage${i}"><div class="studio-gen-badge"><i></i><i></i><i></i><strong>${i===0?'CONSTRUCTION COVER':'CRÉATION DE LA PAGE'}</strong></div><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build generating" id="studioSalesBuild"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de ta méthode et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Préparation du brief, de la méthode et de la direction artistique…</p></div></section></div>`;
   const methodButton=document.querySelector('.studio-nav-btn.gold');if(methodButton)methodButton.textContent='🏴‍☠️ MÉTHODE DROPDIGITAL';
   setTimeout(()=>{const note=document.getElementById('buildLongNote');if(note)note.style.display='block';},15000);
   window.scrollTo({top:0,behavior:'smooth'});
@@ -2236,7 +2356,54 @@ function buildSalesGenerationPayload(product,theme){
 }
 
 function startSalesProgress(){clearInterval(salesProgressTimer);let step=0;salesProgressTimer=setInterval(()=>{if(step<3){document.getElementById('salesStep'+step)?.classList.replace('active','done');step++;document.getElementById('salesStep'+step)?.classList.add('active');}},8000);}
-function showTextReadyWorkspace(product){const pages=document.getElementById('studioPages'),message=document.getElementById('studioMessage'),sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(message)message.textContent='Le texte est terminé. GPT illustre maintenant chaque page pendant que Claude construit le site.';if(sales)sales.textContent='Claude analyse chaque chapitre pour écrire une page fidèle à ton produit.';if(button)button.textContent='🖥️ PAGE DE VENTE · CLAUDE TRAVAILLE';startSalesProgress();if(!pages)return;const labels=[product.titre_produit,'Sommaire',...(product.chapitres||[]).slice(0,6).map(c=>c.t),'Plan d’action','Conclusion'];pages.innerHTML=labels.slice(0,10).map((label,i)=>`<div class="studio-page" id="studioPage${i}"><span>PAGE ${String(i+1).padStart(2,'0')}<br>${eh(label)}</span></div>`).join('');setStudioGenerating(0,'GÉNÉRATION DE LA COVER');}
+function showTextReadyWorkspace(product){
+  const pages=document.getElementById('studioPages');
+  const message=document.getElementById('studioMessage');
+  const sales=document.getElementById('studioSales');
+  const button=document.getElementById('studioSalesButton');
+
+  if(message){
+    message.textContent='Le texte est terminé. GPT compose maintenant les 10 pages pendant que Claude construit le site.';
+  }
+
+  if(sales){
+    sales.textContent='Claude analyse la méthode, le mécanisme et la cover avant d’assembler la page.';
+  }
+
+  if(button){
+    button.textContent='🖥️ PAGE DE VENTE · CLAUDE GÉNÈRE';
+    button.classList.add('working');
+  }
+
+  const salesBuild=document.getElementById('studioSalesBuild');
+  if(salesBuild){
+    salesBuild.classList.remove('ready','failed');
+    salesBuild.classList.add('generating');
+  }
+
+  startSalesProgress();
+
+  if(!pages)return;
+
+  const labels=[
+    product.titre_produit,
+    'Sommaire',
+    ...(product.chapitres||[]).slice(0,6).map(c=>c.t),
+    'Plan d’action',
+    'Conclusion'
+  ];
+
+  pages.innerHTML=labels.slice(0,10).map((label,i)=>`
+    <div class="studio-page generating" id="studioPage${i}">
+      <div class="studio-gen-badge">
+        <i></i><i></i><i></i>
+        <strong>${i===0?'GÉNÉRATION DE LA COVER':'COMPOSITION DE LA PAGE'}</strong>
+      </div>
+      <span>PAGE ${String(i+1).padStart(2,'0')}<br>${eh(label)}</span>
+    </div>
+  `).join('');
+}
+
 function setStudioGenerating(index,label='GÉNÉRATION IA'){
   const page=document.getElementById('studioPage'+index);if(!page)return;
   page.classList.remove('ready','failed');page.classList.add('generating');
@@ -2258,7 +2425,76 @@ function updateStudioPage(index,src){
   }
   if(count)count.textContent=`${document.querySelectorAll('.studio-page.ready').length} / 10 PAGES`;
 }
-function updateStudioSales(){clearInterval(salesProgressTimer);for(let i=0;i<5;i++){const step=document.getElementById('salesStep'+i);if(step){step.classList.remove('active');step.classList.add('done');step.textContent='✓ '+step.textContent.replace(/^[◌✓]\s*/,'');}}const sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(sales){sales.textContent='✓ Page de vente terminée. Ton aperçu est prêt.';sales.style.color='#62e998';}if(button){button.textContent='✓ PAGE DE VENTE PRÊTE';button.style.borderColor='#57e78e';button.style.color='#62e998';}}
+function completeStudioCssPages(){
+  const aiIndexes=new Set([0,2,5,9]);
+
+  for(let index=0;index<10;index++){
+    if(aiIndexes.has(index))continue;
+
+    const page=document.getElementById('studioPage'+index);
+    if(!page||page.classList.contains('ready'))continue;
+
+    page.classList.remove('generating','failed');
+    page.classList.add('ready');
+    page.querySelector('.studio-gen-badge')?.remove();
+
+    page.insertAdjacentHTML(
+      'afterbegin',
+      `<div class="studio-css-preview">
+        <div class="mini-title"></div>
+        <div class="mini-line"></div>
+        <div class="mini-line"></div>
+        <div class="mini-line"></div>
+        <div class="mini-grid"><i></i><i></i><i></i><i></i></div>
+      </div>`
+    );
+  }
+
+  const count=document.getElementById('studioCount');
+  if(count){
+    count.textContent=`${document.querySelectorAll('.studio-page.ready').length} / 10 PAGES`;
+  }
+}
+
+function setStudioSalesFailed(){
+  clearInterval(salesProgressTimer);
+
+  const build=document.getElementById('studioSalesBuild');
+  const button=document.getElementById('studioSalesButton');
+  const sales=document.getElementById('studioSales');
+
+  if(build){
+    build.classList.remove('generating','ready');
+    build.classList.add('failed');
+  }
+
+  if(button){
+    button.classList.remove('working');
+    button.textContent='⚠ PAGE DE VENTE · À REPRENDRE';
+  }
+
+  if(sales){
+    sales.style.color='#ff91ab';
+    sales.textContent='La génération Claude doit être reprise.';
+  }
+}
+
+function updateStudioSales(){
+  clearInterval(salesProgressTimer);
+
+  const build=document.getElementById('studioSalesBuild');
+  const workingButton=document.getElementById('studioSalesButton');
+
+  if(build){
+    build.classList.remove('generating','failed');
+    build.classList.add('ready');
+  }
+
+  if(workingButton){
+    workingButton.classList.remove('working');
+  }
+
+for(let i=0;i<5;i++){const step=document.getElementById('salesStep'+i);if(step){step.classList.remove('active');step.classList.add('done');step.textContent='✓ '+step.textContent.replace(/^[◌✓]\s*/,'');}}const sales=document.getElementById('studioSales'),button=document.getElementById('studioSalesButton');if(sales){sales.textContent='✓ Page de vente terminée. Ton aperçu est prêt.';sales.style.color='#62e998';}if(button){button.textContent='✓ PAGE DE VENTE PRÊTE';button.style.borderColor='#57e78e';button.style.color='#62e998';}}
 function completeBuildWorkspace(){const count=document.getElementById('studioCount'),ready=document.querySelectorAll('.studio-page.ready').length;if(count)count.textContent=ready===10?'10 / 10 PAGES ✓':`${ready} / 10 PAGES`;}
 async function generate(){
   document.getElementById('chatWrap').style.display='none';
@@ -3119,9 +3355,18 @@ Retourne maintenant UNIQUEMENT le JSON.`;
       salesPromise
     ]);
     parsed.illustrations=illustrations;
-    if(salesResult.ok&&salesResult.data.html&&salesResult.data.upsellHtml){parsed.sales_html=salesResult.data.html;parsed.upsell_html=salesResult.data.upsellHtml;updateStudioSales();}
-    else parsed.sales_error=salesResult.data?.error||'Claude n’a pas renvoyé le tunnel complet.';
+    if(salesResult.ok&&salesResult.data.html&&salesResult.data.upsellHtml){
+      parsed.sales_html=salesResult.data.html;
+      parsed.upsell_html=salesResult.data.upsellHtml;
+      updateStudioSales();
+    }else{
+      parsed.sales_error=salesResult.data?.error||'Claude n’a pas renvoyé le tunnel complet.';
+      setStudioSalesFailed();
+    }
+
     parsed.missing_images=failedImages;
+
+    completeStudioCssPages();
     completeBuildWorkspace();
     try{localStorage.removeItem('dropdigital_pending_product');}catch(_){ }
     clearInterval(mi_);clearInterval(li_);
