@@ -2,7 +2,7 @@ import {
   getPublishedProduct,
   verifyPurchase,
   stripe
-} from './_purchase.js';
+} from '../lib/purchase.js';
 
 const APP_ORIGIN=
   'https://dropdigital-generator.vercel.app';

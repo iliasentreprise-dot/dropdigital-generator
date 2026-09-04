@@ -1,4 +1,4 @@
-import {encryptProduct} from './_delivery-crypto.js';
+import {encryptProduct} from '../lib/delivery-crypto.js';
 
 const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';

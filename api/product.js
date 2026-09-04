@@ -1,11 +1,11 @@
 import {
   getPublishedProduct,
   verifyPurchase
-} from './_purchase.js';
+} from '../lib/purchase.js';
 
 import {
   decryptProduct
-} from './_delivery-crypto.js';
+} from '../lib/delivery-crypto.js';
 
 export default async function handler(req,res){
 
