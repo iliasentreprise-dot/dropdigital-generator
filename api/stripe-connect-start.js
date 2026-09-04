@@ -42,7 +42,7 @@ async function getProfile(userId,token){
   return rows[0]||null;
 }
 
-async function saveStripeAccount(userId,accountId,token){
+async function saveStripeAccount(userId,accountId,token,userEmail){
   const url=new URL(`${SUPABASE_URL}/rest/v1/member_profiles`);
   url.searchParams.set('on_conflict','user_id');
 
@@ -56,6 +56,7 @@ async function saveStripeAccount(userId,accountId,token){
     },
     body:JSON.stringify({
       user_id:userId,
+      email:userEmail,
       stripe_account_id:accountId,
       updated_at:new Date().toISOString()
     })
@@ -129,7 +130,8 @@ export default async function handler(req,res){
       const saved=await saveStripeAccount(
         user.id,
         accountId,
-        token
+        token,
+        user.email
       );
 
       if(!saved){
