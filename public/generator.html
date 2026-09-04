@@ -1063,7 +1063,51 @@ async function syncMemberData(){
   ]);
   if(profile)saveProfile({prenom:profile.first_name||'',revenus:profile.revenue_goal||''});
   if(subscription){const active=['active','trialing'].includes(subscription.status),storedPlan=subscription.plan,plan=active&&['discovery','pro','business'].includes(storedPlan)?(storedPlan==='business'?'pro':storedPlan):'free';saveProfile({plan,subscriptionStatus:subscription.status});}
-  setHistory((generations||[]).map(g=>({id:g.id,createdAt:g.created_at,answers:g.answers||{},data:g.generated_data||{},theme:g.theme||{}})));
+  const remoteHistory=(generations||[]).map(g=>({
+    id:g.id,
+    createdAt:g.created_at,
+    answers:g.answers||{},
+    data:g.generated_data||{},
+    theme:g.theme||{}
+  }));
+
+  const localHistory=getHistory();
+
+  const merged=new Map();
+
+  for(const item of remoteHistory){
+    merged.set(item.id,item);
+  }
+
+  for(const item of localHistory){
+    if(!merged.has(item.id)){
+      merged.set(item.id,item);
+
+      if(currentMember){
+        const lightweightData={...(item.data||{})};
+        delete lightweightData.illustrations;
+
+        dbClient.from('member_generations').upsert({
+          id:item.id,
+          user_id:currentMember.id,
+          title:item.answers?.offre||item.data?.titre_produit||'Création sans titre',
+          niche:item.answers?.niche||null,
+          target_audience:item.answers?.sousniche||null,
+          answers:item.answers||{},
+          generated_data:lightweightData,
+          theme:item.theme||{}
+        },{onConflict:'id'}).then(({error})=>{
+          if(error)console.warn('[history] remontée local vers Supabase',error);
+        });
+      }
+    }
+  }
+
+  const mergedHistory=[...merged.values()]
+    .sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))
+    .slice(0,20);
+
+  setHistory(mergedHistory);
 }
 async function initializeSignedInMember(user,firstName=''){currentMember=user;try{localStorage.setItem(STORAGE_KEYS.email,user.email||'');}catch(_){}
   if(firstName)await dbClient.from('member_profiles').update({first_name:firstName,updated_at:new Date().toISOString()}).eq('user_id',user.id);
