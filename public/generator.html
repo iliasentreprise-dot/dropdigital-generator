@@ -448,6 +448,96 @@
     box-shadow:0 0 20px rgba(37,211,102,.5) !important;
   }
 
+
+/* ── EBOOK PREMIUM ACTIONS ── */
+
+.dd-ebook-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.dd-ebook-pill{
+  appearance:none;
+  -webkit-appearance:none;
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:0 16px;
+  border-radius:999px;
+  border:1px solid rgba(190,145,255,.17);
+  background:rgba(255,255,255,.035);
+  color:#e8dff1;
+  font:700 11px 'DM Sans',sans-serif;
+  letter-spacing:.01em;
+  cursor:pointer;
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease,
+    color .18s ease;
+}
+
+.dd-ebook-pill:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,.065);
+  border-color:rgba(203,166,255,.3);
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  color:white;
+}
+
+.dd-ebook-pill:active{
+  transform:translateY(0);
+}
+
+.dd-ebook-pill-primary{
+  background:linear-gradient(
+    135deg,
+    rgba(155,77,255,.92),
+    rgba(116,52,220,.92)
+  );
+  border-color:rgba(205,165,255,.45);
+  color:white;
+  box-shadow:
+    0 8px 26px rgba(120,52,220,.25),
+    inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+.dd-ebook-pill-primary:hover{
+  background:linear-gradient(
+    135deg,
+    #a85cff,
+    #8241ea
+  );
+  border-color:rgba(220,190,255,.6);
+  box-shadow:
+    0 10px 30px rgba(135,60,240,.34),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.dd-ebook-pill-more{
+  width:40px;
+  padding:0;
+  font-size:18px;
+  color:#bdaece;
+}
+
+@media(max-width:600px){
+  .dd-ebook-actions{
+    gap:7px;
+  }
+
+  .dd-ebook-pill:not(.dd-ebook-pill-more){
+    flex:1;
+  }
+}
+
+
 /* ── AI IMAGE BUILD ANIMATION ── */
 .studio-page{isolation:isolate;transition:border-color .45s,box-shadow .45s,transform .45s}
 .studio-page.generating{border-color:rgba(190,120,255,.72);box-shadow:0 0 28px rgba(155,77,255,.22),inset 0 0 28px rgba(155,77,255,.08)}
@@ -7699,7 +7789,30 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
 
     <!-- EBOOK TAB -->
     <div class="tab-content active" id="tab-ebook">
-      ${isPaidPlan()?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON PRODUIT PRO EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Le texte, la couverture, le sommaire et les chapitres sont conservés. ${d.missing_images?.length?`${d.missing_images.length} illustration(s) restent à reprendre sans régénérer le texte.`:'Les illustrations sont déjà mises en page.'}</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="downloadEbookPdf()">📥 TÉLÉCHARGER LE PDF</button><button class="copy-btn" onclick="previewHTML(window._ebookHTML)">👁 APERÇU DU PRODUIT</button>${d.missing_images?.length?'<button class="copy-btn" onclick="retryMissingImages(this)">↻ REPRENDRE UNIQUEMENT LES IMAGES MANQUANTES</button>':''}</div></div>`:''}
+      ${isPaidPlan()?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON PRODUIT PRO EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Le texte, la couverture, le sommaire et les chapitres sont conservés. ${d.missing_images?.length?`${d.missing_images.length} illustration(s) restent à reprendre sans régénérer le texte.`:'Les illustrations sont déjà mises en page.'}</p><div class="dd-ebook-actions">
+  <button
+    class="dd-ebook-pill dd-ebook-pill-primary"
+    onclick="downloadEbookPdf()"
+  >
+    ↓ Télécharger
+  </button>
+
+  <button
+    class="dd-ebook-pill"
+    onclick="previewHTML(window._ebookHTML)"
+  >
+    Aperçu
+  </button>
+
+  ${d.missing_images?.length?`
+  <button
+    class="dd-ebook-pill"
+    onclick="retryMissingImages(this)"
+  >
+    ↻ Reprendre les images
+  </button>
+  `:''}
+</div></div>`:''}
       <div class="rc" style="border-left-color:var(--green);${isPaidPlan()?'display:none;':''}">
         <div class="rch">
           <div class="rct" style="color:var(--green);text-shadow:0 0 15px rgba(37,211,102,.5);">📖 PROMPT À ENVOYER À CLAUDE OU CHATGPT</div>
