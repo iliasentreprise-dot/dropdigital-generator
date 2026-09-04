@@ -2478,7 +2478,7 @@ async function stripeConnectStatus(){
 
     if(!token)return {connected:false};
 
-    const response=await fetch('/api/stripe-connect-status',{
+    const response=await fetch('/api/stripe-connect?action=status',{
       headers:{
         Authorization:'Bearer '+token
       }
@@ -2507,7 +2507,7 @@ async function connectStripeAccount(){
       throw new Error('Reconnecte-toi.');
     }
 
-    const response=await fetch('/api/stripe-connect-start',{
+    const response=await fetch('/api/stripe-connect?action=start',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
@@ -2555,7 +2555,7 @@ async function disconnectStripeAccount(){
       throw new Error('Reconnecte-toi.');
     }
 
-    const response=await fetch('/api/stripe-connect-disconnect',{
+    const response=await fetch('/api/stripe-connect?action=disconnect',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
@@ -2592,7 +2592,7 @@ async function clearStripeConnection(){
 
   if(!token)throw new Error('Reconnecte-toi.');
 
-  const response=await fetch('/api/stripe-connect-disconnect',{
+  const response=await fetch('/api/stripe-connect?action=disconnect',{
     method:'POST',
     headers:{
       'Content-Type':'application/json',
