@@ -225,9 +225,9 @@ export default async function handler(req, res) {
     const referencePrice = '';
     const bumpPrice = 7.80;
     const mainPlusBumpTotal = 25.60;
-    const upsellAddonPrice = 29.20;
-    const mainPlusUpsellTotal = 47.00;
-    const fullFunnelTotal = 54.80;
+    const upsellAddonPrice = 47.00;
+    const mainPlusUpsellTotal = 64.80;
+    const fullFunnelTotal = 72.60;
 
     const currency = String(
       offer.currency || 'EUR'
@@ -284,13 +284,13 @@ Produit + order bump :
 25,60 EUR
 
 Upsell additionnel après achat :
-+29,20 EUR
++47,00 EUR
 
 Produit principal + upsell :
-47,00 EUR
+64,80 EUR
 
 Produit + order bump + upsell :
-54,80 EUR
+72,60 EUR
 
 Tu n'as AUCUNE autorisation pour inventer, arrondir ou modifier ces montants.
 
@@ -743,40 +743,114 @@ ${productPrice} ${currency}
 ${referencePrice ? `Prix de référence : ${referencePrice} ${currency}` : ''}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-11. ORDER BUMP
+11. ORDER BUMP — INTERACTION PREMIUM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Dans le checkout, crée un bloc portant exactement :
+Dans le checkout, crée UNE carte d'order bump portant exactement :
 
 id="order-bump"
 
-La checkbox doit être NON COCHÉE par défaut.
+La checkbox doit porter exactement :
 
-Prix EXACT du bump :
+id="order-bump-checkbox"
 
-${bumpPrice} ${currency}
+IMPORTANT :
+L'ORDER BUMP EST SÉLECTIONNÉ PAR DÉFAUT.
 
-${bumpIdea
-  ? `Idée fournie par l'utilisateur : ${bumpIdea}`
-  : `Aucune idée manuelle n'a été fournie.
+Au chargement initial :
+- la checkbox possède checked
+- le bloc apparaît immédiatement comme sélectionné
+- le total affiché est 25,60 €
+- le visiteur peut librement décocher l'option
 
-Analyse l'ebook et crée UNE offre complémentaire logique.
+Prix EXACT :
 
-Elle doit accélérer, simplifier ou compléter l'utilisation du produit principal sans simplement répéter son contenu.`}
+Produit seul :
+17,80 EUR
+
+Order bump :
++7,80 EUR
+
+Produit + order bump :
+25,60 EUR
+
+Le RECTANGLE ENTIER doit être cliquable.
+
+La solution recommandée est d'utiliser le conteneur comme un véritable <label>
+lié à #order-bump-checkbox afin que cliquer :
+- sur le texte
+- sur le fond
+- sur les bénéfices
+- sur l'icône
+- sur le prix
+
+change naturellement l'état de la checkbox.
+
+Évite le double-toggle JavaScript.
+
+Le bloc ne doit contenir aucun autre bouton ou lien interactif susceptible de casser le comportement du label.
+
+ÉTAT SÉLECTIONNÉ :
+
+Quand la checkbox est cochée :
+- ajouter la classe .selected à #order-bump
+- bordure plus lumineuse
+- glow léger
+- fond accentué
+- checkbox clairement activée
+- petit badge "AJOUTÉ À MA COMMANDE"
+- micro-animation subtile
+
+Quand elle est décochée :
+- retirer .selected
+- style plus neutre
+- conserver une excellente lisibilité
+
+Le bloc doit utiliser :
+cursor:pointer;
+transition douce;
+hover subtil.
 
 Le bump doit contenir :
 - nom précis
 - courte promesse
 - 2 à 4 bénéfices
-- prix
-- checkbox
+- prix +7,80 €
+- checkbox visible
+- badge d'état
 
-Affiche :
-- total sans bump
-- total avec bump
+${bumpIdea
+  ? `Idée fournie par l'utilisateur : ${bumpIdea}`
+  : `Aucune idée manuelle n'a été fournie.
 
-Ajoute du JavaScript natif qui met immédiatement le total à jour lorsque la checkbox change.
+Analyse le contenu du produit et crée UNE offre complémentaire logique.
 
+Elle doit accélérer, simplifier ou compléter l'utilisation du produit principal sans répéter son contenu.`}
+
+TOTAL DYNAMIQUE :
+
+Utilise exactement :
+
+id="checkout-total"
+
+Valeur initiale :
+25,60 €
+
+Quand #order-bump-checkbox est cochée :
+25,60 €
+
+Quand elle est décochée :
+17,80 €
+
+Le changement doit être immédiat avec JavaScript natif.
+
+Le JavaScript doit écouter l'événement "change" de la checkbox puis :
+- mettre à jour #checkout-total
+- ajouter ou retirer .selected sur #order-bump
+
+La checkbox doit être initialisée cochée.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 12. QUALITÉ TECHNIQUE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -793,6 +867,52 @@ Responsive :
 Design riche mais rapide.
 
 Animations CSS légères et pertinentes autorisées.
+
+LA PAGE NE DOIT PAS ÊTRE STATIQUE.
+
+Ajoute obligatoirement plusieurs éléments visuels conçus directement en HTML/CSS/SVG natif.
+
+Selon le mécanisme et le contenu du produit, utilise 3 à 5 éléments pertinents parmi :
+- schéma minimaliste du mécanisme
+- flèches et connexions entre étapes
+- timeline verticale ou horizontale
+- cycle circulaire
+- jauge de progression
+- comparaison de deux états
+- diagramme en étapes
+- cartes reliées visuellement
+- mini graphique stylisé
+- chemin visuel de transformation
+- illustration conceptuelle construite avec formes CSS
+- SVG minimaliste personnalisé
+
+Ces éléments doivent EXPLIQUER le produit, pas simplement décorer la page.
+
+Ils doivent reprendre la palette de la marque.
+
+Évite :
+- icônes génériques répétées
+- emojis géants
+- illustrations stock
+- sections constituées uniquement de texte et de rectangles
+- même grille répétée à chaque section
+
+MICRO-ANIMATIONS :
+
+Ajoute des animations discrètes et premium :
+- apparition progressive au scroll avec IntersectionObserver
+- léger mouvement des lignes ou flèches d'un schéma
+- glow très subtil
+- hover sur cartes
+- légère profondeur du mockup produit
+- transition douce du checkout et de l'order bump
+
+Aucune animation agressive.
+
+Respecte prefers-reduced-motion.
+
+Le résultat doit donner l'impression d'un site moderne conçu sur Framer ou par une agence créative,
+et non d'une page HTML statique générée automatiquement.
 
 Le HTML doit être directement visualisable dans un navigateur.
 
@@ -818,7 +938,7 @@ Avant de répondre, vérifie silencieusement :
 - prix correct
 - id="checkout" présent
 - id="order-bump" présent
-- checkbox non cochée
+- checkbox order bump cochée par défaut
 - total dynamique
 - CTA majeurs vers #checkout
 - responsive
