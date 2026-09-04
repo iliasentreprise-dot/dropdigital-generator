@@ -77,7 +77,8 @@ export default async function handler(req,res){
       started:true,
       onboardingCompleted,
       chargesEnabled:Boolean(account.charges_enabled),
-      payoutsEnabled:Boolean(account.payouts_enabled)
+      payoutsEnabled:Boolean(account.payouts_enabled),
+      accountId:profile.stripe_account_id
     });
 
   }catch(error){

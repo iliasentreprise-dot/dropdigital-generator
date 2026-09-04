@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Commande confirmée</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle at 50% 20%,#351058 0,transparent 38%),
+    #09010f;
+  color:white;
+  font-family:Arial,sans-serif;
+}
+
+.card{
+  width:min(560px,calc(100% - 32px));
+  padding:48px 34px;
+  text-align:center;
+  border:1px solid rgba(190,130,255,.35);
+  background:rgba(18,5,30,.88);
+  box-shadow:0 30px 100px rgba(0,0,0,.45);
+}
+
+.check{
+  width:72px;
+  height:72px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 24px;
+  border-radius:50%;
+  background:#55e78b;
+  color:#07130b;
+  font-size:36px;
+  font-weight:900;
+  box-shadow:0 0 45px rgba(85,231,139,.35);
+}
+
+h1{
+  margin:0 0 16px;
+  font-size:42px;
+}
+
+p{
+  margin:0 auto;
+  max-width:430px;
+  color:#cdbed8;
+  font-size:16px;
+  line-height:1.7;
+}
+
+.small{
+  margin-top:22px;
+  font-size:12px;
+  color:#846f94;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="check">✓</div>
+
+  <h1>PAIEMENT CONFIRMÉ</h1>
+
+  <p>
+    Merci pour votre commande.
+    Votre produit va arriver dans votre boîte mail
+    dans quelques instants.
+  </p>
+
+  <div class="small">
+    Pensez à vérifier votre dossier spam ou courrier indésirable.
+  </div>
+
+</div>
+
+</body>
+</html>
