@@ -151,7 +151,7 @@ export default async function handler(req,res){
     return send(res,200,{
       ok:true,
       slug,
-      url:`https://dropdigital-generator.vercel.app/p/${slug}`
+      url:`https://${slug}.dropdigital.fr`
     });
 
   }catch(error){

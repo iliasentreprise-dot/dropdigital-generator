@@ -6719,7 +6719,7 @@ async function getPublishedSite(){
 
 
 function ddPublicUrl(slug){
-  return 'https://dropdigital-generator.vercel.app/p/'+slug;
+  return 'https://'+slug+'.dropdigital.fr';
 }
 
 function ddPublishError(message){
@@ -6900,7 +6900,9 @@ async function openPublishedUpsell(){
     }
 
     popup.location.href=
-      '/u/'+
+      'https://'+
+      site.slug+
+      '.dropdigital.fr/u/'+
       encodeURIComponent(site.slug);
 
   }catch(error){
@@ -8096,10 +8098,53 @@ function cpRaw(text,btn){
 }
 function restart(){const profile=getProfile();S.step=0;S.a={prenom:profile.prenom||'',revenus:profile.revenus||''};document.getElementById('resultsScreen').classList.remove('show');document.getElementById('chatWrap').style.display='';document.querySelector('.site-header').style.display='';init();window.scrollTo({top:0,behavior:'smooth'});}
 function previewHTML(html){
-  const blob=new Blob([html],{type:'text/html'});
-  const url=URL.createObjectURL(blob);
-  window.open(url,'_blank');
-  setTimeout(()=>URL.revokeObjectURL(url),10000);
+
+  const popup=window.open('/v','_blank');
+
+  if(!popup){
+    alert(
+      'Safari a bloqué l’aperçu. Autorise les pop-ups pour DropDigital.'
+    );
+    return;
+  }
+
+  const payload=String(html||'');
+
+  function handleReady(event){
+
+    if(
+      event.origin!==location.origin ||
+      event.source!==popup ||
+      event.data!=='DROPDIGITAL_PREVIEW_READY'
+    ){
+      return;
+    }
+
+    window.removeEventListener(
+      'message',
+      handleReady
+    );
+
+    popup.postMessage(
+      {
+        type:'DROPDIGITAL_PREVIEW_HTML',
+        html:payload
+      },
+      location.origin
+    );
+  }
+
+  window.addEventListener(
+    'message',
+    handleReady
+  );
+
+  setTimeout(()=>{
+    window.removeEventListener(
+      'message',
+      handleReady
+    );
+  },15000);
 }
 
 init();
