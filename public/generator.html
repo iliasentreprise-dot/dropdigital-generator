@@ -5657,6 +5657,14 @@ h1,h2,h3{font-family:${headingFont}}
 .action-box span{font-size:9.5px;line-height:1.45}
 
 .visual-page{padding:0;display:grid;grid-template-columns:55% 45%}
+.visual-page.no-art{
+  grid-template-columns:1fr;
+}
+.visual-page.no-art .visual-copy{
+  width:min(100%,165mm);
+  margin:0 auto;
+  padding:28mm 18mm;
+}
 .final-art{position:relative;min-height:297mm;overflow:hidden}
 .final-art img{width:100%;height:100%;object-fit:cover}
 .final-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,${t.bg})}
@@ -6628,8 +6636,8 @@ ${renderMechanism()}
 ${renderMethod()}
 ${chapterHTML}
 
-<section class="ebook-page visual-page">
-  <div class="final-art">${image(8,'Plan d’action')}</div>
+<section class="ebook-page visual-page${images[8]?'':' no-art'}">
+  ${images[8] ? `<div class="final-art">${image(8,'Plan d’action')}</div>` : ''}
   <div class="visual-copy">
     <div class="kicker">MISE EN PRATIQUE</div>
     <h2>Passe du concept au protocole.</h2>
@@ -6643,8 +6651,8 @@ ${chapterHTML}
   </div>
 </section>
 
-<section class="ebook-page visual-page">
-  <div class="final-art">${image(9,'Transformation finale')}</div>
+<section class="ebook-page visual-page${images[9]?'':' no-art'}">
+  ${images[9] ? `<div class="final-art">${image(9,'Transformation finale')}</div>` : ''}
   <div class="visual-copy">
     <div class="kicker">LA SUITE</div>
     <h2>Fais vivre la méthode.</h2>
