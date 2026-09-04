@@ -44,23 +44,36 @@ async function getProfile(userId,token){
 
 async function saveStripeAccount(userId,accountId,token){
   const url=new URL(`${SUPABASE_URL}/rest/v1/member_profiles`);
-  url.searchParams.set('user_id',`eq.${userId}`);
+  url.searchParams.set('on_conflict','user_id');
 
   const r=await fetch(url,{
-    method:'PATCH',
+    method:'POST',
     headers:{
       apikey:SUPABASE_ANON_KEY,
       Authorization:`Bearer ${token}`,
       'Content-Type':'application/json',
-      Prefer:'return=minimal'
+      Prefer:'resolution=merge-duplicates,return=representation'
     },
     body:JSON.stringify({
+      user_id:userId,
       stripe_account_id:accountId,
       updated_at:new Date().toISOString()
     })
   });
 
-  return r.ok;
+  if(!r.ok){
+    console.error(
+      '[stripe-connect-start] Supabase save failed',
+      r.status,
+      await r.text()
+    );
+    return false;
+  }
+
+  const rows=await r.json();
+
+  return Array.isArray(rows) &&
+    rows.some(row=>row.stripe_account_id===accountId);
 }
 
 export default async function handler(req,res){
