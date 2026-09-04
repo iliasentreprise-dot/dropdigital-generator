@@ -1111,8 +1111,44 @@ async function syncMemberData(){
 }
 async function initializeSignedInMember(user,firstName=''){currentMember=user;try{localStorage.setItem(STORAGE_KEYS.email,user.email||'');}catch(_){}
   if(firstName)await dbClient.from('member_profiles').update({first_name:firstName,updated_at:new Date().toISOString()}).eq('user_id',user.id);
-  await syncMemberData();if(String(user.email||'').toLowerCase()==='ilias.entreprise@gmail.com')saveProfile({plan:'pro',subscriptionStatus:'active',adminUnlimited:true});document.getElementById('emailGate').classList.remove('show');updateMemberToolbar();restart();
+  await syncMemberData();if(String(user.email||'').toLowerCase()==='ilias.entreprise@gmail.com')saveProfile({plan:'pro',subscriptionStatus:'active',adminUnlimited:true});document.getElementById('emailGate').classList.remove('show');updateMemberToolbar();if(!resumeStripeStepIfNeeded())restart();
 }
+
+function resumeStripeStepIfNeeded(){
+  const params=new URLSearchParams(location.search);
+
+  const returnedFromStripe=
+    params.get('stripe_connect')==='return' ||
+    params.get('stripe_connect')==='refresh';
+
+  const hasSavedStripeState=
+    !!localStorage.getItem('dropdigital_stripe_return_state_v1');
+
+  if(!returnedFromStripe && !hasSavedStripeState){
+    return false;
+  }
+
+  if(!restoreStripeReturnState()){
+    return false;
+  }
+
+  document.getElementById('chatWrap').style.display='';
+  document.querySelector('.site-header').style.display='';
+
+  buildDots();
+  renderStep(7);
+
+  if(returnedFromStripe){
+    history.replaceState(
+      {},
+      document.title,
+      location.pathname
+    );
+  }
+
+  return true;
+}
+
 async function initMemberAccess(){
   const {data:{session}}=await dbClient.auth.getSession();
   if(passwordRecoveryRequested){currentMember=session?.user||null;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),80);return;}
@@ -2327,6 +2363,44 @@ function goDesign(){
 
 // ── STEP 8 : STRIPE CONNECT ─────────────────────────────
 
+
+function saveStripeReturnState(){
+  try{
+    localStorage.setItem(
+      'dropdigital_stripe_return_state_v1',
+      JSON.stringify({
+        step:7,
+        answers:{...S.a},
+        savedAt:Date.now()
+      })
+    );
+  }catch(_){}
+}
+
+function restoreStripeReturnState(){
+  try{
+    const raw=localStorage.getItem('dropdigital_stripe_return_state_v1');
+    if(!raw)return false;
+
+    const saved=JSON.parse(raw);
+
+    if(!saved?.answers)return false;
+
+    S.a={...saved.answers};
+    S.step=7;
+
+    return true;
+  }catch(_){
+    return false;
+  }
+}
+
+function clearStripeReturnState(){
+  try{
+    localStorage.removeItem('dropdigital_stripe_return_state_v1');
+  }catch(_){}
+}
+
 async function stripeConnectStatus(){
   try{
     const {data}=await dbClient.auth.getSession();
@@ -2380,6 +2454,7 @@ async function connectStripeAccount(){
       );
     }
 
+    saveStripeReturnState();
     location.href=result.url;
 
   }catch(error){
@@ -2513,6 +2588,7 @@ async function refreshStripeStep(){
 
   if(status.connected){
     S.a.stripeConnected=true;
+    clearStripeReturnState();
 
     box.innerHTML=`
       <div style="
