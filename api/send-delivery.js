@@ -73,6 +73,7 @@ export default async function handler(req,res){
 
     if(
       !process.env.RESEND_API_KEY||
+      !process.env.RESEND_FROM_EMAIL||
       !email
     ){
       return send(res,200,{
@@ -97,8 +98,7 @@ export default async function handler(req,res){
         body:JSON.stringify({
 
           from:
-            process.env.RESEND_FROM_EMAIL||
-            'Dropdigital <onboarding@resend.dev>',
+            process.env.RESEND_FROM_EMAIL,
 
           to:[email],
 
