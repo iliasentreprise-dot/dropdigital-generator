@@ -1038,16 +1038,86 @@ async function hydrateIllustrations(data){
   data.illustrations=urls;data.missing_images=missing;return data;
 }
 async function persistIllustration(dataUrl,generationId,index){
-  if(!currentMember)throw new Error('Compte utilisateur indisponible');
-  const response=await fetch(dataUrl),blob=await response.blob();
-  const extension=blob.type.includes('png')?'png':blob.type.includes('jpeg')?'jpg':'webp';
-  const path=`${currentMember.id}/${generationId}/page-${String(index+1).padStart(2,'0')}.${extension}`;
-  const {error}=await dbClient.storage.from('ebook-illustrations').upload(path,blob,{contentType:blob.type||'image/webp',upsert:true,cacheControl:'31536000'});
-  if(error)throw error;
-  const {data:signed,error:signedError}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,31536000);
-  if(signedError||!signed?.signedUrl)throw signedError||new Error('Lien image indisponible');
-  return {path,url:signed.signedUrl};
+
+  if(!currentMember){
+    throw new Error('Compte utilisateur indisponible');
+  }
+
+  const response=await fetch(dataUrl);
+  const blob=await response.blob();
+
+  const extension=
+    blob.type.includes('png')
+      ? 'png'
+      : blob.type.includes('jpeg')
+        ? 'jpg'
+        : 'webp';
+
+  const path=
+    `${currentMember.id}/${generationId}/page-${String(index+1).padStart(2,'0')}.${extension}`;
+
+  let uploadError=null;
+
+  for(let attempt=1;attempt<=3;attempt++){
+
+    const {error}=await dbClient.storage
+      .from('ebook-illustrations')
+      .upload(
+        path,
+        blob,
+        {
+          contentType:blob.type||'image/webp',
+          upsert:true,
+          cacheControl:'31536000'
+        }
+      );
+
+    if(!error){
+      uploadError=null;
+      break;
+    }
+
+    uploadError=error;
+
+    await new Promise(
+      resolve=>setTimeout(resolve,attempt*600)
+    );
+  }
+
+  if(uploadError){
+    throw uploadError;
+  }
+
+  let signedError=null;
+
+  for(let attempt=1;attempt<=3;attempt++){
+
+    const {data:signed,error}=await dbClient.storage
+      .from('ebook-illustrations')
+      .createSignedUrl(
+        path,
+        31536000
+      );
+
+    if(!error&&signed?.signedUrl){
+      return {
+        path,
+        url:signed.signedUrl
+      };
+    }
+
+    signedError=
+      error||
+      new Error('Lien image indisponible');
+
+    await new Promise(
+      resolve=>setTimeout(resolve,attempt*500)
+    );
+  }
+
+  throw signedError;
 }
+
 async function restoreGeneration(id){
   const item=getHistory().find(entry=>entry.id===id);if(!item)return;
   restoringHistory=true;S.a={...(item.answers||{})};S.step=6;closeHistory();
@@ -4253,6 +4323,95 @@ Retourne maintenant UNIQUEMENT le JSON.`;
       Promise.all(imageJobs),
       salesPromise
     ]);
+
+    if(failedImages.length){
+
+      mel.textContent=
+        '🔁 Vérification automatique des illustrations manquantes...';
+
+      const retryIndexes=[
+        ...new Set(failedImages)
+      ];
+
+      for(const index of retryIndexes){
+
+        try{
+
+          const retryResponse=await fetch(
+            '/api/generate-images',
+            {
+              method:'POST',
+              headers:{
+                'Content-Type':'application/json',
+                'Authorization':'Bearer '+accessToken
+              },
+              body:JSON.stringify({
+                product:parsed,
+                brief:S.a,
+                theme,
+                index
+              })
+            }
+          );
+
+          const retryData=
+            await retryResponse.json()
+              .catch(()=>({}));
+
+          if(
+            !retryResponse.ok ||
+            !retryData.illustration
+          ){
+            continue;
+          }
+
+          const stored=
+            await persistIllustration(
+              retryData.illustration,
+              parsed._generation_id,
+              index
+            );
+
+          parsed.illustration_paths[index]=stored.path;
+          illustrations[index]=stored.url;
+
+          if(index===0){
+            parsed.cover_path=stored.path;
+            parsed.cover_url=stored.url;
+
+            parsed.cover={
+              ...(parsed.cover||{}),
+              path:stored.path,
+              url:stored.url
+            };
+          }
+
+          updateStudioPage(
+            index,
+            stored.url
+          );
+
+          const position=
+            failedImages.indexOf(index);
+
+          if(position!==-1){
+            failedImages.splice(position,1);
+          }
+
+          console.log(
+            `[image-recovery] image ${index} récupérée`
+          );
+
+        }catch(error){
+
+          console.warn(
+            `[image-recovery] image ${index} toujours indisponible`,
+            error
+          );
+        }
+      }
+    }
+
     parsed.illustrations=illustrations;
     if(salesResult.ok&&salesResult.data.html&&salesResult.data.upsellHtml){
       parsed.sales_html=salesResult.data.html;

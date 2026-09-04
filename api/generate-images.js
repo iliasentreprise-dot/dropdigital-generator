@@ -365,28 +365,121 @@ Sinon, aucun texte.
   return prompts;
 }
 
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+
 async function generateOne(prompt) {
-  const requestImage=async model=>fetch('https://api.openai.com/v1/images/generations', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
-    body: JSON.stringify({
-      model,
-      prompt,
-      size: '1024x1536',
-      quality: 'medium',
-      output_format: 'webp',
-      output_compression: 82
-    })
-  });
-  let response=await requestImage('gpt-image-2');let payload=await response.json();
-  const unavailable=!response.ok&&/model|access|not found|unsupported/i.test(`${payload.error?.code||''} ${payload.error?.message||''}`);
-  if(unavailable){response=await requestImage('gpt-image-1-mini');payload=await response.json();}
-  if (!response.ok || !payload.data?.[0]?.b64_json) {
-    const error = new Error(payload.error?.message || 'Image non générée');
-    error.code = payload.error?.code || 'image_generation_failed';
-    throw error;
+
+  const requestImage=async model=>fetch(
+    'https://api.openai.com/v1/images/generations',
+    {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body:JSON.stringify({
+        model,
+        prompt,
+        size:'1024x1536',
+        quality:'medium',
+        output_format:'webp',
+        output_compression:82
+      })
+    }
+  );
+
+  async function runModel(model){
+
+    let lastError=null;
+
+    for(let attempt=1;attempt<=3;attempt++){
+
+      try{
+
+        const response=await requestImage(model);
+        const payload=await response.json().catch(()=>({}));
+
+        if(
+          response.ok &&
+          payload.data?.[0]?.b64_json
+        ){
+          return `data:image/webp;base64,${payload.data[0].b64_json}`;
+        }
+
+        const message=
+          `${payload.error?.code||''} ${payload.error?.message||''}`;
+
+        const unavailable=
+          /model|access|not found|unsupported/i.test(message);
+
+        if(unavailable){
+          const error=new Error(
+            payload.error?.message||
+            'Modèle indisponible'
+          );
+
+          error.unavailable=true;
+          throw error;
+        }
+
+        const retryable=
+          response.status===408 ||
+          response.status===409 ||
+          response.status===429 ||
+          response.status>=500;
+
+        const error=new Error(
+          payload.error?.message||
+          'Image non générée'
+        );
+
+        error.code=
+          payload.error?.code||
+          'image_generation_failed';
+
+        error.noRetry=!retryable;
+
+        throw error;
+
+      }catch(error){
+
+        lastError=error;
+
+        if(
+          error?.unavailable ||
+          error?.noRetry ||
+          attempt===3
+        ){
+          throw error;
+        }
+
+        console.warn(
+          `[generate-images] tentative ${attempt} échouée — retry`
+        );
+
+        await sleep(attempt*1000);
+      }
+    }
+
+    throw lastError;
   }
-  return `data:image/webp;base64,${payload.data[0].b64_json}`;
+
+  try{
+
+    return await runModel('gpt-image-2');
+
+  }catch(error){
+
+    if(!error?.unavailable){
+      throw error;
+    }
+
+    console.warn(
+      '[generate-images] fallback gpt-image-1-mini'
+    );
+
+    return runModel('gpt-image-1-mini');
+  }
 }
 
 export default async function handler(req, res) {
