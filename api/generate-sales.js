@@ -1070,15 +1070,22 @@ Tu n'es PAS obligé d'utiliser un fond blanc.
 
 PRIX DE L'UPSELL :
 
-L'upsell ajoute EXACTEMENT :
-29,20 EUR
+L'UPSELL coûte EXACTEMENT :
+47,00 EUR
 
-Le client a déjà payé 17,80 EUR pour le produit principal.
+Le client possède déjà le produit principal.
 
-Donc :
-17,80 + 29,20 = 47,00 EUR
+Le CTA doit donc proposer clairement :
 
-Le montant final produit principal + upsell doit être présenté comme 47,00 EUR.
+AJOUTER CETTE OFFRE — 47,00 €
+
+Ne présente jamais 29,20 EUR comme prix de l'upsell.
+
+Produit principal + upsell :
+64,80 EUR
+
+Produit principal + order bump + upsell :
+72,60 EUR
 
 N'invente aucun autre prix.
 
@@ -1159,21 +1166,29 @@ La page doit inclure :
 - lien "Non merci"
 - FAQ courte
 
-Le CTA principal doit pointer exactement vers :
+Le CTA principal doit porter exactement :
 
-#upsell-checkout
+id="upsell-accept"
 
-Le JavaScript doit récupérer :
+Il doit appeler :
 
-customerId
+onclick="dropdigitalUpsellAccept(event)"
 
-et :
+Le lien de refus doit porter exactement :
 
-paymentMethodId
+id="upsell-decline"
 
-avec :
+Texte naturel :
+"Non merci, continuer sans cette offre"
 
-new URLSearchParams(window.location.search)
+Il doit appeler :
+
+onclick="dropdigitalUpsellDecline(event)"
+
+N'utilise aucune URL Stripe statique.
+
+Ne crée pas toi-même les fonctions de paiement.
+Elles sont injectées automatiquement par Dropdigital.
 
 HTML autonome.
 Responsive.

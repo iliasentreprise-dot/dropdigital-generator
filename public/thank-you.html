@@ -187,9 +187,10 @@ p{
     )||'';
 
   const account=
-    params.get(
-      'account'
-    )||'';
+    params.get('account')||'';
+
+  const slug=
+    params.get('slug')||'';
 
   try{
 
@@ -201,9 +202,9 @@ p{
           sessionId
         )+
         '&account='+
-        encodeURIComponent(
-          account
-        )
+        encodeURIComponent(account)+
+        '&slug='+
+        encodeURIComponent(slug)
       );
 
     const data=

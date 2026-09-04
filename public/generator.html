@@ -6380,6 +6380,85 @@ async function downloadEbookPdf(){
     pdf.save(filename);
   }catch(error){console.error('PDF export failed',error);alert('L’export PDF a rencontré un problème. Recharge la page puis réessaie.');}finally{holder.remove();}
 }
+
+async function publishGeneratedSite(btn){
+
+  const product=window._productData;
+
+  if(!product?.sales_html){
+    alert('La page de vente doit être générée avant publication.');
+    return;
+  }
+
+  const {data}=await dbClient.auth.getSession();
+  const token=data?.session?.access_token;
+
+  if(!token){
+    alert('Reconnecte-toi avant de publier.');
+    return;
+  }
+
+  const original=btn.textContent;
+
+  btn.disabled=true;
+  btn.textContent='🚀 PUBLICATION…';
+
+  try{
+
+    const response=await fetch('/api/publish-site',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:'Bearer '+token
+      },
+      body:JSON.stringify({
+        title:
+          product.titre_produit||
+          product.title||
+          'Produit',
+        generationId:
+          product._generation_id||'',
+        salesHtml:
+          product.sales_html||'',
+        upsellHtml:
+          product.upsell_html||''
+      })
+    });
+
+    const result=await response.json();
+
+    if(!response.ok||!result.url){
+      throw new Error(
+        result.error||
+        'Publication impossible.'
+      );
+    }
+
+    window._publishedUrl=result.url;
+
+    try{
+      await navigator.clipboard.writeText(result.url);
+    }catch(_){}
+
+    btn.disabled=false;
+    btn.textContent='✅ PUBLIÉ — OUVRIR LE SITE';
+
+    btn.onclick=function(){
+      window.open(result.url,'_blank');
+    };
+
+  }catch(error){
+
+    btn.disabled=false;
+    btn.textContent=original;
+
+    alert(
+      error.message||
+      'Publication impossible.'
+    );
+  }
+}
+
 function downloadSalesPage(){
   if(!window._sHTML)return;const blob=new Blob([window._sHTML],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='page-de-vente-'+((window._productTitle||'dropdigital').replace(/[^a-z0-9]+/gi,'-').toLowerCase())+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
@@ -6846,7 +6925,7 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
 
     <!-- SALES TAB -->
     <div class="tab-content" id="tab-sales">
-      ${isPaidPlan()?(d.sales_html&&d.upsell_html?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON TUNNEL CLAUDE EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Trois éléments sont prêts : la page de vente unique, son bloc de commande avec order bump fonctionnel, et une vraie page Upsell 1 séparée.</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="previewHTML(window._sHTML)">👁 PAGE DE VENTE + ORDER BUMP</button><button class="copy-btn copy-btn-green" onclick="previewHTML(window._uHTML)">👁 PAGE UPSELL 1</button><button class="copy-btn" onclick="downloadSalesPage()">📥 TÉLÉCHARGER LA PAGE</button><button class="copy-btn" onclick="downloadUpsellPage()">📥 TÉLÉCHARGER L’UPSELL</button><button class="copy-btn" onclick="regenerateSalesTunnel(this)">↻ RECRÉER AVEC CLAUDE</button></div><iframe id="salesPreviewFrame" title="Aperçu de la page de vente" style="width:100%;height:680px;border:1px solid rgba(179,102,255,.28);background:white;margin-top:20px;border-radius:8px"></iframe></div>`:`<div class="rc" style="border-left-color:#ff547c;background:rgba(255,84,124,.035);"><div class="rct" style="color:#ff8da8;">⚠️ LE TUNNEL CLAUDE N’A PAS ÉTÉ CRÉÉ</div><p style="color:#ff9bb2;line-height:1.8;margin:16px 0;">${eh(d.sales_error||'La clé API Claude est absente, invalide, sans crédit, ou Claude n’a pas terminé les deux pages.')}</p><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Ton ebook et tes images restent conservés. Cette action relance uniquement la page de vente, l’order bump et l’upsell.</p><button class="copy-btn copy-btn-green" onclick="regenerateSalesTunnel(this)">↻ GÉNÉRER LE TUNNEL AVEC CLAUDE</button></div>`):''}
+      ${isPaidPlan()?(d.sales_html&&d.upsell_html?`<div class="rc" style="border-left-color:var(--green);background:rgba(37,211,102,.035);"><div class="rch"><div class="rct" style="color:var(--green);">✅ TON TUNNEL CLAUDE EST GÉNÉRÉ</div></div><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Trois éléments sont prêts : la page de vente unique, son bloc de commande avec order bump fonctionnel, et une vraie page Upsell 1 séparée.</p><div class="btn-row"><button class="copy-btn copy-btn-green" onclick="previewHTML(window._sHTML)">👁 PAGE DE VENTE + ORDER BUMP</button><button class="copy-btn copy-btn-green" onclick="previewHTML(window._uHTML)">👁 PAGE UPSELL 1</button><button class="copy-btn" onclick="downloadSalesPage()">📥 TÉLÉCHARGER LA PAGE</button><button class="copy-btn" onclick="downloadUpsellPage()">📥 TÉLÉCHARGER L’UPSELL</button><button class="copy-btn copy-btn-green" onclick="publishGeneratedSite(this)">🚀 PUBLIER MON SITE</button><button class="copy-btn" onclick="regenerateSalesTunnel(this)">↻ RECRÉER AVEC CLAUDE</button></div><iframe id="salesPreviewFrame" title="Aperçu de la page de vente" style="width:100%;height:680px;border:1px solid rgba(179,102,255,.28);background:white;margin-top:20px;border-radius:8px"></iframe></div>`:`<div class="rc" style="border-left-color:#ff547c;background:rgba(255,84,124,.035);"><div class="rct" style="color:#ff8da8;">⚠️ LE TUNNEL CLAUDE N’A PAS ÉTÉ CRÉÉ</div><p style="color:#ff9bb2;line-height:1.8;margin:16px 0;">${eh(d.sales_error||'La clé API Claude est absente, invalide, sans crédit, ou Claude n’a pas terminé les deux pages.')}</p><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Ton ebook et tes images restent conservés. Cette action relance uniquement la page de vente, l’order bump et l’upsell.</p><button class="copy-btn copy-btn-green" onclick="regenerateSalesTunnel(this)">↻ GÉNÉRER LE TUNNEL AVEC CLAUDE</button></div>`):''}
       <div class="rc" style="${isPaidPlan()?'display:none;':''}">
         <div class="rch"><div class="rct">🖥️ CONSTRUIRE LA DIRECTION ARTISTIQUE</div></div>
         <div style="background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.12);padding:16px;margin-bottom:20px;">

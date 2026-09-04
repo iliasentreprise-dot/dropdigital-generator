@@ -2,6 +2,28 @@ import Stripe from 'stripe';
 
 const stripe=new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';
+
+async function accountFromSlug(slug){
+  const url=new URL(`${SUPABASE_URL}/rest/v1/published_sites`);
+  url.searchParams.set('slug',`eq.${slug}`);
+  url.searchParams.set('is_published','eq.true');
+  url.searchParams.set('select','stripe_account_id');
+  url.searchParams.set('limit','1');
+
+  const response=await fetch(url,{
+    headers:{
+      apikey:SUPABASE_ANON_KEY,
+      Authorization:`Bearer ${SUPABASE_ANON_KEY}`
+    }
+  });
+
+  if(!response.ok)return '';
+  const [site]=await response.json();
+  return site?.stripe_account_id||'';
+}
+
 function send(res,status,body){
   res.status(status)
     .setHeader('Content-Type','application/json; charset=utf-8')
@@ -27,10 +49,16 @@ export default async function handler(req,res){
       200
     );
 
-    const accountId=clean(
+    const slug=clean(req.query?.slug,120);
+
+    let accountId=clean(
       req.query?.account,
       100
     );
+
+    if(slug){
+      accountId=await accountFromSlug(slug);
+    }
 
     if(
       !/^cs_/.test(sessionId) ||

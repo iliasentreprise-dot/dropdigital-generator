@@ -5,5 +5,11 @@
       "destination": "/generator.html",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/p/:slug",
+      "destination": "/api/site?slug=:slug"
+    }
   ]
 }
