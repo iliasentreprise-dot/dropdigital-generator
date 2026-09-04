@@ -4010,6 +4010,84 @@ Ils représentent les 6 concepts visuels les plus utiles pour comprendre et appl
 
 Chaque visuel doit avoir une FONCTION différente.
 
+IMPORTANT — TU ES AUSSI DIRECTEUR ARTISTIQUE DES MINI-VISUELS CSS/SVG.
+
+Pour CHAQUE élément de visual_plan à partir de l'index 1, tu dois concevoir
+une représentation graphique SPÉCIFIQUE au contenu.
+
+Tu ne dois PAS simplement écrire "visuel adapté", "schéma", "diagramme"
+ou répéter la même structure.
+
+Chaque objet visual_plan doit contenir obligatoirement :
+
+"visual_family":
+une famille graphique explicite parmi :
+timeline, cycle, steps, network, matrix, before_after, orbit, funnel,
+dashboard, anatomy, routine, checklist, path, stack.
+
+"visual_intent":
+une phrase très courte décrivant EXACTEMENT ce que le dessin doit faire comprendre.
+
+"elements":
+2 à 6 éléments réellement issus du contenu.
+Chaque élément :
+{
+  "label":"texte très court et spécifique",
+  "icon_concept":"objet, idée ou symbole visuel précis"
+}
+
+"centerpiece":
+{
+  "label":"concept central spécifique",
+  "icon_concept":"symbole précis du concept central"
+}
+
+RÈGLE ABSOLUE DE VARIATION :
+
+Deux visuels consécutifs ne doivent pas utiliser la même logique graphique
+sauf nécessité pédagogique évidente.
+
+Interdiction de remplir automatiquement avec :
+- Point de départ
+- Application
+- Résultat
+- Mécanisme
+- Étape 1
+- Étape 2
+
+sauf si ces mots correspondent réellement au contenu.
+
+Les labels doivent provenir du sujet précis traité.
+
+EXEMPLES DE LOGIQUE :
+
+Automatisation TikTok :
+un flux peut représenter
+"Commentaire → Détection → DM → Qualification → Vente".
+
+Sommeil :
+un cycle peut représenter
+"Endormissement → Sommeil profond → Régulation → Réveil".
+
+Nutrition :
+une composition peut utiliser
+"Protéines / Fibres / Glucides / Lipides"
+autour d'une assiette centrale.
+
+Finance :
+un funnel peut représenter
+"Revenu → Épargne → Capital → Rendement".
+
+Sport :
+une timeline peut représenter
+"Stimulus → Récupération → Adaptation → Progression".
+
+Relations :
+un réseau peut représenter des interactions humaines,
+pas un diagramme technique générique.
+
+Le choix du dessin dépend TOUJOURS du contenu réel.
+
 Types possibles :
 
 - couverture cinématique,
@@ -4280,12 +4358,23 @@ JSON EXACT À PRODUIRE
     {
       "index": 1,
       "role": "vue d'ensemble",
-      "type": "diagramme / lifestyle / timeline / cycle / autre",
+      "type": "type visuel précis",
+      "visual_family": "cycle",
+      "visual_intent": "ce que le lecteur doit comprendre en une seconde",
       "objectif": "faire comprendre le mécanisme ou la méthode",
       "scene": "description spécifique",
       "concept": "idée représentée",
+      "elements": [
+        {"label":"élément précis 1","icon_concept":"symbole spécifique"},
+        {"label":"élément précis 2","icon_concept":"symbole spécifique"},
+        {"label":"élément précis 3","icon_concept":"symbole spécifique"}
+      ],
+      "centerpiece": {
+        "label":"concept central spécifique",
+        "icon_concept":"symbole central spécifique"
+      },
       "texte_image": {"titre":"","mecanisme":"","sous_titre":""},
-      "composition": "composition différente de la cover"
+      "composition": "composition réellement différente de la cover"
     },
     {
       "index": 2,
@@ -5152,39 +5241,153 @@ function buildEbookHTML(d,t){
   const cssVisual=(index,alt='')=>{
     const meta=visualPlan.find(v=>Number(v?.index)===Number(index))||{};
 
-    const family=String(
+    const semantic=[
+      meta.visual_family,
+      meta.type,
+      meta.role,
+      meta.visual_intent,
+      meta.objectif,
+      meta.scene,
+      meta.concept,
+      meta.composition,
+      mechanism.nom,
+      mechanism.idee,
+      mechanism.fonctionnement,
+      method.nom
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+
+    let family=String(
       meta.visual_family||
       meta.type||
       meta.role||
-      'network'
+      ''
     ).toLowerCase();
+
+    /*
+      Si le modèle a renvoyé une valeur générique,
+      on déduit la meilleure représentation depuis le sens du contenu.
+    */
+    if(
+      !family ||
+      /visuel adapté|visuel adapte|autre|explication|vue d'ensemble|vue ensemble|schéma pédagogique|schema pedagogique/.test(family)
+    ){
+      if(/avant|après|apres|transformation|comparaison|compare/.test(semantic)){
+        family='before_after';
+      }
+      else if(/cycle|boucle|loop|récurrent|recurrent|rotation/.test(semantic)){
+        family='cycle';
+      }
+      else if(/timeline|chronolog|semaine|jour|progression temporelle|séquence|sequence/.test(semantic)){
+        family='timeline';
+      }
+      else if(/routine|rituel|checklist|protocole|actions quotidiennes|habitude/.test(semantic)){
+        family='steps';
+      }
+      else if(/funnel|tunnel|conversion|entonnoir|pipeline/.test(semantic)){
+        family='funnel';
+      }
+      else if(/score|dashboard|tableau|matrice|indicateur|mesure|kpi|barre/.test(semantic)){
+        family='matrix';
+      }
+      else if(/corps|anatom|cerveau|muscle|système biologique|systeme biologique/.test(semantic)){
+        family='anatomy';
+      }
+      else if(/centre|autour|orbite|écosystème|ecosysteme|piliers/.test(semantic)){
+        family='orbit';
+      }
+      else{
+        family='network';
+      }
+    }
 
     const title=short(
       meta.visual_intent||
       meta.objectif||
+      meta.concept||
       alt||
-      'Schéma visuel'
+      mechanism.nom||
+      'Visualisation'
     );
 
     const rawElements=Array.isArray(meta.elements)
-      ? meta.elements
+      ? meta.elements.filter(el=>el && (el.label||el.icon_concept))
       : [];
+
+    /*
+      Plus aucun fallback "Point de départ / Application / Résultat".
+      Si le modèle oublie elements, on fabrique les labels depuis
+      LE CONTENU RÉEL du visuel.
+    */
+    const contextSeeds=[
+      meta.concept,
+      meta.objectif,
+      meta.scene,
+      meta.visual_intent,
+      mechanism.idee,
+      mechanism.fonctionnement,
+      mechanism.metaphore_visuelle
+    ]
+      .filter(Boolean)
+      .flatMap(value=>
+        String(value)
+          .split(/[.;•]/)
+          .map(x=>x.trim())
+      )
+      .filter(x=>x.length>3);
+
+    const contextualFallback=[];
+
+    for(const value of contextSeeds){
+      const label=short(value);
+
+      if(
+        label &&
+        !contextualFallback.some(
+          el=>String(el.label).toLowerCase()===String(label).toLowerCase()
+        )
+      ){
+        contextualFallback.push({
+          label,
+          icon_concept:label
+        });
+      }
+
+      if(contextualFallback.length>=5)break;
+    }
+
+    if(!contextualFallback.length){
+      contextualFallback.push({
+        label:short(mechanism.nom||meta.concept||alt||'Concept'),
+        icon_concept:mechanism.metaphore_visuelle||mechanism.nom||'concept'
+      });
+    }
 
     const elements=rawElements.length
       ? rawElements.slice(0,6)
-      : [
-          {label:'Point de départ',icon_concept:'target'},
-          {label:mechanism.nom||'Mécanisme',icon_concept:'system'},
-          {label:'Application',icon_concept:'action'},
-          {label:'Résultat',icon_concept:'progress'}
-        ];
+      : contextualFallback.slice(0,6);
+
+    const centerMeta=
+      meta.centerpiece &&
+      typeof meta.centerpiece==='object'
+        ? meta.centerpiece
+        : {};
 
     const center=short(
-      meta.centerpiece?.label||
+      centerMeta.label||
+      meta.concept||
       mechanism.nom||
+      meta.visual_intent||
       alt||
-      'Mécanisme'
+      title
     );
+
+    const centerIcon=
+      centerMeta.icon_concept||
+      mechanism.metaphore_visuelle||
+      center;
 
     const iconSvg=(concept='',n=0)=>{
       const c=String(concept||'').toLowerCase();
@@ -5486,7 +5689,11 @@ function buildEbookHTML(d,t){
 
     // ── DEFAULT : NETWORK / FLOW / CAUSE → MÉCANISME → ACTION → RÉSULTAT
     return `<div class="css-visual ai-vector ai-network">
-      <div class="vector-kicker">CARTE DU MÉCANISME</div>
+      <div class="vector-kicker">${eh(
+        String(meta.role||family||'VISUEL CONTEXTUEL')
+          .replace(/_/g,' ')
+          .toUpperCase()
+      )}</div>
       <strong>${eh(title)}</strong>
 
       <div class="network-stage">
@@ -5498,7 +5705,7 @@ function buildEbookHTML(d,t){
         </svg>
 
         <div class="network-center">
-          ${icon({icon_concept:center},0)}
+          ${icon({icon_concept:centerIcon,label:center},0)}
           <b>${eh(center)}</b>
         </div>
 
