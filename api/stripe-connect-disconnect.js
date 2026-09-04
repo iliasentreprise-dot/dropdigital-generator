@@ -28,9 +28,7 @@ export default async function handler(req,res){
     const token=String(req.headers.authorization||'')
       .replace(/^Bearer\s+/i,'');
 
-    if(!token){
-      return send(res,401,{error:'Reconnecte-toi.'});
-    }
+    if(!token)return send(res,401,{error:'Reconnecte-toi.'});
 
     const user=await getUser(token);
 
@@ -56,18 +54,16 @@ export default async function handler(req,res){
     });
 
     if(!r.ok){
-      throw new Error('Impossible de retirer le compte Stripe.');
+      throw new Error('Supabase update failed');
     }
 
-    return send(res,200,{
-      success:true
-    });
+    return send(res,200,{success:true});
 
   }catch(error){
-    console.error('[stripe-connect-disconnect]',error);
+    console.error('[stripe-disconnect]',error);
 
     return send(res,500,{
-      error:'Impossible de déconnecter Stripe pour le moment.'
+      error:'Impossible de modifier le compte Stripe.'
     });
   }
 }

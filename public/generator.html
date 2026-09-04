@@ -2440,6 +2440,60 @@ async function disconnectStripeAccount(){
   }
 }
 
+
+async function clearStripeConnection(){
+  const {data}=await dbClient.auth.getSession();
+  const token=data?.session?.access_token;
+
+  if(!token)throw new Error('Reconnecte-toi.');
+
+  const response=await fetch('/api/stripe-connect-disconnect',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      Authorization:'Bearer '+token
+    }
+  });
+
+  const result=await response.json().catch(()=>({}));
+
+  if(!response.ok){
+    throw new Error(
+      result.error||
+      'Impossible de modifier le compte Stripe.'
+    );
+  }
+
+  S.a.stripeConnected=false;
+  S.a.stripe='';
+}
+
+async function disconnectStripeAccount(){
+  if(!confirm('Déconnecter ce compte Stripe de Dropdigital ?')){
+    return;
+  }
+
+  try{
+    await clearStripeConnection();
+    await refreshStripeStep();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+async function changeStripeAccount(){
+  if(!confirm('Changer de compte Stripe ?')){
+    return;
+  }
+
+  try{
+    await clearStripeConnection();
+    await connectStripeAccount();
+  }catch(error){
+    alert(error.message);
+  }
+}
+
 async function refreshStripeStep(){
   const box=document.getElementById('stripeConnectionState');
 
@@ -2462,45 +2516,59 @@ async function refreshStripeStep(){
 
     box.innerHTML=`
       <div style="
-        padding:20px;
-        border:1px solid rgba(82,232,137,.5);
-        background:rgba(82,232,137,.07);
+        display:grid;
+        grid-template-columns:minmax(0,1fr) 44px 44px;
+        gap:8px;
+        align-items:stretch;
       ">
+
         <div style="
+          min-height:52px;
+          padding:0 17px;
+          display:flex;
+          align-items:center;
+          border:1px solid rgba(82,232,137,.5);
+          background:rgba(82,232,137,.08);
           color:#72eda3;
           font-weight:800;
-          font-size:16px;
-          margin-bottom:5px;
+          font-size:13px;
+          letter-spacing:.04em;
         ">
           ✓ COMPTE STRIPE CONNECTÉ
         </div>
 
-        <div style="
-          color:#aa99b9;
-          font-size:12px;
-          line-height:1.6;
-        ">
-          Tes paiements seront configurés automatiquement
-          sur ton propre compte Stripe.
-        </div>
+        <button
+          type="button"
+          onclick="changeStripeAccount()"
+          title="Changer de compte Stripe"
+          aria-label="Changer de compte Stripe"
+          style="
+            border:1px solid rgba(179,102,255,.34);
+            background:rgba(155,77,255,.07);
+            color:#cfb1eb;
+            cursor:pointer;
+            font-size:20px;
+          "
+        >
+          ✎
+        </button>
 
         <button
           type="button"
           onclick="disconnectStripeAccount()"
+          title="Déconnecter Stripe"
+          aria-label="Déconnecter Stripe"
           style="
-            margin-top:14px;
-            padding:10px 14px;
-            width:100%;
-            border:1px solid rgba(255,90,120,.35);
-            background:rgba(255,70,100,.06);
-            color:#ff91aa;
+            border:1px solid rgba(255,90,120,.28);
+            background:rgba(255,70,100,.045);
+            color:#ff7898;
             cursor:pointer;
-            font-weight:700;
-            font-size:12px;
+            font-size:17px;
           "
         >
-          DÉCONNECTER STRIPE
+          🗑
         </button>
+
       </div>
     `;
 
