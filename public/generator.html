@@ -6849,6 +6849,67 @@ document.addEventListener(
   }
 );
 
+
+async function openPublishedUpsell(){
+
+  /*
+    Safari bloque parfois window.open après un await.
+    On ouvre donc l'onglet immédiatement.
+  */
+  const popup=
+    window.open(
+      'about:blank',
+      '_blank'
+    );
+
+  if(!popup){
+    alert(
+      'Safari a bloqué la fenêtre. Autorise les pop-ups pour DropDigital.'
+    );
+    return;
+  }
+
+  try{
+
+    popup.document.body.innerHTML=
+      '<div style="font-family:system-ui;padding:40px">Ouverture de l’upsell…</div>';
+
+    const site=
+      await getPublishedSite();
+
+    if(
+      !site||
+      !site.is_published||
+      !site.slug
+    ){
+      popup.close();
+
+      alert(
+        'Publie d’abord le site pour obtenir l’URL de l’upsell.'
+      );
+
+      return;
+    }
+
+    popup.location.href=
+      '/u/'+
+      encodeURIComponent(site.slug);
+
+  }catch(error){
+
+    console.error(
+      '[published-upsell]',
+      error
+    );
+
+    popup.close();
+
+    alert(
+      'Impossible d’ouvrir l’upsell publiée.'
+    );
+  }
+}
+
 async function copyPublishedSiteLink(btn){
 
   let url=
@@ -7643,9 +7704,9 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
   >
 
     <button
-      onclick="previewHTML(window._uHTML)"
+      onclick="openPublishedUpsell()"
     >
-      Aperçu upsell
+      Ouvrir l’upsell publiée
     </button>
 
     <button
