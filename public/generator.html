@@ -6718,6 +6718,30 @@ async function getPublishedSite(){
 }
 
 
+function ddSlugify(value){
+  return String(value||'')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/^-+|-+$/g,'')
+    .slice(0,55);
+}
+
+function ddRefreshSlugPreview(){
+  const input=document.getElementById('ddPublishSlug');
+  const preview=document.getElementById('ddSlugPreview');
+
+  if(!input||!preview)return;
+
+  const slug=ddSlugify(input.value);
+  input.value=slug;
+  preview.textContent=
+    slug
+      ? 'https://'+slug+'.dropdigital.fr'
+      : 'https://ton-site.dropdigital.fr';
+}
+
 function ddPublicUrl(slug){
   return 'https://'+slug+'.dropdigital.fr';
 }
@@ -6759,6 +6783,19 @@ async function ddRefreshPublish(){
 
   const site=
     await getPublishedSite();
+
+  const slugInput=
+    document.getElementById('ddPublishSlug');
+
+  if(slugInput){
+    if(site?.slug){
+      slugInput.value=site.slug;
+    }else if(!slugInput.value){
+      slugInput.value=ddSlugify(title);
+    }
+
+    ddRefreshSlugPreview();
+  }
 
   const status=
     document.getElementById('ddPublishStatus');
@@ -7153,6 +7190,14 @@ async function publishGeneratedSite(btn){
               product.titre_produit||
               product.title||
               'Produit',
+
+            slug:
+              ddSlugify(
+                document.getElementById('ddPublishSlug')?.value||
+                product.titre_produit||
+                product.title||
+                'produit'
+              ),
 
             generationId:
               product._generation_id||
@@ -7786,6 +7831,26 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
         Mon site
       </div>
 
+    </div>
+
+    <div class="dd-field">
+      <label>Adresse de ton site</label>
+
+      <input
+        id="ddPublishSlug"
+        class="dd-fieldbox"
+        placeholder="ex: perdre-du-poids"
+        autocomplete="off"
+        oninput="ddRefreshSlugPreview()"
+        style="width:100%;box-sizing:border-box;outline:none;"
+      >
+
+      <div
+        id="ddSlugPreview"
+        style="margin-top:8px;color:#8f819c;font-size:11px;"
+      >
+        https://ton-site.dropdigital.fr
+      </div>
     </div>
 
     <div

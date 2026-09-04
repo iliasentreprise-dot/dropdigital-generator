@@ -54,6 +54,7 @@ export default async function handler(req,res){
     const upsellHtml=String(req.body?.upsellHtml||'');
     const ebookHtml=String(req.body?.ebookHtml||'');
     const generationId=String(req.body?.generationId||'');
+  const requestedSlug=slugify(req.body?.slug||title);
 
     if(!/<html/i.test(salesHtml)){
       return send(res,400,{error:'Page invalide.'});
