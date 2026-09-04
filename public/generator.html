@@ -2588,6 +2588,7 @@ async function refreshStripeStep(){
 
   if(status.connected){
     S.a.stripeConnected=true;
+    S.a.stripeAccountId=status.accountId||'';
     clearStripeReturnState();
 
     box.innerHTML=`
@@ -2786,12 +2787,13 @@ function go6(){
     return;
   }
 
-  S.a.stripe='STRIPE_CONNECT';
+  S.a.stripe='CONNECTED';
   finishStripeStep();
 }
 
 function skipStripe(){
   S.a.stripeConnected=false;
+  S.a.stripeAccountId='';
   S.a.stripe='STRIPE_LATER';
   finishStripeStep();
 }
@@ -6226,6 +6228,167 @@ function downloadUpsellPage(){
   if(!window._uHTML)return;const blob=new Blob([window._uHTML],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='upsell-1-'+((window._productTitle||'dropdigital').replace(/[^a-z0-9]+/gi,'-').toLowerCase())+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 }
 
+
+function wireConnectedStripeCheckout(html,product){
+  if(!html)return '';
+
+  const config={
+    accountId:S.a.stripeAccountId||'',
+    productTitle:
+      product?.titre_produit||
+      product?.title||
+      'Accès au programme'
+  };
+
+  const injected=`<script>
+(function(){
+  const CONFIG=${JSON.stringify(config)};
+  const API='https://dropdigital-generator.vercel.app/api/create-checkout';
+
+  async function dropdigitalCheckout(event){
+    if(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    if(!CONFIG.accountId){
+      alert('Le paiement Stripe n’est pas encore configuré.');
+      return false;
+    }
+
+    const checkbox=
+      document.getElementById('order-bump-checkbox');
+
+    const withBump=
+      checkbox ? checkbox.checked : false;
+
+    const button=
+      document.getElementById('checkout-button');
+
+    const oldText=button?.textContent||'';
+
+    if(button){
+      button.disabled=true;
+      button.textContent='OUVERTURE DU PAIEMENT…';
+    }
+
+    try{
+      const response=await fetch(API,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          stripeAccountId:CONFIG.accountId,
+          type:'main',
+          withBump,
+          productTitle:CONFIG.productTitle,
+          bumpTitle:'Bonus complémentaire'
+        })
+      });
+
+      const data=await response.json().catch(()=>({}));
+
+      if(!response.ok||!data.url){
+        throw new Error(
+          data.error||
+          'Impossible d’ouvrir le paiement.'
+        );
+      }
+
+      window.location.href=data.url;
+
+    }catch(error){
+      alert(
+        error.message||
+        'Impossible d’ouvrir Stripe.'
+      );
+
+      if(button){
+        button.disabled=false;
+        button.textContent=oldText;
+      }
+    }
+
+    return false;
+  }
+
+  window.dropdigitalCheckout=dropdigitalCheckout;
+
+  function wire(){
+    const checkout=
+      document.getElementById('checkout');
+
+    let button=
+      document.getElementById('checkout-button');
+
+    const brokenLinks=[
+      ...document.querySelectorAll('a')
+    ].filter(a=>{
+      const href=a.getAttribute('href')||'';
+
+      return /STRIPE_CONNECT|STRIPE_LINK|STRIPE_LATER/i
+        .test(href);
+    });
+
+    brokenLinks.forEach(a=>{
+      a.setAttribute('href','#');
+      a.addEventListener(
+        'click',
+        dropdigitalCheckout
+      );
+    });
+
+    if(!button&&checkout){
+      const candidates=[
+        ...checkout.querySelectorAll(
+          'button,a,input[type="button"],input[type="submit"]'
+        )
+      ].filter(el=>
+        !el.closest('#order-bump')
+      );
+
+      button=candidates.find(el=>
+        /acheter|commander|accéder|obtenir|paiement|je veux|continuer|commencer/i
+          .test(el.textContent||el.value||'')
+      )||candidates[candidates.length-1];
+    }
+
+    if(button){
+      button.id='checkout-button';
+
+      if(button.tagName==='A'){
+        button.setAttribute('href','#');
+      }
+
+      button.addEventListener(
+        'click',
+        dropdigitalCheckout
+      );
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener(
+      'DOMContentLoaded',
+      wire
+    );
+  }else{
+    wire();
+  }
+})();
+<\/script>`;
+
+  if(/<\/body>/i.test(html)){
+    return String(html).replace(
+      /<\/body>/i,
+      injected+'</body>'
+    );
+  }
+
+  return String(html)+injected;
+}
+
 // ── SHOW RESULTS ───────────────────────────────────────
 function showResults(d, theme) {
   document.getElementById('loadingScreen').classList.remove('show');
@@ -6242,7 +6405,8 @@ function showResults(d, theme) {
 
   const stripe=S.a.stripe||'#STRIPE_LINK';
   const {prenom,marche,niche,sousniche,offre,revenus}=S.a;
-  window._sHTML=isPaidPlan()?(d.sales_html||''):buildSalesHTML(d,theme,stripe);
+  const rawSalesHTML=isPaidPlan()?(d.sales_html||''):buildSalesHTML(d,theme,stripe);
+  window._sHTML=wireConnectedStripeCheckout(rawSalesHTML,d);
   window._uHTML=d.upsell_html||'';
   window._ebookHTML=buildEbookHTML(d,theme);
   window._productTitle=d.titre_produit;

@@ -728,9 +728,33 @@ La zone d'achat doit porter exactement :
 
 id="checkout"
 
-Tous les CTA majeurs doivent pointer vers :
+Tous les CTA majeurs situés AVANT la zone de commande doivent pointer vers :
 
 #checkout
+
+Dans #checkout, le bouton FINAL de paiement doit porter exactement :
+
+id="checkout-button"
+
+Ce bouton ne doit contenir AUCUNE URL Stripe statique.
+
+INTERDIT :
+- href="STRIPE_CONNECT"
+- href="STRIPE_LATER"
+- href="#STRIPE_LINK"
+- lien Stripe inventé
+- Payment Link inventé
+
+Le bouton final doit être :
+
+type="button"
+
+et appeler exactement :
+
+onclick="dropdigitalCheckout(event)"
+
+La fonction dropdigitalCheckout est injectée automatiquement par la plateforme Dropdigital.
+Ne la recrée pas dans le HTML.
 
 Affiche clairement :
 
