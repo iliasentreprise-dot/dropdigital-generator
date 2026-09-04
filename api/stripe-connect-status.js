@@ -35,9 +35,11 @@ export default async function handler(req,res){
     if(!token)return send(res,401,{connected:false});
 
     const user=await getUser(token);
+
     if(!user)return send(res,401,{connected:false});
 
     const url=new URL(`${SUPABASE_URL}/rest/v1/member_profiles`);
+
     url.searchParams.set('user_id',`eq.${user.id}`);
     url.searchParams.set('select','stripe_account_id');
     url.searchParams.set('limit','1');
@@ -49,7 +51,9 @@ export default async function handler(req,res){
       }
     });
 
-    if(!r.ok)return send(res,200,{connected:false});
+    if(!r.ok){
+      return send(res,200,{connected:false});
+    }
 
     const [profile]=await r.json();
 
@@ -64,12 +68,14 @@ export default async function handler(req,res){
       profile.stripe_account_id
     );
 
+    const onboardingCompleted=Boolean(
+      account.details_submitted
+    );
+
     return send(res,200,{
-      connected:Boolean(
-        account.details_submitted &&
-        account.charges_enabled
-      ),
+      connected:onboardingCompleted,
       started:true,
+      onboardingCompleted,
       chargesEnabled:Boolean(account.charges_enabled),
       payoutsEnabled:Boolean(account.payouts_enabled)
     });
