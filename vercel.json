@@ -3,10 +3,26 @@
     {
       "source": "/",
       "destination": "/generator.html",
-      "permanent": false
+      "permanent": false,
+      "missing": [
+        {
+          "type": "host",
+          "value": "(?<tenant>.+)\\\\.dropdigital\\\\.fr"
+        }
+      ]
     }
   ],
   "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?<slug>[a-z0-9-]+)\\\\.dropdigital\\\\.fr"
+        }
+      ],
+      "destination": "/api/site?slug=:slug"
+    },
     {
       "source": "/p/:slug",
       "destination": "/api/site?slug=:slug"
@@ -14,6 +30,10 @@
     {
       "source": "/u/:slug",
       "destination": "/api/upsell-preview?slug=:slug"
+    },
+    {
+      "source": "/v",
+      "destination": "/preview.html"
     }
   ]
 }
