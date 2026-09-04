@@ -1,313 +1,134 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
-
-<title>Commande confirmée</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paiement confirmé</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-  margin:0;
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      #321052 0,
-      transparent 38%
-    ),
-    #08010d;
-
-  color:white;
-
-  font-family:
-    Arial,
-    sans-serif;
+margin:0;
+min-height:100vh;
+display:grid;
+place-items:center;
+background:#09010f;
+color:white;
+font-family:Arial,sans-serif
 }
-
 .card{
-  width:min(
-    520px,
-    calc(100% - 32px)
-  );
-
-  text-align:center;
-
-  padding:
-    54px
-    34px;
-
-  border:
-    1px solid
-    rgba(190,130,255,.3);
-
-  background:
-    rgba(17,5,27,.92);
-
-  box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.5);
+width:min(520px,calc(100% - 30px));
+padding:50px 30px;
+text-align:center;
+background:#13071d;
+border:1px solid #9b4dff55
 }
-
 .check{
-  width:70px;
-  height:70px;
-
-  margin:
-    0 auto
-    25px;
-
-  display:grid;
-  place-items:center;
-
-  border-radius:50%;
-
-  background:#54e889;
-
-  color:#07120a;
-
-  font-size:36px;
-  font-weight:900;
-
-  box-shadow:
-    0 0 40px
-    rgba(84,232,137,.28);
+width:70px;height:70px;
+display:grid;place-items:center;
+margin:0 auto 24px;
+border-radius:50%;
+background:#54e889;
+color:#07120a;
+font-size:35px;
+font-weight:900
 }
-
-h1{
-  margin:0 0 14px;
-
-  font-size:
-    clamp(
-      30px,
-      7vw,
-      43px
-    );
-
-  line-height:1;
+h1{margin:0 0 16px}
+p{color:#cfc3d7;line-height:1.6}
+a{
+display:inline-block;
+margin-top:18px;
+padding:15px 22px;
+background:#9b4dff;
+color:white;
+text-decoration:none;
+font-weight:bold;
+border-radius:8px
 }
-
-.product{
-  margin-bottom:20px;
-
-  color:#c89cff;
-
-  font-size:14px;
-
-  font-weight:700;
-
-  letter-spacing:.05em;
-}
-
-p{
-  max-width:420px;
-
-  margin:
-    0 auto
-    14px;
-
-  color:#d1c3db;
-
-  font-size:16px;
-
-  line-height:1.65;
-}
-
-.email{
-  color:white;
-  font-weight:700;
-}
-
-.small{
-  margin-top:25px;
-
-  color:#84748f;
-
-  font-size:12px;
-
-  line-height:1.5;
-}
-
-.loading{
-  color:#b99acb;
-}
-
-.error{
-  color:#ff879d;
-}
-
+.small{font-size:12px;color:#897793;margin-top:20px}
 </style>
-
 </head>
 
 <body>
 
-<div
-  class="card"
-  id="card"
->
-
-  <p class="loading">
-    Vérification du paiement…
-  </p>
-
+<div class="card" id="card">
+<p>Vérification du paiement…</p>
 </div>
 
 <script>
-
 (async()=>{
 
-  const card=
-    document.getElementById(
-      'card'
-    );
+const card=document.getElementById('card');
+const params=new URLSearchParams(location.search);
 
-  const params=
-    new URLSearchParams(
-      location.search
-    );
+const slug=params.get('slug')||'';
+const sessionId=params.get('session_id')||'';
 
-  const sessionId=
-    params.get(
-      'session_id'
-    )||'';
+try{
 
-  const account=
-    params.get('account')||'';
-
-  const slug=
-    params.get('slug')||'';
-
-  try{
-
-    const response=
-      await fetch(
-        '/api/checkout-status'+
-        '?session_id='+
-        encodeURIComponent(
-          sessionId
-        )+
-        '&account='+
-        encodeURIComponent(account)+
-        '&slug='+
-        encodeURIComponent(slug)
-      );
-
-    const data=
-      await response.json();
-
-    if(
-      !response.ok ||
-      !data.paid
-    ){
-      throw new Error();
+  const response=await fetch(
+    '/api/send-delivery',
+    {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        slug,
+        session_id:sessionId
+      })
     }
+  );
 
-    const product=
-      data.product||
-      'Votre produit';
+  const data=await response.json();
 
-    const email=
-      data.email||
-      '';
-
-    card.innerHTML=`
-
-      <div class="check">
-        ✓
-      </div>
-
-      <h1>
-        PAIEMENT CONFIRMÉ
-      </h1>
-
-      <div class="product">
-        ${escapeHtml(product)}
-      </div>
-
-      <p>
-        Merci pour votre commande.
-      </p>
-
-      <p>
-        Votre produit va arriver
-        dans votre boîte mail
-        dans quelques instants.
-      </p>
-
-      ${
-        email
-        ? `
-        <p class="email">
-          ${escapeHtml(email)}
-        </p>
-        `
-        : ''
-      }
-
-      <div class="small">
-        Pensez à vérifier
-        votre dossier spam
-        ou courrier indésirable.
-      </div>
-
-    `;
-
-  }catch(error){
-
-    card.innerHTML=`
-
-      <h1>
-        VÉRIFICATION EN COURS
-      </h1>
-
-      <p class="error">
-        Nous n'avons pas pu
-        confirmer automatiquement
-        le paiement.
-      </p>
-
-      <div class="small">
-        Si vous venez de payer,
-        rechargez cette page
-        dans quelques instants.
-      </div>
-
-    `;
-
+  if(!response.ok||!data.deliveryUrl){
+    throw new Error();
   }
 
-})();
+  card.innerHTML=`
+    <div class="check">✓</div>
 
-function escapeHtml(value){
+    <h1>PAIEMENT CONFIRMÉ</h1>
 
-  const element=
-    document.createElement(
-      'div'
-    );
+    <p>
+      Merci pour votre commande.
+    </p>
 
-  element.textContent=
-    String(value||'');
+    <p>
+      ${
+        data.emailSent
+        ? 'Votre accès vient également d’être envoyé par email.'
+        : 'Votre produit est prêt.'
+      }
+    </p>
 
-  return element.innerHTML;
+    <a href="${data.deliveryUrl}">
+      ACCÉDER À MON PRODUIT
+    </a>
+
+    <div class="small">
+      ${
+        data.email
+        ? 'Adresse : '+data.email
+        : 'Conservez cette page pour retrouver votre accès.'
+      }
+    </div>
+  `;
+
+}catch(error){
+
+  card.innerHTML=`
+    <h1>VÉRIFICATION EN COURS</h1>
+
+    <p>
+      Rechargez cette page dans quelques instants.
+    </p>
+  `;
 }
 
+})();
 </script>
 
 </body>
-
 </html>

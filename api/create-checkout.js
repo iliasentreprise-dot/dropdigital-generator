@@ -235,7 +235,11 @@ export default async function handler(req,res){
             type,
             slug,
             bump:withBump?'1':'0',
-            product:productTitle
+            product:productTitle,
+            parent_session_id:
+              type==='upsell'
+                ? parentSessionId
+                : ''
           }
         },
         {

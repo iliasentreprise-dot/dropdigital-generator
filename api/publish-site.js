@@ -1,3 +1,5 @@
+import {encryptProduct} from './_delivery-crypto.js';
+
 const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';
 
@@ -50,6 +52,7 @@ export default async function handler(req,res){
     const title=String(req.body?.title||'Produit').trim();
     const salesHtml=String(req.body?.salesHtml||'');
     const upsellHtml=String(req.body?.upsellHtml||'');
+    const ebookHtml=String(req.body?.ebookHtml||'');
     const generationId=String(req.body?.generationId||'');
 
     if(!/<html/i.test(salesHtml)){
@@ -113,6 +116,10 @@ export default async function handler(req,res){
       title,
       sales_html:salesHtml,
       upsell_html:upsellHtml||null,
+      ebook_ciphertext:
+        ebookHtml
+          ? encryptProduct(ebookHtml)
+          : null,
       stripe_account_id:profile.stripe_account_id,
       is_published:true,
       updated_at:new Date().toISOString()
