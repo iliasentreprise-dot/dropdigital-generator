@@ -1717,6 +1717,626 @@ input{
 
 </style>
 
+
+<style id="dd-stripe-premium-v1">
+
+/* ─────────────────────────────────────────
+   STRIPE — PREMIUM / APPLE-LIKE
+───────────────────────────────────────── */
+
+#stripeConnectionState{
+  margin-top:22px;
+}
+
+#stripeConnectionState > div{
+  border-radius:22px !important;
+}
+
+/* CONNECTÉ */
+#stripeConnectionState .dd-stripe-connected-row{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 48px 48px !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+#stripeConnectionState .dd-stripe-status{
+  min-height:58px !important;
+  padding:0 20px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  gap:11px !important;
+
+  border:1px solid rgba(92,255,164,.18) !important;
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(71,255,151,.075),
+      rgba(71,255,151,.025)
+    ) !important;
+
+  color:#80f6b3 !important;
+
+  font-family:'DM Sans',sans-serif !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 12px 35px rgba(28,190,100,.035) !important;
+}
+
+.dd-stripe-dot{
+  flex:0 0 auto;
+  width:8px;
+  height:8px;
+
+  border-radius:999px;
+
+  background:#62f09d;
+
+  box-shadow:
+    0 0 0 4px rgba(98,240,157,.08),
+    0 0 18px rgba(98,240,157,.62);
+
+  animation:ddStripePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes ddStripePulse{
+  0%,100%{
+    transform:scale(.88);
+    opacity:.72;
+  }
+
+  50%{
+    transform:scale(1.08);
+    opacity:1;
+  }
+}
+
+/* MODIFIER / SUPPRIMER */
+#stripeConnectionState button[title*="Changer"],
+#stripeConnectionState button[title*="Déconnecter"]{
+  width:48px !important;
+  height:48px !important;
+
+  padding:0 !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  border-radius:50% !important;
+
+  font-size:16px !important;
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  transition:
+    transform .28s cubic-bezier(.2,.85,.25,1.25),
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease !important;
+}
+
+#stripeConnectionState button[title*="Changer"]{
+  border:1px solid rgba(183,105,255,.20) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(174,81,255,.12),
+      rgba(174,81,255,.045)
+    ) !important;
+
+  color:#d6b6f4 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 8px 28px rgba(123,44,200,.05) !important;
+}
+
+#stripeConnectionState button[title*="Changer"]:hover{
+  transform:translateY(-2px) scale(1.045);
+
+  border-color:rgba(196,123,255,.42) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(183,90,255,.22),
+      rgba(155,62,235,.10)
+    ) !important;
+
+  box-shadow:
+    0 10px 30px rgba(139,55,215,.15) !important;
+}
+
+#stripeConnectionState button[title*="Déconnecter"]{
+  border:1px solid rgba(255,104,140,.16) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,87,126,.07),
+      rgba(255,87,126,.025)
+    ) !important;
+
+  color:#ff829d !important;
+}
+
+#stripeConnectionState button[title*="Déconnecter"]:hover{
+  transform:translateY(-2px) scale(1.045);
+
+  border-color:rgba(255,105,140,.38) !important;
+
+  background:
+    rgba(255,79,119,.11) !important;
+
+  box-shadow:
+    0 10px 30px rgba(255,61,105,.09) !important;
+}
+
+/* CARTE NON CONNECTÉE */
+#stripeConnectionState .dd-stripe-connect-card{
+  padding:25px !important;
+
+  border:1px solid rgba(181,105,255,.14) !important;
+  border-radius:24px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(153,56,242,.12),
+      transparent 50%
+    ),
+    rgba(12,5,18,.56) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 24px 60px rgba(0,0,0,.14) !important;
+}
+
+/* CONNECTER STRIPE */
+#stripeConnectButton{
+  min-height:56px !important;
+
+  border:1px solid rgba(201,133,255,.30) !important;
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7d27f1,
+      #a945ff 52%,
+      #c35eff
+    ) !important;
+
+  box-shadow:
+    0 12px 35px rgba(142,43,244,.22),
+    inset 0 1px 0 rgba(255,255,255,.22) !important;
+
+  clip-path:none !important;
+
+  font-family:'DM Sans',sans-serif !important;
+  font-size:12px !important;
+  font-weight:850 !important;
+  letter-spacing:.08em !important;
+
+  transition:
+    transform .3s cubic-bezier(.18,.9,.28,1.25),
+    box-shadow .3s ease !important;
+}
+
+#stripeConnectButton:hover{
+  transform:translateY(-2px) scale(1.008) !important;
+
+  box-shadow:
+    0 16px 42px rgba(154,57,255,.32),
+    inset 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+/* PASSER POUR L'INSTANT */
+.dd-stripe-skip{
+  min-height:48px !important;
+
+  border:1px solid rgba(188,122,242,.13) !important;
+  border-radius:999px !important;
+
+  background:rgba(255,255,255,.025) !important;
+
+  color:#a795b3 !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+
+  clip-path:none !important;
+
+  font-family:'DM Sans',sans-serif !important;
+  font-size:11px !important;
+  font-weight:750 !important;
+  letter-spacing:.07em !important;
+
+  transition:
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease !important;
+}
+
+.dd-stripe-skip:hover{
+  color:#d9c7e9 !important;
+  background:rgba(255,255,255,.045) !important;
+  border-color:rgba(192,127,249,.24) !important;
+  transform:translateY(-1px) !important;
+}
+
+/* CTA GÉNÉRER */
+#stripeGenerateButton{
+  min-height:64px !important;
+
+  margin-top:24px !important;
+
+  border:0 !important;
+  border-radius:22px !important;
+
+  clip-path:none !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #8327ff 0%,
+      #a43bff 43%,
+      #c75cff 100%
+    ) !important;
+
+  color:white !important;
+
+  box-shadow:
+    0 16px 46px rgba(155,52,255,.25),
+    inset 0 1px 0 rgba(255,255,255,.25) !important;
+
+  font-family:'Bebas Neue',sans-serif !important;
+  letter-spacing:3px !important;
+
+  transform:none !important;
+
+  transition:
+    transform .32s cubic-bezier(.18,.9,.3,1.32),
+    box-shadow .32s ease,
+    filter .32s ease !important;
+}
+
+#stripeGenerateButton:hover{
+  transform:translateY(-3px) scale(1.006) !important;
+
+  filter:brightness(1.05);
+
+  box-shadow:
+    0 21px 55px rgba(160,58,255,.34),
+    inset 0 1px 0 rgba(255,255,255,.3) !important;
+}
+
+
+/* ─────────────────────────────────────────
+   MODALE STRIPE
+───────────────────────────────────────── */
+
+.dd-stripe-modal{
+  position:fixed;
+  inset:0;
+
+  z-index:999999;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(116,42,190,.13),
+      transparent 35%
+    ),
+    rgba(3,1,7,.76);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  transition:
+    opacity .28s ease,
+    visibility .28s ease;
+}
+
+.dd-stripe-modal.open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.dd-stripe-modal-card{
+  width:min(460px,100%);
+
+  padding:32px;
+
+  border:1px solid rgba(194,128,255,.16);
+  border-radius:28px;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(159,65,246,.17),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(23,10,32,.985),
+      rgba(9,4,14,.99)
+    );
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.60),
+    0 0 80px rgba(135,50,225,.08),
+    inset 0 1px 0 rgba(255,255,255,.035);
+
+  transform:
+    translateY(16px)
+    scale(.955);
+
+  opacity:0;
+
+  transition:
+    transform .42s cubic-bezier(.16,.9,.25,1.15),
+    opacity .25s ease;
+}
+
+.dd-stripe-modal.open .dd-stripe-modal-card{
+  transform:
+    translateY(0)
+    scale(1);
+
+  opacity:1;
+}
+
+.dd-stripe-modal-icon{
+  width:54px;
+  height:54px;
+
+  display:grid;
+  place-items:center;
+
+  margin-bottom:22px;
+
+  border:1px solid rgba(188,111,255,.15);
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(171,76,255,.14),
+      rgba(171,76,255,.04)
+    );
+
+  font-size:21px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.dd-stripe-modal.danger .dd-stripe-modal-icon{
+  border-color:rgba(255,91,126,.16);
+  background:rgba(255,73,112,.055);
+}
+
+.dd-stripe-modal-kicker{
+  color:#b66aff;
+
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.20em;
+  text-transform:uppercase;
+
+  margin-bottom:10px;
+}
+
+.dd-stripe-modal-title{
+  margin:0 0 11px;
+
+  color:#fff;
+
+  font-family:'Bebas Neue',sans-serif;
+  font-size:34px;
+  font-weight:400;
+  letter-spacing:.02em;
+  line-height:1;
+}
+
+.dd-stripe-modal-copy{
+  margin:0;
+
+  max-width:390px;
+
+  color:#9d8faa;
+
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  line-height:1.65;
+}
+
+.dd-stripe-modal-error{
+  display:none;
+
+  margin-top:16px;
+  padding:12px 14px;
+
+  border:1px solid rgba(255,99,130,.16);
+  border-radius:14px;
+
+  background:rgba(255,75,110,.05);
+
+  color:#ff9aae;
+
+  font-size:12px;
+  line-height:1.5;
+}
+
+.dd-stripe-modal-actions{
+  display:flex;
+  gap:10px;
+
+  margin-top:28px;
+}
+
+.dd-stripe-modal-btn{
+  min-height:50px;
+
+  padding:0 20px;
+
+  border-radius:16px;
+
+  font-family:'DM Sans',sans-serif;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.07em;
+
+  cursor:pointer;
+
+  transition:
+    transform .22s cubic-bezier(.2,.9,.3,1.2),
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.dd-stripe-modal-cancel{
+  flex:1;
+
+  border:1px solid rgba(190,135,235,.12);
+
+  background:rgba(255,255,255,.028);
+
+  color:#ad9bb9;
+}
+
+.dd-stripe-modal-cancel:hover{
+  transform:translateY(-1px);
+
+  background:rgba(255,255,255,.05);
+
+  color:#d5c3df;
+}
+
+.dd-stripe-modal-confirm{
+  flex:1.35;
+
+  border:1px solid rgba(190,112,255,.22);
+
+  background:
+    linear-gradient(
+      135deg,
+      #7e27ed,
+      #a541fa
+    );
+
+  color:white;
+
+  box-shadow:
+    0 10px 30px rgba(147,49,234,.18);
+}
+
+.dd-stripe-modal-confirm:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 14px 36px rgba(154,52,244,.26);
+}
+
+.dd-stripe-modal.danger .dd-stripe-modal-confirm{
+  border-color:rgba(255,107,137,.22);
+
+  background:
+    linear-gradient(
+      135deg,
+      #bc3154,
+      #e84c70
+    );
+
+  box-shadow:
+    0 10px 30px rgba(225,55,94,.14);
+}
+
+.dd-stripe-modal.danger .dd-stripe-modal-confirm:hover{
+  box-shadow:
+    0 14px 38px rgba(225,55,94,.23);
+}
+
+.dd-stripe-modal-btn:disabled{
+  opacity:.5;
+  cursor:wait;
+  transform:none !important;
+}
+
+
+/* MOBILE */
+@media(max-width:650px){
+
+  #stripeConnectionState .dd-stripe-connected-row{
+    grid-template-columns:minmax(0,1fr) 44px 44px !important;
+  }
+
+  #stripeConnectionState button[title*="Changer"],
+  #stripeConnectionState button[title*="Déconnecter"]{
+    width:44px !important;
+    height:44px !important;
+  }
+
+  #stripeConnectionState .dd-stripe-status{
+    min-height:54px !important;
+    padding:0 14px !important;
+    font-size:10px !important;
+  }
+
+  #stripeGenerateButton{
+    min-height:58px !important;
+    border-radius:19px !important;
+    letter-spacing:2px !important;
+  }
+
+  .dd-stripe-modal{
+    align-items:flex-end;
+    padding:12px;
+  }
+
+  .dd-stripe-modal-card{
+    width:100%;
+
+    padding:28px 22px 22px;
+
+    border-radius:26px;
+  }
+
+  .dd-stripe-modal-actions{
+    flex-direction:column-reverse;
+  }
+
+  .dd-stripe-modal-btn{
+    width:100%;
+  }
+}
+
+</style>
+
 </head>
 <body>
 
@@ -9989,6 +10609,364 @@ initMemberAccess();
   }else{
     init();
   }
+})();
+</script>
+
+
+<div
+  class="dd-stripe-modal"
+  id="ddStripeModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="ddStripeModalTitle"
+>
+  <div class="dd-stripe-modal-card">
+
+    <div class="dd-stripe-modal-icon" id="ddStripeModalIcon">
+      ✎
+    </div>
+
+    <div class="dd-stripe-modal-kicker">
+      STRIPE · DROPDIGITAL
+    </div>
+
+    <h3
+      class="dd-stripe-modal-title"
+      id="ddStripeModalTitle"
+    >
+      Modifier Stripe
+    </h3>
+
+    <p
+      class="dd-stripe-modal-copy"
+      id="ddStripeModalCopy"
+    ></p>
+
+    <div
+      class="dd-stripe-modal-error"
+      id="ddStripeModalError"
+    ></div>
+
+    <div class="dd-stripe-modal-actions">
+
+      <button
+        type="button"
+        class="dd-stripe-modal-btn dd-stripe-modal-cancel"
+        onclick="closeStripeActionModal()"
+      >
+        ANNULER
+      </button>
+
+      <button
+        type="button"
+        class="dd-stripe-modal-btn dd-stripe-modal-confirm"
+        id="ddStripeModalConfirm"
+      >
+        CONTINUER
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script id="dd-stripe-premium-js">
+(function(){
+
+  let stripeModalAction=null;
+
+  function decorateStripeStep(){
+
+    const state=document.getElementById('stripeConnectionState');
+
+    if(state){
+
+      const root=state.firstElementChild;
+
+      if(root){
+
+        const changeButton=
+          root.querySelector('button[title*="Changer"]');
+
+        const disconnectButton=
+          root.querySelector('button[title*="Déconnecter"]');
+
+        if(changeButton && disconnectButton){
+
+          root.classList.add('dd-stripe-connected-row');
+
+          const status=root.children[0];
+
+          if(status){
+
+            status.classList.add('dd-stripe-status');
+
+            if(!status.querySelector('.dd-stripe-dot')){
+
+              status.insertAdjacentHTML(
+                'afterbegin',
+                '<span class="dd-stripe-dot"></span>'
+              );
+
+            }
+
+          }
+
+        }else{
+
+          root.classList.add('dd-stripe-connect-card');
+
+        }
+
+      }
+
+    }
+
+
+    const connectButton=
+      document.getElementById('stripeConnectButton');
+
+    if(connectButton){
+      connectButton.type='button';
+    }
+
+
+    const generateButton=
+      document.getElementById('stripeGenerateButton');
+
+    if(generateButton){
+      generateButton.classList.add('dd-stripe-generate');
+    }
+
+
+    document
+      .querySelectorAll('button')
+      .forEach(button=>{
+
+        const text=
+          (button.textContent||'')
+            .replace(/\s+/g,' ')
+            .trim();
+
+        if(/PASSER POUR L[’']INSTANT/i.test(text)){
+          button.classList.add('dd-stripe-skip');
+        }
+
+      });
+
+  }
+
+
+  window.openStripeActionModal=function(action){
+
+    stripeModalAction=action;
+
+    const modal=
+      document.getElementById('ddStripeModal');
+
+    const icon=
+      document.getElementById('ddStripeModalIcon');
+
+    const title=
+      document.getElementById('ddStripeModalTitle');
+
+    const copy=
+      document.getElementById('ddStripeModalCopy');
+
+    const confirm=
+      document.getElementById('ddStripeModalConfirm');
+
+    const error=
+      document.getElementById('ddStripeModalError');
+
+    error.style.display='none';
+    error.textContent='';
+
+    modal.classList.remove('danger');
+
+
+    if(action==='change'){
+
+      icon.textContent='✎';
+
+      title.textContent=
+        'Changer de compte Stripe';
+
+      copy.textContent=
+        'DropDigital va déconnecter le compte actuel puis ouvrir Stripe pour connecter le nouveau. Tes créations existantes ne seront pas supprimées.';
+
+      confirm.textContent=
+        'RECONNECTER STRIPE';
+
+    }else{
+
+      modal.classList.add('danger');
+
+      icon.textContent='⌫';
+
+      title.textContent=
+        'Déconnecter Stripe ?';
+
+      copy.textContent=
+        'DropDigital ne pourra plus créer automatiquement les paiements de tes futurs produits avec ce compte. Tu pourras le reconnecter quand tu veux.';
+
+      confirm.textContent=
+        'DÉCONNECTER';
+
+    }
+
+
+    confirm.onclick=
+      confirmStripeModalAction;
+
+    modal.classList.add('open');
+
+    document.body.style.overflow='hidden';
+
+  };
+
+
+  window.closeStripeActionModal=function(){
+
+    const modal=
+      document.getElementById('ddStripeModal');
+
+    modal.classList.remove('open');
+
+    document.body.style.overflow='';
+
+    stripeModalAction=null;
+
+  };
+
+
+  async function confirmStripeModalAction(){
+
+    const confirm=
+      document.getElementById('ddStripeModalConfirm');
+
+    const error=
+      document.getElementById('ddStripeModalError');
+
+    const action=stripeModalAction;
+
+    if(!action)return;
+
+    const oldLabel=confirm.textContent;
+
+    confirm.disabled=true;
+
+    confirm.textContent=
+      action==='change'
+        ? 'PRÉPARATION…'
+        : 'DÉCONNEXION…';
+
+    error.style.display='none';
+
+
+    try{
+
+      if(action==='change'){
+
+        await clearStripeConnection();
+
+        await refreshStripeStep();
+
+        closeStripeActionModal();
+
+        await connectStripeAccount();
+
+      }else{
+
+        await clearStripeConnection();
+
+        await refreshStripeStep();
+
+        closeStripeActionModal();
+
+      }
+
+    }catch(err){
+
+      console.error(
+        '[DropDigital] Stripe modal error',
+        err
+      );
+
+      error.textContent=
+        err?.message ||
+        'Une erreur est survenue. Réessaie dans quelques secondes.';
+
+      error.style.display='block';
+
+      confirm.disabled=false;
+      confirm.textContent=oldLabel;
+
+    }
+
+  }
+
+
+  /* Remplace les anciens confirm() */
+  window.changeStripeAccount=function(){
+    openStripeActionModal('change');
+  };
+
+  window.disconnectStripeAccount=function(){
+    openStripeActionModal('disconnect');
+  };
+
+
+  const modal=
+    document.getElementById('ddStripeModal');
+
+  modal?.addEventListener(
+    'click',
+    event=>{
+      if(event.target===modal){
+        closeStripeActionModal();
+      }
+    }
+  );
+
+
+  document.addEventListener(
+    'keydown',
+    event=>{
+      if(
+        event.key==='Escape' &&
+        modal?.classList.contains('open')
+      ){
+        closeStripeActionModal();
+      }
+    }
+  );
+
+
+  const observer=
+    new MutationObserver(decorateStripeStep);
+
+  window.addEventListener(
+    'DOMContentLoaded',
+    ()=>{
+      observer.observe(
+        document.body,
+        {
+          childList:true,
+          subtree:true
+        }
+      );
+
+      decorateStripeStep();
+    }
+  );
+
+
+  setTimeout(decorateStripeStep,100);
+  setTimeout(decorateStripeStep,500);
+  setTimeout(decorateStripeStep,1200);
+
 })();
 </script>
 
