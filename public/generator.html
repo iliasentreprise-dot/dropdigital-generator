@@ -2278,6 +2278,129 @@ button{
 
 </style>
 
+
+<style id="dd-auth-scroll-fix">
+
+/* ═══════════════════════════════════════════════
+   AUTH MODAL — SCROLL + BACKDROP FIX
+═══════════════════════════════════════════════ */
+
+/*
+  Plus de contenu du site visible/flouté derrière.
+  On garde seulement un fond noir/violet premium.
+*/
+#emailGate{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100dvh !important;
+
+  padding:22px 16px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(116,39,190,.12),
+      transparent 36%
+    ),
+    #050208 !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  overscroll-behavior:none !important;
+}
+
+/*
+  C'est maintenant LA CARTE qui scroll,
+  pas le fond du site.
+*/
+#emailGate .modal-card{
+  position:relative !important;
+
+  width:min(620px,100%) !important;
+
+  max-height:calc(100dvh - 44px) !important;
+
+  margin:0 !important;
+
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+
+  overscroll-behavior:contain !important;
+  -webkit-overflow-scrolling:touch !important;
+
+  scrollbar-width:thin;
+  scrollbar-color:rgba(171,84,255,.25) transparent;
+}
+
+/* scrollbar Safari / Chrome */
+#emailGate .modal-card::-webkit-scrollbar{
+  width:5px;
+}
+
+#emailGate .modal-card::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+#emailGate .modal-card::-webkit-scrollbar-thumb{
+  background:rgba(177,91,255,.22);
+  border-radius:999px;
+}
+
+/*
+  Empêche visuellement le bas du CTA
+  d'être collé/coupé.
+*/
+#emailGate .privacy-note{
+  margin-bottom:2px !important;
+}
+
+/* Le scroll reste dans la carte même sur les inputs */
+#emailGate input,
+#emailGate button,
+#emailGate label{
+  overscroll-behavior:contain;
+}
+
+/* Mobile */
+@media(max-width:650px){
+
+  #emailGate{
+    padding:10px !important;
+    align-items:center !important;
+  }
+
+  #emailGate .modal-card{
+    width:100% !important;
+
+    max-height:calc(100dvh - 20px) !important;
+
+    border-radius:22px !important;
+
+    padding-bottom:28px !important;
+  }
+
+}
+
+/*
+  Évite le scroll du body quand l'auth est affichée.
+  Safari moderne supporte :has().
+*/
+body:has(#emailGate.show){
+  overflow:hidden !important;
+  height:100dvh !important;
+}
+
+</style>
+
 </head>
 <body>
 
