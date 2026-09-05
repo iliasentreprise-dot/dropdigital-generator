@@ -3461,9 +3461,67 @@ async function syncMemberData(){
 
   setHistory(mergedHistory);
 }
-async function initializeSignedInMember(user,firstName=''){currentMember=user;try{localStorage.setItem(STORAGE_KEYS.email,user.email||'');}catch(_){}
-  if(firstName)await dbClient.from('member_profiles').update({first_name:firstName,updated_at:new Date().toISOString()}).eq('user_id',user.id);
-  await syncMemberData();if(String(user.email||'').toLowerCase()==='ilias.entreprise@gmail.com')saveProfile({plan:'pro',subscriptionStatus:'active',adminUnlimited:true});document.getElementById('emailGate').classList.remove('show');updateMemberToolbar();if(!resumeStripeStepIfNeeded())restart();
+async function initializeSignedInMember(user,firstName=''){
+  currentMember=user;
+
+  try{
+    localStorage.setItem(STORAGE_KEYS.email,user.email||'');
+  }catch(_){}
+
+  console.log('[DropDigital] ouverture espace membre',user.email);
+
+  /* Mise à jour prénom NON BLOQUANTE */
+  if(firstName){
+    dbClient
+      .from('member_profiles')
+      .update({
+        first_name:firstName,
+        updated_at:new Date().toISOString()
+      })
+      .eq('user_id',user.id)
+      .then(({error})=>{
+        if(error)console.warn('[profile] synchro prénom ignorée',error);
+      });
+  }
+
+  /* Admin */
+  if(String(user.email||'').toLowerCase()==='ilias.entreprise@gmail.com'){
+    saveProfile({
+      plan:'pro',
+      subscriptionStatus:'active',
+      adminUnlimited:true
+    });
+  }
+
+  /* IMPORTANT :
+     on ouvre l'application AVANT toute synchro distante */
+  const gate=document.getElementById('emailGate');
+
+  if(gate){
+    gate.classList.remove('show');
+  }
+
+  updateMemberToolbar();
+
+  console.log('[DropDigital] auth gate fermé');
+
+  /* Reprise Stripe ou lancement normal */
+  if(!resumeStripeStepIfNeeded()){
+    restart();
+  }
+
+  /* Sync Supabase en arrière-plan :
+     une erreur RLS ne peut plus bloquer la connexion */
+  syncMemberData()
+    .then(()=>{
+      console.log('[DropDigital] synchro membre terminée');
+    })
+    .catch(error=>{
+      console.warn(
+        '[DropDigital] synchro membre ignorée — session conservée',
+        error
+      );
+    });
 }
 
 function resumeStripeStepIfNeeded(){
