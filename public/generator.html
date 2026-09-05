@@ -8806,6 +8806,62 @@ h1,h2,h3{font-family:${headingFont}}
 }
 
 </style>
+
+<style id="dd-auth-pending-compact-v3">
+/* dd-auth-pending-compact-v3 */
+
+#emailGateForm.is-pending{
+  padding:26px 46px 24px !important;
+  min-height:0 !important;
+  height:auto !important;
+}
+
+/* On compacte tous les espacements de l'écran OTP */
+#emailGateForm.is-pending .modal-eyebrow{
+  margin-top:0 !important;
+  margin-bottom:10px !important;
+}
+
+#emailGateForm.is-pending #emailGateTitle{
+  margin-top:0 !important;
+  margin-bottom:12px !important;
+  line-height:.96 !important;
+}
+
+#emailGateForm.is-pending #authModalCopy{
+  margin-top:0 !important;
+  margin-bottom:18px !important;
+}
+
+#emailGateForm.is-pending #authMessage{
+  margin-top:0 !important;
+  margin-bottom:14px !important;
+  padding:11px 16px !important;
+}
+
+#emailGateForm.is-pending #authPendingActions{
+  margin-top:12px !important;
+}
+
+#emailGateForm.is-pending .privacy-note{
+  margin-top:16px !important;
+  padding-top:12px !important;
+}
+
+/* Logo conservé plus compact */
+#emailGateForm.is-pending img[src*="dg-app-logo"]{
+  width:66px !important;
+  height:66px !important;
+  margin-bottom:14px !important;
+}
+
+@media(max-width:600px){
+  #emailGateForm.is-pending{
+    padding:24px 20px 22px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <main class="ebook-document">
@@ -10454,5 +10510,54 @@ function previewHTML(html){
 init();
 initMemberAccess();
 </script>
+
+<script>
+(function(){
+  function dedupePendingDGLogo(){
+    const form=document.getElementById('emailGateForm');
+    if(!form || !form.classList.contains('is-pending')) return;
+
+    const logos=[...form.querySelectorAll('img[src*="dg-app-logo"]')];
+
+    if(logos.length <= 1) return;
+
+    logos.slice(0,-1).forEach(img=>{
+      const parent=img.parentElement;
+
+      if(
+        parent &&
+        parent !== form &&
+        parent.children.length === 1 &&
+        !parent.textContent.trim()
+      ){
+        parent.style.display='none';
+      }else{
+        img.style.display='none';
+      }
+    });
+  }
+
+  const observer=new MutationObserver(dedupePendingDGLogo);
+
+  window.addEventListener('DOMContentLoaded',()=>{
+    const form=document.getElementById('emailGateForm');
+
+    if(form){
+      observer.observe(form,{
+        attributes:true,
+        attributeFilter:['class'],
+        childList:true,
+        subtree:true
+      });
+    }
+
+    dedupePendingDGLogo();
+  });
+
+  setTimeout(dedupePendingDGLogo,100);
+  setTimeout(dedupePendingDGLogo,500);
+})();
+</script>
+
 </body>
 </html>
