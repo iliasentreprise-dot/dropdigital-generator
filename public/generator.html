@@ -2825,38 +2825,217 @@ function setAuthMode(mode){
 }
 async function submitMemberAuth(event){
   event.preventDefault();
-  const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),password=document.getElementById('memberPasswordInput').value,errorEl=document.getElementById('emailGateError'),button=document.getElementById('authSubmitButton');
-  const firstName=document.getElementById('authFirstName').value.trim();
+
+  const emailInput=document.getElementById('memberEmailInput');
+  const passwordInput=document.getElementById('memberPasswordInput');
+  const firstNameInput=document.getElementById('authFirstName');
+  const consentInput=document.getElementById('memberConsent');
+
+  const errorEl=document.getElementById('emailGateError');
+  const button=document.getElementById('authSubmitButton');
+
+  const email=(emailInput?.value||'').trim().toLowerCase();
+  const password=passwordInput?.value||'';
+  const firstName=(firstNameInput?.value||'').trim();
+
+  errorEl.style.display='none';
+  errorEl.textContent='';
+
+  /* ── PASSWORD RECOVERY ── */
   if(authMode==='recovery'){
-    if(password.length<8){errorEl.textContent='Le nouveau mot de passe doit contenir au moins 8 caractères.';errorEl.style.display='block';return;}
-    button.disabled=true;button.textContent='ENREGISTREMENT…';const {data,error}=await dbClient.auth.updateUser({password});button.disabled=false;
-    if(error){errorEl.textContent='Le lien a expiré ou le mot de passe est invalide. Demande un nouveau lien.';errorEl.style.display='block';return;}
-    passwordRecoveryRequested=false;history.replaceState({},document.title,location.pathname);await initializeSignedInMember(data.user);return;
-  }
-  if(!isValidEmail(email)||password.length<8||(authMode==='signup'&&(!firstName||!document.getElementById('memberConsent').checked))){errorEl.textContent='Vérifie ton prénom, ton e-mail, ton mot de passe et ton consentement.';errorEl.style.display='block';return;}
-  errorEl.style.display='none';button.disabled=true;button.textContent='CONNEXION EN COURS…';
-  if(authMode==='signup'){
+    if(password.length<8){
+      errorEl.textContent='Le nouveau mot de passe doit contenir au moins 8 caractères.';
+      errorEl.style.display='block';
+      return;
+    }
+
+    button.disabled=true;
+    button.textContent='ENREGISTREMENT…';
+
     try{
-      localStorage.setItem('dropdigital_pending_signup',JSON.stringify({
-        firstName,
-        email,
-        password,
-        expiresAt:Date.now()+10*60*1000
-      }));
-    }catch(_){}
+      const {data,error}=await dbClient.auth.updateUser({password});
+
+      if(error) throw error;
+
+      passwordRecoveryRequested=false;
+      history.replaceState({},document.title,location.pathname);
+
+      await initializeSignedInMember(data.user);
+    }catch(error){
+      console.error('DropDigital recovery error:',error);
+      errorEl.textContent=error?.message||'Impossible de modifier le mot de passe.';
+      errorEl.style.display='block';
+    }finally{
+      button.disabled=false;
+      button.textContent='ENREGISTRER MON NOUVEAU MOT DE PASSE →';
+    }
+
+    return;
   }
 
-  const result=authMode==='signup'
-    ?await dbClient.auth.signUp({email,password,options:{data:{first_name:firstName},emailRedirectTo:location.protocol==='https:'||location.protocol==='http:'?location.href:undefined}})
-    :await dbClient.auth.signInWithPassword({email,password});
-  button.disabled=false;setAuthMode(authMode);
-  if(result.error){errorEl.textContent=result.error.message==='Invalid login credentials'?'E-mail ou mot de passe incorrect. Utilise « Mot de passe oublié » si nécessaire.':result.error.message;errorEl.style.display='block';return;}
-  if(authMode==='signup'&&result.data.user&&Array.isArray(result.data.user.identities)&&result.data.user.identities.length===0){
-    setAuthMode('login');document.getElementById('memberEmailInput').value=email;errorEl.textContent='Un compte existe déjà avec cet e-mail. Connecte-toi ou clique sur « Mot de passe oublié ».';errorEl.style.display='block';return;
+
+  /* ── BASIC VALIDATION ── */
+  if(!isValidEmail(email)){
+    errorEl.textContent='Entre une adresse e-mail valide.';
+    errorEl.style.display='block';
+    return;
   }
-  if(!result.data.session){setAuthMode('pending');const message=document.getElementById('authMessage');message.textContent='Compte créé ! Ouvre l’e-mail DropDigital : clique sur le bouton ou entre ici le code reçu. Tu peux donc ouvrir le mail sur ton téléphone et valider ton PC avec le code.';message.style.display='block';return;}
-  await initializeSignedInMember(result.data.user,authMode==='signup'?firstName:'');
+
+  if(password.length<8){
+    errorEl.textContent='Ton mot de passe doit contenir au moins 8 caractères.';
+    errorEl.style.display='block';
+    return;
+  }
+
+  if(authMode==='signup'){
+    if(!firstName){
+      errorEl.textContent='Entre ton prénom.';
+      errorEl.style.display='block';
+      return;
+    }
+
+    if(!consentInput?.checked){
+      errorEl.textContent='Accepte la création de ton compte pour continuer.';
+      errorEl.style.display='block';
+      return;
+    }
+  }
+
+
+  /* ── SIGNUP ── */
+  if(authMode==='signup'){
+    button.disabled=true;
+    button.textContent='CRÉATION DU COMPTE…';
+
+    try{
+      try{
+        localStorage.setItem(
+          'dropdigital_pending_signup',
+          JSON.stringify({
+            firstName,
+            email,
+            password,
+            expiresAt:Date.now()+10*60*1000
+          })
+        );
+      }catch(_){}
+
+      const redirectTo=
+        location.protocol==='https:' || location.protocol==='http:'
+          ? location.origin + location.pathname
+          : undefined;
+
+      const {data,error}=await dbClient.auth.signUp({
+        email,
+        password,
+        options:{
+          data:{first_name:firstName},
+          emailRedirectTo:redirectTo
+        }
+      });
+
+      if(error) throw error;
+
+      if(
+        data?.user &&
+        Array.isArray(data.user.identities) &&
+        data.user.identities.length===0
+      ){
+        setAuthMode('login');
+        emailInput.value=email;
+
+        errorEl.textContent=
+          'Un compte existe déjà avec cet e-mail. Connecte-toi avec ton mot de passe.';
+        errorEl.style.display='block';
+        return;
+      }
+
+      if(!data?.session){
+        setAuthMode('pending');
+
+        const message=document.getElementById('authMessage');
+        message.textContent=
+          'Compte créé ! Ouvre l’e-mail DropDigital et entre le code reçu.';
+        message.style.display='block';
+
+        return;
+      }
+
+      await initializeSignedInMember(data.user);
+
+    }catch(error){
+      console.error('DropDigital signup error:',error);
+
+      errorEl.textContent=
+        error?.message ||
+        'Impossible de créer le compte pour le moment.';
+
+      errorEl.style.display='block';
+
+    }finally{
+      button.disabled=false;
+
+      if(authMode==='signup'){
+        button.textContent='CRÉER MON COMPTE →';
+      }
+    }
+
+    return;
+  }
+
+
+  /* ── LOGIN ── */
+  button.disabled=true;
+  button.textContent='CONNEXION…';
+
+  try{
+    console.log('[DropDigital] tentative connexion',email);
+
+    const {data,error}=await dbClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if(error){
+      throw error;
+    }
+
+    if(!data?.session || !data?.user){
+      throw new Error('Aucune session Supabase reçue.');
+    }
+
+    console.log('[DropDigital] connexion réussie',data.user.id);
+
+    await initializeSignedInMember(data.user);
+
+  }catch(error){
+    console.error('DropDigital login error:',error);
+
+    let message=error?.message||'Impossible de se connecter.';
+
+    if(
+      message==='Invalid login credentials' ||
+      /invalid login credentials/i.test(message)
+    ){
+      message='E-mail ou mot de passe incorrect.';
+    }
+
+    if(/email not confirmed/i.test(message)){
+      message='Ton adresse e-mail doit encore être confirmée.';
+    }
+
+    errorEl.textContent=message;
+    errorEl.style.display='block';
+
+  }finally{
+    button.disabled=false;
+
+    if(authMode==='login'){
+      button.textContent='ME CONNECTER →';
+    }
+  }
 }
+
 async function sendPasswordReset(){
   const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),errorEl=document.getElementById('emailGateError'),message=document.getElementById('authMessage'),button=document.getElementById('forgotPasswordButton');
   errorEl.style.display='none';message.style.display='none';
