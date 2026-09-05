@@ -4037,7 +4037,9 @@ function showBuildWorkspace(){
   document.getElementById('resultsScreen').classList.add('show');
   document.querySelector('.results-header h2').innerHTML='Ton produit est en <span>construction.</span>';
   document.querySelector('.results-header p').textContent='Tu peux rester ici : le build continue automatiquement en arrière-plan.';
-  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">✨ E-BOOK</button><button class="studio-nav-btn working" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · PRÉPARATION</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton produit prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT construit actuellement ta méthode, son contenu et son univers visuel…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page generating" id="studioPage${i}"><div class="studio-gen-badge"><i></i><i></i><i></i><strong>${i===0?'CONSTRUCTION COVER':'CRÉATION DE LA PAGE'}</strong></div><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build generating" id="studioSalesBuild"><div class="sales-build-logo" id="salesBuildLogo">DG</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de ta méthode et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Préparation du brief, de la méthode et de la direction artistique…</p></div></section></div>`;
+  document.getElementById('resultsBody').innerHTML=`<div class="build-workspace"><nav class="studio-nav"><button class="studio-nav-btn active" id="studioEbookButton" type="button" onclick="setStudioTab('ebook')">✨ E-BOOK</button><button class="studio-nav-btn working" id="studioSalesButton" type="button" onclick="setStudioTab('sales')">🖥️ PAGE DE VENTE · PRÉPARATION</button><a class="studio-nav-btn gold" href="https://dropdigital-automatise.lovable.app" target="_blank" rel="noopener">⚡ ACCÉDER À MA FORMATION</a></nav><section class="studio-panel" id="studioEbookPanel"><div class="studio-head"><div><div class="modal-eyebrow">⚡ STUDIO DE CRÉATION</div><h3 style="font:400 clamp(30px,6vw,52px)/1 'Bebas Neue',sans-serif;color:white">Ton produit prend vie.</h3><p id="studioMessage" style="color:#a994bb;line-height:1.7;margin-top:10px">GPT construit actuellement ta méthode, son contenu et son univers visuel…</p></div><div class="studio-count" id="studioCount">0 / 10 PAGES</div></div><div class="studio-pages" id="studioPages">${Array.from({length:10},(_,i)=>`<div class="studio-page generating" id="studioPage${i}"><div class="studio-gen-badge"><i></i><i></i><i></i><strong>${i===0?'CONSTRUCTION COVER':'CRÉATION DE LA PAGE'}</strong></div><span>PAGE ${String(i+1).padStart(2,'0')}<br>Préparation…</span></div>`).join('')}</div></section><section class="studio-panel" id="studioSalesPanel" hidden><div class="sales-build generating" id="studioSalesBuild"><div class="sales-build-logo" id="salesBuildLogo">
+  <img src="/assets/dg-app-logo-v2.png" alt="DropDigital">
+</div><div class="modal-eyebrow">✦ STUDIO CLAUDE</div><h3 style="font:400 clamp(30px,6vw,50px)/1 'Bebas Neue',sans-serif;color:white;margin-top:10px">Ta page de vente se construit.</h3><div class="sales-thinking" aria-label="Génération en cours"><i></i><i></i><i></i></div><div class="sales-build-steps"><div class="sales-build-step active" id="salesStep0">◌ Lecture de ta méthode et de ton positionnement</div><div class="sales-build-step" id="salesStep1">◌ Copywriting de l’offre et des bénéfices</div><div class="sales-build-step" id="salesStep2">◌ Structure des sections et appels à l’action</div><div class="sales-build-step" id="salesStep3">◌ Design, couleurs et version mobile</div><div class="sales-build-step" id="salesStep4">◌ Assemblage de l’aperçu final</div></div><p class="sales-build-note" id="studioSales">Préparation du brief, de la méthode et de la direction artistique…</p></div></section></div>`;
   const methodButton=document.querySelector('.studio-nav-btn.gold');if(methodButton)methodButton.textContent='🏴‍☠️ MÉTHODE DROPDIGITAL';
   setTimeout(()=>{const note=document.getElementById('buildLongNote');if(note)note.style.display='block';},15000);
   window.scrollTo({top:0,behavior:'smooth'});
@@ -7714,6 +7716,24 @@ async function downloadEbookPdf(){
   const parsed=new DOMParser().parseFromString(window._ebookHTML,'text/html');
   const styles=parsed.querySelector('style')?.textContent||'';
   const holder=document.createElement('div');holder.className='ebook-export-root';holder.innerHTML=`<style>${styles}</style><style>.ebook-export-root .ebook-page{width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:210mm!important;overflow:hidden!important}.ebook-export-root h1,.ebook-export-root h2{overflow-wrap:anywhere;word-break:normal;max-width:100%}
+
+/* DG logo — chargement page de vente */
+.sales-build-logo{
+  overflow:hidden;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.sales-build-logo img{
+  width:92px;
+  height:92px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 0 22px rgba(155,77,255,.65));
+  animation:robotFloat 3s ease-in-out infinite;
+}
+
 </style>${parsed.querySelector('.ebook-document')?.outerHTML||''}`;holder.style.cssText='position:absolute;left:0;top:0;width:210mm;background:#090614;z-index:999999;pointer-events:none;overflow:hidden;';document.body.appendChild(holder);
   await Promise.all([...holder.querySelectorAll('img')].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
   if(document.fonts?.ready)await document.fonts.ready;
