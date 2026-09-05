@@ -1536,6 +1536,748 @@
 
 </style>
 
+
+<style id="dd-global-premium-v3">
+
+/* ═══════════════════════════════════════════════
+   DROPDIGITAL — PREMIUM DESIGN SYSTEM V3
+═══════════════════════════════════════════════ */
+
+:root{
+  --dd-bg:#050208;
+  --dd-bg-soft:#0a0410;
+  --dd-surface:rgba(19,9,28,.82);
+  --dd-surface-2:rgba(28,13,41,.72);
+  --dd-border:rgba(200,150,255,.12);
+  --dd-border-hover:rgba(190,120,255,.28);
+  --dd-purple:#9d46ff;
+  --dd-purple-2:#bd72ff;
+  --dd-purple-3:#7025d7;
+  --dd-text:#f7f1fc;
+  --dd-muted:#9586a1;
+  --dd-muted-2:#675b70;
+  --dd-green:#6bf0ad;
+
+  --dd-radius-xl:28px;
+  --dd-radius-lg:20px;
+  --dd-radius-md:16px;
+  --dd-radius-sm:12px;
+
+  --dd-shadow:
+    0 40px 100px rgba(0,0,0,.52),
+    0 0 80px rgba(138,48,225,.08);
+
+  --dd-glow:
+    0 0 0 1px rgba(175,95,255,.22),
+    0 14px 40px rgba(120,35,205,.20);
+}
+
+/* ── GLOBAL ───────────────────────────────── */
+
+html{
+  background:#030106;
+}
+
+body{
+  background:
+    radial-gradient(circle at 50% -10%,rgba(130,48,220,.15),transparent 34%),
+    radial-gradient(circle at 15% 40%,rgba(84,25,140,.08),transparent 28%),
+    radial-gradient(circle at 88% 62%,rgba(117,42,190,.07),transparent 27%),
+    linear-gradient(180deg,#050208 0%,#030106 100%) !important;
+  color:var(--dd-text);
+}
+
+button,
+input,
+textarea,
+select,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+button{
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease,
+    color .18s ease;
+}
+
+/* ── AUTH BACKDROP ────────────────────────── */
+
+#emailGate{
+  background:
+    radial-gradient(circle at 50% 35%,rgba(139,49,230,.13),transparent 33%),
+    rgba(3,1,6,.84) !important;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+/* ── AUTH CARD ────────────────────────────── */
+
+#emailGate .modal-card{
+  width:min(620px,calc(100vw - 32px)) !important;
+
+  padding:44px 44px 36px !important;
+
+  border-radius:var(--dd-radius-xl) !important;
+
+  border:1px solid rgba(184,124,245,.14) !important;
+
+  background:
+    radial-gradient(circle at 50% 0%,rgba(127,43,206,.13),transparent 30%),
+    linear-gradient(
+      145deg,
+      rgba(22,10,32,.96),
+      rgba(9,4,14,.96)
+    ) !important;
+
+  box-shadow:
+    var(--dd-shadow),
+    inset 0 1px 0 rgba(255,255,255,.035) !important;
+
+  overflow:hidden;
+}
+
+#emailGate .modal-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,.035),
+      transparent 28%
+    );
+}
+
+/* ── EYEBROW ──────────────────────────────── */
+
+#emailGate .modal-eyebrow{
+  color:#bb78ff !important;
+  font-size:10px !important;
+  letter-spacing:4px !important;
+  font-weight:800 !important;
+  margin-bottom:15px !important;
+}
+
+/* ── TITLE ────────────────────────────────── */
+
+#emailGate .modal-title{
+  font-size:clamp(42px,6vw,61px) !important;
+  line-height:.94 !important;
+  letter-spacing:.3px !important;
+  margin-bottom:18px !important;
+}
+
+#emailGate .modal-title span{
+  color:#b65fff !important;
+
+  text-shadow:
+    0 0 30px rgba(164,68,255,.18);
+}
+
+#emailGate .modal-copy{
+  color:#a898b4 !important;
+  line-height:1.7 !important;
+  font-size:14px !important;
+  max-width:500px;
+}
+
+/* ── AUTH SEGMENTED CONTROL ───────────────── */
+
+#emailGate .auth-tabs{
+  margin-top:27px !important;
+  padding:5px !important;
+  gap:4px !important;
+
+  border-radius:16px !important;
+
+  border:1px solid rgba(255,255,255,.055) !important;
+
+  background:rgba(255,255,255,.025) !important;
+
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.02) !important;
+}
+
+#emailGate .auth-tab{
+  min-height:48px !important;
+
+  border:0 !important;
+  border-radius:12px !important;
+
+  background:transparent !important;
+
+  color:#72657c !important;
+
+  font-size:11px !important;
+  font-weight:800 !important;
+  letter-spacing:.6px !important;
+}
+
+#emailGate .auth-tab:hover{
+  color:#bcaac9 !important;
+  background:rgba(255,255,255,.025) !important;
+}
+
+#emailGate .auth-tab.active{
+  color:white !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(170,83,255,.20),
+      rgba(116,41,188,.12)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(189,112,255,.22),
+    0 8px 24px rgba(92,26,151,.12) !important;
+}
+
+/* ── FORM LABELS ──────────────────────────── */
+
+#emailGate .text-input-wrap{
+  margin-top:19px !important;
+}
+
+#emailGate .text-input-wrap label{
+  color:#8c6da6 !important;
+
+  font-size:10px !important;
+  letter-spacing:2px !important;
+
+  margin:0 0 8px 3px !important;
+
+  font-weight:700 !important;
+}
+
+/* ── INPUTS ───────────────────────────────── */
+
+#emailGate .q-input,
+#emailGate input[type="text"],
+#emailGate input[type="email"],
+#emailGate input[type="password"]{
+  width:100% !important;
+  height:58px !important;
+
+  padding:0 18px !important;
+
+  border-radius:var(--dd-radius-md) !important;
+
+  border:1px solid rgba(255,255,255,.07) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.033),
+      rgba(255,255,255,.015)
+    ) !important;
+
+  color:#f8f3fb !important;
+
+  outline:none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease,
+    transform .2s ease !important;
+}
+
+#emailGate .q-input:hover{
+  border-color:rgba(191,124,255,.17) !important;
+}
+
+#emailGate .q-input:focus,
+#emailGate input:focus{
+  border-color:rgba(179,94,255,.50) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(167,79,255,.075),
+      rgba(255,255,255,.018)
+    ) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(157,70,255,.08),
+    0 12px 35px rgba(97,28,158,.10) !important;
+}
+
+/* ── CHECKBOX ─────────────────────────────── */
+
+#memberConsentWrap{
+  margin-top:19px !important;
+
+  padding:13px 15px !important;
+
+  border-radius:13px !important;
+
+  background:rgba(255,255,255,.018) !important;
+
+  border:1px solid rgba(255,255,255,.04) !important;
+
+  color:#82758d !important;
+}
+
+#memberConsent{
+  width:16px;
+  height:16px;
+
+  border-radius:5px !important;
+
+  accent-color:#a34dff !important;
+}
+
+/* ── PRIMARY CTA ──────────────────────────── */
+
+#emailGate .next-btn,
+#emailGate .dd-auth-primary{
+  width:100% !important;
+  min-height:58px !important;
+
+  margin-top:24px !important;
+
+  border:0 !important;
+  border-radius:16px !important;
+
+  background:
+    linear-gradient(
+      115deg,
+      #7b2ddd 0%,
+      #a848ff 45%,
+      #bd6cff 100%
+    ) !important;
+
+  color:white !important;
+
+  font-weight:900 !important;
+  font-size:12px !important;
+  letter-spacing:1.5px !important;
+
+  box-shadow:
+    0 17px 40px rgba(127,43,220,.24),
+    inset 0 1px 0 rgba(255,255,255,.23) !important;
+
+  cursor:pointer;
+}
+
+#emailGate .next-btn:hover,
+#emailGate .dd-auth-primary:hover{
+  transform:translateY(-2px) !important;
+
+  box-shadow:
+    0 22px 48px rgba(145,49,239,.32),
+    inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+#emailGate .next-btn:active,
+#emailGate .dd-auth-primary:active{
+  transform:translateY(0) scale(.992) !important;
+}
+
+/* ── AUTH MESSAGE ─────────────────────────── */
+
+#emailGate .auth-message{
+  border-radius:14px !important;
+  border:1px solid rgba(105,239,169,.10) !important;
+
+  background:rgba(49,138,91,.055) !important;
+
+  color:#76e9ae !important;
+
+  padding:13px 16px !important;
+
+  line-height:1.6 !important;
+}
+
+/* ── OTP ──────────────────────────────────── */
+
+#emailGateForm.is-pending #authOtpCode{
+  height:64px !important;
+
+  border-radius:17px !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.034),
+      rgba(255,255,255,.012)
+    ) !important;
+
+  border:1px solid rgba(191,120,255,.16) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+#emailGateForm.is-pending #authOtpCode:focus{
+  border-color:rgba(178,92,255,.55) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(164,75,255,.08),
+    0 15px 45px rgba(100,32,162,.12) !important;
+}
+
+#emailGateForm.is-pending #authPendingActions{
+  margin-top:19px !important;
+}
+
+#emailGateForm.is-pending .dd-auth-secondary,
+#emailGateForm.is-pending #authPendingActions{
+  color:#706479 !important;
+}
+
+/* ── PRIVACY ──────────────────────────────── */
+
+#emailGate .privacy-note{
+  margin-top:23px !important;
+
+  color:#514758 !important;
+
+  font-size:10px !important;
+
+  text-align:center !important;
+}
+
+/* ═══════════════════════════════════════════════
+   FLOATING MEMBER TOOLBAR
+═══════════════════════════════════════════════ */
+
+.member-toolbar{
+  top:18px !important;
+  right:18px !important;
+
+  padding:6px !important;
+
+  gap:5px !important;
+
+  border-radius:17px !important;
+
+  border:1px solid rgba(255,255,255,.065) !important;
+
+  background:rgba(12,6,18,.76) !important;
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.member-toolbar .member-tool-btn{
+  border:0 !important;
+
+  border-radius:11px !important;
+
+  background:transparent !important;
+
+  padding:9px 12px !important;
+
+  color:#9f90ab !important;
+}
+
+.member-toolbar .member-tool-btn:hover{
+  color:#fff !important;
+
+  background:rgba(175,88,255,.09) !important;
+}
+
+/* ── SECONDARY BUTTONS GLOBAL ─────────────── */
+
+.member-tool-btn{
+  border-radius:12px !important;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+
+.site-header{
+  padding-top:68px !important;
+}
+
+.header-badge{
+  border-radius:999px !important;
+
+  border:1px solid rgba(182,105,255,.14) !important;
+
+  background:rgba(143,58,216,.06) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.site-header h1 span{
+  text-shadow:0 0 35px rgba(173,76,255,.22);
+}
+
+.progress-wrap{
+  border-radius:999px !important;
+}
+
+/* ═══════════════════════════════════════════════
+   QUESTION / ANSWER SURFACES
+═══════════════════════════════════════════════ */
+
+.chat-wrap > div,
+.question-card,
+.answer-card,
+.choice-card,
+.option-card{
+  border-radius:20px;
+}
+
+.q-input{
+  border-radius:15px !important;
+}
+
+.choice-btn,
+.option-btn,
+.answer-option{
+  border-radius:16px !important;
+
+  border-color:rgba(255,255,255,.07) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.032),
+      rgba(255,255,255,.014)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.choice-btn:hover,
+.option-btn:hover,
+.answer-option:hover{
+  transform:translateY(-2px);
+
+  border-color:rgba(180,97,255,.24) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(166,78,255,.08),
+      rgba(255,255,255,.018)
+    ) !important;
+
+  box-shadow:
+    0 14px 34px rgba(72,17,118,.12);
+}
+
+/* ═══════════════════════════════════════════════
+   RESULTS / STUDIO
+═══════════════════════════════════════════════ */
+
+.build-workspace{
+  border-radius:24px !important;
+}
+
+.studio-nav{
+  gap:7px !important;
+
+  padding:6px !important;
+
+  border-radius:17px !important;
+
+  border:1px solid rgba(255,255,255,.055) !important;
+
+  background:rgba(255,255,255,.018) !important;
+}
+
+.studio-nav-btn{
+  border-radius:12px !important;
+
+  border-color:transparent !important;
+}
+
+.studio-panel{
+  border-radius:22px !important;
+
+  border:1px solid rgba(255,255,255,.055) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19,9,27,.76),
+      rgba(8,4,12,.82)
+    ) !important;
+}
+
+/* ── SALES GENERATION ─────────────────────── */
+
+.sales-build{
+  border-radius:24px !important;
+
+  border:1px solid rgba(180,105,255,.11) !important;
+
+  background:
+    radial-gradient(circle at 50% 15%,rgba(151,64,231,.12),transparent 33%),
+    linear-gradient(180deg,#0b0510,#07030b) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 30px 90px rgba(0,0,0,.28) !important;
+}
+
+.sales-build-logo{
+  width:92px !important;
+  height:92px !important;
+
+  padding:15px !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  border-radius:26px !important;
+
+  border:1px solid rgba(184,105,255,.13) !important;
+
+  background:
+    radial-gradient(circle at 50% 35%,rgba(139,55,223,.20),transparent 60%),
+    rgba(22,8,34,.75) !important;
+
+  box-shadow:
+    0 18px 50px rgba(79,18,132,.25),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+
+  animation:ddLogoFloat 3.2s ease-in-out infinite !important;
+}
+
+.sales-build-logo img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  display:block;
+
+  filter:
+    drop-shadow(0 8px 14px rgba(104,35,180,.25));
+}
+
+@keyframes ddLogoFloat{
+  0%,100%{
+    transform:translateY(0) scale(1);
+  }
+  50%{
+    transform:translateY(-8px) scale(1.025);
+  }
+}
+
+.sales-build-step{
+  border-radius:13px !important;
+
+  border:1px solid rgba(255,255,255,.045) !important;
+
+  background:rgba(255,255,255,.018) !important;
+
+  padding:14px 16px !important;
+}
+
+.sales-build-step.active{
+  border-color:rgba(173,83,255,.19) !important;
+
+  background:rgba(152,64,231,.06) !important;
+
+  box-shadow:
+    inset 3px 0 0 rgba(176,87,255,.55) !important;
+}
+
+.sales-build-step.done{
+  border-color:rgba(85,226,151,.12) !important;
+
+  background:rgba(62,171,111,.045) !important;
+}
+
+/* ── EBOOK ACTION PILLS ───────────────────── */
+
+.dd-ebook-pill{
+  border-radius:999px !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MODALS GLOBALES
+═══════════════════════════════════════════════ */
+
+.app-modal:not(#emailGate) .modal-card{
+  border-radius:26px !important;
+
+  border:1px solid rgba(190,126,255,.12) !important;
+
+  background:
+    radial-gradient(circle at 50% 0%,rgba(142,55,223,.08),transparent 28%),
+    rgba(12,5,18,.96) !important;
+
+  box-shadow:var(--dd-shadow) !important;
+}
+
+.modal-close{
+  border-radius:999px !important;
+
+  background:rgba(255,255,255,.04) !important;
+
+  border:1px solid rgba(255,255,255,.055) !important;
+}
+
+.modal-close:hover{
+  background:rgba(172,83,255,.10) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════════════ */
+
+@media(max-width:650px){
+
+  #emailGate .modal-card{
+    width:calc(100vw - 22px) !important;
+
+    padding:31px 21px 26px !important;
+
+    border-radius:23px !important;
+  }
+
+  #emailGate .modal-title{
+    font-size:40px !important;
+  }
+
+  #emailGate .auth-tabs{
+    margin-top:22px !important;
+  }
+
+  .member-toolbar{
+    top:10px !important;
+    left:10px !important;
+    right:10px !important;
+
+    justify-content:center;
+  }
+
+  .member-email-label{
+    display:none !important;
+  }
+
+  .sales-build{
+    padding:26px 18px !important;
+  }
+
+}
+
+</style>
+
 </head>
 <body>
 
