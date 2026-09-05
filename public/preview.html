@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aperçu DropDigital</title>
+
+  <style>
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      background:#050208;
+      overflow:hidden;
+    }
+
+    #previewFrame{
+      display:block;
+      width:100%;
+      height:100%;
+      border:0;
+      background:white;
+    }
+
+    #loading{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      background:#050208;
+      color:#c9a7ff;
+      font:600 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      letter-spacing:.04em;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loading">Chargement de l’aperçu…</div>
+
+<iframe
+  id="previewFrame"
+  title="Aperçu DropDigital"
+  sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+></iframe>
+
+<script>
+(function(){
+
+  const frame=document.getElementById('previewFrame');
+  const loading=document.getElementById('loading');
+
+  function ready(){
+    if(window.opener){
+      window.opener.postMessage(
+        'DROPDIGITAL_PREVIEW_READY',
+        location.origin
+      );
+    }
+  }
+
+  window.addEventListener('message',event=>{
+
+    if(event.origin!==location.origin)return;
+
+    if(
+      !event.data ||
+      event.data.type!=='DROPDIGITAL_PREVIEW_HTML'
+    )return;
+
+    frame.srcdoc=String(event.data.html||'');
+    loading.style.display='none';
+  });
+
+  ready();
+
+  setTimeout(ready,250);
+  setTimeout(ready,800);
+
+})();
+</script>
+
+</body>
+</html>
