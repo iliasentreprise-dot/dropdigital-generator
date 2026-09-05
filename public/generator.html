@@ -2618,9 +2618,78 @@ function saveProfile(values){const profile={...getProfile(),...values};try{local
   return profile;
 }
 function getHistory(){try{const value=JSON.parse(localStorage.getItem(STORAGE_KEYS.history)||'[]');return Array.isArray(value)?value:[];}catch(_){return[];}}
+
+function historyBackupKey(userId){
+  return `${STORAGE_KEYS.history}::${userId}`;
+}
+
+function backupCurrentHistory(userId=currentMember?.id){
+  if(!userId)return;
+
+  try{
+    localStorage.setItem(
+      historyBackupKey(userId),
+      JSON.stringify(getHistory())
+    );
+  }catch(_){}
+}
+
+function restoreHistoryBackup(userId=currentMember?.id){
+  if(!userId)return;
+
+  try{
+    const raw=localStorage.getItem(historyBackupKey(userId));
+    const backup=raw ? JSON.parse(raw) : [];
+
+    if(!Array.isArray(backup) || !backup.length)return;
+
+    const merged=new Map();
+
+    for(const item of backup){
+      if(item?.id)merged.set(item.id,item);
+    }
+
+    for(const item of getHistory()){
+      if(item?.id && !merged.has(item.id)){
+        merged.set(item.id,item);
+      }
+    }
+
+    setHistory(
+      [...merged.values()]
+        .sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))
+        .slice(0,20)
+    );
+  }catch(_){}
+}
+
 function setHistory(items){
   let kept=items.slice(0,20);
-  while(kept.length){try{localStorage.setItem(STORAGE_KEYS.history,JSON.stringify(kept));break;}catch(_){kept=kept.slice(0,-1);}}
+
+  while(true){
+    try{
+      const serialized=JSON.stringify(kept);
+
+      localStorage.setItem(
+        STORAGE_KEYS.history,
+        serialized
+      );
+
+      if(currentMember?.id){
+        localStorage.setItem(
+          historyBackupKey(currentMember.id),
+          serialized
+        );
+      }
+
+      break;
+
+    }catch(_){
+      if(!kept.length)break;
+      kept=kept.slice(0,-1);
+    }
+  }
+
   updateMemberToolbar();
 }
 function updateMemberToolbar(){
@@ -3382,6 +3451,9 @@ async function syncMemberData(){
 async function initializeSignedInMember(user,firstName=''){
   currentMember=user;
 
+  /* restaure le cache local propre à CE compte */
+  restoreHistoryBackup(user.id);
+
   try{
     localStorage.setItem(STORAGE_KEYS.email,user.email||'');
   }catch(_){}
@@ -3483,7 +3555,32 @@ async function initMemberAccess(){
   if(session?.user){await initializeSignedInMember(session.user);}else{currentMember=null;document.getElementById('emailGate').classList.add('show');setAuthMode('signup');setTimeout(()=>document.getElementById('authFirstName').focus(),80);}
 }
 dbClient.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){passwordRecoveryRequested=true;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),0);}});
-async function signOutMember(){await dbClient.auth.signOut();currentMember=null;try{localStorage.removeItem(STORAGE_KEYS.email);localStorage.removeItem(STORAGE_KEYS.profile);localStorage.removeItem(STORAGE_KEYS.history);}catch(_){}document.getElementById('memberToolbar').hidden=true;document.getElementById('emailGate').classList.add('show');setAuthMode('login');}
+async function signOutMember(){
+  const userId=currentMember?.id||'';
+
+  /* sauvegarde AVANT de vider la session */
+  if(userId){
+    backupCurrentHistory(userId);
+  }
+
+  await dbClient.auth.signOut();
+  currentMember=null;
+
+  try{
+    localStorage.removeItem(STORAGE_KEYS.email);
+    localStorage.removeItem(STORAGE_KEYS.profile);
+
+    /*
+      On vide seulement le cache global.
+      La copie propre au compte reste conservée.
+    */
+    localStorage.removeItem(STORAGE_KEYS.history);
+  }catch(_){}
+
+  document.getElementById('memberToolbar').hidden=true;
+  document.getElementById('emailGate').classList.add('show');
+  setAuthMode('login');
+}
 
 // ── THEMES ─────────────────────────────────────────────
 
