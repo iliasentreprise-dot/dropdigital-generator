@@ -1017,7 +1017,31 @@
     <label id="memberConsentWrap" style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;color:rgba(220,205,235,.68);font-size:12px;line-height:1.5;cursor:pointer"><input id="memberConsent" type="checkbox" style="margin-top:3px;accent-color:#9b4dff">J’accepte la création de mon compte et l’enregistrement de mes créations.</label>
     <button class="next-btn" id="authSubmitButton" type="submit">CRÉER MON COMPTE →</button>
     <div class="auth-message" id="authMessage"></div>
-    <div id="authPendingActions" style="display:none;gap:10px;margin-top:14px;flex-wrap:wrap"><button type="button" class="member-tool-btn" onclick="resendConfirmation()">RENVOYER L’E-MAIL</button><button type="button" class="member-tool-btn" onclick="setAuthMode('login')">UTILISER UN AUTRE COMPTE</button></div>
+    <div id="authPendingActions" style="display:none;margin-top:18px">
+  <div style="margin-bottom:14px">
+    <label for="authOtpCode" style="display:block;color:#a994bb;font-size:12px;margin-bottom:8px">CODE DE VÉRIFICATION</label>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input
+        id="authOtpCode"
+        type="text"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        maxlength="8"
+        placeholder="12345678"
+        oninput="this.value=this.value.replace(/\\D/g,'').slice(0,8)"
+        onkeydown="if(event.key==='Enter')verifySignupOtp()"
+        style="flex:1;min-width:180px;background:#0d0613;border:1px solid rgba(179,102,255,.35);color:white;padding:14px 16px;font-size:18px;letter-spacing:4px;outline:none"
+      >
+      <button type="button" class="member-tool-btn" onclick="verifySignupOtp()">VÉRIFIER LE CODE</button>
+    </div>
+    <div id="authOtpMessage" style="display:none;margin-top:9px;font-size:12px"></div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="member-tool-btn" onclick="resendConfirmation()">RENVOYER L’E-MAIL</button>
+    <button type="button" class="member-tool-btn" onclick="setAuthMode('login')">UTILISER UN AUTRE COMPTE</button>
+  </div>
+</div>
     <p class="privacy-note">Ton mot de passe est chiffré et géré par Supabase. Dropdigital ne peut jamais le consulter.</p>
   </form>
 </div>
@@ -1248,7 +1272,7 @@ async function submitMemberAuth(event){
   if(authMode==='signup'&&result.data.user&&Array.isArray(result.data.user.identities)&&result.data.user.identities.length===0){
     setAuthMode('login');document.getElementById('memberEmailInput').value=email;errorEl.textContent='Un compte existe déjà avec cet e-mail. Connecte-toi ou clique sur « Mot de passe oublié ».';errorEl.style.display='block';return;
   }
-  if(!result.data.session){setAuthMode('pending');const message=document.getElementById('authMessage');message.textContent='Compte créé ! Vérifie maintenant ta boîte e-mail. Dès que tu cliques sur le lien, tu reviens ici automatiquement connecté.';message.style.display='block';return;}
+  if(!result.data.session){setAuthMode('pending');const message=document.getElementById('authMessage');message.textContent='Compte créé ! Ouvre l’e-mail DropDigital : clique sur le bouton ou entre ici le code reçu. Tu peux donc ouvrir le mail sur ton téléphone et valider ton PC avec le code.';message.style.display='block';return;}
   await initializeSignedInMember(result.data.user,authMode==='signup'?firstName:'');
 }
 async function sendPasswordReset(){
@@ -1266,6 +1290,59 @@ async function sendPasswordReset(){
   localStorage.setItem('dropdigital_last_password_reset',String(Date.now()));
   message.textContent='E-mail envoyé. Ouvre le lien reçu pour choisir un nouveau mot de passe, puis reviens te connecter.';message.style.display='block';
 }
+
+async function verifySignupOtp(){
+  const input=document.getElementById('authOtpCode');
+  const status=document.getElementById('authOtpMessage');
+  const token=(input?.value||'').trim();
+
+  const emailInput=
+    document.getElementById('authEmail') ||
+    document.querySelector('#authModal input[type="email"]') ||
+    document.querySelector('input[type="email"]');
+
+  const email=(emailInput?.value||'').trim();
+
+  if(!email){
+    status.textContent='Adresse e-mail introuvable. Reviens à la connexion puis recommence.';
+    status.style.color='#ff8c8c';
+    status.style.display='block';
+    return;
+  }
+
+  if(!/^\d{6,8}$/.test(token)){
+    status.textContent='Entre le code reçu par e-mail.';
+    status.style.color='#ffcf70';
+    status.style.display='block';
+    return;
+  }
+
+  status.textContent='Vérification en cours…';
+  status.style.color='#b995d5';
+  status.style.display='block';
+
+  const {data,error}=await dbClient.auth.verifyOtp({
+    email,
+    token,
+    type:'email'
+  });
+
+  if(error){
+    status.textContent=error.message || 'Code invalide ou expiré.';
+    status.style.color='#ff8c8c';
+    status.style.display='block';
+    return;
+  }
+
+  status.textContent='✓ E-mail confirmé. Connexion réussie.';
+  status.style.color='#62e998';
+  status.style.display='block';
+
+  if(data?.session){
+    setTimeout(()=>location.reload(),500);
+  }
+}
+
 async function resendConfirmation(){
   const email=document.getElementById('memberEmailInput').value.trim().toLowerCase(),message=document.getElementById('authMessage'),errorEl=document.getElementById('emailGateError');
   const options=(location.protocol==='https:'||location.protocol==='http:')?{emailRedirectTo:location.href.split('#')[0]}:{};
