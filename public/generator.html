@@ -2506,6 +2506,25 @@ body:has(#emailGate.show){
 
 </style>
 
+
+<style id="dd-auth-visibility-hard-fix">
+/* RÈGLE ABSOLUE : auth invisible dès que .show disparaît */
+#emailGate:not(.show){
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* Auth visible uniquement quand explicitement ouverte */
+#emailGate.show{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+</style>
+
 </head>
 <body>
 
