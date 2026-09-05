@@ -3232,11 +3232,98 @@ async function persistIllustration(dataUrl,generationId,index){
 }
 
 async function restoreGeneration(id){
-  const item=getHistory().find(entry=>entry.id===id);if(!item)return;
-  restoringHistory=true;S.a={...(item.answers||{})};S.step=6;closeHistory();
-  document.getElementById('chatWrap').style.display='none';document.querySelector('.site-header').style.display='none';
-  await hydrateIllustrations(item.data);showResults(item.data,item.theme||getTheme(S.a.marche,S.a.niche));restoringHistory=false;
+  const item=getHistory().find(entry=>entry.id===id);
+
+  if(!item){
+    console.error('[history] création introuvable',id);
+    return;
+  }
+
+  restoringHistory=true;
+
+  try{
+    S.a={...(item.answers||{})};
+    S.step=6;
+
+    closeHistory();
+
+    document.getElementById('chatWrap').style.display='none';
+
+    const header=document.querySelector('.site-header');
+    if(header)header.style.display='none';
+
+    const product=item.data||{};
+    const theme=
+      item.theme||
+      getTheme(S.a.marche,S.a.niche);
+
+    /*
+      IMPORTANT :
+      une création restaurée doit recréer exactement
+      le même état mémoire qu'une génération fraîche.
+    */
+    await hydrateIllustrations(product);
+
+    window._productData=product;
+    window._productTheme=theme;
+
+    window._productTitle=
+      product.titre_produit||
+      S.a.offre||
+      'dropdigital';
+
+    /*
+      EBOOK
+      On reconstruit le HTML depuis les données conservées.
+    */
+    window._ebookHTML=
+      buildEbookHTML(product,theme);
+
+    /*
+      PAGE DE VENTE
+      On reprend le HTML déjà généré.
+    */
+    const rawSalesHTML=
+      product.sales_html||
+      product.salesHtml||
+      '';
+
+    window._sHTML=
+      rawSalesHTML
+        ? wireConnectedStripeCheckout(rawSalesHTML,product)
+        : '';
+
+    /*
+      UPSELL
+    */
+    window._uHTML=
+      product.upsell_html||
+      product.upsellHtml||
+      '';
+
+    console.log('[history] création restaurée',{
+      id:item.id,
+      ebook:!!window._ebookHTML,
+      sales:!!window._sHTML,
+      upsell:!!window._uHTML,
+      title:window._productTitle
+    });
+
+    showResults(product,theme);
+
+  }catch(error){
+    console.error('[history] erreur restauration',error);
+
+    alert(
+      "Impossible d'ouvrir complètement cette création. " +
+      "Ouvre la console pour voir l'erreur."
+    );
+
+  }finally{
+    restoringHistory=false;
+  }
 }
+
 function deleteGeneration(id){setHistory(getHistory().filter(item=>item.id!==id));if(currentMember)dbClient.from('member_generations').delete().eq('id',id).then(()=>{});renderHistory();}
 async function syncMemberData(){
   const [{data:profile},{data:subscription},{data:generations}]=await Promise.all([
