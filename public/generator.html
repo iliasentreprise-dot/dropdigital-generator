@@ -1595,6 +1595,128 @@ input{
 
 </style>
 
+
+<style id="dd-auth-logo-overflow-final">
+
+/* ─────────────────────────────────────
+   AUTH — FIX LOGOS GÉANTS / DUPLIQUÉS
+   ───────────────────────────────────── */
+
+#emailGate{
+  overflow:hidden !important;
+  overscroll-behavior:none !important;
+}
+
+/* La carte devient la seule zone scrollable */
+#emailGate .modal-card{
+  position:relative !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain !important;
+  max-height:calc(100dvh - 32px) !important;
+}
+
+/* On supprime définitivement l'ancien logo OTP ajouté par les vieux patches */
+#emailGate .auth-premium-logo{
+  display:none !important;
+}
+
+/* Un seul logo officiel */
+#emailGate .dd-auth-master-logo{
+  display:flex !important;
+  position:relative !important;
+  inset:auto !important;
+
+  width:72px !important;
+  height:72px !important;
+  min-width:72px !important;
+  min-height:72px !important;
+  max-width:72px !important;
+  max-height:72px !important;
+
+  margin:0 auto 22px !important;
+  padding:0 !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  border-radius:22px !important;
+  border:1px solid rgba(174,96,255,.18) !important;
+
+  background:
+    radial-gradient(circle at 50% 30%,rgba(165,84,255,.18),transparent 65%),
+    rgba(15,7,23,.92) !important;
+
+  box-shadow:
+    0 14px 38px rgba(70,20,130,.24),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+
+  transform:none !important;
+}
+
+/* Sécurité absolue : aucune image DG ne peut devenir géante */
+#emailGate img[src*="dg-app-logo"]{
+  position:static !important;
+
+  width:58px !important;
+  height:58px !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-width:58px !important;
+  max-height:58px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  object-fit:contain !important;
+
+  transform:none !important;
+  scale:1 !important;
+
+  display:block;
+}
+
+/* Si un ancien wrapper vide traîne, il ne crée aucun espace */
+#emailGate .auth-premium-logo:empty{
+  display:none !important;
+}
+
+#emailGateForm.is-pending .dd-auth-master-logo{
+  margin-bottom:18px !important;
+}
+
+/* Safari / mobile */
+@media(max-width:650px){
+  #emailGate{
+    padding:10px !important;
+  }
+
+  #emailGate .modal-card{
+    max-height:calc(100dvh - 20px) !important;
+  }
+
+  #emailGate .dd-auth-master-logo{
+    width:62px !important;
+    height:62px !important;
+    min-width:62px !important;
+    min-height:62px !important;
+    max-width:62px !important;
+    max-height:62px !important;
+    border-radius:19px !important;
+  }
+
+  #emailGate img[src*="dg-app-logo"]{
+    width:50px !important;
+    height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+  }
+}
+
+</style>
+
 </head>
 <body>
 
