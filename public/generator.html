@@ -993,6 +993,549 @@
 }
 
 </style>
+
+<style id="dd-auth-premium-v2">
+
+/* ─────────────────────────────────────
+   DROPDIGITAL — AUTH PREMIUM V2
+───────────────────────────────────── */
+
+#emailGate{
+  padding:24px !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(119,45,210,.13),
+      transparent 34%
+    ),
+    rgba(3,0,8,.94) !important;
+
+  backdrop-filter:blur(18px);
+}
+
+
+/* CARD */
+
+#emailGateForm.is-pending{
+  display:block !important;
+
+  width:min(460px,calc(100vw - 32px)) !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+
+  overflow:visible !important;
+
+  padding:38px 38px 30px !important;
+
+  text-align:center !important;
+
+  border:
+    1px solid rgba(186,116,255,.18) !important;
+
+  border-radius:24px !important;
+
+  background:
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(158,72,255,.15),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(18,7,27,.98),
+      rgba(9,3,15,.99)
+    ) !important;
+
+  box-shadow:
+    0 40px 100px rgba(0,0,0,.58),
+    0 0 80px rgba(109,39,193,.10),
+    inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+
+/* LOGO */
+
+.auth-premium-logo{
+  display:none;
+}
+
+#emailGateForm.is-pending .auth-premium-logo{
+  display:flex !important;
+
+  width:70px;
+  height:70px;
+
+  align-items:center;
+  justify-content:center;
+
+  margin:0 auto 22px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(128,49,230,.14),
+      rgba(64,19,113,.07)
+    );
+
+  box-shadow:
+    0 15px 38px rgba(90,29,177,.20);
+}
+
+#emailGateForm.is-pending .auth-premium-logo img{
+  display:block;
+
+  width:70px;
+  height:70px;
+
+  object-fit:contain;
+}
+
+
+/* EYEBROW */
+
+#emailGateForm.is-pending .modal-eyebrow{
+  display:inline-flex !important;
+
+  align-items:center;
+  justify-content:center;
+
+  margin:0 auto 16px !important;
+
+  color:#a96cff !important;
+
+  font-size:9px !important;
+  font-weight:800 !important;
+
+  letter-spacing:2.5px !important;
+}
+
+
+/* TITLE */
+
+#emailGateForm.is-pending #emailGateTitle{
+  margin:0 !important;
+
+  text-align:center !important;
+
+  font-size:46px !important;
+  line-height:.97 !important;
+
+  letter-spacing:.2px !important;
+}
+
+#emailGateForm.is-pending #emailGateTitle span{
+  background:
+    linear-gradient(
+      90deg,
+      #d394ff,
+      #9f63ff
+    );
+
+  -webkit-background-clip:text;
+  background-clip:text;
+
+  color:transparent !important;
+}
+
+
+/* COPY */
+
+#emailGateForm.is-pending #authModalCopy{
+  max-width:340px;
+
+  margin:
+    16px auto 20px !important;
+
+  text-align:center !important;
+
+  color:#85758e !important;
+
+  font-size:13px !important;
+  line-height:1.65 !important;
+}
+
+
+/* SUCCESS MESSAGE */
+
+#emailGateForm.is-pending #authMessage{
+  margin:
+    0 auto 22px !important;
+
+  padding:
+    10px 14px !important;
+
+  border:
+    1px solid rgba(81,221,143,.10) !important;
+
+  border-radius:11px !important;
+
+  background:
+    rgba(61,199,126,.045) !important;
+
+  color:#79dca5 !important;
+
+  text-align:center !important;
+
+  font-size:11px !important;
+  line-height:1.5 !important;
+}
+
+
+/* OTP CONTAINER */
+
+#emailGateForm.is-pending #authPendingActions{
+  display:block !important;
+
+  width:100% !important;
+
+  margin:0 !important;
+}
+
+.dd-otp-shell{
+  width:100%;
+}
+
+
+/* EMAIL SENT BADGE */
+
+.dd-mail-status{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  margin-bottom:18px;
+
+  padding:
+    6px 10px;
+
+  border:
+    1px solid rgba(102,230,155,.10);
+
+  border-radius:999px;
+
+  background:
+    rgba(67,210,132,.045);
+
+  color:#75dca4;
+
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:1.5px;
+}
+
+.dd-mail-dot{
+  width:5px;
+  height:5px;
+
+  border-radius:50%;
+
+  background:#69e69f;
+
+  box-shadow:
+    0 0 9px rgba(105,230,159,.65);
+}
+
+
+/* LABEL */
+
+.dd-otp-label{
+  margin-bottom:9px;
+
+  color:#716578;
+
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:1.8px;
+}
+
+
+/* INPUT */
+
+.dd-otp-input{
+  display:block;
+
+  width:100% !important;
+  height:62px !important;
+
+  box-sizing:border-box !important;
+
+  margin:0 !important;
+
+  padding:
+    0 20px !important;
+
+  border:
+    1px solid rgba(184,113,255,.18) !important;
+
+  border-radius:15px !important;
+
+  outline:none !important;
+
+  background:
+    rgba(10,4,16,.86) !important;
+
+  color:#fff !important;
+
+  text-align:center !important;
+
+  font-family:
+    'DM Sans',
+    sans-serif !important;
+
+  font-size:23px !important;
+  font-weight:700 !important;
+
+  letter-spacing:8px !important;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.dd-otp-input::placeholder{
+  color:#4b4052 !important;
+}
+
+.dd-otp-input:focus{
+  border-color:
+    rgba(174,92,255,.68) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(155,77,255,.075),
+    0 12px 28px rgba(88,24,154,.08) !important;
+}
+
+
+/* PRIMARY CTA */
+
+.dd-auth-primary{
+  display:flex;
+
+  width:100%;
+  height:54px;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:10px;
+
+  margin-top:11px;
+
+  border:0;
+
+  border-radius:14px;
+
+  cursor:pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      #a64cff,
+      #7c3aed
+    );
+
+  color:white;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:1.4px;
+
+  box-shadow:
+    0 14px 30px rgba(124,58,237,.24),
+    inset 0 1px 0 rgba(255,255,255,.20);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease;
+}
+
+.dd-auth-primary:hover{
+  transform:
+    translateY(-1px);
+
+  filter:
+    brightness(1.07);
+
+  box-shadow:
+    0 18px 38px rgba(124,58,237,.32),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.dd-auth-primary:active{
+  transform:
+    translateY(0);
+}
+
+.dd-auth-primary:disabled{
+  cursor:wait;
+
+  opacity:.65;
+
+  transform:none;
+}
+
+.dd-auth-arrow{
+  font-size:17px;
+
+  line-height:1;
+
+  opacity:.9;
+}
+
+
+/* OTP FEEDBACK */
+
+.dd-otp-feedback{
+  display:none;
+
+  margin-top:10px;
+
+  font-size:11px;
+
+  line-height:1.5;
+}
+
+
+/* DIVIDER */
+
+.dd-auth-divider{
+  display:flex;
+
+  align-items:center;
+
+  gap:13px;
+
+  margin:
+    23px 0 15px;
+
+  color:#4c424f;
+
+  font-size:8px;
+  font-weight:800;
+
+  letter-spacing:1.7px;
+}
+
+.dd-auth-divider::before,
+.dd-auth-divider::after{
+  content:"";
+
+  flex:1;
+
+  height:1px;
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+
+/* SECONDARY ACTIONS */
+
+.dd-auth-secondary{
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:12px;
+}
+
+.dd-auth-link{
+  padding:4px;
+
+  border:0;
+
+  cursor:pointer;
+
+  background:transparent;
+
+  color:#817486;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size:10px;
+  font-weight:700;
+
+  transition:
+    color .18s ease;
+}
+
+.dd-auth-link:hover{
+  color:#c7a1e9;
+}
+
+.dd-auth-separator{
+  color:#413746;
+
+  font-size:10px;
+}
+
+
+/* PRIVACY NOTE */
+
+#emailGateForm.is-pending .privacy-note{
+  display:none !important;
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  #emailGate{
+    padding:16px !important;
+  }
+
+  #emailGateForm.is-pending{
+    width:
+      calc(100vw - 28px) !important;
+
+    padding:
+      30px 20px 26px !important;
+
+    border-radius:
+      21px !important;
+  }
+
+  #emailGateForm.is-pending #emailGateTitle{
+    font-size:
+      39px !important;
+  }
+
+  .dd-otp-input{
+    height:
+      58px !important;
+
+    font-size:
+      20px !important;
+
+    letter-spacing:
+      6px !important;
+  }
+
+}
+
+</style>
+
 </head>
 <body>
 
@@ -1020,31 +1563,70 @@
     <label id="memberConsentWrap" style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;color:rgba(220,205,235,.68);font-size:12px;line-height:1.5;cursor:pointer"><input id="memberConsent" type="checkbox" style="margin-top:3px;accent-color:#9b4dff">J’accepte la création de mon compte et l’enregistrement de mes créations.</label>
     <button class="next-btn" id="authSubmitButton" type="submit">CRÉER MON COMPTE →</button>
     <div class="auth-message" id="authMessage"></div>
-    <div id="authPendingActions" style="display:none;margin-top:18px">
-  <div style="margin-bottom:14px">
-    <label for="authOtpCode" style="display:block;color:#a994bb;font-size:12px;margin-bottom:8px">CODE DE VÉRIFICATION</label>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <input
-        id="authOtpCode"
-        type="text"
-        inputmode="numeric"
-        autocomplete="one-time-code"
-        maxlength="8"
-        placeholder="12345678"
-        oninput="this.value=this.value.replace(/\\D/g,'').slice(0,8)"
-        onkeydown="if(event.key==='Enter')verifySignupOtp()"
-        style="flex:1;min-width:180px;background:#0d0613;border:1px solid rgba(179,102,255,.35);color:white;padding:14px 16px;font-size:18px;letter-spacing:4px;outline:none"
-      >
-      <button type="button" class="member-tool-btn" onclick="verifySignupOtp()">VÉRIFIER LE CODE</button>
-    </div>
-    <div id="authOtpMessage" style="display:none;margin-top:9px;font-size:12px"></div>
-  </div>
+    <div id="authPendingActions" style="display:none">
 
-  <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <button type="button" class="member-tool-btn" onclick="resendConfirmation()">RENVOYER L’E-MAIL</button>
-    <button type="button" class="member-tool-btn" onclick="setAuthMode('login')">UTILISER UN AUTRE COMPTE</button>
-  </div>
-</div>
+      <div class="dd-otp-shell">
+
+        <div class="dd-mail-status">
+          <span class="dd-mail-dot"></span>
+          E-MAIL ENVOYÉ
+        </div>
+
+        <div class="dd-otp-label">
+          CODE DE VÉRIFICATION
+        </div>
+
+        <input
+          id="authOtpCode"
+          class="dd-otp-input"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="8"
+          placeholder="12345678"
+          oninput="this.value=this.value.replace(/\\D/g,'').slice(0,8)"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();verifySignupOtp()}"
+        >
+
+        <button
+          type="button"
+          id="authOtpButton"
+          class="dd-auth-primary"
+          onclick="verifySignupOtp()"
+        >
+          <span>VÉRIFIER MON COMPTE</span>
+          <span class="dd-auth-arrow">→</span>
+        </button>
+
+        <div id="authOtpMessage" class="dd-otp-feedback"></div>
+
+        <div class="dd-auth-divider">
+          <span>OU</span>
+        </div>
+
+        <div class="dd-auth-secondary">
+          <button
+            type="button"
+            class="dd-auth-link"
+            onclick="resendConfirmation()"
+          >
+            Renvoyer l’e-mail
+          </button>
+
+          <span class="dd-auth-separator">•</span>
+
+          <button
+            type="button"
+            class="dd-auth-link"
+            onclick="setAuthMode('login')"
+          >
+            Changer de compte
+          </button>
+        </div>
+
+      </div>
+
+    </div>
     <p class="privacy-note">Ton mot de passe est chiffré et géré par Supabase. Dropdigital ne peut jamais le consulter.</p>
   </form>
 </div>
@@ -1245,8 +1827,19 @@ function isValidEmail(value){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val
 function setAuthMode(mode){
   authMode=mode;const signup=mode==='signup',recovery=mode==='recovery',pending=mode==='pending';
   document.getElementById('emailGateForm')?.classList.toggle('is-pending',pending);
-  document.getElementById('emailGateTitle').innerHTML=recovery?'Choisis ton nouveau<br><span>mot de passe.</span>':'Retrouve toutes<br><span>tes créations.</span>';
-  document.getElementById('authModalCopy').textContent=recovery?'Entre un nouveau mot de passe sécurisé. Il remplacera immédiatement l’ancien.':'Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.';
+  document.getElementById('emailGateForm')?.classList.toggle('is-pending',pending);
+  document.getElementById('emailGateTitle').innerHTML=
+    recovery
+      ?'Choisis ton nouveau<br><span>mot de passe.</span>'
+      :pending
+        ?'Vérifie ton<br><span>e-mail.</span>'
+        :'Retrouve toutes<br><span>tes créations.</span>';
+  document.getElementById('authModalCopy').textContent=
+    recovery
+      ?'Entre un nouveau mot de passe sécurisé. Il remplacera immédiatement l’ancien.'
+      :pending
+        ?'Entre le code reçu par e-mail pour activer ton espace DropDigital.'
+        :'Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.';
   document.querySelector('.auth-tabs').style.display=recovery||pending?'none':'grid';
   document.getElementById('authSignupTab').classList.toggle('active',signup);document.getElementById('authLoginTab').classList.toggle('active',!signup);
   document.getElementById('authFirstNameWrap').style.display=signup?'block':'none';document.getElementById('memberConsentWrap').style.display=signup?'flex':'none';
@@ -1268,6 +1861,17 @@ async function submitMemberAuth(event){
   }
   if(!isValidEmail(email)||password.length<8||(authMode==='signup'&&(!firstName||!document.getElementById('memberConsent').checked))){errorEl.textContent='Vérifie ton prénom, ton e-mail, ton mot de passe et ton consentement.';errorEl.style.display='block';return;}
   errorEl.style.display='none';button.disabled=true;button.textContent='CONNEXION EN COURS…';
+  if(authMode==='signup'){
+    try{
+      localStorage.setItem('dropdigital_pending_signup',JSON.stringify({
+        firstName,
+        email,
+        password,
+        expiresAt:Date.now()+10*60*1000
+      }));
+    }catch(_){}
+  }
+
   const result=authMode==='signup'
     ?await dbClient.auth.signUp({email,password,options:{data:{first_name:firstName},emailRedirectTo:location.protocol==='https:'||location.protocol==='http:'?location.href:undefined}})
     :await dbClient.auth.signInWithPassword({email,password});
@@ -1293,6 +1897,63 @@ async function sendPasswordReset(){
   if(error){const limited=error.status===429||error.code==='over_email_send_rate_limit'||/rate limit/i.test(error.message||'');errorEl.textContent=limited?'Limite temporaire d’e-mails Supabase atteinte. Attends environ une heure avant de réessayer.':'Impossible d’envoyer l’e-mail pour le moment. Réessaie dans quelques minutes.';errorEl.style.display='block';return;}
   localStorage.setItem('dropdigital_last_password_reset',String(Date.now()));
   message.textContent='E-mail envoyé. Ouvre le lien reçu pour choisir un nouveau mot de passe, puis reviens te connecter.';message.style.display='block';
+}
+
+
+async function restoreSignupConfirmationFromEmail(){
+  const hash=new URLSearchParams(location.hash.replace(/^#/,''));
+
+  if(hash.get('confirm')!=='1')return;
+
+  const email=(hash.get('email')||'').trim().toLowerCase();
+  const firstName=(hash.get('first_name')||'').trim();
+  const otp=(hash.get('otp')||'').replace(/\D/g,'').slice(0,8);
+
+  let pending=null;
+
+  try{
+    pending=JSON.parse(localStorage.getItem('dropdigital_pending_signup')||'null');
+
+    if(pending && pending.expiresAt && Date.now()>pending.expiresAt){
+      localStorage.removeItem('dropdigital_pending_signup');
+      pending=null;
+    }
+  }catch(_){}
+
+  const finalEmail=email || pending?.email || '';
+  const finalFirstName=firstName || pending?.firstName || '';
+  const finalPassword=pending?.password || '';
+
+  if(finalEmail){
+    document.getElementById('memberEmailInput').value=finalEmail;
+  }
+
+  if(finalFirstName){
+    document.getElementById('authFirstName').value=finalFirstName;
+  }
+
+  if(finalPassword){
+    document.getElementById('memberPasswordInput').value=finalPassword;
+  }
+
+  setAuthMode('pending');
+
+  const otpInput=document.getElementById('authOtpCode');
+
+  if(otpInput && otp){
+    otpInput.value=otp;
+  }
+
+  const message=document.getElementById('authMessage');
+
+  message.textContent='Code détecté depuis ton e-mail. Vérification de ton compte…';
+  message.style.display='block';
+
+  history.replaceState({},document.title,location.pathname);
+
+  if(otp && finalEmail){
+    setTimeout(()=>verifySignupOtp(),350);
+  }
 }
 
 async function verifySignupOtp(){
@@ -1339,6 +2000,7 @@ async function verifySignupOtp(){
   }
 
   status.textContent='✓ E-mail confirmé. Connexion réussie.';
+  try{localStorage.removeItem('dropdigital_pending_signup');}catch(_){}
   status.style.color='#62e998';
   status.style.display='block';
 
@@ -1354,6 +2016,8 @@ async function resendConfirmation(){
   if(error){errorEl.textContent='Impossible de renvoyer l’e-mail maintenant. Attends une minute puis réessaie.';errorEl.style.display='block';return;}
   message.textContent='E-mail de confirmation renvoyé. Vérifie aussi tes spams.';message.style.display='block';
 }
+
+restoreSignupConfirmationFromEmail();
 
 function beginGenerationHistory(theme){
   if(restoringHistory)return null;
@@ -7050,218 +7714,6 @@ async function downloadEbookPdf(){
   const parsed=new DOMParser().parseFromString(window._ebookHTML,'text/html');
   const styles=parsed.querySelector('style')?.textContent||'';
   const holder=document.createElement('div');holder.className='ebook-export-root';holder.innerHTML=`<style>${styles}</style><style>.ebook-export-root .ebook-page{width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:210mm!important;overflow:hidden!important}.ebook-export-root h1,.ebook-export-root h2{overflow-wrap:anywhere;word-break:normal;max-width:100%}
-/* ── DROPDIGITAL AUTH PREMIUM ───────────────────────── */
-
-#emailGate{
-  background:
-    radial-gradient(circle at 50% 35%, rgba(140,55,255,.10), transparent 32%),
-    rgba(3,0,8,.90);
-  backdrop-filter:blur(16px);
-}
-
-#emailGate .modal-card{
-  width:min(540px,calc(100vw - 32px));
-  padding:42px 42px 34px;
-  border:1px solid rgba(181,112,255,.22);
-  border-radius:28px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(148,65,255,.12),transparent 35%),
-    linear-gradient(180deg,rgba(20,7,31,.98),rgba(11,4,18,.98));
-  box-shadow:
-    0 30px 90px rgba(0,0,0,.55),
-    0 0 0 1px rgba(255,255,255,.025) inset,
-    0 0 70px rgba(131,52,230,.10);
-}
-
-.auth-premium-logo{
-  display:none;
-  width:68px;
-  height:68px;
-  margin:0 auto 22px;
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:
-    0 12px 34px rgba(112,38,210,.28),
-    0 0 0 1px rgba(199,149,255,.15);
-}
-
-.auth-premium-logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-#emailGateForm.is-pending{
-  text-align:center;
-  padding:42px 44px 36px;
-}
-
-#emailGateForm.is-pending .auth-premium-logo{
-  display:block;
-}
-
-#emailGateForm.is-pending .modal-eyebrow{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:7px 12px;
-  border-radius:999px;
-  background:rgba(155,77,255,.08);
-  border:1px solid rgba(177,112,255,.14);
-  font-size:10px;
-  letter-spacing:2px;
-  margin-bottom:18px;
-}
-
-#emailGateForm.is-pending #emailGateTitle{
-  font-size:clamp(34px,5vw,48px);
-  line-height:.98;
-  margin-bottom:14px;
-}
-
-#emailGateForm.is-pending #authModalCopy{
-  max-width:410px;
-  margin:0 auto 22px;
-  font-size:14px;
-  line-height:1.65;
-  color:#8d7d99;
-}
-
-#emailGateForm.is-pending #authMessage{
-  margin:0 auto 26px !important;
-  padding:12px 15px !important;
-  width:auto;
-  border:0 !important;
-  border-radius:12px;
-  background:rgba(76,214,137,.055) !important;
-  color:#72e6a5 !important;
-  font-size:12px !important;
-  line-height:1.55;
-}
-
-#emailGateForm.is-pending #authPendingActions{
-  display:flex !important;
-  flex-direction:column;
-  gap:0 !important;
-  margin-top:0 !important;
-  width:100%;
-}
-
-#emailGateForm.is-pending #authPendingActions > div:first-child{
-  width:100%;
-}
-
-#emailGateForm.is-pending label[for="authOtpCode"]{
-  margin:0 0 10px !important;
-  color:#80718b !important;
-  font-size:10px !important;
-  font-weight:800;
-  letter-spacing:1.6px;
-  text-align:center;
-}
-
-#emailGateForm.is-pending #authOtpCode{
-  width:100%;
-  height:64px;
-  box-sizing:border-box;
-  border:1px solid rgba(185,117,255,.22) !important;
-  border-radius:16px;
-  background:
-    linear-gradient(180deg,rgba(18,8,27,.95),rgba(11,5,17,.95)) !important;
-  color:#fff !important;
-  text-align:center !important;
-  font-size:24px !important;
-  font-weight:700 !important;
-  letter-spacing:9px !important;
-  outline:none;
-  box-shadow:0 0 0 1px rgba(255,255,255,.01) inset;
-  transition:.2s ease;
-}
-
-#emailGateForm.is-pending #authOtpCode:focus{
-  border-color:rgba(184,112,255,.68) !important;
-  box-shadow:
-    0 0 0 4px rgba(155,77,255,.08),
-    0 10px 30px rgba(93,25,164,.10);
-}
-
-#emailGateForm.is-pending #authPendingActions .member-tool-btn[onclick="verifySignupOtp()"]{
-  width:100%;
-  height:54px;
-  margin-top:12px;
-  border:0;
-  border-radius:15px;
-  background:linear-gradient(135deg,#a855f7,#7c3aed);
-  color:#fff;
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:1.2px;
-  box-shadow:
-    0 14px 32px rgba(124,58,237,.24),
-    0 1px 0 rgba(255,255,255,.16) inset;
-  transition:.2s ease;
-}
-
-#emailGateForm.is-pending #authPendingActions .member-tool-btn[onclick="verifySignupOtp()"]:hover{
-  transform:translateY(-1px);
-  box-shadow:
-    0 18px 38px rgba(124,58,237,.32),
-    0 1px 0 rgba(255,255,255,.16) inset;
-}
-
-#emailGateForm.is-pending #authPendingActions > div:last-child{
-  display:flex !important;
-  align-items:center;
-  justify-content:center;
-  gap:20px !important;
-  margin-top:20px;
-}
-
-#emailGateForm.is-pending #authPendingActions > div:last-child .member-tool-btn{
-  padding:0;
-  border:0;
-  background:transparent;
-  color:#897a94;
-  font-size:10px;
-  letter-spacing:.7px;
-  text-decoration:none;
-  box-shadow:none;
-}
-
-#emailGateForm.is-pending #authPendingActions > div:last-child .member-tool-btn:hover{
-  color:#c9a6eb;
-}
-
-#emailGateForm.is-pending .privacy-note{
-  margin-top:28px;
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,.045);
-  color:#4f4458;
-  font-size:10px;
-}
-
-@media(max-width:600px){
-  #emailGate .modal-card{
-    padding:32px 22px 26px;
-    border-radius:22px;
-  }
-
-  #emailGateForm.is-pending{
-    padding:32px 22px 26px;
-  }
-
-  #emailGateForm.is-pending #authOtpCode{
-    font-size:20px !important;
-    letter-spacing:6px !important;
-  }
-
-  #emailGateForm.is-pending #authPendingActions > div:last-child{
-    flex-direction:column;
-    gap:12px !important;
-  }
-}
-
 </style>${parsed.querySelector('.ebook-document')?.outerHTML||''}`;holder.style.cssText='position:absolute;left:0;top:0;width:210mm;background:#090614;z-index:999999;pointer-events:none;overflow:hidden;';document.body.appendChild(holder);
   await Promise.all([...holder.querySelectorAll('img')].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
   if(document.fonts?.ready)await document.fonts.ready;
