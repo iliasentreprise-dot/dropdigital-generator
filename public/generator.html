@@ -10434,53 +10434,54 @@ function cpRaw(text,btn){
 }
 function restart(){const profile=getProfile();S.step=0;S.a={prenom:profile.prenom||'',revenus:profile.revenus||''};document.getElementById('resultsScreen').classList.remove('show');document.getElementById('chatWrap').style.display='';document.querySelector('.site-header').style.display='';init();window.scrollTo({top:0,behavior:'smooth'});}
 function previewHTML(html){
+  const payload=String(html||'');
 
-  const popup=window.open('/v','_blank');
+  if(!payload.trim()){
+    alert("Cet aperçu est vide. Rouvre la création depuis « Mes créations » puis réessaie.");
+    return;
+  }
+
+  /*
+    Ouvre immédiatement la fenêtre pendant le clic utilisateur.
+    Safari accepte beaucoup mieux cette méthode qu'un échange postMessage.
+  */
+  const popup=window.open('about:blank','_blank');
 
   if(!popup){
     alert(
-      'Safari a bloqué l’aperçu. Autorise les pop-ups pour DropDigital.'
+      'Safari a bloqué l’aperçu. Autorise les fenêtres surgissantes pour DropDigital.'
     );
     return;
   }
 
-  const payload=String(html||'');
+  try{
+    popup.document.open();
+    popup.document.write(payload);
+    popup.document.close();
 
-  function handleReady(event){
+    try{
+      popup.focus();
+    }catch(_){}
 
-    if(
-      event.origin!==location.origin ||
-      event.source!==popup ||
-      event.data!=='DROPDIGITAL_PREVIEW_READY'
-    ){
-      return;
-    }
-
-    window.removeEventListener(
-      'message',
-      handleReady
+    console.log(
+      '[DropDigital] aperçu ouvert directement',
+      {
+        length:payload.length,
+        title:window._productTitle||''
+      }
     );
 
-    popup.postMessage(
-      {
-        type:'DROPDIGITAL_PREVIEW_HTML',
-        html:payload
-      },
-      location.origin
+  }catch(error){
+    console.error('[DropDigital] erreur aperçu',error);
+
+    try{
+      popup.close();
+    }catch(_){}
+
+    alert(
+      "Impossible d’ouvrir l’aperçu. Recharge DropDigital puis réessaie."
     );
   }
-
-  window.addEventListener(
-    'message',
-    handleReady
-  );
-
-  setTimeout(()=>{
-    window.removeEventListener(
-      'message',
-      handleReady
-    );
-  },15000);
 }
 
 init();
