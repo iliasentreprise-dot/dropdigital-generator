@@ -1005,6 +1005,9 @@
 
 <div class="app-modal show" id="emailGate" role="dialog" aria-modal="true" aria-labelledby="emailGateTitle">
   <form class="modal-card" id="emailGateForm" onsubmit="submitMemberAuth(event)">
+    <div class="auth-premium-logo">
+      <img src="/assets/dg-app-logo-v2.png" alt="DropDigital">
+    </div>
     <div class="modal-eyebrow">⚡ ESPACE MEMBRE SÉCURISÉ</div>
     <h2 class="modal-title" id="emailGateTitle">Retrouve toutes<br><span>tes créations.</span></h2>
     <p class="modal-copy" id="authModalCopy">Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.</p>
@@ -1241,6 +1244,7 @@ function updateMemberToolbar(){
 function isValidEmail(value){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value||'').trim());}
 function setAuthMode(mode){
   authMode=mode;const signup=mode==='signup',recovery=mode==='recovery',pending=mode==='pending';
+  document.getElementById('emailGateForm')?.classList.toggle('is-pending',pending);
   document.getElementById('emailGateTitle').innerHTML=recovery?'Choisis ton nouveau<br><span>mot de passe.</span>':'Retrouve toutes<br><span>tes créations.</span>';
   document.getElementById('authModalCopy').textContent=recovery?'Entre un nouveau mot de passe sécurisé. Il remplacera immédiatement l’ancien.':'Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.';
   document.querySelector('.auth-tabs').style.display=recovery||pending?'none':'grid';
@@ -7045,7 +7049,220 @@ async function downloadEbookPdf(){
   if(!window._ebookHTML)return;
   const parsed=new DOMParser().parseFromString(window._ebookHTML,'text/html');
   const styles=parsed.querySelector('style')?.textContent||'';
-  const holder=document.createElement('div');holder.className='ebook-export-root';holder.innerHTML=`<style>${styles}</style><style>.ebook-export-root .ebook-page{width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:210mm!important;overflow:hidden!important}.ebook-export-root h1,.ebook-export-root h2{overflow-wrap:anywhere;word-break:normal;max-width:100%}</style>${parsed.querySelector('.ebook-document')?.outerHTML||''}`;holder.style.cssText='position:absolute;left:0;top:0;width:210mm;background:#090614;z-index:999999;pointer-events:none;overflow:hidden;';document.body.appendChild(holder);
+  const holder=document.createElement('div');holder.className='ebook-export-root';holder.innerHTML=`<style>${styles}</style><style>.ebook-export-root .ebook-page{width:210mm!important;height:297mm!important;min-height:297mm!important;max-width:210mm!important;overflow:hidden!important}.ebook-export-root h1,.ebook-export-root h2{overflow-wrap:anywhere;word-break:normal;max-width:100%}
+/* ── DROPDIGITAL AUTH PREMIUM ───────────────────────── */
+
+#emailGate{
+  background:
+    radial-gradient(circle at 50% 35%, rgba(140,55,255,.10), transparent 32%),
+    rgba(3,0,8,.90);
+  backdrop-filter:blur(16px);
+}
+
+#emailGate .modal-card{
+  width:min(540px,calc(100vw - 32px));
+  padding:42px 42px 34px;
+  border:1px solid rgba(181,112,255,.22);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(148,65,255,.12),transparent 35%),
+    linear-gradient(180deg,rgba(20,7,31,.98),rgba(11,4,18,.98));
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.025) inset,
+    0 0 70px rgba(131,52,230,.10);
+}
+
+.auth-premium-logo{
+  display:none;
+  width:68px;
+  height:68px;
+  margin:0 auto 22px;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:
+    0 12px 34px rgba(112,38,210,.28),
+    0 0 0 1px rgba(199,149,255,.15);
+}
+
+.auth-premium-logo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+#emailGateForm.is-pending{
+  text-align:center;
+  padding:42px 44px 36px;
+}
+
+#emailGateForm.is-pending .auth-premium-logo{
+  display:block;
+}
+
+#emailGateForm.is-pending .modal-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(155,77,255,.08);
+  border:1px solid rgba(177,112,255,.14);
+  font-size:10px;
+  letter-spacing:2px;
+  margin-bottom:18px;
+}
+
+#emailGateForm.is-pending #emailGateTitle{
+  font-size:clamp(34px,5vw,48px);
+  line-height:.98;
+  margin-bottom:14px;
+}
+
+#emailGateForm.is-pending #authModalCopy{
+  max-width:410px;
+  margin:0 auto 22px;
+  font-size:14px;
+  line-height:1.65;
+  color:#8d7d99;
+}
+
+#emailGateForm.is-pending #authMessage{
+  margin:0 auto 26px !important;
+  padding:12px 15px !important;
+  width:auto;
+  border:0 !important;
+  border-radius:12px;
+  background:rgba(76,214,137,.055) !important;
+  color:#72e6a5 !important;
+  font-size:12px !important;
+  line-height:1.55;
+}
+
+#emailGateForm.is-pending #authPendingActions{
+  display:flex !important;
+  flex-direction:column;
+  gap:0 !important;
+  margin-top:0 !important;
+  width:100%;
+}
+
+#emailGateForm.is-pending #authPendingActions > div:first-child{
+  width:100%;
+}
+
+#emailGateForm.is-pending label[for="authOtpCode"]{
+  margin:0 0 10px !important;
+  color:#80718b !important;
+  font-size:10px !important;
+  font-weight:800;
+  letter-spacing:1.6px;
+  text-align:center;
+}
+
+#emailGateForm.is-pending #authOtpCode{
+  width:100%;
+  height:64px;
+  box-sizing:border-box;
+  border:1px solid rgba(185,117,255,.22) !important;
+  border-radius:16px;
+  background:
+    linear-gradient(180deg,rgba(18,8,27,.95),rgba(11,5,17,.95)) !important;
+  color:#fff !important;
+  text-align:center !important;
+  font-size:24px !important;
+  font-weight:700 !important;
+  letter-spacing:9px !important;
+  outline:none;
+  box-shadow:0 0 0 1px rgba(255,255,255,.01) inset;
+  transition:.2s ease;
+}
+
+#emailGateForm.is-pending #authOtpCode:focus{
+  border-color:rgba(184,112,255,.68) !important;
+  box-shadow:
+    0 0 0 4px rgba(155,77,255,.08),
+    0 10px 30px rgba(93,25,164,.10);
+}
+
+#emailGateForm.is-pending #authPendingActions .member-tool-btn[onclick="verifySignupOtp()"]{
+  width:100%;
+  height:54px;
+  margin-top:12px;
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(135deg,#a855f7,#7c3aed);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  box-shadow:
+    0 14px 32px rgba(124,58,237,.24),
+    0 1px 0 rgba(255,255,255,.16) inset;
+  transition:.2s ease;
+}
+
+#emailGateForm.is-pending #authPendingActions .member-tool-btn[onclick="verifySignupOtp()"]:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 18px 38px rgba(124,58,237,.32),
+    0 1px 0 rgba(255,255,255,.16) inset;
+}
+
+#emailGateForm.is-pending #authPendingActions > div:last-child{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:20px !important;
+  margin-top:20px;
+}
+
+#emailGateForm.is-pending #authPendingActions > div:last-child .member-tool-btn{
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#897a94;
+  font-size:10px;
+  letter-spacing:.7px;
+  text-decoration:none;
+  box-shadow:none;
+}
+
+#emailGateForm.is-pending #authPendingActions > div:last-child .member-tool-btn:hover{
+  color:#c9a6eb;
+}
+
+#emailGateForm.is-pending .privacy-note{
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.045);
+  color:#4f4458;
+  font-size:10px;
+}
+
+@media(max-width:600px){
+  #emailGate .modal-card{
+    padding:32px 22px 26px;
+    border-radius:22px;
+  }
+
+  #emailGateForm.is-pending{
+    padding:32px 22px 26px;
+  }
+
+  #emailGateForm.is-pending #authOtpCode{
+    font-size:20px !important;
+    letter-spacing:6px !important;
+  }
+
+  #emailGateForm.is-pending #authPendingActions > div:last-child{
+    flex-direction:column;
+    gap:12px !important;
+  }
+}
+
+</style>${parsed.querySelector('.ebook-document')?.outerHTML||''}`;holder.style.cssText='position:absolute;left:0;top:0;width:210mm;background:#090614;z-index:999999;pointer-events:none;overflow:hidden;';document.body.appendChild(holder);
   await Promise.all([...holder.querySelectorAll('img')].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=resolve;img.onerror=resolve;})));
   if(document.fonts?.ready)await document.fonts.ready;
   const filename=((window._productTitle||'ebook-dropdigital').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'ebook-dropdigital')+'.pdf';
