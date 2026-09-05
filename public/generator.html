@@ -994,1517 +994,16 @@
 
 </style>
 
-<style id="dd-auth-premium-v2">
 
-/* ─────────────────────────────────────
-   DROPDIGITAL — AUTH PREMIUM V2
-───────────────────────────────────── */
 
-#emailGate{
-  padding:24px !important;
-  align-items:center !important;
-  justify-content:center !important;
 
-  background:
-    radial-gradient(
-      circle at 50% 42%,
-      rgba(119,45,210,.13),
-      transparent 34%
-    ),
-    rgba(3,0,8,.94) !important;
 
-  backdrop-filter:blur(18px);
-}
 
 
-/* CARD */
 
-#emailGateForm.is-pending{
-  display:block !important;
 
-  width:min(460px,calc(100vw - 32px)) !important;
-  height:auto !important;
-  min-height:0 !important;
-  max-height:none !important;
 
-  overflow:visible !important;
 
-  padding:38px 38px 30px !important;
-
-  text-align:center !important;
-
-  border:
-    1px solid rgba(186,116,255,.18) !important;
-
-  border-radius:24px !important;
-
-  background:
-    radial-gradient(
-      circle at 50% -15%,
-      rgba(158,72,255,.15),
-      transparent 45%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(18,7,27,.98),
-      rgba(9,3,15,.99)
-    ) !important;
-
-  box-shadow:
-    0 40px 100px rgba(0,0,0,.58),
-    0 0 80px rgba(109,39,193,.10),
-    inset 0 1px 0 rgba(255,255,255,.035) !important;
-}
-
-
-/* LOGO */
-
-.auth-premium-logo{
-  display:none;
-}
-
-#emailGateForm.is-pending .auth-premium-logo{
-  display:flex !important;
-
-  width:70px;
-  height:70px;
-
-  align-items:center;
-  justify-content:center;
-
-  margin:0 auto 22px;
-
-  border-radius:20px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(128,49,230,.14),
-      rgba(64,19,113,.07)
-    );
-
-  box-shadow:
-    0 15px 38px rgba(90,29,177,.20);
-}
-
-#emailGateForm.is-pending .auth-premium-logo img{
-  display:block;
-
-  width:70px;
-  height:70px;
-
-  object-fit:contain;
-}
-
-
-/* EYEBROW */
-
-#emailGateForm.is-pending .modal-eyebrow{
-  display:inline-flex !important;
-
-  align-items:center;
-  justify-content:center;
-
-  margin:0 auto 16px !important;
-
-  color:#a96cff !important;
-
-  font-size:9px !important;
-  font-weight:800 !important;
-
-  letter-spacing:2.5px !important;
-}
-
-
-/* TITLE */
-
-#emailGateForm.is-pending #emailGateTitle{
-  margin:0 !important;
-
-  text-align:center !important;
-
-  font-size:46px !important;
-  line-height:.97 !important;
-
-  letter-spacing:.2px !important;
-}
-
-#emailGateForm.is-pending #emailGateTitle span{
-  background:
-    linear-gradient(
-      90deg,
-      #d394ff,
-      #9f63ff
-    );
-
-  -webkit-background-clip:text;
-  background-clip:text;
-
-  color:transparent !important;
-}
-
-
-/* COPY */
-
-#emailGateForm.is-pending #authModalCopy{
-  max-width:340px;
-
-  margin:
-    16px auto 20px !important;
-
-  text-align:center !important;
-
-  color:#85758e !important;
-
-  font-size:13px !important;
-  line-height:1.65 !important;
-}
-
-
-/* SUCCESS MESSAGE */
-
-#emailGateForm.is-pending #authMessage{
-  margin:
-    0 auto 22px !important;
-
-  padding:
-    10px 14px !important;
-
-  border:
-    1px solid rgba(81,221,143,.10) !important;
-
-  border-radius:11px !important;
-
-  background:
-    rgba(61,199,126,.045) !important;
-
-  color:#79dca5 !important;
-
-  text-align:center !important;
-
-  font-size:11px !important;
-  line-height:1.5 !important;
-}
-
-
-/* OTP CONTAINER */
-
-#emailGateForm.is-pending #authPendingActions{
-  display:block !important;
-
-  width:100% !important;
-
-  margin:0 !important;
-}
-
-.dd-otp-shell{
-  width:100%;
-}
-
-
-/* EMAIL SENT BADGE */
-
-.dd-mail-status{
-  display:inline-flex;
-
-  align-items:center;
-
-  gap:7px;
-
-  margin-bottom:18px;
-
-  padding:
-    6px 10px;
-
-  border:
-    1px solid rgba(102,230,155,.10);
-
-  border-radius:999px;
-
-  background:
-    rgba(67,210,132,.045);
-
-  color:#75dca4;
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:1.5px;
-}
-
-.dd-mail-dot{
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:#69e69f;
-
-  box-shadow:
-    0 0 9px rgba(105,230,159,.65);
-}
-
-
-/* LABEL */
-
-.dd-otp-label{
-  margin-bottom:9px;
-
-  color:#716578;
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:1.8px;
-}
-
-
-/* INPUT */
-
-.dd-otp-input{
-  display:block;
-
-  width:100% !important;
-  height:62px !important;
-
-  box-sizing:border-box !important;
-
-  margin:0 !important;
-
-  padding:
-    0 20px !important;
-
-  border:
-    1px solid rgba(184,113,255,.18) !important;
-
-  border-radius:15px !important;
-
-  outline:none !important;
-
-  background:
-    rgba(10,4,16,.86) !important;
-
-  color:#fff !important;
-
-  text-align:center !important;
-
-  font-family:
-    'DM Sans',
-    sans-serif !important;
-
-  font-size:23px !important;
-  font-weight:700 !important;
-
-  letter-spacing:8px !important;
-
-  transition:
-    border-color .2s ease,
-    box-shadow .2s ease,
-    transform .2s ease;
-}
-
-.dd-otp-input::placeholder{
-  color:#4b4052 !important;
-}
-
-.dd-otp-input:focus{
-  border-color:
-    rgba(174,92,255,.68) !important;
-
-  box-shadow:
-    0 0 0 4px rgba(155,77,255,.075),
-    0 12px 28px rgba(88,24,154,.08) !important;
-}
-
-
-/* PRIMARY CTA */
-
-.dd-auth-primary{
-  display:flex;
-
-  width:100%;
-  height:54px;
-
-  align-items:center;
-  justify-content:center;
-
-  gap:10px;
-
-  margin-top:11px;
-
-  border:0;
-
-  border-radius:14px;
-
-  cursor:pointer;
-
-  background:
-    linear-gradient(
-      135deg,
-      #a64cff,
-      #7c3aed
-    );
-
-  color:white;
-
-  font-family:
-    'DM Sans',
-    sans-serif;
-
-  font-size:11px;
-  font-weight:900;
-
-  letter-spacing:1.4px;
-
-  box-shadow:
-    0 14px 30px rgba(124,58,237,.24),
-    inset 0 1px 0 rgba(255,255,255,.20);
-
-  transition:
-    transform .18s ease,
-    box-shadow .18s ease,
-    filter .18s ease;
-}
-
-.dd-auth-primary:hover{
-  transform:
-    translateY(-1px);
-
-  filter:
-    brightness(1.07);
-
-  box-shadow:
-    0 18px 38px rgba(124,58,237,.32),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-
-.dd-auth-primary:active{
-  transform:
-    translateY(0);
-}
-
-.dd-auth-primary:disabled{
-  cursor:wait;
-
-  opacity:.65;
-
-  transform:none;
-}
-
-.dd-auth-arrow{
-  font-size:17px;
-
-  line-height:1;
-
-  opacity:.9;
-}
-
-
-/* OTP FEEDBACK */
-
-.dd-otp-feedback{
-  display:none;
-
-  margin-top:10px;
-
-  font-size:11px;
-
-  line-height:1.5;
-}
-
-
-/* DIVIDER */
-
-.dd-auth-divider{
-  display:flex;
-
-  align-items:center;
-
-  gap:13px;
-
-  margin:
-    23px 0 15px;
-
-  color:#4c424f;
-
-  font-size:8px;
-  font-weight:800;
-
-  letter-spacing:1.7px;
-}
-
-.dd-auth-divider::before,
-.dd-auth-divider::after{
-  content:"";
-
-  flex:1;
-
-  height:1px;
-
-  background:
-    rgba(255,255,255,.055);
-}
-
-
-/* SECONDARY ACTIONS */
-
-.dd-auth-secondary{
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  gap:12px;
-}
-
-.dd-auth-link{
-  padding:4px;
-
-  border:0;
-
-  cursor:pointer;
-
-  background:transparent;
-
-  color:#817486;
-
-  font-family:
-    'DM Sans',
-    sans-serif;
-
-  font-size:10px;
-  font-weight:700;
-
-  transition:
-    color .18s ease;
-}
-
-.dd-auth-link:hover{
-  color:#c7a1e9;
-}
-
-.dd-auth-separator{
-  color:#413746;
-
-  font-size:10px;
-}
-
-
-/* PRIVACY NOTE */
-
-#emailGateForm.is-pending .privacy-note{
-  display:none !important;
-}
-
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-  #emailGate{
-    padding:16px !important;
-  }
-
-  #emailGateForm.is-pending{
-    width:
-      calc(100vw - 28px) !important;
-
-    padding:
-      30px 20px 26px !important;
-
-    border-radius:
-      21px !important;
-  }
-
-  #emailGateForm.is-pending #emailGateTitle{
-    font-size:
-      39px !important;
-  }
-
-  .dd-otp-input{
-    height:
-      58px !important;
-
-    font-size:
-      20px !important;
-
-    letter-spacing:
-      6px !important;
-  }
-
-}
-
-</style>
-
-
-<style id="dd-global-premium-v3">
-
-/* ═══════════════════════════════════════════════
-   DROPDIGITAL — PREMIUM DESIGN SYSTEM V3
-═══════════════════════════════════════════════ */
-
-:root{
-  --dd-bg:#050208;
-  --dd-bg-soft:#0a0410;
-  --dd-surface:rgba(19,9,28,.82);
-  --dd-surface-2:rgba(28,13,41,.72);
-  --dd-border:rgba(200,150,255,.12);
-  --dd-border-hover:rgba(190,120,255,.28);
-  --dd-purple:#9d46ff;
-  --dd-purple-2:#bd72ff;
-  --dd-purple-3:#7025d7;
-  --dd-text:#f7f1fc;
-  --dd-muted:#9586a1;
-  --dd-muted-2:#675b70;
-  --dd-green:#6bf0ad;
-
-  --dd-radius-xl:28px;
-  --dd-radius-lg:20px;
-  --dd-radius-md:16px;
-  --dd-radius-sm:12px;
-
-  --dd-shadow:
-    0 40px 100px rgba(0,0,0,.52),
-    0 0 80px rgba(138,48,225,.08);
-
-  --dd-glow:
-    0 0 0 1px rgba(175,95,255,.22),
-    0 14px 40px rgba(120,35,205,.20);
-}
-
-/* ── GLOBAL ───────────────────────────────── */
-
-html{
-  background:#030106;
-}
-
-body{
-  background:
-    radial-gradient(circle at 50% -10%,rgba(130,48,220,.15),transparent 34%),
-    radial-gradient(circle at 15% 40%,rgba(84,25,140,.08),transparent 28%),
-    radial-gradient(circle at 88% 62%,rgba(117,42,190,.07),transparent 27%),
-    linear-gradient(180deg,#050208 0%,#030106 100%) !important;
-  color:var(--dd-text);
-}
-
-button,
-input,
-textarea,
-select,
-a{
-  -webkit-tap-highlight-color:transparent;
-}
-
-button{
-  transition:
-    transform .18s ease,
-    border-color .18s ease,
-    background .18s ease,
-    box-shadow .18s ease,
-    color .18s ease;
-}
-
-/* ── AUTH BACKDROP ────────────────────────── */
-
-#emailGate{
-  background:
-    radial-gradient(circle at 50% 35%,rgba(139,49,230,.13),transparent 33%),
-    rgba(3,1,6,.84) !important;
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-}
-
-/* ── AUTH CARD ────────────────────────────── */
-
-#emailGate .modal-card{
-  width:min(620px,calc(100vw - 32px)) !important;
-
-  padding:44px 44px 36px !important;
-
-  border-radius:var(--dd-radius-xl) !important;
-
-  border:1px solid rgba(184,124,245,.14) !important;
-
-  background:
-    radial-gradient(circle at 50% 0%,rgba(127,43,206,.13),transparent 30%),
-    linear-gradient(
-      145deg,
-      rgba(22,10,32,.96),
-      rgba(9,4,14,.96)
-    ) !important;
-
-  box-shadow:
-    var(--dd-shadow),
-    inset 0 1px 0 rgba(255,255,255,.035) !important;
-
-  overflow:hidden;
-}
-
-#emailGate .modal-card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  border-radius:inherit;
-  background:
-    linear-gradient(
-      120deg,
-      rgba(255,255,255,.035),
-      transparent 28%
-    );
-}
-
-/* ── EYEBROW ──────────────────────────────── */
-
-#emailGate .modal-eyebrow{
-  color:#bb78ff !important;
-  font-size:10px !important;
-  letter-spacing:4px !important;
-  font-weight:800 !important;
-  margin-bottom:15px !important;
-}
-
-/* ── TITLE ────────────────────────────────── */
-
-#emailGate .modal-title{
-  font-size:clamp(42px,6vw,61px) !important;
-  line-height:.94 !important;
-  letter-spacing:.3px !important;
-  margin-bottom:18px !important;
-}
-
-#emailGate .modal-title span{
-  color:#b65fff !important;
-
-  text-shadow:
-    0 0 30px rgba(164,68,255,.18);
-}
-
-#emailGate .modal-copy{
-  color:#a898b4 !important;
-  line-height:1.7 !important;
-  font-size:14px !important;
-  max-width:500px;
-}
-
-/* ── AUTH SEGMENTED CONTROL ───────────────── */
-
-#emailGate .auth-tabs{
-  margin-top:27px !important;
-  padding:5px !important;
-  gap:4px !important;
-
-  border-radius:16px !important;
-
-  border:1px solid rgba(255,255,255,.055) !important;
-
-  background:rgba(255,255,255,.025) !important;
-
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.02) !important;
-}
-
-#emailGate .auth-tab{
-  min-height:48px !important;
-
-  border:0 !important;
-  border-radius:12px !important;
-
-  background:transparent !important;
-
-  color:#72657c !important;
-
-  font-size:11px !important;
-  font-weight:800 !important;
-  letter-spacing:.6px !important;
-}
-
-#emailGate .auth-tab:hover{
-  color:#bcaac9 !important;
-  background:rgba(255,255,255,.025) !important;
-}
-
-#emailGate .auth-tab.active{
-  color:white !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(170,83,255,.20),
-      rgba(116,41,188,.12)
-    ) !important;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(189,112,255,.22),
-    0 8px 24px rgba(92,26,151,.12) !important;
-}
-
-/* ── FORM LABELS ──────────────────────────── */
-
-#emailGate .text-input-wrap{
-  margin-top:19px !important;
-}
-
-#emailGate .text-input-wrap label{
-  color:#8c6da6 !important;
-
-  font-size:10px !important;
-  letter-spacing:2px !important;
-
-  margin:0 0 8px 3px !important;
-
-  font-weight:700 !important;
-}
-
-/* ── INPUTS ───────────────────────────────── */
-
-#emailGate .q-input,
-#emailGate input[type="text"],
-#emailGate input[type="email"],
-#emailGate input[type="password"]{
-  width:100% !important;
-  height:58px !important;
-
-  padding:0 18px !important;
-
-  border-radius:var(--dd-radius-md) !important;
-
-  border:1px solid rgba(255,255,255,.07) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.033),
-      rgba(255,255,255,.015)
-    ) !important;
-
-  color:#f8f3fb !important;
-
-  outline:none !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-
-  transition:
-    border-color .2s ease,
-    box-shadow .2s ease,
-    background .2s ease,
-    transform .2s ease !important;
-}
-
-#emailGate .q-input:hover{
-  border-color:rgba(191,124,255,.17) !important;
-}
-
-#emailGate .q-input:focus,
-#emailGate input:focus{
-  border-color:rgba(179,94,255,.50) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(167,79,255,.075),
-      rgba(255,255,255,.018)
-    ) !important;
-
-  box-shadow:
-    0 0 0 4px rgba(157,70,255,.08),
-    0 12px 35px rgba(97,28,158,.10) !important;
-}
-
-/* ── CHECKBOX ─────────────────────────────── */
-
-#memberConsentWrap{
-  margin-top:19px !important;
-
-  padding:13px 15px !important;
-
-  border-radius:13px !important;
-
-  background:rgba(255,255,255,.018) !important;
-
-  border:1px solid rgba(255,255,255,.04) !important;
-
-  color:#82758d !important;
-}
-
-#memberConsent{
-  width:16px;
-  height:16px;
-
-  border-radius:5px !important;
-
-  accent-color:#a34dff !important;
-}
-
-/* ── PRIMARY CTA ──────────────────────────── */
-
-#emailGate .next-btn,
-#emailGate .dd-auth-primary{
-  width:100% !important;
-  min-height:58px !important;
-
-  margin-top:24px !important;
-
-  border:0 !important;
-  border-radius:16px !important;
-
-  background:
-    linear-gradient(
-      115deg,
-      #7b2ddd 0%,
-      #a848ff 45%,
-      #bd6cff 100%
-    ) !important;
-
-  color:white !important;
-
-  font-weight:900 !important;
-  font-size:12px !important;
-  letter-spacing:1.5px !important;
-
-  box-shadow:
-    0 17px 40px rgba(127,43,220,.24),
-    inset 0 1px 0 rgba(255,255,255,.23) !important;
-
-  cursor:pointer;
-}
-
-#emailGate .next-btn:hover,
-#emailGate .dd-auth-primary:hover{
-  transform:translateY(-2px) !important;
-
-  box-shadow:
-    0 22px 48px rgba(145,49,239,.32),
-    inset 0 1px 0 rgba(255,255,255,.28) !important;
-}
-
-#emailGate .next-btn:active,
-#emailGate .dd-auth-primary:active{
-  transform:translateY(0) scale(.992) !important;
-}
-
-/* ── AUTH MESSAGE ─────────────────────────── */
-
-#emailGate .auth-message{
-  border-radius:14px !important;
-  border:1px solid rgba(105,239,169,.10) !important;
-
-  background:rgba(49,138,91,.055) !important;
-
-  color:#76e9ae !important;
-
-  padding:13px 16px !important;
-
-  line-height:1.6 !important;
-}
-
-/* ── OTP ──────────────────────────────────── */
-
-#emailGateForm.is-pending #authOtpCode{
-  height:64px !important;
-
-  border-radius:17px !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.034),
-      rgba(255,255,255,.012)
-    ) !important;
-
-  border:1px solid rgba(191,120,255,.16) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-}
-
-#emailGateForm.is-pending #authOtpCode:focus{
-  border-color:rgba(178,92,255,.55) !important;
-
-  box-shadow:
-    0 0 0 4px rgba(164,75,255,.08),
-    0 15px 45px rgba(100,32,162,.12) !important;
-}
-
-#emailGateForm.is-pending #authPendingActions{
-  margin-top:19px !important;
-}
-
-#emailGateForm.is-pending .dd-auth-secondary,
-#emailGateForm.is-pending #authPendingActions{
-  color:#706479 !important;
-}
-
-/* ── PRIVACY ──────────────────────────────── */
-
-#emailGate .privacy-note{
-  margin-top:23px !important;
-
-  color:#514758 !important;
-
-  font-size:10px !important;
-
-  text-align:center !important;
-}
-
-/* ═══════════════════════════════════════════════
-   FLOATING MEMBER TOOLBAR
-═══════════════════════════════════════════════ */
-
-.member-toolbar{
-  top:18px !important;
-  right:18px !important;
-
-  padding:6px !important;
-
-  gap:5px !important;
-
-  border-radius:17px !important;
-
-  border:1px solid rgba(255,255,255,.065) !important;
-
-  background:rgba(12,6,18,.76) !important;
-
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
-  box-shadow:
-    0 18px 50px rgba(0,0,0,.32),
-    inset 0 1px 0 rgba(255,255,255,.03) !important;
-}
-
-.member-toolbar .member-tool-btn{
-  border:0 !important;
-
-  border-radius:11px !important;
-
-  background:transparent !important;
-
-  padding:9px 12px !important;
-
-  color:#9f90ab !important;
-}
-
-.member-toolbar .member-tool-btn:hover{
-  color:#fff !important;
-
-  background:rgba(175,88,255,.09) !important;
-}
-
-/* ── SECONDARY BUTTONS GLOBAL ─────────────── */
-
-.member-tool-btn{
-  border-radius:12px !important;
-}
-
-/* ═══════════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════════ */
-
-.site-header{
-  padding-top:68px !important;
-}
-
-.header-badge{
-  border-radius:999px !important;
-
-  border:1px solid rgba(182,105,255,.14) !important;
-
-  background:rgba(143,58,216,.06) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.03) !important;
-}
-
-.site-header h1 span{
-  text-shadow:0 0 35px rgba(173,76,255,.22);
-}
-
-.progress-wrap{
-  border-radius:999px !important;
-}
-
-/* ═══════════════════════════════════════════════
-   QUESTION / ANSWER SURFACES
-═══════════════════════════════════════════════ */
-
-.chat-wrap > div,
-.question-card,
-.answer-card,
-.choice-card,
-.option-card{
-  border-radius:20px;
-}
-
-.q-input{
-  border-radius:15px !important;
-}
-
-.choice-btn,
-.option-btn,
-.answer-option{
-  border-radius:16px !important;
-
-  border-color:rgba(255,255,255,.07) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.032),
-      rgba(255,255,255,.014)
-    ) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.02);
-}
-
-.choice-btn:hover,
-.option-btn:hover,
-.answer-option:hover{
-  transform:translateY(-2px);
-
-  border-color:rgba(180,97,255,.24) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(166,78,255,.08),
-      rgba(255,255,255,.018)
-    ) !important;
-
-  box-shadow:
-    0 14px 34px rgba(72,17,118,.12);
-}
-
-/* ═══════════════════════════════════════════════
-   RESULTS / STUDIO
-═══════════════════════════════════════════════ */
-
-.build-workspace{
-  border-radius:24px !important;
-}
-
-.studio-nav{
-  gap:7px !important;
-
-  padding:6px !important;
-
-  border-radius:17px !important;
-
-  border:1px solid rgba(255,255,255,.055) !important;
-
-  background:rgba(255,255,255,.018) !important;
-}
-
-.studio-nav-btn{
-  border-radius:12px !important;
-
-  border-color:transparent !important;
-}
-
-.studio-panel{
-  border-radius:22px !important;
-
-  border:1px solid rgba(255,255,255,.055) !important;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(19,9,27,.76),
-      rgba(8,4,12,.82)
-    ) !important;
-}
-
-/* ── SALES GENERATION ─────────────────────── */
-
-.sales-build{
-  border-radius:24px !important;
-
-  border:1px solid rgba(180,105,255,.11) !important;
-
-  background:
-    radial-gradient(circle at 50% 15%,rgba(151,64,231,.12),transparent 33%),
-    linear-gradient(180deg,#0b0510,#07030b) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025),
-    0 30px 90px rgba(0,0,0,.28) !important;
-}
-
-.sales-build-logo{
-  width:92px !important;
-  height:92px !important;
-
-  padding:15px !important;
-
-  display:grid !important;
-  place-items:center !important;
-
-  border-radius:26px !important;
-
-  border:1px solid rgba(184,105,255,.13) !important;
-
-  background:
-    radial-gradient(circle at 50% 35%,rgba(139,55,223,.20),transparent 60%),
-    rgba(22,8,34,.75) !important;
-
-  box-shadow:
-    0 18px 50px rgba(79,18,132,.25),
-    inset 0 1px 0 rgba(255,255,255,.05) !important;
-
-  animation:ddLogoFloat 3.2s ease-in-out infinite !important;
-}
-
-.sales-build-logo img{
-  width:100%;
-  height:100%;
-
-  object-fit:contain;
-
-  display:block;
-
-  filter:
-    drop-shadow(0 8px 14px rgba(104,35,180,.25));
-}
-
-@keyframes ddLogoFloat{
-  0%,100%{
-    transform:translateY(0) scale(1);
-  }
-  50%{
-    transform:translateY(-8px) scale(1.025);
-  }
-}
-
-.sales-build-step{
-  border-radius:13px !important;
-
-  border:1px solid rgba(255,255,255,.045) !important;
-
-  background:rgba(255,255,255,.018) !important;
-
-  padding:14px 16px !important;
-}
-
-.sales-build-step.active{
-  border-color:rgba(173,83,255,.19) !important;
-
-  background:rgba(152,64,231,.06) !important;
-
-  box-shadow:
-    inset 3px 0 0 rgba(176,87,255,.55) !important;
-}
-
-.sales-build-step.done{
-  border-color:rgba(85,226,151,.12) !important;
-
-  background:rgba(62,171,111,.045) !important;
-}
-
-/* ── EBOOK ACTION PILLS ───────────────────── */
-
-.dd-ebook-pill{
-  border-radius:999px !important;
-}
-
-/* ═══════════════════════════════════════════════
-   MODALS GLOBALES
-═══════════════════════════════════════════════ */
-
-.app-modal:not(#emailGate) .modal-card{
-  border-radius:26px !important;
-
-  border:1px solid rgba(190,126,255,.12) !important;
-
-  background:
-    radial-gradient(circle at 50% 0%,rgba(142,55,223,.08),transparent 28%),
-    rgba(12,5,18,.96) !important;
-
-  box-shadow:var(--dd-shadow) !important;
-}
-
-.modal-close{
-  border-radius:999px !important;
-
-  background:rgba(255,255,255,.04) !important;
-
-  border:1px solid rgba(255,255,255,.055) !important;
-}
-
-.modal-close:hover{
-  background:rgba(172,83,255,.10) !important;
-}
-
-/* ═══════════════════════════════════════════════
-   MOBILE
-═══════════════════════════════════════════════ */
-
-@media(max-width:650px){
-
-  #emailGate .modal-card{
-    width:calc(100vw - 22px) !important;
-
-    padding:31px 21px 26px !important;
-
-    border-radius:23px !important;
-  }
-
-  #emailGate .modal-title{
-    font-size:40px !important;
-  }
-
-  #emailGate .auth-tabs{
-    margin-top:22px !important;
-  }
-
-  .member-toolbar{
-    top:10px !important;
-    left:10px !important;
-    right:10px !important;
-
-    justify-content:center;
-  }
-
-  .member-email-label{
-    display:none !important;
-  }
-
-  .sales-build{
-    padding:26px 18px !important;
-  }
-
-}
-
-</style>
-
-
-<style id="dd-auth-scroll-fix">
-
-/* ═══════════════════════════════════════════════
-   AUTH MODAL — SCROLL + BACKDROP FIX
-═══════════════════════════════════════════════ */
-
-/*
-  Plus de contenu du site visible/flouté derrière.
-  On garde seulement un fond noir/violet premium.
-*/
-#emailGate{
-  position:fixed !important;
-  inset:0 !important;
-
-  width:100% !important;
-  height:100dvh !important;
-
-  padding:22px 16px !important;
-
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-
-  overflow:hidden !important;
-
-  background:
-    radial-gradient(
-      circle at 50% 18%,
-      rgba(116,39,190,.12),
-      transparent 36%
-    ),
-    #050208 !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-
-  overscroll-behavior:none !important;
-}
-
-/*
-  C'est maintenant LA CARTE qui scroll,
-  pas le fond du site.
-*/
-#emailGate .modal-card{
-  position:relative !important;
-
-  width:min(620px,100%) !important;
-
-  max-height:calc(100dvh - 44px) !important;
-
-  margin:0 !important;
-
-  overflow-x:hidden !important;
-  overflow-y:auto !important;
-
-  overscroll-behavior:contain !important;
-  -webkit-overflow-scrolling:touch !important;
-
-  scrollbar-width:thin;
-  scrollbar-color:rgba(171,84,255,.25) transparent;
-}
-
-/* scrollbar Safari / Chrome */
-#emailGate .modal-card::-webkit-scrollbar{
-  width:5px;
-}
-
-#emailGate .modal-card::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-#emailGate .modal-card::-webkit-scrollbar-thumb{
-  background:rgba(177,91,255,.22);
-  border-radius:999px;
-}
-
-/*
-  Empêche visuellement le bas du CTA
-  d'être collé/coupé.
-*/
-#emailGate .privacy-note{
-  margin-bottom:2px !important;
-}
-
-/* Le scroll reste dans la carte même sur les inputs */
-#emailGate input,
-#emailGate button,
-#emailGate label{
-  overscroll-behavior:contain;
-}
-
-/* Mobile */
-@media(max-width:650px){
-
-  #emailGate{
-    padding:10px !important;
-    align-items:center !important;
-  }
-
-  #emailGate .modal-card{
-    width:100% !important;
-
-    max-height:calc(100dvh - 20px) !important;
-
-    border-radius:22px !important;
-
-    padding-bottom:28px !important;
-  }
-
-}
-
-/*
-  Évite le scroll du body quand l'auth est affichée.
-  Safari moderne supporte :has().
-*/
-body:has(#emailGate.show){
-  overflow:hidden !important;
-  height:100dvh !important;
-}
-
-</style>
-
-
-<style id="dd-auth-brand-fix">
-
-/* ═══════════════════════════════════════
-   DROPDIGITAL AUTH BRAND
-═══════════════════════════════════════ */
-
-#emailGate .dd-auth-master-logo{
-  width:72px;
-  height:72px;
-  margin:0 auto 22px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:22px;
-
-  background:
-    radial-gradient(
-      circle at 35% 25%,
-      rgba(178,89,255,.20),
-      rgba(72,22,116,.08) 55%,
-      rgba(10,4,16,.2)
-    );
-
-  border:1px solid rgba(190,120,255,.10);
-
-  box-shadow:
-    0 18px 50px rgba(87,25,153,.18),
-    inset 0 1px 0 rgba(255,255,255,.04);
-}
-
-#emailGate .dd-auth-master-logo img{
-  width:58px;
-  height:58px;
-  display:block;
-  object-fit:contain;
-
-  filter:
-    drop-shadow(0 8px 18px rgba(130,54,255,.28));
-}
-
-
-/* Eyebrow beaucoup plus lisible */
-#emailGate .modal-eyebrow{
-  color:#d6adff !important;
-
-  font-size:12px !important;
-  font-weight:800 !important;
-
-  letter-spacing:2.4px !important;
-  line-height:1.2 !important;
-
-  opacity:1 !important;
-
-  text-shadow:
-    0 0 18px rgba(174,91,255,.30);
-
-  margin-bottom:15px !important;
-}
-
-
-/* éclair jaune plus visible */
-#emailGate .modal-eyebrow::first-letter{
-  color:#ffd55c;
-}
-
-
-/* Évite un énorme espace avec le logo */
-#emailGateForm{
-  padding-top:38px !important;
-}
-
-
-/* Pendant la vérification */
-#emailGateForm.is-pending .dd-auth-master-logo{
-  margin-bottom:20px;
-}
-
-
-/* MOBILE */
-@media(max-width:600px){
-
-  #emailGate .dd-auth-master-logo{
-    width:62px;
-    height:62px;
-    border-radius:19px;
-    margin-bottom:18px;
-  }
-
-  #emailGate .dd-auth-master-logo img{
-    width:50px;
-    height:50px;
-  }
-
-  #emailGate .modal-eyebrow{
-    font-size:11px !important;
-    letter-spacing:1.8px !important;
-  }
-
-}
-
-</style>
 
 
 <style id="dd-auth-visibility-hard-fix">
@@ -2523,6 +1022,577 @@ body:has(#emailGate.show){
   opacity:1 !important;
   pointer-events:auto !important;
 }
+</style>
+
+
+<link rel="icon" type="image/svg+xml" href="/assets/dg-favicon-v4.svg">
+
+
+<style id="dd-design-v4">
+
+:root{
+  --dd-bg:#050208;
+  --dd-bg-soft:#0b0510;
+  --dd-card:rgba(16,8,24,.88);
+  --dd-card-soft:rgba(255,255,255,.035);
+
+  --dd-purple:#a63cff;
+  --dd-purple-2:#c45cff;
+  --dd-purple-3:#7b2cff;
+
+  --dd-text:#ffffff;
+  --dd-muted:#a998b8;
+  --dd-border:rgba(198,122,255,.14);
+
+  --dd-radius-xl:32px;
+  --dd-radius-lg:24px;
+  --dd-radius-md:18px;
+  --dd-radius-sm:14px;
+
+  --dd-ease:cubic-bezier(.16,1,.3,1);
+}
+
+
+/* ======================================================
+   GLOBAL
+====================================================== */
+
+html,
+body{
+  background:#050208 !important;
+}
+
+body{
+  color:var(--dd-text);
+  background:
+    radial-gradient(circle at 50% -10%,rgba(158,48,255,.17),transparent 35%),
+    radial-gradient(circle at 20% 55%,rgba(105,27,190,.07),transparent 30%),
+    radial-gradient(circle at 90% 70%,rgba(165,50,255,.06),transparent 32%),
+    #050208 !important;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:'DM Sans',sans-serif;
+}
+
+button,
+a,
+input{
+  transition:
+    transform .28s var(--dd-ease),
+    background .28s var(--dd-ease),
+    border-color .28s var(--dd-ease),
+    box-shadow .28s var(--dd-ease),
+    opacity .28s var(--dd-ease);
+}
+
+
+/* ======================================================
+   HEADER
+====================================================== */
+
+.site-header{
+  border-bottom:1px solid rgba(180,92,255,.10) !important;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(167,56,255,.15),transparent 42%) !important;
+}
+
+.site-header h1{
+  letter-spacing:.01em;
+  text-shadow:
+    0 0 20px rgba(178,78,255,.32),
+    0 0 52px rgba(138,41,230,.20);
+}
+
+.header-badge{
+  border-radius:999px !important;
+  border:1px solid rgba(190,105,255,.20) !important;
+  background:rgba(160,54,255,.065) !important;
+  backdrop-filter:blur(18px);
+}
+
+
+/* ======================================================
+   MEMBER TOOLBAR
+====================================================== */
+
+.member-toolbar{
+  border-radius:999px !important;
+  padding:7px !important;
+
+  border:1px solid rgba(199,135,255,.13) !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25,13,34,.89),
+      rgba(10,5,15,.89)
+    ) !important;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.32),
+    inset 0 1px rgba(255,255,255,.035);
+
+  backdrop-filter:blur(22px);
+}
+
+.member-toolbar .member-tool-btn{
+  border:0 !important;
+  border-radius:999px !important;
+  background:transparent !important;
+  padding:11px 15px !important;
+  box-shadow:none !important;
+}
+
+.member-toolbar .member-tool-btn:hover{
+  color:white !important;
+  background:rgba(177,74,255,.11) !important;
+  transform:translateY(-1px);
+}
+
+
+/* ======================================================
+   AUTH
+====================================================== */
+
+#emailGate{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(174,54,255,.20),transparent 36%),
+    rgba(3,1,6,.91) !important;
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
+  padding:20px !important;
+}
+
+#emailGate .modal-card{
+  width:min(610px,calc(100vw - 30px)) !important;
+
+  padding:42px !important;
+
+  border-radius:32px !important;
+
+  border:1px solid rgba(190,78,255,.30) !important;
+
+  background:
+    radial-gradient(circle at 50% -8%,rgba(174,55,255,.18),transparent 34%),
+    linear-gradient(
+      150deg,
+      rgba(21,9,29,.97),
+      rgba(8,4,12,.98)
+    ) !important;
+
+  box-shadow:
+    0 45px 120px rgba(0,0,0,.60),
+    0 0 80px rgba(168,48,255,.15),
+    inset 0 1px rgba(255,255,255,.045);
+}
+
+#emailGate .dd-auth-master-logo,
+#emailGate .auth-premium-logo{
+  border-radius:22px !important;
+  background:rgba(157,55,255,.07) !important;
+  box-shadow:
+    0 10px 35px rgba(112,25,190,.24),
+    inset 0 0 0 1px rgba(196,118,255,.12) !important;
+}
+
+#emailGate .modal-eyebrow{
+  color:#d08bff !important;
+  font-weight:800 !important;
+  letter-spacing:2.3px !important;
+
+  text-shadow:0 0 18px rgba(177,68,255,.45);
+}
+
+#emailGate .auth-tabs{
+  padding:5px !important;
+  border-radius:20px !important;
+
+  border:1px solid rgba(190,120,245,.10) !important;
+
+  background:rgba(255,255,255,.025) !important;
+}
+
+#emailGate .auth-tab{
+  min-height:48px;
+  border:0 !important;
+  border-radius:15px !important;
+  background:transparent !important;
+}
+
+#emailGate .auth-tab.active{
+  color:white !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(160,57,255,.24),
+      rgba(189,76,255,.13)
+    ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(202,131,255,.20),
+    0 8px 24px rgba(104,25,170,.13) !important;
+}
+
+
+/* INPUTS */
+
+#emailGate .q-input,
+#emailGate input[type="email"],
+#emailGate input[type="password"],
+#emailGate input[type="text"]{
+  min-height:62px !important;
+
+  border-radius:18px !important;
+
+  border:1px solid rgba(193,130,242,.11) !important;
+
+  color:#fff !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.015)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.025) !important;
+}
+
+#emailGate .q-input:focus,
+#emailGate input:focus{
+  outline:none !important;
+
+  border-color:rgba(183,68,255,.68) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(169,54,255,.10),
+    0 14px 38px rgba(99,22,171,.14) !important;
+}
+
+
+/* Safari autofill : supprime le jaune */
+
+#emailGate input:-webkit-autofill,
+#emailGate input:-webkit-autofill:hover,
+#emailGate input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#fff !important;
+
+  -webkit-box-shadow:
+    0 0 0 1000px #12091a inset !important;
+
+  transition:background-color 999999s ease-in-out 0s;
+}
+
+
+/* CTA AUTH */
+
+#emailGate .next-btn,
+#emailGate .dd-auth-primary{
+  min-height:60px !important;
+
+  border:0 !important;
+  border-radius:18px !important;
+
+  color:white !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #8e2cff 0%,
+      #ad41ff 46%,
+      #cb62ff 100%
+    ) !important;
+
+  box-shadow:
+    0 16px 40px rgba(151,45,255,.27),
+    0 0 34px rgba(185,72,255,.12),
+    inset 0 1px rgba(255,255,255,.25) !important;
+}
+
+#emailGate .next-btn:hover,
+#emailGate .dd-auth-primary:hover{
+  transform:translateY(-2px) scale(1.005);
+
+  box-shadow:
+    0 22px 55px rgba(155,44,255,.36),
+    0 0 45px rgba(194,87,255,.18) !important;
+}
+
+#emailGate .next-btn:active,
+#emailGate .dd-auth-primary:active{
+  transform:scale(.985);
+}
+
+
+/* ======================================================
+   QUESTIONNAIRE
+====================================================== */
+
+#chatWrap{
+  width:min(760px,calc(100vw - 30px)) !important;
+}
+
+#chatWrap button{
+  border-radius:17px !important;
+}
+
+#chatWrap .q-input,
+#chatWrap input,
+#chatWrap textarea{
+  border-radius:20px !important;
+
+  border:1px solid rgba(194,118,255,.20) !important;
+
+  background:
+    rgba(17,8,25,.68) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.025) !important;
+}
+
+#chatWrap .q-input:focus,
+#chatWrap input:focus,
+#chatWrap textarea:focus{
+  border-color:#ad49ff !important;
+
+  box-shadow:
+    0 0 0 4px rgba(167,56,255,.09),
+    0 14px 38px rgba(107,28,177,.15) !important;
+}
+
+#chatWrap .next-btn{
+  border:0 !important;
+
+  min-height:62px !important;
+
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #8527f8,
+      #a43aff 48%,
+      #bd57ff
+    ) !important;
+
+  box-shadow:
+    0 16px 42px rgba(141,38,242,.23),
+    inset 0 1px rgba(255,255,255,.18) !important;
+}
+
+#chatWrap .next-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 22px 52px rgba(152,43,255,.30) !important;
+}
+
+#chatWrap .next-btn:active{
+  transform:scale(.985);
+}
+
+
+/* Tous les blocs interactifs du questionnaire moins rectangulaires */
+
+#chatWrap [class*="option"],
+#chatWrap [class*="choice"],
+#chatWrap [class*="answer"],
+#chatWrap [class*="connect"]{
+  border-radius:18px !important;
+}
+
+
+/* ======================================================
+   STRIPE / PAYMENT STEP
+====================================================== */
+
+#chatWrap [class*="stripe"]{
+  border-radius:20px !important;
+}
+
+#chatWrap [class*="stripe"] button{
+  border-radius:16px !important;
+}
+
+#chatWrap button:not(.next-btn){
+  border-radius:16px !important;
+}
+
+#chatWrap button:hover{
+  transform:translateY(-1px);
+}
+
+
+/* ======================================================
+   PROGRESSION LIQUIDE
+====================================================== */
+
+.progress-wrap{
+  width:min(360px,70vw) !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+#progressDots{
+  position:relative !important;
+
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+
+  gap:8px !important;
+
+  padding:9px 10px !important;
+
+  border-radius:999px !important;
+
+  background:rgba(255,255,255,.018);
+}
+
+#progressDots > *:not(#ddProgressBlob){
+  position:relative;
+  z-index:2;
+
+  width:35px !important;
+  height:6px !important;
+
+  border-radius:999px !important;
+
+  background:rgba(184,121,224,.14) !important;
+
+  border:0 !important;
+
+  box-shadow:none !important;
+
+  transition:
+    opacity .45s var(--dd-ease),
+    transform .45s var(--dd-ease),
+    background .45s var(--dd-ease) !important;
+}
+
+#progressDots > *.active:not(#ddProgressBlob){
+  background:transparent !important;
+}
+
+#progressDots > *.done:not(#ddProgressBlob){
+  background:rgba(177,78,255,.38) !important;
+}
+
+#ddProgressBlob{
+  position:absolute;
+
+  z-index:1;
+
+  height:6px;
+
+  border-radius:999px;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8d30ff,
+      #b846ff,
+      #d36cff
+    );
+
+  box-shadow:
+    0 0 14px rgba(185,63,255,.75),
+    0 0 30px rgba(150,47,255,.34);
+
+  transition:
+    left .62s cubic-bezier(.18,1.35,.32,1),
+    width .62s cubic-bezier(.18,1.35,.32,1);
+
+  will-change:left,width;
+}
+
+
+/* ======================================================
+   TRANSITIONS QUESTION
+====================================================== */
+
+.dd-step-enter{
+  opacity:0 !important;
+  transform:translateY(14px) scale(.99) !important;
+  filter:blur(7px);
+}
+
+.dd-step-enter.dd-step-enter-active{
+  opacity:1 !important;
+  transform:translateY(0) scale(1) !important;
+  filter:blur(0);
+
+  transition:
+    opacity .62s var(--dd-ease),
+    transform .72s cubic-bezier(.16,1.15,.3,1),
+    filter .48s ease !important;
+}
+
+
+/* ======================================================
+   SALES / STUDIO
+====================================================== */
+
+.studio-nav{
+  border-radius:22px !important;
+}
+
+.studio-nav-btn{
+  border-radius:16px !important;
+}
+
+.studio-panel,
+.sales-build{
+  border-radius:26px !important;
+}
+
+.sales-build-step{
+  border-radius:14px !important;
+}
+
+.sales-build-logo{
+  border-radius:22px !important;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media(max-width:650px){
+
+  #emailGate{
+    padding:10px !important;
+  }
+
+  #emailGate .modal-card{
+    width:100% !important;
+    padding:30px 22px 26px !important;
+    border-radius:25px !important;
+  }
+
+  #progressDots{
+    gap:6px !important;
+  }
+
+  #progressDots > *:not(#ddProgressBlob){
+    width:25px !important;
+  }
+
+  .member-toolbar{
+    border-radius:20px !important;
+  }
+}
+
 </style>
 
 </head>
@@ -10633,6 +9703,170 @@ initMemberAccess();
 
   setTimeout(dedupePendingDGLogo,100);
   setTimeout(dedupePendingDGLogo,500);
+})();
+</script>
+
+
+<script id="dd-motion-v4">
+(()=>{
+  let previousBlobLeft = null;
+  let settleTimer = null;
+
+  function getProgressItems(){
+    const root=document.getElementById('progressDots');
+    if(!root) return [];
+
+    return [...root.children].filter(
+      el=>el.id!=='ddProgressBlob'
+    );
+  }
+
+  function ensureProgressBlob(){
+    const root=document.getElementById('progressDots');
+    if(!root) return null;
+
+    let blob=document.getElementById('ddProgressBlob');
+
+    if(!blob){
+      blob=document.createElement('div');
+      blob.id='ddProgressBlob';
+      root.appendChild(blob);
+    }
+
+    return blob;
+  }
+
+  function positionProgressBlob(animated=true){
+    const root=document.getElementById('progressDots');
+    const blob=ensureProgressBlob();
+
+    if(!root || !blob) return;
+
+    const items=getProgressItems();
+    if(!items.length) return;
+
+    let active=items.find(el=>el.classList.contains('active'));
+
+    if(!active){
+      active=items.findLast
+        ? items.findLast(el=>el.classList.contains('done'))
+        : [...items].reverse().find(el=>el.classList.contains('done'));
+    }
+
+    if(!active) active=items[0];
+
+    const rootBox=root.getBoundingClientRect();
+    const activeBox=active.getBoundingClientRect();
+
+    const nextLeft=activeBox.left-rootBox.left;
+    const nextWidth=activeBox.width;
+
+    if(previousBlobLeft===null || !animated){
+      blob.style.transition='none';
+      blob.style.left=nextLeft+'px';
+      blob.style.width=nextWidth+'px';
+
+      requestAnimationFrame(()=>{
+        blob.style.transition='';
+      });
+
+      previousBlobLeft=nextLeft;
+      return;
+    }
+
+    clearTimeout(settleTimer);
+
+    const oldLeft=previousBlobLeft;
+    const minLeft=Math.min(oldLeft,nextLeft);
+    const distance=Math.abs(nextLeft-oldLeft);
+
+    /*
+      Phase liquide :
+      le blob s'étire entre les deux bullets
+      avant de se rétracter sur la nouvelle étape.
+    */
+    blob.style.left=minLeft+'px';
+    blob.style.width=(distance+nextWidth)+'px';
+
+    settleTimer=setTimeout(()=>{
+      blob.style.left=nextLeft+'px';
+      blob.style.width=nextWidth+'px';
+    },115);
+
+    previousBlobLeft=nextLeft;
+  }
+
+  function watchProgress(){
+    const root=document.getElementById('progressDots');
+    if(!root) return;
+
+    positionProgressBlob(false);
+
+    const observer=new MutationObserver(()=>{
+      positionProgressBlob(true);
+    });
+
+    observer.observe(root,{
+      childList:true,
+      subtree:true,
+      attributes:true,
+      attributeFilter:['class']
+    });
+
+    window.addEventListener('resize',()=>{
+      positionProgressBlob(false);
+    });
+  }
+
+  function animateNewQuestion(node){
+    if(!(node instanceof HTMLElement)) return;
+
+    node.classList.add('dd-step-enter');
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        node.classList.add('dd-step-enter-active');
+      });
+    });
+
+    setTimeout(()=>{
+      node.classList.remove(
+        'dd-step-enter',
+        'dd-step-enter-active'
+      );
+    },850);
+  }
+
+  function watchQuestions(){
+    const chat=document.getElementById('chatWrap');
+    if(!chat) return;
+
+    const observer=new MutationObserver(mutations=>{
+      mutations.forEach(mutation=>{
+        mutation.addedNodes.forEach(node=>{
+          animateNewQuestion(node);
+        });
+      });
+    });
+
+    observer.observe(chat,{
+      childList:true
+    });
+  }
+
+  function init(){
+    watchProgress();
+    watchQuestions();
+
+    setTimeout(()=>positionProgressBlob(false),200);
+    setTimeout(()=>positionProgressBlob(false),700);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{
+    init();
+  }
 })();
 </script>
 
