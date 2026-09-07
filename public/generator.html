@@ -31,7 +31,7 @@
       radial-gradient(ellipse 80% 60% at 20% 10%, rgba(220,20,30,.18) 0%, transparent 60%),
       radial-gradient(ellipse 60% 50% at 80% 80%, rgba(130,5,14,.15) 0%, transparent 55%),
       radial-gradient(ellipse 40% 40% at 50% 40%, rgba(255,47,47,.08) 0%, transparent 50%),
-      linear-gradient(160deg, #070708 0%, #080606 40%, #0d0608 70%, #060506 100%);
+      linear-gradient(160deg, #070708 0%, #080606 40%, #0d0608 70%, #040404 100%);
     pointer-events:none;z-index:0;
   }
   /* grain texture */
@@ -210,7 +210,7 @@
   #loadingScreen{display:none;position:fixed;inset:0;z-index:100;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;
     background:radial-gradient(ellipse 80% 60% at 30% 20%,rgba(220,20,30,.25) 0%,transparent 60%),
                radial-gradient(ellipse 60% 50% at 70% 80%,rgba(130,5,14,.2) 0%,transparent 55%),
-               linear-gradient(160deg,#070708 0%,#080606 40%,#0d0608 70%,#060506 100%);
+               linear-gradient(160deg,#070708 0%,#080606 40%,#0d0608 70%,#040404 100%);
   }
   #loadingScreen.show{display:flex}
 
@@ -961,7 +961,7 @@
   width:100%;
   border:0;
   background:transparent;
-  color:#887991;
+  color:#858585;
   margin-top:11px;
   font:600 11px 'DM Sans',sans-serif;
   cursor:pointer;
@@ -2337,211 +2337,644 @@ input{
 
 </style>
 
+<style id="dd-red-premium-v3-final">
 
-<style id="dd-red-premium-v1">
-
-/* =========================================================
-   DROPDIGITAL — RED PREMIUM DA
-   couche visuelle uniquement
-   ========================================================= */
+/* ==========================================================
+   DROPDIGITAL — RED PREMIUM V3
+   NOIR + BLANC + ROUGE
+   ========================================================== */
 
 :root{
-  --dd-red:#ff2b2b;
-  --dd-red-hot:#ff3b30;
-  --dd-red-bright:#ff4747;
-  --dd-red-deep:#b70816;
-  --dd-red-dark:#650711;
+  --dd-bg:#050505;
+  --dd-bg-soft:#080808;
 
-  --dd-bg:#050506;
-  --dd-bg-2:#0b0909;
-  --dd-surface:#0e0e11;
-  --dd-surface-2:#141417;
+  --dd-panel:#0b0b0d;
+  --dd-panel-2:#101012;
+  --dd-panel-hover:#141416;
 
-  --dd-border:rgba(255,255,255,.09);
-  --dd-border-red:rgba(255,47,47,.28);
+  --dd-white:#f7f7f8;
+  --dd-text:#eeeeef;
+  --dd-muted:#95959b;
+  --dd-muted-2:#707077;
 
-  --dd-text:#faf8f8;
-  --dd-muted:#98989f;
+  /*
+    Rouge volontairement VIF.
+    Intensité comparable à l'ancien violet,
+    mais sans tirer vers le rose/magenta.
+  */
+  --dd-red:#ff1828;
+  --dd-red-hot:#ff2638;
+  --dd-red-light:#ff4a56;
+  --dd-red-deep:#b90013;
 
-  --purple:var(--dd-red);
-  --purple2:var(--dd-red-hot);
+  --dd-red-glow:rgba(255,24,40,.62);
+  --dd-red-glow-soft:rgba(255,24,40,.19);
+
+  --dd-border:rgba(255,255,255,.085);
+  --dd-border-strong:rgba(255,255,255,.13);
+
+  /*
+    Compatibilité vieux code :
+    les variables gardent leur ancien NOM
+    mais représentent désormais DU ROUGE.
+  */
+  --purple:var(--dd-red) !important;
+  --purple2:var(--dd-red-hot) !important;
+  --purple-dark:var(--dd-red-deep) !important;
+  --purple-bright:var(--dd-red-light) !important;
+  --purple-ultra:var(--dd-red) !important;
+
+  --purple-deep:var(--dd-bg) !important;
+  --purple-mid:var(--dd-panel) !important;
+
+  --purple-glow:var(--dd-red-glow) !important;
+
+  --glow1:rgba(255,24,40,.35) !important;
+  --glow2:rgba(185,0,18,.20) !important;
+
+  --cream:#f7f7f8 !important;
+  --black:#050505 !important;
 }
 
-/* ---------- GLOBAL ---------- */
 
-html{
-  background:#050506 !important;
+/* ==========================================================
+   RESET VISUEL
+   ========================================================== */
+
+html,
+body{
+  background:#050505 !important;
+  color:var(--dd-text) !important;
 }
 
 body{
+  min-height:100vh;
+}
+
+
+/*
+  PAS DE FOND ROUGE/VIOLET PERMANENT.
+  Noir dominant, halo rouge ultra subtil.
+*/
+body::before{
+  opacity:1 !important;
+
   background:
     radial-gradient(
-      850px 520px at 50% -100px,
-      rgba(255,32,32,.16),
-      transparent 68%
+      850px 480px at 50% -170px,
+      rgba(255,20,35,.075) 0%,
+      rgba(255,20,35,.025) 38%,
+      transparent 72%
     ),
-    radial-gradient(
-      600px 460px at 95% 38%,
-      rgba(155,0,15,.09),
-      transparent 70%
-    ),
-    #050506 !important;
-
-  color:var(--dd-text);
+    linear-gradient(
+      180deg,
+      #050505,
+      #050505 60%,
+      #060505
+    ) !important;
 }
 
-/* supprime l'ancienne ambiance violette trop présente */
-body::before,
 body::after{
-  opacity:.16 !important;
+  opacity:.20 !important;
 }
 
-/* ---------- TEXTE / ACCENTS ---------- */
 
-.gradient-text,
-.purple,
-[class*="purple-text"],
+/* ==========================================================
+   LOGO — INTERDICTION ABSOLUE DE LE RECOLORER
+   ========================================================== */
+
+img[src*="dg-app-logo"],
+img[src*="dg-logo"],
+.dd-auth-master-logo img,
+.auth-premium-logo img,
+.sales-build-logo img{
+  filter:none !important;
+  -webkit-filter:none !important;
+
+  mix-blend-mode:normal !important;
+}
+
+
+/* wrapper logo neutre */
+#emailGate .dd-auth-master-logo{
+  background:#09090b !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+
+  box-shadow:
+    0 16px 44px rgba(0,0,0,.42) !important;
+}
+
+
+/* ==========================================================
+   TYPOGRAPHIE
+   LE TEXTE PRINCIPAL RESTE BLANC
+   ========================================================== */
+
+.site-header h1,
+.site-header h1 span,
+.site-header h1 em,
+
+.q-block h1,
+.q-block h1 span,
+.q-block h2,
 .q-block h2 span,
+.q-block h3,
 .q-block h3 span,
-.modal-eyebrow,
+
+.modal-title,
+.modal-title span,
+
+.history-modal h2,
 .history-modal h2 span,
+
+.results-title,
 .results-title span{
-  color:var(--dd-red-bright) !important;
-  -webkit-text-fill-color:var(--dd-red-bright) !important;
+  color:#f8f8f9 !important;
+  -webkit-text-fill-color:#f8f8f9 !important;
+}
+
+
+/*
+  On récupère l'effet néon de l'ancien violet,
+  MAIS derrière du texte blanc.
+*/
+.site-header h1 span,
+.site-header h1 em,
+.q-block h1 span,
+.q-block h2 span,
+.q-block h3 span{
   text-shadow:
-    0 0 18px rgba(255,38,38,.22) !important;
+    0 0 15px rgba(255,24,40,.48),
+    0 0 36px rgba(255,24,40,.24),
+    0 0 70px rgba(180,0,18,.13) !important;
 }
 
-::selection{
-  background:rgba(255,43,43,.28);
-  color:white;
+
+/* textes secondaires */
+.site-header p,
+.modal-copy,
+.privacy-note,
+.history-meta,
+.plan-cancel-note{
+  color:var(--dd-muted) !important;
 }
 
-/* ---------- HEADER / MEMBER TOOLBAR ---------- */
+
+/* seuls les PETITS accents peuvent être rouges */
+.modal-eyebrow,
+.header-badge,
+.step-label,
+.question-step,
+[class*="eyebrow"]{
+  color:var(--dd-red-light) !important;
+  -webkit-text-fill-color:var(--dd-red-light) !important;
+
+  text-shadow:
+    0 0 16px rgba(255,24,40,.28) !important;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
 
 .site-header{
   background:
     linear-gradient(
       180deg,
-      rgba(7,7,8,.88),
-      rgba(7,7,8,.48)
+      rgba(255,24,40,.045),
+      rgba(5,5,5,.00) 78%
     ) !important;
 
   border-bottom:
     1px solid rgba(255,255,255,.055) !important;
-
-  backdrop-filter:
-    blur(24px)
-    saturate(145%) !important;
-
-  -webkit-backdrop-filter:
-    blur(24px)
-    saturate(145%) !important;
 }
 
+.site-header h1{
+  text-shadow:
+    0 0 15px rgba(255,24,40,.18),
+    0 0 42px rgba(255,24,40,.08) !important;
+}
+
+
+/* ==========================================================
+   ROBOT
+   ========================================================== */
+
+.robot-svg{
+  filter:
+    drop-shadow(0 0 20px rgba(255,24,40,.38))
+    drop-shadow(0 0 48px rgba(170,0,15,.16)) !important;
+}
+
+.robot-glow-ring{
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,24,40,.48),
+      transparent 70%
+    ) !important;
+}
+
+
+/* ==========================================================
+   BADGE HEADER
+   ========================================================== */
+
+.header-badge{
+  background:
+    rgba(255,24,40,.055) !important;
+
+  border:
+    1px solid rgba(255,35,50,.28) !important;
+
+  border-radius:999px !important;
+
+  box-shadow:
+    0 0 26px rgba(255,24,40,.055),
+    inset 0 1px rgba(255,255,255,.025) !important;
+}
+
+
+/* ==========================================================
+   PROGRESS BAR
+   ========================================================== */
+
+#progressDots,
+.progress-steps{
+  background:
+    rgba(255,255,255,.022) !important;
+}
+
+.progress-dot,
+#progressDots > *:not(#ddProgressBlob){
+  background:
+    rgba(255,255,255,.075) !important;
+
+  border-radius:999px !important;
+}
+
+.progress-dot.done,
+#progressDots > *.done:not(#ddProgressBlob){
+  background:
+    rgba(255,24,40,.40) !important;
+}
+
+.progress-dot.active{
+  background:var(--dd-red) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,24,40,.85),
+    0 0 32px rgba(255,24,40,.32) !important;
+}
+
+#ddProgressBlob{
+  background:
+    linear-gradient(
+      90deg,
+      #e90018,
+      #ff1828,
+      #ff3a48
+    ) !important;
+
+  box-shadow:
+    0 0 13px rgba(255,24,40,.92),
+    0 0 32px rgba(255,24,40,.40),
+    0 0 58px rgba(255,24,40,.16) !important;
+}
+
+
+/* ==========================================================
+   TOOLBAR
+   ========================================================== */
+
+.member-toolbar,
 #memberToolbar{
-  background:rgba(10,10,12,.74) !important;
+  background:
+    rgba(8,8,9,.88) !important;
 
   border:
     1px solid rgba(255,255,255,.085) !important;
 
-  border-radius:999px !important;
-
   box-shadow:
-    0 12px 45px rgba(0,0,0,.34),
-    inset 0 1px 0 rgba(255,255,255,.035) !important;
+    0 16px 55px rgba(0,0,0,.42),
+    inset 0 1px rgba(255,255,255,.025) !important;
+}
 
-  backdrop-filter:blur(22px) !important;
-  -webkit-backdrop-filter:blur(22px) !important;
+.member-email-label{
+  color:#85858b !important;
 }
 
 .member-tool-btn{
-  border-radius:999px !important;
-  transition:
-    transform .35s cubic-bezier(.2,.8,.2,1),
-    background .35s ease,
-    color .35s ease !important;
+  color:#e6e6e8 !important;
+
+  background:transparent !important;
+  border-color:transparent !important;
 }
 
 .member-tool-btn:hover{
-  background:rgba(255,255,255,.055) !important;
   color:white !important;
-  transform:translateY(-1px);
+  background:rgba(255,255,255,.05) !important;
 }
 
-/* ---------- HERO ---------- */
 
-.site-header h1,
-.hero h1{
-  text-shadow:
-    0 0 28px rgba(255,42,42,.16) !important;
-}
+/* ==========================================================
+   AUTH — FOND
+   ========================================================== */
 
-/* ---------- CONTENU QUESTIONS ---------- */
-
-.q-block{
-  border-radius:30px !important;
-}
-
-.q-block,
-.question-card,
-.question-wrap{
-  animation:
-    ddCardIn .52s cubic-bezier(.16,1,.3,1);
-}
-
-@keyframes ddCardIn{
-  from{
-    opacity:0;
-    transform:translateY(15px) scale(.986);
-    filter:blur(5px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-    filter:none;
-  }
-}
-
-/* ---------- INPUTS ---------- */
-
-input,
-textarea,
-select{
-  border-radius:18px !important;
-
+#emailGate{
   background:
-    rgba(255,255,255,.035) !important;
+    radial-gradient(
+      720px 520px at 50% 15%,
+      rgba(255,24,40,.055),
+      transparent 66%
+    ),
+    rgba(3,3,3,.975) !important;
+}
+
+
+/* CARTE NEUTRE — PLUS DE VIOLET/ROUGE DANS LE FOND */
+#emailGate .modal-card,
+#emailGateForm{
+  background:
+    linear-gradient(
+      160deg,
+      #101012,
+      #080809 78%
+    ) !important;
 
   border:
-    1px solid rgba(255,255,255,.10) !important;
-
-  color:white !important;
-
-  transition:
-    border-color .28s ease,
-    box-shadow .28s ease,
-    background .28s ease,
-    transform .28s ease !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-  outline:none !important;
-
-  border-color:
-    rgba(255,55,55,.64) !important;
-
-  background:
-    rgba(255,255,255,.052) !important;
+    1px solid rgba(255,255,255,.095) !important;
 
   box-shadow:
-    0 0 0 4px rgba(255,40,40,.075),
-    0 12px 36px rgba(0,0,0,.20) !important;
+    0 38px 120px rgba(0,0,0,.68),
+    0 0 70px rgba(255,24,40,.035),
+    inset 0 1px rgba(255,255,255,.035) !important;
 }
 
-/* ---------- CHOIX / CARDS ---------- */
+
+/* TITRE AUTH BLANC */
+#emailGate .modal-title,
+#emailGate .modal-title span{
+  color:#f8f8f9 !important;
+  -webkit-text-fill-color:#f8f8f9 !important;
+
+  text-shadow:none !important;
+}
+
+
+/* petit eyebrow uniquement */
+#emailGate .modal-eyebrow{
+  color:#ff4652 !important;
+  -webkit-text-fill-color:#ff4652 !important;
+
+  text-shadow:
+    0 0 15px rgba(255,24,40,.24) !important;
+}
+
+
+/* TEXTE */
+#emailGate .modal-copy{
+  color:#a0a0a6 !important;
+}
+
+#emailGate .privacy-note{
+  color:#74747b !important;
+}
+
+
+/* LABELS : PAS ROUGES */
+#emailGate .text-input-wrap label,
+#emailGate label{
+  color:#b9b9bd !important;
+  -webkit-text-fill-color:#b9b9bd !important;
+
+  text-shadow:none !important;
+}
+
+
+/* MOT DE PASSE OUBLIÉ : BLANC/GRIS */
+#forgotPasswordButton{
+  color:#c7c7ca !important;
+}
+
+#forgotPasswordButton:hover{
+  color:white !important;
+}
+
+
+/* ==========================================================
+   AUTH — TABS
+   ========================================================== */
+
+#emailGate .auth-tabs{
+  background:
+    #09090b !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.018) !important;
+}
+
+#emailGate .auth-tab{
+  color:#88888f !important;
+  background:transparent !important;
+
+  box-shadow:none !important;
+}
+
+#emailGate .auth-tab.active{
+  color:#fff !important;
+
+  background:
+    rgba(255,24,40,.12) !important;
+
+  border:
+    1px solid rgba(255,24,40,.28) !important;
+
+  box-shadow:
+    0 0 22px rgba(255,24,40,.055),
+    inset 0 1px rgba(255,255,255,.035) !important;
+}
+
+
+/* ==========================================================
+   AUTH — INPUTS
+   ========================================================== */
+
+#emailGate input,
+#emailGate .q-input{
+  color:#f7f7f8 !important;
+
+  background:
+    #0b0b0d !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.022) !important;
+}
+
+#emailGate input::placeholder{
+  color:#65656b !important;
+  opacity:1 !important;
+}
+
+#emailGate input:focus,
+#emailGate .q-input:focus{
+  border-color:
+    rgba(255,24,40,.72) !important;
+
+  background:#0d0d0f !important;
+
+  box-shadow:
+    0 0 0 4px rgba(255,24,40,.075),
+    0 0 25px rgba(255,24,40,.075),
+    inset 0 1px rgba(255,255,255,.025) !important;
+}
+
+
+/* Safari autofill neutre */
+#emailGate input:-webkit-autofill,
+#emailGate input:-webkit-autofill:hover,
+#emailGate input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#f7f7f8 !important;
+
+  -webkit-box-shadow:
+    0 0 0 1000px #0b0b0d inset !important;
+}
+
+
+/* ==========================================================
+   AUTH — CTA
+   ========================================================== */
+
+#emailGate .next-btn,
+#emailGate .dd-auth-primary,
+#authSubmitButton{
+  color:white !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #d90017 0%,
+      #ff1426 44%,
+      #ff3342 100%
+    ) !important;
+
+  border:
+    1px solid rgba(255,78,88,.20) !important;
+
+  box-shadow:
+    0 13px 36px rgba(255,0,25,.30),
+    0 0 26px rgba(255,24,40,.18),
+    inset 0 1px rgba(255,255,255,.24) !important;
+
+  text-shadow:
+    0 1px 1px rgba(0,0,0,.18) !important;
+}
+
+#emailGate .next-btn:hover,
+#emailGate .dd-auth-primary:hover,
+#authSubmitButton:hover{
+  filter:brightness(1.08) !important;
+
+  box-shadow:
+    0 18px 45px rgba(255,0,25,.37),
+    0 0 36px rgba(255,24,40,.24),
+    inset 0 1px rgba(255,255,255,.30) !important;
+}
+
+
+/* checkbox */
+#memberConsent{
+  accent-color:#ff1828 !important;
+}
+
+#memberConsentWrap{
+  color:#a1a1a7 !important;
+}
+
+
+/* ==========================================================
+   QUESTIONNAIRE
+   ========================================================== */
+
+#chatWrap,
+.q-block{
+  color:var(--dd-text) !important;
+}
+
+.q-block{
+  background:transparent !important;
+}
+
+
+/* TITRES BLANCS */
+#chatWrap h1,
+#chatWrap h2,
+#chatWrap h3,
+#chatWrap h1 span,
+#chatWrap h2 span,
+#chatWrap h3 span{
+  color:#f8f8f9 !important;
+  -webkit-text-fill-color:#f8f8f9 !important;
+}
+
+
+/* descriptions grises */
+#chatWrap p,
+.q-desc,
+.q-sub,
+.question-description{
+  color:#9b9ba1 !important;
+}
+
+
+/* LABELS */
+#chatWrap label{
+  color:#b9b9bd !important;
+}
+
+
+/* INPUT */
+#chatWrap input,
+#chatWrap textarea,
+#chatWrap select{
+  color:#f7f7f8 !important;
+
+  background:
+    #0b0b0d !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+}
+
+#chatWrap input::placeholder,
+#chatWrap textarea::placeholder{
+  color:#626268 !important;
+}
+
+#chatWrap input:focus,
+#chatWrap textarea:focus,
+#chatWrap select:focus{
+  border-color:
+    rgba(255,24,40,.72) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(255,24,40,.07),
+    0 0 28px rgba(255,24,40,.07) !important;
+}
+
+
+/* ==========================================================
+   OPTIONS / CARDS
+   ========================================================== */
 
 .choice,
 .option,
@@ -2550,26 +2983,16 @@ select:focus{
 .answer-option,
 .niche-card,
 [class*="choice-card"]{
-  border-radius:22px !important;
+  color:#ededee !important;
+
+  background:
+    #0b0b0d !important;
 
   border:
     1px solid rgba(255,255,255,.085) !important;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.033),
-      rgba(255,255,255,.015)
-    ) !important;
-
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-
-  transition:
-    transform .30s cubic-bezier(.2,.8,.2,1),
-    border-color .30s ease,
-    background .30s ease,
-    box-shadow .30s ease !important;
+    inset 0 1px rgba(255,255,255,.018) !important;
 }
 
 .choice:hover,
@@ -2579,23 +3002,15 @@ select:focus{
 .answer-option:hover,
 .niche-card:hover,
 [class*="choice-card"]:hover{
-  transform:
-    translateY(-3px)
-    scale(1.008) !important;
+  background:
+    #101012 !important;
 
   border-color:
-    rgba(255,48,48,.42) !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,45,45,.075),
-      rgba(255,20,20,.025)
-    ) !important;
+    rgba(255,24,40,.34) !important;
 
   box-shadow:
-    0 16px 42px rgba(0,0,0,.24),
-    0 0 28px rgba(255,25,25,.045) !important;
+    0 14px 38px rgba(0,0,0,.30),
+    0 0 22px rgba(255,24,40,.045) !important;
 }
 
 .choice.selected,
@@ -2604,442 +3019,121 @@ select:focus{
 .answer-card.selected,
 .answer-option.selected,
 .niche-card.selected,
-[class*="selected"]{
-  border-color:
-    rgba(255,55,55,.72) !important;
-
+[class*="choice-card"].selected{
   background:
-    linear-gradient(
-      145deg,
-      rgba(255,45,45,.14),
-      rgba(120,0,8,.055)
-    ) !important;
+    rgba(255,24,40,.075) !important;
+
+  border-color:
+    rgba(255,24,40,.62) !important;
 
   box-shadow:
-    inset 0 0 0 1px rgba(255,55,55,.08),
-    0 0 28px rgba(255,28,28,.075) !important;
+    0 0 0 1px rgba(255,24,40,.08),
+    0 0 26px rgba(255,24,40,.08) !important;
 }
 
-/* ---------- BOUTONS ---------- */
+
+/* ==========================================================
+   BOUTONS
+   ========================================================== */
 
 .next-btn,
-button.next-btn,
 #stripeGenerateButton,
 .plan-action,
-.history-open,
-.dd-stripe-modal-confirm{
-  border:none !important;
-
-  border-radius:999px !important;
+.history-new,
+.history-open{
+  color:white !important;
 
   background:
     linear-gradient(
-      135deg,
-      #ff4141 0%,
-      #ff1f2f 48%,
-      #d5091c 100%
-    ) !important;
-
-  color:#fff !important;
-
-  box-shadow:
-    0 10px 30px rgba(218,0,20,.20),
-    inset 0 1px 0 rgba(255,255,255,.26) !important;
-
-  transition:
-    transform .28s cubic-bezier(.2,.8,.2,1),
-    box-shadow .28s ease,
-    filter .28s ease !important;
-}
-
-.next-btn:hover,
-button.next-btn:hover,
-#stripeGenerateButton:hover,
-.plan-action:hover,
-.history-open:hover,
-.dd-stripe-modal-confirm:hover{
-  transform:
-    translateY(-2px)
-    scale(1.006) !important;
-
-  filter:brightness(1.07);
-
-  box-shadow:
-    0 15px 42px rgba(230,0,25,.28),
-    inset 0 1px 0 rgba(255,255,255,.32) !important;
-}
-
-.next-btn:active,
-button.next-btn:active,
-#stripeGenerateButton:active{
-  transform:
-    scale(.985) !important;
-}
-
-/* boutons secondaires */
-.back-btn,
-.history-delete,
-.dd-stripe-modal-cancel,
-button[class*="secondary"]{
-  border-radius:999px !important;
-
-  background:
-    rgba(255,255,255,.035) !important;
-
-  border:
-    1px solid rgba(255,255,255,.09) !important;
-
-  color:#d9d9dd !important;
-}
-
-/* suppression */
-.history-delete{
-  color:#ff7373 !important;
-  border-color:rgba(255,67,67,.20) !important;
-}
-
-.history-delete:hover{
-  background:rgba(255,48,48,.08) !important;
-  border-color:rgba(255,67,67,.34) !important;
-}
-
-/* ---------- PROGRESSION ---------- */
-
-.progress,
-.progress-dots,
-.dots,
-[class*="progress"]{
-  border-radius:999px !important;
-}
-
-/* petits segments */
-.progress i,
-.progress span,
-.progress-dot,
-.dot,
-[class*="progress"] i{
-  border-radius:999px !important;
-
-  transition:
-    width .58s cubic-bezier(.16,1,.3,1),
-    transform .58s cubic-bezier(.16,1,.3,1),
-    opacity .42s ease,
-    background .42s ease,
-    box-shadow .42s ease !important;
-}
-
-/* état actif */
-.progress .active,
-.progress-dot.active,
-.dot.active,
-[class*="progress"] .active{
-  background:
-    linear-gradient(
-      90deg,
-      #ff2323,
-      #ff5555
-    ) !important;
-
-  box-shadow:
-    0 0 15px rgba(255,40,40,.62),
-    0 0 34px rgba(255,25,25,.20) !important;
-
-  transform:scaleX(1.12) !important;
-}
-
-/* ---------- AUTH ---------- */
-
-#emailGate{
-  background:
-    radial-gradient(
-      600px 420px at 50% 22%,
-      rgba(255,24,24,.12),
-      transparent 68%
-    ),
-    rgba(4,3,3,.94) !important;
-}
-
-#emailGateForm{
-  border-radius:34px !important;
-
-  background:
-    linear-gradient(
-      155deg,
-      rgba(18,18,21,.92),
-      rgba(9,7,7,.96)
+      110deg,
+      #d90017,
+      #ff1426 48%,
+      #ff3342
     ) !important;
 
   border:
-    1px solid rgba(255,60,60,.18) !important;
+    1px solid rgba(255,70,80,.18) !important;
 
   box-shadow:
-    0 32px 100px rgba(0,0,0,.58),
-    0 0 80px rgba(255,20,20,.045),
-    inset 0 1px 0 rgba(255,255,255,.045) !important;
-
-  backdrop-filter:blur(28px) !important;
-  -webkit-backdrop-filter:blur(28px) !important;
+    0 13px 34px rgba(255,0,25,.26),
+    0 0 25px rgba(255,24,40,.12),
+    inset 0 1px rgba(255,255,255,.22) !important;
 }
 
-/* logo DG existant : PAS DE NOUVELLE GENERATION */
-img[src*="dg-app-logo"],
-img[src*="dg-logo"],
-.dd-logo img,
-.auth-logo img,
-.sales-build-logo img{
-  filter:
-    brightness(0)
-    saturate(100%)
-    invert(24%)
-    sepia(93%)
-    saturate(4720%)
-    hue-rotate(351deg)
-    brightness(105%)
-    contrast(110%) !important;
 
-  drop-shadow:
-    0 0 20px rgba(255,35,35,.25);
-}
+/* ==========================================================
+   HISTORIQUE / PLANS / MODALES
+   ========================================================== */
 
-/* ---------- HISTORIQUE ---------- */
-
-#historyModal,
-.history-modal{
-  backdrop-filter:blur(20px) !important;
-  -webkit-backdrop-filter:blur(20px) !important;
-}
-
-.history-modal > div,
+.modal-card,
+.history-panel,
 .history-modal-content,
-.history-panel{
-  border-radius:30px !important;
-
+.plan-card,
+.build-workspace,
+.studio-panel,
+.sales-build,
+.dd-stripe-modal-card{
   background:
-    linear-gradient(
-      155deg,
-      rgba(17,17,20,.97),
-      rgba(9,7,7,.98)
-    ) !important;
+    #0b0b0d !important;
 
   border:
     1px solid rgba(255,255,255,.085) !important;
 
-  box-shadow:
-    0 35px 120px rgba(0,0,0,.60),
-    0 0 80px rgba(255,30,30,.035) !important;
+  color:#eeeeef !important;
 }
 
-.history-item,
-.history-card,
-.history-entry{
-  border-radius:20px !important;
+.history-item{
+  background:
+    #0d0d0f !important;
 
   border:
     1px solid rgba(255,255,255,.075) !important;
+}
 
+.history-item h3,
+.plan-name,
+.rct{
+  color:#f5f5f6 !important;
+}
+
+
+/* ==========================================================
+   STRIPE
+   ========================================================== */
+
+#stripeConnectionState > div{
   background:
-    rgba(255,255,255,.022) !important;
-
-  transition:
-    transform .28s ease,
-    border-color .28s ease,
-    background .28s ease !important;
-}
-
-.history-item:hover,
-.history-card:hover,
-.history-entry:hover{
-  transform:translateY(-2px);
-  border-color:rgba(255,50,50,.22) !important;
-  background:rgba(255,255,255,.034) !important;
-}
-
-/* ---------- RESULTS ---------- */
-
-#resultsScreen{
-  background:
-    radial-gradient(
-      700px 480px at 50% 0%,
-      rgba(255,27,27,.10),
-      transparent 68%
-    ),
-    #050506 !important;
-}
-
-.studio-nav{
-  border-radius:999px !important;
-
-  background:
-    rgba(12,12,14,.76) !important;
-
-  border:
-    1px solid rgba(255,255,255,.075) !important;
-
-  padding:5px !important;
-
-  backdrop-filter:blur(22px) !important;
-}
-
-.studio-nav-btn{
-  border-radius:999px !important;
-}
-
-.studio-nav-btn.active{
-  background:
-    rgba(255,42,42,.12) !important;
+    #0b0b0d !important;
 
   border-color:
-    rgba(255,56,56,.35) !important;
-
-  color:#ff6868 !important;
+    rgba(255,255,255,.085) !important;
 }
 
-.studio-panel,
-.build-workspace,
-.sales-build{
-  border-radius:28px !important;
-}
 
-.studio-page{
-  border-radius:22px !important;
-
-  border:
-    1px solid rgba(255,255,255,.075) !important;
-
-  background:
-    rgba(255,255,255,.025) !important;
-}
-
-/* ---------- STRIPE ---------- */
-
-#stripeConnectionState > div,
-.dd-stripe-connected-card,
-.dd-stripe-card{
-  border-radius:22px !important;
-}
-
-.dd-stripe-premium-card,
-[class*="dd-stripe"]{
-  --dd-stripe-accent:#ff3434 !important;
-}
-
-.dd-stripe-icon-btn,
-.dd-stripe-action-btn{
-  border-radius:999px !important;
-
-  background:
-    rgba(255,255,255,.04) !important;
-
-  border:
-    1px solid rgba(255,255,255,.09) !important;
-
-  transition:
-    transform .25s ease,
-    background .25s ease !important;
-}
-
-.dd-stripe-icon-btn:hover,
-.dd-stripe-action-btn:hover{
-  transform:translateY(-2px);
-  background:rgba(255,255,255,.075) !important;
-}
-
-/* ---------- MODALES STRIPE ---------- */
-
-#ddStripeModal{
-  backdrop-filter:blur(20px) !important;
-  -webkit-backdrop-filter:blur(20px) !important;
-}
-
-.dd-stripe-modal-card{
-  border-radius:30px !important;
-
-  border:
-    1px solid rgba(255,255,255,.10) !important;
-
-  background:
-    linear-gradient(
-      155deg,
-      rgba(19,19,22,.98),
-      rgba(9,7,7,.99)
-    ) !important;
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,.65),
-    0 0 70px rgba(255,25,25,.06) !important;
-}
-
-/* ---------- SCROLLBAR ---------- */
-
-::-webkit-scrollbar{
-  width:8px;
-  height:8px;
-}
+/* ==========================================================
+   SCROLLBAR
+   ========================================================== */
 
 ::-webkit-scrollbar-track{
-  background:#060607;
+  background:#050505 !important;
 }
 
 ::-webkit-scrollbar-thumb{
-  background:
-    rgba(255,255,255,.12);
-
-  border-radius:999px;
+  background:#29292d !important;
 }
 
 ::-webkit-scrollbar-thumb:hover{
-  background:
-    rgba(255,50,50,.35);
+  background:#3b3b40 !important;
 }
 
-/* ---------- MOBILE ---------- */
 
-@media(max-width:760px){
+/* ==========================================================
+   SÉLECTION TEXTE
+   ========================================================== */
 
-  #memberToolbar{
-    border-radius:22px !important;
-  }
-
-  .q-block{
-    border-radius:24px !important;
-  }
-
-  .choice,
-  .option,
-  .option-card,
-  .answer-card,
-  .answer-option,
-  .niche-card{
-    border-radius:18px !important;
-  }
-
-  input,
-  textarea,
-  select{
-    border-radius:16px !important;
-  }
-
-  .next-btn,
-  #stripeGenerateButton{
-    min-height:56px !important;
-  }
-
-  .history-modal > div,
-  .history-modal-content{
-    border-radius:25px !important;
-  }
-}
-
-/* ---------- REDUCED MOTION ---------- */
-
-@media(prefers-reduced-motion:reduce){
-  *,
-  *::before,
-  *::after{
-    animation-duration:.001ms !important;
-    animation-iteration-count:1 !important;
-    transition-duration:.001ms !important;
-  }
+::selection{
+  color:white;
+  background:rgba(255,24,40,.34);
 }
 
 </style>
@@ -11861,450 +11955,5 @@ initMemberAccess();
 
 })();
 </script>
-
-
-<style id="dd-red-premium-master-v2">
-
-:root{
-  --dd-red:#ff2933;
-  --dd-red-light:#ff5961;
-  --dd-red-dark:#a50d16;
-  --dd-red-deep:#51080e;
-
-  --dd-black:#050505;
-  --dd-black-soft:#090909;
-  --dd-card:#0d0d0f;
-  --dd-card-2:#121214;
-
-  --dd-white:#f7f5f5;
-  --dd-muted:#929296;
-
-  --purple:#ff2933 !important;
-  --purple-bright:#ff5961 !important;
-  --purple-ultra:#ff2933 !important;
-  --purple-dark:#8f1119 !important;
-  --purple-deep:#050505 !important;
-  --purple-mid:#100708 !important;
-
-  --glow1:rgba(255,41,51,.35) !important;
-  --glow2:rgba(170,10,20,.22) !important;
-}
-
-
-/* =======================================
-   PAGE
-   ======================================= */
-
-html,
-body{
-  background:#050505 !important;
-  color:#f7f5f5 !important;
-}
-
-body::before{
-  background:
-    radial-gradient(
-      ellipse 65% 48% at 50% -8%,
-      rgba(255,35,45,.11) 0%,
-      transparent 67%
-    ),
-    radial-gradient(
-      ellipse 52% 40% at 88% 45%,
-      rgba(120,5,12,.075) 0%,
-      transparent 70%
-    ),
-    linear-gradient(
-      160deg,
-      #050505 0%,
-      #080606 45%,
-      #090607 72%,
-      #040404 100%
-    ) !important;
-}
-
-
-/* =======================================
-   HEADER
-   ======================================= */
-
-.site-header{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,35,45,.055),
-      rgba(5,5,5,.12) 58%,
-      transparent
-    ) !important;
-
-  border-bottom:
-    1px solid rgba(255,255,255,.06) !important;
-}
-
-.site-header h1{
-  color:#fff !important;
-
-  text-shadow:
-    0 0 24px rgba(255,35,45,.22),
-    0 0 55px rgba(180,10,20,.10) !important;
-}
-
-.site-header h1 span,
-.site-header h1 em{
-  color:#ff4c55 !important;
-
-  -webkit-text-fill-color:#ff4c55 !important;
-
-  text-shadow:
-    0 0 18px rgba(255,40,50,.42),
-    0 0 42px rgba(210,12,22,.20) !important;
-}
-
-.site-header p{
-  color:#aaa5a7 !important;
-}
-
-
-/* =======================================
-   ROBOT
-   ======================================= */
-
-.robot-svg{
-  filter:
-    drop-shadow(0 0 22px rgba(255,40,50,.25))
-    drop-shadow(0 0 48px rgba(155,6,16,.12)) !important;
-}
-
-.robot-glow-ring{
-  background:
-    radial-gradient(
-      ellipse,
-      rgba(255,42,52,.42),
-      transparent 70%
-    ) !important;
-}
-
-
-/* =======================================
-   BADGE
-   ======================================= */
-
-.header-badge{
-  color:#ff6570 !important;
-
-  background:
-    rgba(255,38,48,.06) !important;
-
-  border:
-    1px solid rgba(255,54,64,.22) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025),
-    0 8px 26px rgba(0,0,0,.28) !important;
-
-  border-radius:999px !important;
-}
-
-
-/* =======================================
-   PROGRESS
-   ======================================= */
-
-.progress-dot{
-  background:
-    rgba(255,255,255,.075) !important;
-
-  border-radius:999px !important;
-}
-
-.progress-dot.active{
-  background:
-    linear-gradient(
-      90deg,
-      #ff202d,
-      #ff5961
-    ) !important;
-
-  box-shadow:
-    0 0 12px rgba(255,35,45,.55),
-    0 0 26px rgba(255,35,45,.14) !important;
-}
-
-.progress-dot.done{
-  background:#ff3e48 !important;
-
-  box-shadow:
-    0 0 10px rgba(255,40,50,.32) !important;
-}
-
-
-/* =======================================
-   QUESTIONS
-   ======================================= */
-
-.q-block h1 span,
-.q-block h2 span,
-.q-block h3 span,
-.q-block strong,
-.question-title span{
-  color:#ff4c55 !important;
-  -webkit-text-fill-color:#ff4c55 !important;
-
-  text-shadow:
-    0 0 18px rgba(255,40,50,.18) !important;
-}
-
-
-/* =======================================
-   INPUTS
-   ======================================= */
-
-input,
-textarea,
-select,
-.text-input{
-  background:
-    rgba(255,255,255,.025) !important;
-
-  border:
-    1px solid rgba(255,255,255,.10) !important;
-
-  color:#f5f3f3 !important;
-
-  border-radius:18px !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus,
-.text-input:focus{
-  border-color:
-    rgba(255,48,58,.60) !important;
-
-  box-shadow:
-    0 0 0 4px rgba(255,38,48,.07),
-    0 10px 34px rgba(0,0,0,.28) !important;
-}
-
-
-/* =======================================
-   TOOLBAR
-   ======================================= */
-
-.member-toolbar{
-  background:
-    rgba(8,8,9,.82) !important;
-
-  border:
-    1px solid rgba(255,255,255,.08) !important;
-
-  border-radius:999px !important;
-
-  box-shadow:
-    0 16px 50px rgba(0,0,0,.36),
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-}
-
-.member-email-label{
-  color:#898589 !important;
-}
-
-.member-tool-btn{
-  color:#dedbdd !important;
-  background:transparent !important;
-  border-color:transparent !important;
-}
-
-.member-tool-btn:hover{
-  color:#fff !important;
-  background:rgba(255,255,255,.045) !important;
-}
-
-
-/* =======================================
-   MODALES
-   ======================================= */
-
-.modal-card{
-  background:
-    linear-gradient(
-      155deg,
-      #111113,
-      #080809
-    ) !important;
-
-  border:
-    1px solid rgba(255,255,255,.085) !important;
-
-  box-shadow:
-    0 35px 120px rgba(0,0,0,.65),
-    0 0 70px rgba(255,25,35,.035) !important;
-
-  border-radius:28px !important;
-}
-
-.modal-eyebrow,
-.modal-title span{
-  color:#ff5059 !important;
-  -webkit-text-fill-color:#ff5059 !important;
-}
-
-.modal-copy,
-.privacy-note,
-.plan-cancel-note{
-  color:#929095 !important;
-}
-
-
-/* =======================================
-   HISTORY
-   ======================================= */
-
-.history-item{
-  background:
-    rgba(255,255,255,.022) !important;
-
-  border:
-    1px solid rgba(255,255,255,.075) !important;
-
-  border-radius:20px !important;
-}
-
-.history-open{
-  background:
-    linear-gradient(
-      135deg,
-      #ff3a44,
-      #d91420
-    ) !important;
-
-  border:none !important;
-  color:white !important;
-  border-radius:999px !important;
-}
-
-
-/* =======================================
-   OPTIONS
-   ======================================= */
-
-.choice,
-.option,
-.answer-option,
-.option-card,
-.niche-card{
-  background:
-    rgba(255,255,255,.023) !important;
-
-  border:
-    1px solid rgba(255,255,255,.085) !important;
-
-  border-radius:20px !important;
-}
-
-.choice:hover,
-.option:hover,
-.answer-option:hover,
-.option-card:hover,
-.niche-card:hover{
-  border-color:
-    rgba(255,46,56,.34) !important;
-
-  background:
-    rgba(255,40,50,.045) !important;
-}
-
-.choice.selected,
-.option.selected,
-.answer-option.selected,
-.option-card.selected,
-.niche-card.selected{
-  border-color:
-    rgba(255,46,56,.62) !important;
-
-  background:
-    rgba(255,40,50,.085) !important;
-}
-
-
-/* =======================================
-   CTA
-   ======================================= */
-
-.next-btn,
-.plan-action,
-.history-new,
-#stripeGenerateButton{
-  background:
-    linear-gradient(
-      135deg,
-      #ff4149 0%,
-      #ef1d29 48%,
-      #bd0c18 100%
-    ) !important;
-
-  color:white !important;
-
-  border:none !important;
-
-  border-radius:999px !important;
-
-  box-shadow:
-    0 12px 34px rgba(210,8,20,.20),
-    inset 0 1px 0 rgba(255,255,255,.24) !important;
-}
-
-
-/* =======================================
-   BUILD / RESULTS
-   ======================================= */
-
-.build-workspace,
-.studio-panel,
-.sales-build{
-  background:
-    linear-gradient(
-      155deg,
-      #111113,
-      #080809
-    ) !important;
-
-  border:
-    1px solid rgba(255,255,255,.075) !important;
-
-  box-shadow:
-    0 30px 100px rgba(0,0,0,.45) !important;
-}
-
-.build-bar{
-  background:
-    rgba(255,255,255,.065) !important;
-}
-
-.build-bar span{
-  background:
-    linear-gradient(
-      90deg,
-      #db101d,
-      #ff525b
-    ) !important;
-
-  box-shadow:
-    0 0 14px rgba(255,40,50,.40) !important;
-}
-
-
-/* =======================================
-   STRIPE
-   ======================================= */
-
-#stripeConnectionState > div{
-  border-radius:20px !important;
-}
-
-</style>
-
 </body>
 </html>
