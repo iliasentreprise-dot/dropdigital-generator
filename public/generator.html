@@ -3769,6 +3769,685 @@ img[src*="dg-logo"],
 
 </style>
 
+
+<style id="dd-ebook-premium-v2">
+
+/* =========================================================
+   EBOOK RESULT — PREMIUM RED / LOVABLE
+   ========================================================= */
+
+.dd-ebook-premium{
+  position:relative !important;
+  overflow:hidden !important;
+
+  padding:30px !important;
+
+  background:
+    radial-gradient(
+      650px 270px at 4% -15%,
+      rgba(255,24,40,.065),
+      transparent 65%
+    ),
+    linear-gradient(
+      155deg,
+      #0d0d0f,
+      #080809 72%
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-left:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-radius:
+    28px !important;
+
+  box-shadow:
+    0 28px 90px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+
+/* halo discret */
+.dd-ebook-premium::before{
+  content:'';
+
+  position:absolute;
+  width:420px;
+  height:320px;
+
+  top:-210px;
+  left:-120px;
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,24,40,.11),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   HEADER EBOOK
+   ========================================================= */
+
+.dd-ebook-premium-header{
+  position:relative;
+  z-index:2;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:20px !important;
+
+  margin-bottom:22px !important;
+}
+
+
+.dd-ebook-premium-title{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+
+  margin:0 !important;
+
+  color:#f7f7f8 !important;
+  -webkit-text-fill-color:#f7f7f8 !important;
+
+  font-size:
+    18px !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .055em !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+/* remplace l'ancien emoji */
+.dd-ebook-premium-title::before{
+  content:'';
+
+  width:38px;
+  height:38px;
+
+  flex:0 0 38px;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,38,52,.18),
+      rgba(255,38,52,.055)
+    );
+
+  border:
+    1px solid rgba(255,44,58,.26);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035),
+    0 8px 25px rgba(255,0,20,.07);
+}
+
+
+/* petit symbole au centre */
+.dd-ebook-premium-title::after{
+  content:'≡';
+
+  position:absolute;
+  left:12px;
+
+  color:#ff5360;
+
+  font-size:20px;
+  font-weight:400;
+
+  text-shadow:
+    0 0 14px rgba(255,24,40,.38);
+}
+
+
+/* =========================================================
+   BOUTON COPIER
+   ========================================================= */
+
+.dd-ebook-copy-btn{
+  min-height:
+    44px !important;
+
+  padding:
+    0 18px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+
+  white-space:
+    nowrap !important;
+
+  color:
+    #fff !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #d90018,
+      #ff1729 55%,
+      #ff3545
+    ) !important;
+
+  border:
+    1px solid rgba(255,75,86,.19) !important;
+
+  border-radius:
+    999px !important;
+
+  font:
+    800 11px/1 'DM Sans',
+    sans-serif !important;
+
+  letter-spacing:
+    .055em !important;
+
+  box-shadow:
+    0 11px 28px rgba(220,0,20,.17),
+    inset 0 1px rgba(255,255,255,.22) !important;
+
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s ease,
+    filter .22s ease !important;
+}
+
+
+.dd-ebook-copy-btn::after{
+  content:'↗';
+
+  font-size:
+    14px;
+}
+
+
+.dd-ebook-copy-btn:hover{
+  transform:
+    translateY(-2px) !important;
+
+  filter:
+    brightness(1.08);
+
+  box-shadow:
+    0 15px 36px rgba(220,0,20,.25),
+    0 0 28px rgba(255,24,40,.10),
+    inset 0 1px rgba(255,255,255,.26) !important;
+}
+
+
+.dd-ebook-copy-btn:active{
+  transform:
+    scale(.98) !important;
+}
+
+
+/* =========================================================
+   BLOC UTILISATION
+   ========================================================= */
+
+.dd-ebook-usage{
+  position:relative;
+
+  margin:
+    0 0 16px !important;
+
+  padding:
+    18px 20px !important;
+
+  background:
+    rgba(255,255,255,.023) !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:
+    18px !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.018) !important;
+}
+
+
+.dd-ebook-usage-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+
+  margin-bottom:
+    9px !important;
+
+  color:
+    #ff5965 !important;
+
+  font-size:
+    10px !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    .10em !important;
+
+  text-transform:
+    uppercase !important;
+
+  text-shadow:
+    0 0 14px rgba(255,24,40,.23) !important;
+}
+
+
+.dd-ebook-usage-kicker::before{
+  content:'';
+
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:#ff2939;
+
+  box-shadow:
+    0 0 10px rgba(255,24,40,.70);
+}
+
+
+.dd-ebook-usage p,
+.dd-ebook-usage-text{
+  margin:
+    0 !important;
+
+  color:
+    #99999f !important;
+
+  font-size:
+    13px !important;
+
+  line-height:
+    1.7 !important;
+}
+
+
+/* =========================================================
+   DETAILS / PROMPT
+   ========================================================= */
+
+.dd-ebook-details{
+  overflow:
+    hidden !important;
+
+  margin-top:
+    14px !important;
+
+  background:
+    #0b0b0d !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:
+    18px !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.018) !important;
+
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease !important;
+}
+
+
+.dd-ebook-details[open]{
+  border-color:
+    rgba(255,35,50,.18) !important;
+
+  box-shadow:
+    0 16px 45px rgba(0,0,0,.20),
+    inset 0 1px rgba(255,255,255,.02) !important;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.dd-ebook-details summary{
+  min-height:
+    52px !important;
+
+  padding:
+    0 17px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+
+  list-style:none !important;
+
+  color:
+    #d7d7da !important;
+
+  font-size:
+    12px !important;
+
+  font-weight:
+    700 !important;
+
+  cursor:
+    pointer !important;
+
+  background:
+    rgba(255,255,255,.015) !important;
+
+  transition:
+    background .22s ease,
+    color .22s ease !important;
+}
+
+
+.dd-ebook-details summary::-webkit-details-marker{
+  display:none;
+}
+
+
+.dd-ebook-details summary::before{
+  content:'›';
+
+  width:25px;
+  height:25px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  flex:0 0 25px;
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(255,24,40,.075);
+
+  border:
+    1px solid rgba(255,24,40,.15);
+
+  color:
+    #ff5360;
+
+  font-size:
+    18px;
+
+  transition:
+    transform .25s ease;
+}
+
+
+.dd-ebook-details[open] summary::before{
+  transform:
+    rotate(90deg);
+}
+
+
+.dd-ebook-details summary:hover{
+  color:
+    white !important;
+
+  background:
+    rgba(255,255,255,.028) !important;
+}
+
+
+/* =========================================================
+   CONTENU DU PROMPT
+   ========================================================= */
+
+.dd-ebook-details pre,
+.dd-ebook-details code,
+.dd-ebook-details .prompt-text{
+  color:
+    #aaaab0 !important;
+
+  -webkit-text-fill-color:
+    #aaaab0 !important;
+
+  text-shadow:
+    none !important;
+}
+
+
+.dd-ebook-details pre{
+  max-height:
+    520px !important;
+
+  overflow:
+    auto !important;
+
+  margin:
+    0 !important;
+
+  padding:
+    20px !important;
+
+  background:
+    #080809 !important;
+
+  border-top:
+    1px solid rgba(255,255,255,.055) !important;
+
+  font-size:
+    12px !important;
+
+  line-height:
+    1.75 !important;
+
+  white-space:
+    pre-wrap !important;
+
+  word-break:
+    break-word !important;
+}
+
+
+/* contenu texte direct si pas de PRE */
+.dd-ebook-details > div:not(summary){
+  color:#aaaab0 !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR PROMPT
+   ========================================================= */
+
+.dd-ebook-details pre::-webkit-scrollbar{
+  width:6px;
+}
+
+.dd-ebook-details pre::-webkit-scrollbar-track{
+  background:#080809;
+}
+
+.dd-ebook-details pre::-webkit-scrollbar-thumb{
+  background:#2c2c30;
+  border-radius:999px;
+}
+
+.dd-ebook-details pre::-webkit-scrollbar-thumb:hover{
+  background:#3a3a3f;
+}
+
+
+/* =========================================================
+   TAB EBOOK
+   ========================================================= */
+
+.dd-ebook-tab{
+  min-height:
+    44px !important;
+
+  padding:
+    0 18px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+
+  border-radius:
+    999px !important;
+
+  color:
+    #a3a3a8 !important;
+
+  background:
+    rgba(255,255,255,.022) !important;
+
+  border:
+    1px solid rgba(255,255,255,.08) !important;
+
+  box-shadow:
+    none !important;
+
+  transition:
+    transform .22s ease,
+    color .22s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease !important;
+}
+
+
+.dd-ebook-tab:hover{
+  color:white !important;
+
+  background:
+    rgba(255,255,255,.04) !important;
+
+  border-color:
+    rgba(255,255,255,.14) !important;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.dd-ebook-tab.dd-ebook-tab-active{
+  color:
+    #fff !important;
+
+  background:
+    rgba(255,24,40,.10) !important;
+
+  border-color:
+    rgba(255,35,50,.38) !important;
+
+  box-shadow:
+    0 0 24px rgba(255,24,40,.07) !important;
+}
+
+
+/* =========================================================
+   CARTES / BOUTONS INTERNES
+   ========================================================= */
+
+.dd-ebook-premium button:not(.dd-ebook-copy-btn),
+.dd-ebook-premium a:not(.dd-ebook-copy-btn){
+  border-radius:
+    999px !important;
+}
+
+
+.dd-ebook-premium .next-btn{
+  background:
+    linear-gradient(
+      110deg,
+      #d90018,
+      #ff1729 55%,
+      #ff3545
+    ) !important;
+
+  color:white !important;
+
+  border:none !important;
+
+  border-radius:
+    999px !important;
+}
+
+
+/* =========================================================
+   PAS DE VERT SUR L'UI EBOOK
+   ========================================================= */
+
+.dd-ebook-premium{
+  --green:#ff2939 !important;
+}
+
+
+/* =========================================================
+   SMOOTH
+   ========================================================= */
+
+.dd-ebook-premium,
+.dd-ebook-premium *,
+.dd-ebook-tab{
+  -webkit-font-smoothing:
+    antialiased;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:700px){
+
+  .dd-ebook-premium{
+    padding:
+      20px !important;
+
+    border-radius:
+      22px !important;
+  }
+
+  .dd-ebook-premium-header{
+    align-items:
+      flex-start !important;
+
+    flex-direction:
+      column !important;
+  }
+
+  .dd-ebook-copy-btn{
+    width:
+      100% !important;
+  }
+
+  .dd-ebook-details pre{
+    max-height:
+      420px !important;
+  }
+
+}
+
+</style>
+
 </head>
 <body>
 
@@ -14782,6 +15461,469 @@ body:has(#resultsScreen.show) .chat-wrap{
 }
 
 </style>
+
+
+<!-- DD EBOOK PREMIUM V2 START -->
+<script>
+(function(){
+
+  function cleanText(value){
+    return String(value||'')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+
+  function findPromptTitle(){
+
+    const root=
+      document.getElementById(
+        'resultsScreen'
+      );
+
+    if(!root)return null;
+
+
+    const elements=[
+      ...root.querySelectorAll(
+        'h1,h2,h3,h4,strong,div'
+      )
+    ];
+
+
+    return elements.find(el=>{
+
+      const text=
+        cleanText(
+          el.textContent
+        ).toUpperCase();
+
+      return (
+        text.includes(
+          'PROMPT À ENVOYER À CLAUDE'
+        ) ||
+        text.includes(
+          'PROMPT A ENVOYER A CLAUDE'
+        )
+      ) &&
+      text.length < 100;
+
+    }) || null;
+  }
+
+
+  function findCard(title){
+
+    if(!title)return null;
+
+
+    let node=title;
+
+    for(
+      let i=0;
+      i<6 && node;
+      i++
+    ){
+
+      const text=
+        cleanText(
+          node.textContent
+        ).toUpperCase();
+
+
+      if(
+        text.includes(
+          'UTILISATION'
+        ) &&
+        (
+          text.includes(
+            'VOIR EN DÉTAIL'
+          ) ||
+          text.includes(
+            'VOIR EN DETAIL'
+          )
+        )
+      ){
+        return node;
+      }
+
+      node=node.parentElement;
+    }
+
+
+    return (
+      title.closest('.rc') ||
+      title.closest('section') ||
+      title.parentElement?.parentElement
+    );
+  }
+
+
+  function decorateHeader(
+    card,
+    title
+  ){
+
+    if(!title)return;
+
+
+    /* retire emoji livre */
+    const clean=
+      cleanText(
+        title.textContent
+      )
+      .replace(
+        /^[📖📚🖥️💻]+\s*/,
+        ''
+      );
+
+
+    if(
+      title.textContent.trim() !== clean
+    ){
+      title.textContent=clean;
+    }
+
+
+    title.classList.add(
+      'dd-ebook-premium-title'
+    );
+
+
+    const header=
+      title.parentElement;
+
+    if(header){
+
+      header.classList.add(
+        'dd-ebook-premium-header'
+      );
+
+    }
+
+
+    const buttons=[
+      ...card.querySelectorAll(
+        'button,a'
+      )
+    ];
+
+
+    const copy=
+      buttons.find(el=>
+        /COPIER.*OUVRIR.*CHATGPT/i
+          .test(
+            cleanText(
+              el.textContent
+            )
+          )
+      );
+
+
+    if(copy){
+
+      copy.classList.add(
+        'dd-ebook-copy-btn'
+      );
+
+      copy.textContent=
+        'COPIER & OUVRIR CHATGPT';
+
+    }
+
+  }
+
+
+  function decorateUsage(card){
+
+    const candidates=[
+      ...card.querySelectorAll(
+        'div,section,article'
+      )
+    ];
+
+
+    const usage=
+      candidates.find(el=>{
+
+        const text=
+          cleanText(
+            el.textContent
+          ).toUpperCase();
+
+        return (
+          text.startsWith(
+            'UTILISATION'
+          ) &&
+          text.length < 600
+        );
+
+      });
+
+
+    if(!usage)return;
+
+
+    usage.classList.add(
+      'dd-ebook-usage'
+    );
+
+
+    const children=[
+      ...usage.querySelectorAll(
+        'strong,b,h4,h5,div'
+      )
+    ];
+
+
+    const kicker=
+      children.find(el=>
+        cleanText(
+          el.textContent
+        ).toUpperCase()
+          === 'UTILISATION'
+      );
+
+
+    if(kicker){
+
+      kicker.classList.add(
+        'dd-ebook-usage-kicker'
+      );
+
+    }
+
+
+    usage
+      .querySelectorAll('p')
+      .forEach(p=>
+        p.classList.add(
+          'dd-ebook-usage-text'
+        )
+      );
+
+  }
+
+
+  function decorateDetails(card){
+
+    const details=
+      card.querySelector('details');
+
+
+    if(!details)return;
+
+
+    details.classList.add(
+      'dd-ebook-details'
+    );
+
+
+    const summary=
+      details.querySelector(
+        'summary'
+      );
+
+
+    if(summary){
+
+      /*
+        wording plus premium,
+        même fonctionnement.
+      */
+      const text=
+        cleanText(
+          summary.textContent
+        );
+
+      if(
+        /VOIR EN DÉTAIL|VOIR EN DETAIL/i
+          .test(text)
+      ){
+        summary.textContent=
+          'Afficher le prompt complet';
+      }
+
+    }
+
+
+    details
+      .querySelectorAll(
+        'pre,code'
+      )
+      .forEach(el=>
+        el.classList.add(
+          'prompt-text'
+        )
+      );
+
+  }
+
+
+  function decorateTab(){
+
+    const root=
+      document.getElementById(
+        'resultsScreen'
+      );
+
+    if(!root)return;
+
+
+    const clickable=[
+      ...root.querySelectorAll(
+        'button,a'
+      )
+    ];
+
+
+    clickable.forEach(el=>{
+
+      const text=
+        cleanText(
+          el.textContent
+        )
+        .replace(
+          /^[📖📚]+\s*/,
+          ''
+        )
+        .toUpperCase();
+
+
+      if(text==='EBOOK'){
+
+        el.classList.add(
+          'dd-ebook-tab'
+        );
+
+
+        /*
+          retire également
+          l'ancien emoji.
+        */
+        el.textContent='EBOOK';
+
+
+        const style=
+          getComputedStyle(el);
+
+
+        if(
+          el.classList.contains(
+            'active'
+          ) ||
+          style.borderColor
+            .includes('255')
+        ){
+          el.classList.add(
+            'dd-ebook-tab-active'
+          );
+        }
+
+      }
+
+    });
+
+  }
+
+
+  function decorate(){
+
+    const title=
+      findPromptTitle();
+
+    if(!title){
+      decorateTab();
+      return;
+    }
+
+
+    const card=
+      findCard(title);
+
+
+    if(
+      !card ||
+      card.dataset
+        .ddEbookPremium==='1'
+    ){
+      decorateTab();
+      return;
+    }
+
+
+    card.dataset
+      .ddEbookPremium='1';
+
+
+    card.classList.add(
+      'dd-ebook-premium'
+    );
+
+
+    decorateHeader(
+      card,
+      title
+    );
+
+    decorateUsage(
+      card
+    );
+
+    decorateDetails(
+      card
+    );
+
+    decorateTab();
+
+  }
+
+
+  const observer=
+    new MutationObserver(
+      decorate
+    );
+
+
+  function start(){
+
+    observer.observe(
+      document.body,
+      {
+        childList:true,
+        subtree:true
+      }
+    );
+
+    decorate();
+
+  }
+
+
+  if(
+    document.readyState==='loading'
+  ){
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      start
+    );
+
+  }else{
+
+    start();
+
+  }
+
+
+  setTimeout(decorate,100);
+  setTimeout(decorate,400);
+  setTimeout(decorate,1000);
+  setTimeout(decorate,1800);
+
+})();
+</script>
+<!-- DD EBOOK PREMIUM V2 END -->
 
 </body>
 </html>
