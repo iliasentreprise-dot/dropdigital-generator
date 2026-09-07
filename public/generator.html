@@ -4189,7 +4189,12 @@ async function restoreGeneration(id){
 
     closeHistory();
 
-    document.getElementById('chatWrap').style.display='none';
+    const historyChatWrap=document.getElementById('chatWrap');
+  if(historyChatWrap){
+    historyChatWrap.style.setProperty('display','none','important');
+    historyChatWrap.style.setProperty('visibility','hidden','important');
+    historyChatWrap.style.setProperty('opacity','0','important');
+  }
 
     const header=document.querySelector('.site-header');
     if(header)header.style.display='none';
@@ -4252,6 +4257,13 @@ async function restoreGeneration(id){
     });
 
     showResults(product,theme);
+
+  const historyChatWrapAfter=document.getElementById('chatWrap');
+  if(historyChatWrapAfter){
+    historyChatWrapAfter.style.setProperty('display','none','important');
+    historyChatWrapAfter.style.setProperty('visibility','hidden','important');
+    historyChatWrapAfter.style.setProperty('opacity','0','important');
+  }
 
   }catch(error){
     console.error('[history] erreur restauration',error);
@@ -6132,6 +6144,14 @@ function chooseDiscoveryPlan(){
 }
 // ── GENERATE ───────────────────────────────────────────
 function showBuildWorkspace(){
+  const ddBuildChatWrap=document.getElementById('chatWrap');
+  if(ddBuildChatWrap){
+    ddBuildChatWrap.style.setProperty('display','none','important');
+    ddBuildChatWrap.style.setProperty('visibility','hidden','important');
+    ddBuildChatWrap.style.setProperty('opacity','0','important');
+  }
+
+
   const chatWrap=document.getElementById('chatWrap');
 
   if(chatWrap){
@@ -10649,6 +10669,14 @@ function wireConnectedStripeCheckout(html,product){
 
 // ── SHOW RESULTS ───────────────────────────────────────
 function showResults(d, theme) {
+  const ddChatWrap=document.getElementById('chatWrap');
+  if(ddChatWrap){
+    ddChatWrap.style.setProperty('display','none','important');
+    ddChatWrap.style.setProperty('visibility','hidden','important');
+    ddChatWrap.style.setProperty('opacity','0','important');
+  }
+
+
   const chatWrap=document.getElementById('chatWrap');
 
   if(chatWrap){
@@ -12040,119 +12068,126 @@ initMemberAccess();
 })();
 </script>
 
-<style id="dd-results-banner-final-v2">
+<style id="dd-results-clean-final-v3">
 
-/* ==========================================================
-   RESULTS — ROUGE PREMIUM
-   ========================================================== */
+/* =========================================================
+   ÉCRAN RÉSULTATS — BANNIÈRE ROUGE PREMIUM
+   ========================================================= */
 
 #resultsScreen .results-header{
   background:
     radial-gradient(
-      ellipse 70% 68% at 50% 42%,
-      rgba(255,20,38,.30) 0%,
-      rgba(210,0,22,.16) 36%,
-      rgba(120,0,12,.07) 58%,
-      transparent 74%
+      ellipse 72% 72% at 50% 42%,
+      rgba(255,20,38,.27) 0%,
+      rgba(210,0,20,.14) 38%,
+      rgba(120,0,12,.055) 61%,
+      transparent 76%
     ),
     linear-gradient(
       155deg,
-      #1a0205 0%,
-      #290308 36%,
-      #1c0206 68%,
-      #0b0103 100%
+      #140204 0%,
+      #230307 40%,
+      #160204 70%,
+      #080102 100%
     ) !important;
 
   border-bottom:
-    2px solid rgba(255,28,45,.52) !important;
+    2px solid rgba(255,28,45,.46) !important;
 
   box-shadow:
-    inset 0 -50px 100px rgba(0,0,0,.25),
-    0 20px 80px rgba(120,0,10,.10) !important;
+    inset 0 -45px 100px rgba(0,0,0,.23) !important;
 }
 
 
-/* HALO DE LA BANNIÈRE = ROUGE */
+/* halo global = ROUGE */
 #resultsScreen .results-header::before{
   background:
     radial-gradient(
-      ellipse 66% 60% at 50% 43%,
-      rgba(255,28,45,.28) 0%,
-      rgba(255,20,38,.10) 38%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 42% 30% at 28% 85%,
-      rgba(180,0,18,.12) 0%,
-      transparent 56%
+      ellipse 68% 62% at 50% 45%,
+      rgba(255,24,40,.23) 0%,
+      rgba(255,24,40,.07) 42%,
+      transparent 70%
     ) !important;
 }
 
 
-/* ==========================================================
-   TITRE PRINCIPAL = BLANC
-   ========================================================== */
+/* =========================================================
+   TEXTE PRINCIPAL
+   BLANC PUR + HALO ROUGE
+   ========================================================= */
 
 #resultsScreen .results-header h2,
+#resultsScreen .results-header h2.dd-result-red-title,
 #resultsScreen .results-header .dd-result-red-title{
-  color:#f7f7f8 !important;
+  color:#ffffff !important;
 
-  -webkit-text-fill-color:#f7f7f8 !important;
+  -webkit-text-fill-color:#ffffff !important;
+
+  background:none !important;
 
   text-shadow:
-    0 0 16px rgba(255,255,255,.11),
-    0 0 38px rgba(255,24,40,.16),
-    0 3px 5px rgba(0,0,0,.80) !important;
+    0 0 10px rgba(255,255,255,.18),
+    0 0 20px rgba(255,24,40,.72),
+    0 0 45px rgba(255,24,40,.34),
+    0 0 85px rgba(170,0,18,.16) !important;
 }
 
 
-/* ==========================================================
-   UNIQUEMENT PRÊT / VENDRE = VERT
-   ========================================================== */
+/* =========================================================
+   PRÊT / VENDRE
+   VERT PUR — AUCUN ROUGE DANS LE CARACTÈRE
+   ========================================================= */
 
 #resultsScreen .results-header h2 span,
+#resultsScreen .results-header h2 .dd-result-green,
 #resultsScreen .results-header .dd-result-green{
   color:#2eff7a !important;
 
   -webkit-text-fill-color:#2eff7a !important;
 
+  background:none !important;
+
+  -webkit-background-clip:initial !important;
+  background-clip:initial !important;
+
+  filter:none !important;
+
   text-shadow:
-    0 0 15px rgba(37,211,102,.95),
-    0 0 36px rgba(0,255,100,.50),
-    0 0 2px rgba(255,255,255,.75) !important;
+    0 0 8px rgba(46,255,122,.65),
+    0 0 20px rgba(37,211,102,.85),
+    0 0 45px rgba(0,255,100,.38) !important;
 }
 
 
-/* ==========================================================
-   SOUS-TITRE = GRIS/BLANC
-   ========================================================== */
-
+/* sous-titre */
 #resultsScreen .results-header p{
-  color:rgba(235,235,238,.72) !important;
-
-  -webkit-text-fill-color:
-    rgba(235,235,238,.72) !important;
+  color:rgba(240,240,242,.72) !important;
+  -webkit-text-fill-color:rgba(240,240,242,.72) !important;
 }
 
 
-/* ==========================================================
-   ÉCLAIR : on retire tout glow vert
-   ========================================================== */
-
+/* éclair */
 #resultsScreen .check-anim{
   filter:
-    drop-shadow(0 0 14px rgba(255,170,0,.55))
-    drop-shadow(0 0 34px rgba(255,24,40,.20)) !important;
+    drop-shadow(0 0 16px rgba(255,170,0,.50))
+    drop-shadow(0 0 38px rgba(255,24,40,.17)) !important;
 }
 
 
-/* ==========================================================
-   SÉCURITÉ :
-   JAMAIS LE QUESTIONNAIRE SUR L'ÉCRAN RÉSULTATS
-   ========================================================== */
+/* =========================================================
+   IMPORTANT :
+   SI RESULTS EST OUVERT = QUESTIONNAIRE INTERDIT
+   ========================================================= */
 
-body:has(#resultsScreen.show) #chatWrap{
+body:has(#resultsScreen.show) #chatWrap,
+body:has(#resultsScreen.show) .chat-wrap{
   display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
 }
 
 </style>
