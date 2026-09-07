@@ -5330,16 +5330,96 @@ ${item.data?._status==='building'
 </div></div><div class="history-actions"><button class="history-open" onclick="restoreGeneration('${ea(item.id)}')">OUVRIR</button><button class="history-delete" onclick="deleteGeneration('${ea(item.id)}')">SUPPRIMER</button></div></article>`;}).join('');
 }
 async function hydrateIllustrations(data){
-  const paths=Array.isArray(data?.illustration_paths)?data.illustration_paths:[];
-  if(!paths.length){data.illustrations=[];if(isPaidPlan())data.missing_images=Array.from({length:10},(_,i)=>i);return data;}
-  const urls=Array(10).fill(null),missing=[];
-  for(let i=0;i<10;i++){
-    const path=paths[i];if(!path){missing.push(i);continue;}
-    const {data:signed,error}=await dbClient.storage.from('ebook-illustrations').createSignedUrl(path,31536000);
-    if(error||!signed?.signedUrl)missing.push(i);else urls[i]=signed.signedUrl;
+  const paths=
+    Array.isArray(data?.illustration_paths)
+      ? data.illustration_paths.slice(0,10)
+      : [];
+
+  if(!paths.some(Boolean)){
+    data.illustrations=[];
+
+    if(isPaidPlan()){
+      data.missing_images=
+        Array.from(
+          {length:10},
+          (_,i)=>i
+        );
+    }
+
+    return data;
   }
-  data.illustrations=urls;data.missing_images=missing;return data;
+
+  const urls=Array(10).fill(null);
+
+  const jobs=
+    Array.from(
+      {length:10},
+      async(_,i)=>{
+        const path=paths[i];
+
+        if(!path){
+          return {
+            index:i,
+            url:null
+          };
+        }
+
+        try{
+          const {data:signed,error}=
+            await dbClient.storage
+              .from('ebook-illustrations')
+              .createSignedUrl(
+                path,
+                31536000
+              );
+
+          if(
+            error ||
+            !signed?.signedUrl
+          ){
+            return {
+              index:i,
+              url:null
+            };
+          }
+
+          return {
+            index:i,
+            url:signed.signedUrl
+          };
+
+        }catch(error){
+          console.warn(
+            '[history] image indisponible',
+            i,
+            error
+          );
+
+          return {
+            index:i,
+            url:null
+          };
+        }
+      }
+    );
+
+  const resolved=
+    await Promise.all(jobs);
+
+  for(const result of resolved){
+    urls[result.index]=result.url;
+  }
+
+  data.illustrations=urls;
+
+  data.missing_images=
+    urls
+      .map((url,index)=>url ? null : index)
+      .filter(index=>index!==null);
+
+  return data;
 }
+
 async function persistIllustration(dataUrl,generationId,index){
 
   if(!currentMember){
@@ -5422,107 +5502,227 @@ async function persistIllustration(dataUrl,generationId,index){
 }
 
 async function restoreGeneration(id){
-  const item=getHistory().find(entry=>entry.id===id);
+  const item=
+    getHistory()
+      .find(
+        entry=>entry.id===id
+      );
 
   if(!item){
-    console.error('[history] création introuvable',id);
+    console.error(
+      '[history] création introuvable',
+      id
+    );
+    return;
+  }
+
+  if(restoringHistory){
+    console.warn(
+      '[history] restauration déjà en cours'
+    );
     return;
   }
 
   restoringHistory=true;
 
+  console.time(
+    '[history] ouverture '+id
+  );
+
   try{
-    S.a={...(item.answers||{})};
+    S.a={
+      ...(item.answers||{})
+    };
+
     S.step=6;
 
     closeHistory();
 
-    const historyChatWrap=document.getElementById('chatWrap');
-  if(historyChatWrap){
-    historyChatWrap.style.setProperty('display','none','important');
-    historyChatWrap.style.setProperty('visibility','hidden','important');
-    historyChatWrap.style.setProperty('opacity','0','important');
-  }
+    const chat=
+      document.getElementById(
+        'chatWrap'
+      );
 
-    const header=document.querySelector('.site-header');
-    if(header)header.style.display='none';
+    const header=
+      document.querySelector(
+        '.site-header'
+      );
 
-    const product=item.data||{};
+    const loading=
+      document.getElementById(
+        'loadingScreen'
+      );
+
+    const results=
+      document.getElementById(
+        'resultsScreen'
+      );
+
+    if(chat){
+      chat.style.setProperty(
+        'display',
+        'none',
+        'important'
+      );
+
+      chat.style.setProperty(
+        'visibility',
+        'hidden',
+        'important'
+      );
+
+      chat.style.setProperty(
+        'opacity',
+        '0',
+        'important'
+      );
+    }
+
+    if(header){
+      header.style.display='none';
+    }
+
+    if(results){
+      results.classList.remove(
+        'show'
+      );
+    }
+
+    if(loading){
+      loading.classList.add(
+        'show'
+      );
+    }
+
+    /*
+      On clone les données de l'historique
+      pour ne pas modifier directement
+      l'objet stocké dans localStorage.
+    */
+    const product={
+      ...(item.data||{})
+    };
+
     const theme=
-      item.theme||
-      getTheme(S.a.marche,S.a.niche);
+      item.theme &&
+      Object.keys(item.theme).length
+        ? item.theme
+        : getTheme(
+            S.a.marche,
+            S.a.niche
+          );
+
+    console.log(
+      '[history] préparation',
+      {
+        id,
+        title:
+          product.titre_produit||
+          S.a.offre||
+          '',
+        paths:
+          Array.isArray(
+            product.illustration_paths
+          )
+            ? product
+                .illustration_paths
+                .filter(Boolean)
+                .length
+            : 0
+      }
+    );
+
+    /*
+      Une seule hydratation.
+      Les images sont maintenant
+      signées en parallèle.
+    */
+    await hydrateIllustrations(
+      product
+    );
 
     /*
       IMPORTANT :
-      une création restaurée doit recréer exactement
-      le même état mémoire qu'une génération fraîche.
+      on NE construit PAS l'ebook,
+      la page de vente et l'upsell ici.
+
+      showResults() le fait déjà.
+      Avant, tout était calculé deux fois,
+      ce qui pouvait bloquer le navigateur.
     */
-    await hydrateIllustrations(product);
+    showResults(
+      product,
+      theme
+    );
 
-    window._productData=product;
-    window._productTheme=theme;
+    const chatAfter=
+      document.getElementById(
+        'chatWrap'
+      );
 
-    window._productTitle=
-      product.titre_produit||
-      S.a.offre||
-      'dropdigital';
+    if(chatAfter){
+      chatAfter.style.setProperty(
+        'display',
+        'none',
+        'important'
+      );
 
-    /*
-      EBOOK
-      On reconstruit le HTML depuis les données conservées.
-    */
-    window._ebookHTML=
-      buildEbookHTML(product,theme);
+      chatAfter.style.setProperty(
+        'visibility',
+        'hidden',
+        'important'
+      );
 
-    /*
-      PAGE DE VENTE
-      On reprend le HTML déjà généré.
-    */
-    const rawSalesHTML=
-      product.sales_html||
-      product.salesHtml||
-      '';
+      chatAfter.style.setProperty(
+        'opacity',
+        '0',
+        'important'
+      );
+    }
 
-    window._sHTML=
-      rawSalesHTML
-        ? wireConnectedStripeCheckout(rawSalesHTML,product)
-        : '';
-
-    /*
-      UPSELL
-    */
-    window._uHTML=
-      product.upsell_html||
-      product.upsellHtml||
-      '';
-
-    console.log('[history] création restaurée',{
-      id:item.id,
-      ebook:!!window._ebookHTML,
-      sales:!!window._sHTML,
-      upsell:!!window._uHTML,
-      title:window._productTitle
-    });
-
-    showResults(product,theme);
-
-  const historyChatWrapAfter=document.getElementById('chatWrap');
-  if(historyChatWrapAfter){
-    historyChatWrapAfter.style.setProperty('display','none','important');
-    historyChatWrapAfter.style.setProperty('visibility','hidden','important');
-    historyChatWrapAfter.style.setProperty('opacity','0','important');
-  }
+    console.log(
+      '[history] création ouverte',
+      {
+        id,
+        ebook:
+          !!window._ebookHTML,
+        sales:
+          !!window._sHTML,
+        upsell:
+          !!window._uHTML
+      }
+    );
 
   }catch(error){
-    console.error('[history] erreur restauration',error);
+
+    console.error(
+      '[history] erreur restauration',
+      error
+    );
+
+    const loading=
+      document.getElementById(
+        'loadingScreen'
+      );
+
+    if(loading){
+      loading.classList.remove(
+        'show'
+      );
+    }
 
     alert(
-      "Impossible d'ouvrir complètement cette création. " +
-      "Ouvre la console pour voir l'erreur."
+      "Impossible d'ouvrir cette création. " +
+      "L'erreur exacte est affichée dans la console."
     );
 
   }finally{
+
     restoringHistory=false;
+
+    console.timeEnd(
+      '[history] ouverture '+id
+    );
   }
 }
 
