@@ -1,6 +1,30 @@
 {
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www\\.dropdigital\\.fr"
+        }
+      ],
+      "destination": "https://dropdigital.fr/:path*",
+      "permanent": true,
+      "_ddCanonical": "www"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "app\\.dropdigital\\.fr"
+        }
+      ],
+      "destination": "https://dropdigital.fr/:path*",
+      "permanent": true,
+      "_ddCanonical": "app"
+    },
+    {
       "source": "/",
       "destination": "/generator.html",
       "permanent": false,

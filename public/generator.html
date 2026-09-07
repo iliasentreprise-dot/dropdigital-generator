@@ -4459,7 +4459,7 @@ img[src*="dg-logo"],
 </div>
 
 <div class="app-modal show" id="emailGate" role="dialog" aria-modal="true" aria-labelledby="emailGateTitle">
-  <form class="modal-card" id="emailGateForm" onsubmit="submitMemberAuth(event)">
+  <form class="modal-card" id="emailGateForm" autocomplete="on" onsubmit="submitMemberAuth(event)">
     <div class="dd-auth-master-logo">
       <img src="/assets/dg-app-logo-v2.png" alt="DropDigital">
     </div>
@@ -4472,8 +4472,8 @@ img[src*="dg-logo"],
     <p class="modal-copy" id="authModalCopy">Crée ton compte ou connecte-toi pour synchroniser tes ebooks et pages de vente sur tous tes appareils.</p>
     <div class="auth-tabs"><button class="auth-tab active" id="authSignupTab" type="button" onclick="setAuthMode('signup')">CRÉER UN COMPTE</button><button class="auth-tab" id="authLoginTab" type="button" onclick="setAuthMode('login')">SE CONNECTER</button></div>
     <div class="text-input-wrap" id="authFirstNameWrap"><label>TON PRÉNOM</label><input class="q-input" id="authFirstName" type="text" autocomplete="given-name" placeholder="Ton prénom"></div>
-    <div class="text-input-wrap"><label>TON E-MAIL</label><input class="q-input" id="memberEmailInput" type="email" autocomplete="email" placeholder="toi@exemple.com" required></div>
-    <div class="text-input-wrap"><label>TON MOT DE PASSE</label><input class="q-input" id="memberPasswordInput" type="password" autocomplete="new-password" minlength="8" placeholder="8 caractères minimum" required></div>
+    <div class="text-input-wrap"><label>TON E-MAIL</label><input class="q-input" id="memberEmailInput" name="email" type="email" autocomplete="username" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="toi@exemple.com" required></div>
+    <div class="text-input-wrap"><label>TON MOT DE PASSE</label><input class="q-input" id="memberPasswordInput" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="8 caractères minimum" required></div>
     <div class="modal-error" id="emailGateError"></div>
     <button id="forgotPasswordButton" type="button" onclick="sendPasswordReset()" style="display:none;margin-top:12px;border:0;background:transparent;color:#ff6262;font:700 12px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer;padding:0;">MOT DE PASSE OUBLIÉ ?</button>
     <label id="memberConsentWrap" style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;color:rgba(233,207,208,.68);font-size:12px;line-height:1.5;cursor:pointer"><input id="memberConsent" type="checkbox" style="margin-top:3px;accent-color:#ff2f2f">J’accepte la création de mon compte et l’enregistrement de mes créations.</label>
@@ -4717,7 +4717,17 @@ const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';
 const recoveryParams=new URLSearchParams(location.search),recoveryHash=new URLSearchParams(location.hash.replace(/^#/,''));
 let passwordRecoveryRequested=recoveryParams.get('recovery')==='1'||recoveryHash.get('type')==='recovery';
-const dbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const dbClient=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth:{
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:true
+    }
+  }
+);
 let currentMember=null,authMode='signup';
 let restoringHistory=false;
 function isPaidPlan(){return ['discovery','pro','business'].includes(S.a.plan);}
@@ -4830,7 +4840,7 @@ function setAuthMode(mode){
   document.getElementById('authFirstNameWrap').style.display=signup?'block':'none';document.getElementById('memberConsentWrap').style.display=signup?'flex':'none';
   document.getElementById('memberEmailInput').closest('.text-input-wrap').style.display=recovery||pending?'none':'block';document.getElementById('memberPasswordInput').closest('.text-input-wrap').style.display=pending?'none':'block';
   document.getElementById('memberEmailInput').required=!recovery&&!pending;
-  document.getElementById('memberPasswordInput').autocomplete=signup||recovery?'new-password':'current-password';document.getElementById('memberPasswordInput').value=recovery?'':document.getElementById('memberPasswordInput').value;document.getElementById('authSubmitButton').textContent=recovery?'ENREGISTRER MON NOUVEAU MOT DE PASSE →':signup?'CRÉER MON COMPTE →':'ME CONNECTER →';
+  document.getElementById('memberEmailInput').autocomplete='username';document.getElementById('memberPasswordInput').autocomplete=signup||recovery?'new-password':'current-password';document.getElementById('memberPasswordInput').value=recovery?'':document.getElementById('memberPasswordInput').value;document.getElementById('authSubmitButton').textContent=recovery?'ENREGISTRER MON NOUVEAU MOT DE PASSE →':signup?'CRÉER MON COMPTE →':'ME CONNECTER →';
   document.getElementById('forgotPasswordButton').style.display=!signup&&!recovery&&!pending?'inline-block':'none';document.getElementById('authSubmitButton').style.display=pending?'none':'block';document.getElementById('authPendingActions').style.display=pending?'flex':'none';
   document.getElementById('emailGateError').style.display='none';if(!pending)document.getElementById('authMessage').style.display='none';
 }
@@ -5674,8 +5684,46 @@ function resumeStripeStepIfNeeded(){
 
 async function initMemberAccess(){
   const {data:{session}}=await dbClient.auth.getSession();
-  if(passwordRecoveryRequested){currentMember=session?.user||null;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),80);return;}
-  if(session?.user){await initializeSignedInMember(session.user);}else{currentMember=null;document.getElementById('emailGate').classList.add('show');setAuthMode('signup');setTimeout(()=>document.getElementById('authFirstName').focus(),80);}
+
+  if(passwordRecoveryRequested){
+    currentMember=session?.user||null;
+    document.getElementById('emailGate').classList.add('show');
+    setAuthMode('recovery');
+    setTimeout(()=>document.getElementById('memberPasswordInput').focus(),80);
+    return;
+  }
+
+  if(session?.user){
+    await initializeSignedInMember(session.user);
+    return;
+  }
+
+  currentMember=null;
+
+  const knownEmail=getMemberEmail();
+  const emailInput=document.getElementById('memberEmailInput');
+
+  document.getElementById('emailGate').classList.add('show');
+
+  if(knownEmail){
+    setAuthMode('login');
+
+    if(emailInput){
+      emailInput.value=knownEmail;
+      emailInput.autocomplete='username';
+    }
+
+    setTimeout(()=>{
+      document.getElementById('memberPasswordInput')?.focus();
+    },80);
+
+  }else{
+    setAuthMode('signup');
+
+    setTimeout(()=>{
+      document.getElementById('authFirstName')?.focus();
+    },80);
+  }
 }
 dbClient.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){passwordRecoveryRequested=true;document.getElementById('emailGate').classList.add('show');setAuthMode('recovery');setTimeout(()=>document.getElementById('memberPasswordInput').focus(),0);}});
 async function signOutMember(){
