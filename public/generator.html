@@ -14061,5 +14061,727 @@ body:has(#resultsScreen.show) .chat-wrap{
 </script>
 <!-- DD ART DIRECTION PREMIUM END -->
 
+
+
+<style id="dd-history-premium-v4">
+
+/* ==========================================================
+   DROPDIGITAL — HISTORIQUE PREMIUM
+   ========================================================== */
+
+
+/* =========================
+   OVERLAY
+   ========================= */
+
+#historyModal{
+  padding:14px 18px !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:
+    rgba(0,0,0,.76) !important;
+
+  backdrop-filter:
+    blur(18px) saturate(115%) !important;
+
+  -webkit-backdrop-filter:
+    blur(18px) saturate(115%) !important;
+}
+
+
+/* =========================
+   FENÊTRE PRINCIPALE
+   ========================= */
+
+#historyModal .modal-card,
+#historyModal .history-modal-content{
+
+  width:min(760px, calc(100vw - 36px)) !important;
+  max-width:760px !important;
+
+  max-height:calc(100dvh - 28px) !important;
+
+  padding:
+    30px 34px 30px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  background:
+    radial-gradient(
+      550px 260px at 72% -100px,
+      rgba(255,24,40,.055),
+      transparent 72%
+    ),
+    linear-gradient(
+      145deg,
+      #101012 0%,
+      #09090b 60%,
+      #070708 100%
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+
+  border-radius:32px !important;
+
+  box-shadow:
+    0 42px 130px rgba(0,0,0,.72),
+    0 0 70px rgba(255,20,35,.035),
+    inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+#historyModal .modal-eyebrow{
+  margin:0 0 8px !important;
+
+  color:#ff5661 !important;
+
+  font-size:10px !important;
+  font-weight:800 !important;
+
+  letter-spacing:.23em !important;
+}
+
+
+#historyModal .modal-title{
+  margin:0 !important;
+
+  color:#f7f7f8 !important;
+
+  font-size:44px !important;
+  line-height:.96 !important;
+
+  letter-spacing:-.025em !important;
+
+  text-shadow:none !important;
+}
+
+
+#historyModal .modal-title span{
+  color:#f7f7f8 !important;
+  -webkit-text-fill-color:#f7f7f8 !important;
+
+  text-shadow:
+    0 0 22px rgba(255,24,40,.16) !important;
+}
+
+
+#historyModal .modal-copy{
+  margin:14px 0 0 !important;
+
+  color:#8e8e95 !important;
+
+  font-size:12.5px !important;
+  line-height:1.45 !important;
+}
+
+
+/* =========================
+   CROIX
+   ========================= */
+
+#historyModal .modal-close{
+
+  top:15px !important;
+  right:15px !important;
+
+  width:32px !important;
+  height:32px !important;
+
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:#85858c !important;
+
+  background:
+    rgba(255,255,255,.03) !important;
+
+  border:
+    1px solid rgba(255,255,255,.055) !important;
+
+  border-radius:999px !important;
+
+  box-shadow:none !important;
+}
+
+
+#historyModal .modal-close:hover{
+  color:#fff !important;
+
+  background:
+    rgba(255,255,255,.075) !important;
+}
+
+
+/* ==========================================================
+   NOUVELLE CRÉATION
+   ========================================================== */
+
+#historyModal .history-new{
+
+  width:100% !important;
+
+  height:48px !important;
+  min-height:48px !important;
+
+  margin:
+    22px 0 20px !important;
+
+  padding:
+    0 24px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:9px !important;
+
+  color:#fff !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #e91629,
+      #ff3545
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.10) !important;
+
+  border-radius:999px !important;
+
+  font-size:12px !important;
+  font-weight:800 !important;
+
+  letter-spacing:.065em !important;
+
+  box-shadow:
+    0 10px 26px rgba(255,10,32,.17),
+    inset 0 1px 0 rgba(255,255,255,.19) !important;
+
+  cursor:pointer !important;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease !important;
+}
+
+
+#historyModal .history-new:hover{
+
+  transform:
+    translateY(-2px) !important;
+
+  filter:
+    brightness(1.07) !important;
+
+  box-shadow:
+    0 15px 32px rgba(255,10,32,.22),
+    inset 0 1px 0 rgba(255,255,255,.23) !important;
+}
+
+
+/* ==========================================================
+   LISTE
+   ========================================================== */
+
+#historyList{
+
+  display:flex !important;
+  flex-direction:column !important;
+
+  gap:10px !important;
+
+  max-height:
+    calc(100dvh - 330px) !important;
+
+  overflow-y:auto !important;
+
+  padding:
+    1px 4px 4px 1px !important;
+
+  scrollbar-width:thin !important;
+}
+
+
+/* scrollbar */
+
+#historyList::-webkit-scrollbar{
+  width:5px !important;
+}
+
+#historyList::-webkit-scrollbar-track{
+  background:transparent !important;
+}
+
+#historyList::-webkit-scrollbar-thumb{
+  background:
+    rgba(255,255,255,.10) !important;
+
+  border-radius:999px !important;
+}
+
+
+/* ==========================================================
+   CRÉATION
+   ========================================================== */
+
+#historyModal .history-item{
+
+  position:relative !important;
+
+  display:grid !important;
+
+  grid-template-columns:
+    minmax(0,1fr) auto !important;
+
+  align-items:center !important;
+
+  gap:18px !important;
+
+  padding:
+    17px 18px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.026),
+      rgba(255,255,255,.006)
+    ),
+    #0b0b0d !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  border-radius:18px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
+
+  transition:
+    transform .20s ease,
+    border-color .20s ease,
+    background .20s ease,
+    box-shadow .20s ease !important;
+}
+
+
+#historyModal .history-item:hover{
+
+  transform:
+    translateY(-2px) !important;
+
+  border-color:
+    rgba(255,255,255,.13) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.038),
+      rgba(255,255,255,.009)
+    ),
+    #0d0d0f !important;
+
+  box-shadow:
+    0 15px 34px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+
+/* petite ligne lumineuse subtile */
+
+#historyModal .history-item::before{
+
+  content:"";
+
+  position:absolute;
+
+  left:20px;
+  top:0;
+
+  width:70px;
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,48,62,.45),
+      transparent
+    );
+
+  opacity:.55;
+
+  pointer-events:none;
+}
+
+
+/* =========================
+   TITRE CRÉATION
+   ========================= */
+
+#historyModal .history-item h3{
+
+  margin:
+    0 0 6px !important;
+
+  color:#f1f1f3 !important;
+
+  font-size:17px !important;
+  line-height:1.1 !important;
+
+  letter-spacing:.005em !important;
+
+  text-shadow:none !important;
+}
+
+
+/* =========================
+   MÉTADONNÉES
+   ========================= */
+
+#historyModal .history-meta{
+
+  color:#74747b !important;
+
+  font-size:10.5px !important;
+  line-height:1.5 !important;
+}
+
+
+#historyModal .history-meta strong{
+
+  display:inline-block !important;
+
+  margin-top:2px !important;
+
+  font-size:10px !important;
+  font-weight:800 !important;
+
+  letter-spacing:.02em !important;
+}
+
+
+/* ==========================================================
+   ACTIONS
+   ========================================================== */
+
+#historyModal .history-actions{
+
+  display:flex !important;
+
+  align-items:center !important;
+
+  gap:7px !important;
+
+  flex-shrink:0 !important;
+}
+
+
+/* =========================
+   OUVRIR
+   ========================= */
+
+#historyModal .history-open{
+
+  min-width:78px !important;
+
+  height:36px !important;
+
+  padding:
+    0 16px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:#fff !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #e9182a,
+      #ff3545
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+
+  border-radius:999px !important;
+
+  font-size:9.5px !important;
+  font-weight:800 !important;
+
+  letter-spacing:.055em !important;
+
+  box-shadow:
+    0 8px 20px rgba(255,12,34,.14),
+    inset 0 1px 0 rgba(255,255,255,.17) !important;
+
+  cursor:pointer !important;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease !important;
+}
+
+
+#historyModal .history-open:hover{
+
+  transform:
+    translateY(-1px) !important;
+
+  filter:
+    brightness(1.08) !important;
+
+  box-shadow:
+    0 11px 24px rgba(255,12,34,.20),
+    inset 0 1px 0 rgba(255,255,255,.20) !important;
+}
+
+
+/* =========================
+   SUPPRIMER
+   ========================= */
+
+#historyModal .history-delete{
+
+  min-width:84px !important;
+
+  height:36px !important;
+
+  padding:
+    0 15px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:#a4a4aa !important;
+
+  background:
+    rgba(255,255,255,.025) !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  border-radius:999px !important;
+
+  font-size:9px !important;
+  font-weight:800 !important;
+
+  letter-spacing:.045em !important;
+
+  box-shadow:none !important;
+
+  cursor:pointer !important;
+
+  transition:
+    color .18s ease,
+    background .18s ease,
+    border-color .18s ease !important;
+}
+
+
+#historyModal .history-delete:hover{
+
+  color:#ff6973 !important;
+
+  background:
+    rgba(255,30,45,.055) !important;
+
+  border-color:
+    rgba(255,48,61,.24) !important;
+}
+
+
+/* ==========================================================
+   HISTORIQUE VIDE
+   ========================================================== */
+
+#historyModal .history-empty{
+
+  padding:
+    42px 24px !important;
+
+  color:#77777e !important;
+
+  text-align:center !important;
+
+  background:
+    rgba(255,255,255,.018) !important;
+
+  border:
+    1px dashed rgba(255,255,255,.08) !important;
+
+  border-radius:18px !important;
+
+  line-height:1.6 !important;
+}
+
+
+/* ==========================================================
+   LAPTOP / PETITE HAUTEUR
+   ========================================================== */
+
+@media (min-width:701px) and (max-height:820px){
+
+  #historyModal .modal-card,
+  #historyModal .history-modal-content{
+
+    padding:
+      20px 28px !important;
+
+    max-height:
+      calc(100dvh - 16px) !important;
+  }
+
+
+  #historyModal .modal-title{
+
+    font-size:
+      36px !important;
+  }
+
+
+  #historyModal .modal-copy{
+
+    margin-top:
+      8px !important;
+
+    font-size:
+      11px !important;
+  }
+
+
+  #historyModal .history-new{
+
+    height:
+      42px !important;
+
+    min-height:
+      42px !important;
+
+    margin:
+      15px 0 14px !important;
+  }
+
+
+  #historyList{
+
+    gap:
+      8px !important;
+
+    max-height:
+      calc(100dvh - 260px) !important;
+  }
+
+
+  #historyModal .history-item{
+
+    padding:
+      13px 15px !important;
+
+    border-radius:
+      16px !important;
+  }
+
+
+  #historyModal .history-item h3{
+
+    font-size:
+      15px !important;
+  }
+
+
+  #historyModal .history-open,
+  #historyModal .history-delete{
+
+    height:
+      32px !important;
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media(max-width:700px){
+
+  #historyModal{
+
+    align-items:flex-start !important;
+
+    overflow-y:auto !important;
+
+    padding:
+      10px !important;
+  }
+
+
+  #historyModal .modal-card,
+  #historyModal .history-modal-content{
+
+    width:100% !important;
+
+    max-height:none !important;
+
+    padding:
+      24px 16px !important;
+
+    overflow:visible !important;
+
+    border-radius:
+      24px !important;
+  }
+
+
+  #historyList{
+
+    max-height:none !important;
+
+    overflow:visible !important;
+  }
+
+
+  #historyModal .history-item{
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      13px !important;
+  }
+
+
+  #historyModal .history-actions{
+
+    width:100% !important;
+  }
+
+
+  #historyModal .history-open,
+  #historyModal .history-delete{
+
+    flex:1 !important;
+  }
+
+}
+
+</style>
+
 </body>
 </html>
