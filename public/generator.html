@@ -4448,6 +4448,24 @@ img[src*="dg-logo"],
 
 </style>
 
+
+<style id="dd-disable-legacy-loading-screen-v1">
+
+/*
+  L'ancien écran "Analyse de ton marché..."
+  n'est plus utilisé.
+  La génération actuelle passe par showBuildWorkspace().
+*/
+#loadingScreen,
+#loadingScreen.show{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+</style>
+
 </head>
 <body>
 
