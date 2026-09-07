@@ -3138,6 +3138,151 @@ img[src*="dg-logo"],
 
 </style>
 
+
+<style id="dd-question-result-fix-v1">
+
+/* =========================================================
+   QUESTIONS — RÉTABLIT LA VISIBILITÉ
+   ========================================================= */
+
+#chatWrap,
+.chat-wrap{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+
+  position:relative !important;
+  z-index:3 !important;
+}
+
+
+/*
+  Le vieux système avait opacity:0 + animation.
+  Avec les multiples couches CSS, le bloc pouvait rester à 0.
+*/
+#chatWrap .q-block,
+.chat-wrap .q-block{
+  display:block !important;
+  visibility:visible !important;
+
+  opacity:1 !important;
+
+  transform:none !important;
+  filter:none !important;
+
+  animation:none !important;
+}
+
+
+/* petit indicateur étape = rouge */
+#chatWrap .q-label,
+.chat-wrap .q-label{
+  color:#ff4652 !important;
+  -webkit-text-fill-color:#ff4652 !important;
+
+  text-shadow:
+    0 0 14px rgba(255,24,40,.38) !important;
+}
+
+
+/* QUESTION PRINCIPALE = BLANCHE */
+#chatWrap .q-title,
+#chatWrap .q-title span,
+.chat-wrap .q-title,
+.chat-wrap .q-title span{
+  color:#f8f8f9 !important;
+  -webkit-text-fill-color:#f8f8f9 !important;
+
+  opacity:1 !important;
+
+  text-shadow:
+    0 0 18px rgba(255,24,40,.16) !important;
+}
+
+
+/* description = gris premium */
+#chatWrap .q-sub,
+.chat-wrap .q-sub{
+  color:#99999f !important;
+  -webkit-text-fill-color:#99999f !important;
+
+  opacity:1 !important;
+}
+
+
+/* boutons de réponses */
+#chatWrap .choice-btn,
+.chat-wrap .choice-btn{
+  color:#ededee !important;
+
+  background:#0b0b0d !important;
+
+  border:
+    1px solid rgba(255,255,255,.09) !important;
+}
+
+#chatWrap .choice-btn:hover,
+.chat-wrap .choice-btn:hover{
+  color:white !important;
+
+  border-color:
+    rgba(255,24,40,.46) !important;
+
+  background:
+    rgba(255,24,40,.055) !important;
+
+  box-shadow:
+    0 0 25px rgba(255,24,40,.08) !important;
+}
+
+#chatWrap .choice-btn.selected,
+.chat-wrap .choice-btn.selected{
+  color:white !important;
+
+  border-color:
+    rgba(255,24,40,.72) !important;
+
+  background:
+    rgba(255,24,40,.10) !important;
+}
+
+
+/* labels d'inputs = gris/blanc, PAS rouge */
+#chatWrap .text-input-wrap label,
+.chat-wrap .text-input-wrap label{
+  color:#b9b9bd !important;
+  -webkit-text-fill-color:#b9b9bd !important;
+}
+
+
+/* =========================================================
+   ÉCRAN FINAL
+   ========================================================= */
+
+#resultsScreen .dd-result-red-title{
+  color:#ff1b2d !important;
+  -webkit-text-fill-color:#ff1b2d !important;
+
+  text-shadow:
+    0 0 14px rgba(255,24,40,.82),
+    0 0 34px rgba(255,24,40,.42),
+    0 0 72px rgba(190,0,20,.18) !important;
+}
+
+
+/* PRÊT + VENDRE restent verts */
+#resultsScreen .dd-result-red-title .dd-result-green{
+  color:#25D366 !important;
+  -webkit-text-fill-color:#25D366 !important;
+
+  text-shadow:
+    0 0 14px rgba(37,211,102,.90),
+    0 0 34px rgba(37,211,102,.48),
+    0 0 70px rgba(20,190,85,.20) !important;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -11955,5 +12100,155 @@ initMemberAccess();
 
 })();
 </script>
+
+<!-- DD QUESTION RESULT FIX JS START -->
+<script>
+(function(){
+
+  /*
+    La zone résultat est générée dynamiquement.
+    On retrouve donc le titre par SON TEXTE,
+    sans dépendre d'une ancienne classe CSS.
+  */
+  function ddPaintFinalResultTitle(){
+
+    const root=
+      document.getElementById('resultsScreen');
+
+    if(!root)return;
+
+    const headings=[
+      ...root.querySelectorAll('h1,h2,h3')
+    ];
+
+    for(const heading of headings){
+
+      const text=
+        String(heading.textContent||'')
+          .replace(/\s+/g,' ')
+          .trim()
+          .toUpperCase();
+
+      if(
+        !text.includes('TON PRODUIT EST PRÊT') ||
+        !text.includes('TON SITE VA VENDRE')
+      ){
+        continue;
+      }
+
+      if(
+        heading.dataset.ddResultColorFixed==='1'
+      ){
+        return;
+      }
+
+      heading.dataset.ddResultColorFixed='1';
+
+      heading.classList.add(
+        'dd-result-red-title'
+      );
+
+      heading.innerHTML=
+        'TON PRODUIT EST ' +
+        '<span class="dd-result-green">PRÊT.</span>' +
+        '<br>' +
+        'TON SITE VA ' +
+        '<span class="dd-result-green">VENDRE.</span>';
+
+      return;
+    }
+  }
+
+
+  /*
+    Sécurité question :
+    si un ancien style inline remet opacity:0,
+    on l'annule après chaque rendu.
+  */
+  function ddRevealQuestion(){
+
+    const blocks=
+      document.querySelectorAll(
+        '#chatWrap .q-block, .chat-wrap .q-block'
+      );
+
+    blocks.forEach(block=>{
+
+      block.style.setProperty(
+        'opacity',
+        '1',
+        'important'
+      );
+
+      block.style.setProperty(
+        'visibility',
+        'visible',
+        'important'
+      );
+
+      block.style.setProperty(
+        'transform',
+        'none',
+        'important'
+      );
+
+      block.style.setProperty(
+        'filter',
+        'none',
+        'important'
+      );
+
+    });
+  }
+
+
+  const observer=
+    new MutationObserver(()=>{
+
+      ddRevealQuestion();
+      ddPaintFinalResultTitle();
+
+    });
+
+
+  function start(){
+
+    observer.observe(
+      document.body,
+      {
+        childList:true,
+        subtree:true
+      }
+    );
+
+    ddRevealQuestion();
+    ddPaintFinalResultTitle();
+  }
+
+
+  if(
+    document.readyState==='loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      start
+    );
+  }else{
+    start();
+  }
+
+
+  setTimeout(ddRevealQuestion,100);
+  setTimeout(ddRevealQuestion,400);
+  setTimeout(ddRevealQuestion,1000);
+
+  setTimeout(ddPaintFinalResultTitle,100);
+  setTimeout(ddPaintFinalResultTitle,500);
+  setTimeout(ddPaintFinalResultTitle,1200);
+
+})();
+</script>
+<!-- DD QUESTION RESULT FIX JS END -->
+
 </body>
 </html>
