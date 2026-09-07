@@ -3210,6 +3210,565 @@ img[src*="dg-logo"],
 }
 
 </style>
+
+<style id="dd-art-direction-premium-v1">
+
+/* =========================================================
+   DIRECTION ARTISTIQUE — PREMIUM / LOVABLE
+   ========================================================= */
+
+.dd-art-direction-card{
+  position:relative;
+  overflow:hidden;
+
+  padding:30px !important;
+
+  background:
+    radial-gradient(
+      700px 320px at 15% -10%,
+      rgba(255,24,40,.065),
+      transparent 62%
+    ),
+    #09090b !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-left:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-radius:28px !important;
+
+  box-shadow:
+    0 28px 90px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+
+/* petit halo premium */
+.dd-art-direction-card::before{
+  content:'';
+  position:absolute;
+  width:380px;
+  height:380px;
+  right:-170px;
+  top:-210px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,24,40,.10),
+      transparent 68%
+    );
+
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dd-art-direction-card > .rch{
+  margin-bottom:22px !important;
+}
+
+.dd-art-direction-card > .rch .rct{
+  color:#f7f7f8 !important;
+
+  font-size:20px !important;
+  letter-spacing:.055em !important;
+
+  text-shadow:none !important;
+}
+
+.dd-art-direction-card > .rch .rct::before{
+  content:'✦';
+  color:#ff3545;
+  margin-right:10px;
+
+  text-shadow:
+    0 0 18px rgba(255,24,40,.5);
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.dd-art-intro{
+  position:relative;
+
+  padding:18px 20px !important;
+  margin-bottom:20px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.035),
+      rgba(255,255,255,.015)
+    ) !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:19px !important;
+}
+
+.dd-art-intro strong{
+  color:#f5f5f6 !important;
+
+  font-family:'DM Sans',sans-serif !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  letter-spacing:.08em !important;
+
+  margin-bottom:8px !important;
+}
+
+.dd-art-intro strong::before{
+  content:'01';
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  width:28px;
+  height:28px;
+
+  margin-right:10px;
+
+  border-radius:9px;
+
+  background:
+    rgba(255,24,40,.10);
+
+  border:
+    1px solid rgba(255,24,40,.22);
+
+  color:#ff5965;
+
+  font-size:10px;
+}
+
+.dd-art-intro span{
+  display:block;
+
+  padding-left:40px;
+
+  color:#8f8f96 !important;
+
+  font-size:13px !important;
+  line-height:1.65 !important;
+}
+
+
+/* =========================================================
+   EBOOK TEXTAREA
+   ========================================================= */
+
+#ebookForSalesDesigner{
+  min-height:220px !important;
+
+  padding:20px !important;
+
+  color:#eeeeef !important;
+
+  background:
+    #0d0d0f !important;
+
+  border:
+    1px solid rgba(255,255,255,.085) !important;
+
+  border-radius:20px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
+
+  transition:
+    border-color .25s ease,
+    box-shadow .25s ease,
+    background .25s ease !important;
+}
+
+#ebookForSalesDesigner::placeholder{
+  color:#5e5e65 !important;
+}
+
+#ebookForSalesDesigner:focus{
+  background:#0f0f11 !important;
+
+  border-color:
+    rgba(255,38,52,.56) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(255,24,40,.065),
+    0 14px 38px rgba(0,0,0,.22) !important;
+}
+
+
+/* =========================================================
+   SECTION LABEL
+   ========================================================= */
+
+.dd-art-section{
+  margin-top:26px;
+}
+
+.dd-art-section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-bottom:13px;
+
+  color:#f2f2f3;
+
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+
+.dd-art-section-title span{
+  color:#66666d;
+  font-weight:500;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+
+/* =========================================================
+   CHOIX LOVABLE / PILLS
+   ========================================================= */
+
+.dd-art-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.dd-art-pill{
+  appearance:none;
+
+  min-height:40px;
+
+  padding:0 15px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  color:#a9a9ae;
+
+  background:
+    rgba(255,255,255,.025);
+
+  border:
+    1px solid rgba(255,255,255,.085);
+
+  border-radius:999px;
+
+  font:
+    600 12px/1 'DM Sans',
+    sans-serif;
+
+  cursor:pointer;
+
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    color .22s ease,
+    border-color .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.dd-art-pill:hover{
+  color:#f5f5f6;
+
+  background:
+    rgba(255,255,255,.045);
+
+  border-color:
+    rgba(255,255,255,.15);
+
+  transform:
+    translateY(-1px);
+}
+
+.dd-art-pill.active{
+  color:white;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,30,45,.18),
+      rgba(255,30,45,.075)
+    );
+
+  border-color:
+    rgba(255,42,55,.45);
+
+  box-shadow:
+    0 0 0 1px rgba(255,24,40,.035),
+    0 7px 24px rgba(255,0,20,.08);
+}
+
+.dd-art-pill.active::before{
+  content:'✓';
+
+  color:#ff5a66;
+
+  font-size:10px;
+}
+
+
+/* cache les anciens selects,
+   ils restent dans le DOM pour la logique */
+.dd-art-native-select{
+  display:none !important;
+}
+
+
+/* =========================================================
+   GRILLE DES PARAMÈTRES
+   ========================================================= */
+
+.dd-art-advanced{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:14px;
+
+  margin-top:22px;
+}
+
+.dd-art-mini-card{
+  padding:16px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  border:
+    1px solid rgba(255,255,255,.07);
+
+  border-radius:18px;
+}
+
+.dd-art-mini-card-title{
+  margin-bottom:11px;
+
+  color:#929298;
+
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+
+/* =========================================================
+   ORDER BUMP / NOTES
+   ========================================================= */
+
+.dd-art-direction-card label{
+  color:#d7d7da !important;
+}
+
+#salesOrderBump,
+#salesNotes{
+  width:100% !important;
+
+  margin-top:9px !important;
+  padding:15px 16px !important;
+
+  color:#eeeeef !important;
+
+  background:
+    #0d0d0f !important;
+
+  border:
+    1px solid rgba(255,255,255,.08) !important;
+
+  border-radius:17px !important;
+
+  outline:none !important;
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.018) !important;
+
+  transition:
+    border-color .22s ease,
+    box-shadow .22s ease !important;
+}
+
+#salesOrderBump{
+  min-height:92px !important;
+}
+
+#salesNotes{
+  min-height:92px !important;
+}
+
+#salesOrderBump::placeholder,
+#salesNotes::placeholder{
+  color:#626268 !important;
+}
+
+#salesOrderBump:focus,
+#salesNotes:focus{
+  border-color:
+    rgba(255,35,50,.46) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(255,24,40,.055) !important;
+}
+
+.dd-art-direction-card label > span{
+  color:#696970 !important;
+}
+
+
+/* =========================================================
+   CTA LOVABLE
+   ========================================================= */
+
+.dd-art-generate-wrap{
+  display:flex !important;
+
+  justify-content:flex-end !important;
+
+  margin-top:24px !important;
+}
+
+.dd-art-generate{
+  min-height:48px !important;
+
+  padding:
+    0 23px !important;
+
+  display:inline-flex !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+  gap:9px !important;
+
+  color:white !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #d90018,
+      #ff1b2d 55%,
+      #ff3545
+    ) !important;
+
+  border:
+    1px solid rgba(255,82,92,.20) !important;
+
+  border-radius:
+    999px !important;
+
+  font:
+    800 12px/1 'DM Sans',
+    sans-serif !important;
+
+  letter-spacing:
+    .055em !important;
+
+  box-shadow:
+    0 12px 30px rgba(220,0,20,.18),
+    inset 0 1px rgba(255,255,255,.22) !important;
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease !important;
+}
+
+.dd-art-generate::after{
+  content:'→';
+
+  font-size:16px;
+}
+
+.dd-art-generate:hover{
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.08);
+
+  box-shadow:
+    0 16px 38px rgba(220,0,20,.25),
+    inset 0 1px rgba(255,255,255,.28) !important;
+}
+
+
+/* =========================================================
+   RÉSULTAT PROMPT
+   ========================================================= */
+
+.dd-art-result{
+  margin-top:22px !important;
+
+  padding:18px !important;
+
+  background:
+    #0d0d0f !important;
+
+  border:
+    1px solid rgba(255,255,255,.075) !important;
+
+  border-radius:
+    18px !important;
+}
+
+.dd-art-result .rct{
+  color:#f3f3f4 !important;
+}
+
+.dd-art-result details{
+  border-top:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+.dd-art-result summary{
+  color:#9d9da3 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:700px){
+
+  .dd-art-direction-card{
+    padding:20px !important;
+    border-radius:22px !important;
+  }
+
+  .dd-art-advanced{
+    grid-template-columns:1fr;
+  }
+
+  .dd-art-pill{
+    min-height:38px;
+    padding:0 12px;
+    font-size:11px;
+  }
+
+  .dd-art-generate{
+    width:100% !important;
+  }
+
+}
+
+</style>
+
 </head>
 <body>
 
@@ -11361,7 +11920,15 @@ function generateSalesArchitectPrompt(){
     direction:document.getElementById('salesDirection').value,
     motif:document.getElementById('salesMotif').value,
     bump:document.getElementById('salesOrderBump').value,
-    notes:document.getElementById('salesNotes').value
+    notes:[
+      document.getElementById('salesNotes').value,
+      '',
+      'PARAMÈTRES DE DIRECTION ARTISTIQUE :',
+      'Densité : ' + (document.getElementById('salesDensity')?.value || 'Équilibrée'),
+      'Structure : ' + (document.getElementById('salesLayout')?.value || 'Long-form premium'),
+      'Style des CTA : ' + (document.getElementById('salesCtaStyle')?.value || 'Pill minimal'),
+      'Animations : ' + (document.getElementById('salesMotion')?.value || 'Subtiles')
+    ].filter(Boolean).join('\n')
   };
   const prompt=window._buildSalesArchitectPrompt?window._buildSalesArchitectPrompt(opt):'';
   if(!prompt){
@@ -12970,6 +13537,529 @@ body:has(#resultsScreen.show) .chat-wrap{
 }
 
 </style>
+
+
+<!-- DD ART DIRECTION PREMIUM START -->
+<script>
+(function(){
+
+  const directionOptions=[
+    ['✦','Éditorial luxe'],
+    ['◻','Minimal Apple'],
+    ['●','Dark premium'],
+    ['⌁','Tech futuriste'],
+    ['☼','Lifestyle lumineux'],
+    ['◇','Brutalist chic']
+  ];
+
+  const motifOptions=[
+    ['✺','Halos subtils'],
+    ['▦','Grille éditoriale'],
+    ['▧','Texture papier'],
+    ['◇','Géométrie fine'],
+    ['··','Grain luxe'],
+    ['○','Sans motif']
+  ];
+
+
+  function ensureOptions(
+    select,
+    options
+  ){
+
+    if(!select)return;
+
+    select.innerHTML=
+      options
+        .map(
+          ([icon,value])=>
+            `<option value="${value}">${value}</option>`
+        )
+        .join('');
+
+  }
+
+
+  function buildPills(
+    select,
+    options,
+    title
+  ){
+
+    if(
+      !select ||
+      select.dataset.ddPremium==='1'
+    ){
+      return;
+    }
+
+    select.dataset.ddPremium='1';
+
+    ensureOptions(
+      select,
+      options
+    );
+
+    select.classList.add(
+      'dd-art-native-select'
+    );
+
+
+    const section=
+      document.createElement('div');
+
+    section.className=
+      'dd-art-section';
+
+
+    const label=
+      document.createElement('div');
+
+    label.className=
+      'dd-art-section-title';
+
+    label.textContent=
+      title;
+
+
+    const pills=
+      document.createElement('div');
+
+    pills.className=
+      'dd-art-pills';
+
+
+    options.forEach(
+      ([icon,value],index)=>{
+
+        const button=
+          document.createElement('button');
+
+        button.type='button';
+
+        button.className=
+          'dd-art-pill' +
+          (index===0?' active':'');
+
+        button.dataset.value=
+          value;
+
+        button.innerHTML=
+          `<span>${icon}</span>${value}`;
+
+
+        button.addEventListener(
+          'click',
+          ()=>{
+
+            pills
+              .querySelectorAll(
+                '.dd-art-pill'
+              )
+              .forEach(
+                el=>
+                  el.classList.remove(
+                    'active'
+                  )
+              );
+
+            button
+              .classList
+              .add('active');
+
+            select.value=
+              value;
+
+            select.dispatchEvent(
+              new Event(
+                'change',
+                {bubbles:true}
+              )
+            );
+
+          }
+        );
+
+
+        pills.appendChild(
+          button
+        );
+
+      }
+    );
+
+
+    section.append(
+      label,
+      pills
+    );
+
+
+    const parent=
+      select.closest('label');
+
+    parent.style.display='none';
+
+    parent.parentElement
+      .insertBefore(
+        section,
+        parent
+      );
+
+  }
+
+
+  function createAdvancedField(
+    id,
+    title,
+    values
+  ){
+
+    const card=
+      document.createElement('div');
+
+    card.className=
+      'dd-art-mini-card';
+
+
+    const titleEl=
+      document.createElement('div');
+
+    titleEl.className=
+      'dd-art-mini-card-title';
+
+    titleEl.textContent=
+      title;
+
+
+    const input=
+      document.createElement('input');
+
+    input.type='hidden';
+    input.id=id;
+    input.value=values[0];
+
+
+    const pills=
+      document.createElement('div');
+
+    pills.className=
+      'dd-art-pills';
+
+
+    values.forEach(
+      (value,index)=>{
+
+        const button=
+          document.createElement('button');
+
+        button.type='button';
+
+        button.className=
+          'dd-art-pill' +
+          (index===0?' active':'');
+
+        button.textContent=
+          value;
+
+
+        button.onclick=()=>{
+
+          pills
+            .querySelectorAll(
+              '.dd-art-pill'
+            )
+            .forEach(
+              el=>
+                el.classList.remove(
+                  'active'
+                )
+            );
+
+          button
+            .classList
+            .add('active');
+
+          input.value=value;
+        };
+
+
+        pills.appendChild(
+          button
+        );
+
+      }
+    );
+
+
+    card.append(
+      titleEl,
+      input,
+      pills
+    );
+
+    return card;
+  }
+
+
+  function decorate(){
+
+    const ebook=
+      document.getElementById(
+        'ebookForSalesDesigner'
+      );
+
+    const direction=
+      document.getElementById(
+        'salesDirection'
+      );
+
+    const motif=
+      document.getElementById(
+        'salesMotif'
+      );
+
+
+    if(
+      !ebook ||
+      !direction ||
+      !motif
+    ){
+      return;
+    }
+
+
+    const card=
+      ebook.closest('.rc');
+
+    if(!card)return;
+
+
+    if(
+      card.dataset.ddArtPremium==='1'
+    ){
+      return;
+    }
+
+    card.dataset.ddArtPremium='1';
+
+    card.classList.add(
+      'dd-art-direction-card'
+    );
+
+
+    /* intro */
+    const intro=
+      ebook.previousElementSibling;
+
+    if(intro){
+      intro.classList.add(
+        'dd-art-intro'
+      );
+    }
+
+
+    /* transforme les 2 selects */
+    buildPills(
+      direction,
+      directionOptions,
+      'Style visuel'
+    );
+
+    buildPills(
+      motif,
+      motifOptions,
+      'Univers graphique'
+    );
+
+
+    /*
+      L'ancien wrapper 2 colonnes
+      ne sert plus.
+    */
+    const oldGrid=
+      direction
+        .closest('label')
+        ?.parentElement;
+
+    if(oldGrid){
+      oldGrid.style.display='contents';
+    }
+
+
+    /* paramètres avancés */
+    const advanced=
+      document.createElement('div');
+
+    advanced.className=
+      'dd-art-advanced';
+
+
+    advanced.append(
+
+      createAdvancedField(
+        'salesDensity',
+        'Densité',
+        [
+          'Très aéré',
+          'Équilibré',
+          'Dense'
+        ]
+      ),
+
+      createAdvancedField(
+        'salesLayout',
+        'Structure',
+        [
+          'Long-form premium',
+          'Sections modulaires',
+          'Storytelling',
+          'Conversion directe'
+        ]
+      ),
+
+      createAdvancedField(
+        'salesCtaStyle',
+        'Style CTA',
+        [
+          'Pill minimal',
+          'Bouton plein',
+          'Outline chic'
+        ]
+      ),
+
+      createAdvancedField(
+        'salesMotion',
+        'Animations',
+        [
+          'Subtiles',
+          'Fluides',
+          'Statique'
+        ]
+      )
+
+    );
+
+
+    const bump=
+      document.getElementById(
+        'salesOrderBump'
+      );
+
+    if(bump){
+
+      const label=
+        bump.closest('label');
+
+      label.parentElement
+        .insertBefore(
+          advanced,
+          label
+        );
+
+      label.classList.add(
+        'dd-art-section'
+      );
+
+    }
+
+
+    const notes=
+      document.getElementById(
+        'salesNotes'
+      );
+
+    if(notes){
+      notes
+        .closest('label')
+        ?.classList
+        .add(
+          'dd-art-section'
+        );
+    }
+
+
+    /* CTA */
+    const generate=
+      card.querySelector(
+        'button[onclick*="generateSalesArchitectPrompt"]'
+      );
+
+    if(generate){
+
+      generate.classList.add(
+        'dd-art-generate'
+      );
+
+      generate.textContent=
+        'GÉNÉRER LE PROMPT DESIGN';
+
+      const wrap=
+        generate.closest('.btn-row');
+
+      if(wrap){
+        wrap.classList.add(
+          'dd-art-generate-wrap'
+        );
+      }
+
+    }
+
+
+    /* résultat */
+    const result=
+      document.getElementById(
+        'salesArchitectResult'
+      );
+
+    if(result){
+      result.classList.add(
+        'dd-art-result'
+      );
+    }
+
+  }
+
+
+  const observer=
+    new MutationObserver(
+      decorate
+    );
+
+
+  function start(){
+
+    observer.observe(
+      document.body,
+      {
+        childList:true,
+        subtree:true
+      }
+    );
+
+    decorate();
+  }
+
+
+  if(
+    document.readyState==='loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      start
+    );
+  }else{
+    start();
+  }
+
+
+  setTimeout(decorate,200);
+  setTimeout(decorate,800);
+  setTimeout(decorate,1500);
+
+})();
+</script>
+<!-- DD ART DIRECTION PREMIUM END -->
 
 </body>
 </html>
