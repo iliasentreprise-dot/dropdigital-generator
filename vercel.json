@@ -5,6 +5,17 @@
       "has": [
         {
           "type": "host",
+          "value": "dropdigital-generator\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://dropdigital.fr/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
           "value": "www\\.dropdigital\\.fr"
         }
       ],
