@@ -5503,10 +5503,9 @@ async function persistIllustration(dataUrl,generationId,index){
 
 async function restoreGeneration(id){
   const item=
-    getHistory()
-      .find(
-        entry=>entry.id===id
-      );
+    getHistory().find(
+      entry=>entry.id===id
+    );
 
   if(!item){
     console.error(
@@ -5530,12 +5529,99 @@ async function restoreGeneration(id){
   );
 
   try{
+
     S.a={
       ...(item.answers||{})
     };
 
     S.step=6;
 
+    /*
+      IMPORTANT :
+      ouvrir un projet historique
+      N'EST PAS une nouvelle génération.
+
+      Donc aucun écran
+      "Analyse de ton marché..."
+    */
+    const loading=
+      document.getElementById(
+        'loadingScreen'
+      );
+
+    if(loading){
+      loading.classList.remove('show');
+    }
+
+    const product={
+      ...(item.data||{})
+    };
+
+    const theme=
+      item.theme &&
+      Object.keys(item.theme).length
+        ? item.theme
+        : getTheme(
+            S.a.marche,
+            S.a.niche
+          );
+
+    console.log(
+      '[history] ouverture projet',
+      {
+        id,
+        title:
+          product.titre_produit||
+          S.a.offre||
+          '',
+        imagePaths:
+          Array.isArray(
+            product.illustration_paths
+          )
+            ? product
+                .illustration_paths
+                .filter(Boolean)
+                .length
+            : 0
+      }
+    );
+
+    /*
+      On donne maximum 2 secondes
+      à Supabase pour récupérer
+      les liens des anciennes images.
+
+      Si Supabase répond mal,
+      ON OUVRE QUAND MÊME LE PROJET.
+    */
+    if(
+      Array.isArray(product.illustration_paths) &&
+      product.illustration_paths.some(Boolean)
+    ){
+      await Promise.race([
+        hydrateIllustrations(product),
+
+        new Promise(resolve=>{
+          setTimeout(
+            ()=>{
+              console.warn(
+                '[history] timeout images — ouverture sans attendre'
+              );
+
+              resolve();
+            },
+            2000
+          );
+        })
+      ]);
+    }else{
+      product.illustrations=[];
+    }
+
+    /*
+      Seulement maintenant
+      on ferme la modale historique.
+    */
     closeHistory();
 
     const chat=
@@ -5546,11 +5632,6 @@ async function restoreGeneration(id){
     const header=
       document.querySelector(
         '.site-header'
-      );
-
-    const loading=
-      document.getElementById(
-        'loadingScreen'
       );
 
     const results=
@@ -5583,105 +5664,45 @@ async function restoreGeneration(id){
     }
 
     if(results){
-      results.classList.remove(
-        'show'
-      );
-    }
-
-    if(loading){
-      loading.classList.add(
-        'show'
-      );
+      results.classList.remove('show');
     }
 
     /*
-      On clone les données de l'historique
-      pour ne pas modifier directement
-      l'objet stocké dans localStorage.
+      showResults construit UNE SEULE FOIS
+      l'ebook + page de vente + upsell
+      puis affiche directement le résultat.
     */
-    const product={
-      ...(item.data||{})
-    };
-
-    const theme=
-      item.theme &&
-      Object.keys(item.theme).length
-        ? item.theme
-        : getTheme(
-            S.a.marche,
-            S.a.niche
-          );
-
-    console.log(
-      '[history] préparation',
-      {
-        id,
-        title:
-          product.titre_produit||
-          S.a.offre||
-          '',
-        paths:
-          Array.isArray(
-            product.illustration_paths
-          )
-            ? product
-                .illustration_paths
-                .filter(Boolean)
-                .length
-            : 0
-      }
+    console.time(
+      '[history] showResults '+id
     );
 
-    /*
-      Une seule hydratation.
-      Les images sont maintenant
-      signées en parallèle.
-    */
-    await hydrateIllustrations(
-      product
-    );
-
-    /*
-      IMPORTANT :
-      on NE construit PAS l'ebook,
-      la page de vente et l'upsell ici.
-
-      showResults() le fait déjà.
-      Avant, tout était calculé deux fois,
-      ce qui pouvait bloquer le navigateur.
-    */
     showResults(
       product,
       theme
     );
 
-    const chatAfter=
+    console.timeEnd(
+      '[history] showResults '+id
+    );
+
+    /*
+      Sécurité absolue :
+      aucun loading historique
+      ne peut rester affiché.
+    */
+    const loadingAfter=
       document.getElementById(
-        'chatWrap'
+        'loadingScreen'
       );
 
-    if(chatAfter){
-      chatAfter.style.setProperty(
-        'display',
-        'none',
-        'important'
-      );
-
-      chatAfter.style.setProperty(
-        'visibility',
-        'hidden',
-        'important'
-      );
-
-      chatAfter.style.setProperty(
-        'opacity',
-        '0',
-        'important'
+    if(loadingAfter){
+      loadingAfter.classList.remove(
+        'show'
       );
     }
 
     console.log(
-      '[history] création ouverte',
+      '[history] ✅ projet ouvert',
       {
         id,
         ebook:
@@ -5713,12 +5734,23 @@ async function restoreGeneration(id){
 
     alert(
       "Impossible d'ouvrir cette création. " +
-      "L'erreur exacte est affichée dans la console."
+      "Regarde l'erreur dans la console."
     );
 
   }finally{
 
     restoringHistory=false;
+
+    const loading=
+      document.getElementById(
+        'loadingScreen'
+      );
+
+    if(loading){
+      loading.classList.remove(
+        'show'
+      );
+    }
 
     console.timeEnd(
       '[history] ouverture '+id
