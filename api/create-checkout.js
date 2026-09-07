@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 const stripe=new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const APP_ORIGIN='https://dropdigital-generator.vercel.app';
+const APP_ORIGIN='https://dropdigital.fr';
 const SUPABASE_URL='https://iauypnxtakkqnjdrhivv.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_XVi8hx94UZ5tjeEgL1cI8A_q9t4QjjE';
 

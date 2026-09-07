@@ -5,7 +5,7 @@ import {
 } from '../lib/purchase.js';
 
 const APP_ORIGIN=
-  'https://dropdigital-generator.vercel.app';
+  'https://dropdigital.fr';
 
 function send(res,status,body){
   res.status(status)

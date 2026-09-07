@@ -10,7 +10,7 @@ const stripe=
   );
 
 const APP_ORIGIN=
-  'https://dropdigital-generator.vercel.app';
+  'https://dropdigital.fr';
 
 export const config={
   api:{
