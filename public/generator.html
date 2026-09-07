@@ -16337,5 +16337,38 @@ body:has(#resultsScreen.show) .chat-wrap{
 
 </style>
 
+
+
+<style id="dd-history-new-text-fix-v2">
+
+#historyModal .history-new{
+  font-family:'Bebas Neue',sans-serif !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+
+  letter-spacing:1.1px !important;
+
+  text-transform:uppercase !important;
+}
+
+/* sécurité si le texte est dans un span ou autre */
+#historyModal .history-new *,
+#historyModal .history-new span,
+#historyModal .history-new strong{
+  font-family:'Bebas Neue',sans-serif !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  letter-spacing:1.1px !important;
+}
+
+/* le + légèrement plus gros aussi */
+#historyModal .history-new::before{
+  font-size:20px !important;
+}
+
+</style>
+
 </body>
 </html>
