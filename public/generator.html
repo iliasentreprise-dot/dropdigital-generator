@@ -12429,7 +12429,60 @@ Dans le hero, demande un mockup premium du programme : écran d'ordinateur avec 
 
   </div>
 
-</div></div>`:`<div class="rc" style="border-left-color:#ff547c;background:rgba(255,84,124,.035);"><div class="rct" style="color:#ff8da8;">⚠️ LE TUNNEL CLAUDE N’A PAS ÉTÉ CRÉÉ</div><p style="color:#ff9bb2;line-height:1.8;margin:16px 0;">${eh(d.sales_error||'La clé API Claude est absente, invalide, sans crédit, ou Claude n’a pas terminé les deux pages.')}</p><p style="color:#aaa;line-height:1.8;margin-bottom:18px;">Ton ebook et tes images restent conservés. Cette action relance uniquement la page de vente, l’order bump et l’upsell.</p><button class="copy-btn copy-btn-green" onclick="regenerateSalesTunnel(this)">↻ GÉNÉRER LE TUNNEL AVEC CLAUDE</button></div>`):''}
+</div></div>`:`<div class="dd-claude-error-card">
+
+  <div class="dd-claude-error-head">
+
+    <div class="dd-claude-error-icon">
+      <span>!</span>
+    </div>
+
+    <div>
+      <div class="dd-claude-error-kicker">
+        GÉNÉRATION INTERROMPUE
+      </div>
+
+      <div class="dd-claude-error-title">
+        La page de vente n’a pas pu être créée.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="dd-claude-error-reason">
+    <div class="dd-claude-error-reason-label">
+      DÉTAIL
+    </div>
+
+    <div class="dd-claude-error-reason-text">
+      ${eh(d.sales_error||'La connexion à Claude est momentanément indisponible ou la génération n’a pas pu être finalisée.')}
+    </div>
+  </div>
+
+  <div class="dd-claude-error-safe">
+    <div class="dd-claude-error-safe-icon">✓</div>
+
+    <div>
+      <strong>Ton E-Book est conservé.</strong>
+      <span>
+        Tes textes et tes images restent intacts. Seule la page de vente sera relancée.
+      </span>
+    </div>
+  </div>
+
+  <div class="dd-claude-error-actions">
+
+    <button
+      class="dd-claude-retry"
+      onclick="regenerateSalesTunnel(this)"
+    >
+      Réessayer la génération
+      <span>→</span>
+    </button>
+
+  </div>
+
+</div>`):''}
       <div class="rc" style="${isPaidPlan()?'display:none;':''}">
         <div class="rch"><div class="rct">🖥️ CONSTRUIRE LA DIRECTION ARTISTIQUE</div></div>
         <div style="background:rgba(37,211,102,.04);border:1px solid rgba(37,211,102,.12);padding:16px;margin-bottom:20px;">
@@ -15924,6 +15977,365 @@ body:has(#resultsScreen.show) .chat-wrap{
 })();
 </script>
 <!-- DD EBOOK PREMIUM V2 END -->
+
+
+<style id="dd-claude-error-premium-v1">
+
+/* ==========================================================
+   CLAUDE ERROR — PREMIUM
+   ========================================================== */
+
+.dd-claude-error-card{
+  position:relative;
+  overflow:hidden;
+
+  padding:26px;
+
+  background:
+    radial-gradient(
+      520px 240px at 0% 0%,
+      rgba(255,24,40,.085),
+      transparent 68%
+    ),
+    linear-gradient(
+      150deg,
+      #0d0d0f,
+      #080809
+    );
+
+  border:
+    1px solid rgba(255,255,255,.085);
+
+  border-radius:24px;
+
+  box-shadow:
+    0 24px 75px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.025);
+
+  color:#f4f4f5;
+}
+
+
+/* petit glow rouge */
+.dd-claude-error-card::before{
+  content:'';
+
+  position:absolute;
+
+  width:300px;
+  height:300px;
+
+  top:-210px;
+  right:-120px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,24,40,.12),
+      transparent 70%
+    );
+
+  pointer-events:none;
+}
+
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.dd-claude-error-head{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  margin-bottom:21px;
+}
+
+
+.dd-claude-error-icon{
+  width:44px;
+  height:44px;
+
+  flex:0 0 44px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,32,48,.17),
+      rgba(255,32,48,.055)
+    );
+
+  border:
+    1px solid rgba(255,45,58,.28);
+
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.035),
+    0 8px 26px rgba(255,0,20,.08);
+}
+
+
+.dd-claude-error-icon span{
+  color:#ff5360;
+
+  font-size:21px;
+  font-weight:800;
+
+  text-shadow:
+    0 0 14px rgba(255,24,40,.45);
+}
+
+
+.dd-claude-error-kicker{
+  margin-bottom:5px;
+
+  color:#ff5965;
+
+  font-size:10px;
+  font-weight:800;
+
+  letter-spacing:.12em;
+}
+
+
+.dd-claude-error-title{
+  color:#f7f7f8;
+
+  font-size:18px;
+  font-weight:750;
+
+  letter-spacing:-.02em;
+}
+
+
+/* ==========================================================
+   DÉTAIL ERREUR
+   ========================================================== */
+
+.dd-claude-error-reason{
+  position:relative;
+  z-index:1;
+
+  padding:16px 17px;
+
+  margin-bottom:13px;
+
+  background:
+    rgba(255,255,255,.021);
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  border-radius:16px;
+}
+
+
+.dd-claude-error-reason-label{
+  margin-bottom:7px;
+
+  color:#74747b;
+
+  font-size:9px;
+  font-weight:800;
+
+  letter-spacing:.11em;
+}
+
+
+.dd-claude-error-reason-text{
+  color:#aaaab0;
+
+  font-size:12px;
+  line-height:1.65;
+}
+
+
+/* ==========================================================
+   SAFE BOX
+   ========================================================== */
+
+.dd-claude-error-safe{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+  align-items:flex-start;
+
+  gap:11px;
+
+  padding:15px 17px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  border:
+    1px solid rgba(255,255,255,.06);
+
+  border-radius:16px;
+}
+
+
+.dd-claude-error-safe-icon{
+  width:25px;
+  height:25px;
+
+  flex:0 0 25px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:8px;
+
+  background:
+    rgba(255,24,40,.085);
+
+  color:#ff5965;
+
+  font-size:11px;
+  font-weight:800;
+}
+
+
+.dd-claude-error-safe strong{
+  display:block;
+
+  margin-bottom:3px;
+
+  color:#e8e8ea;
+
+  font-size:12px;
+}
+
+
+.dd-claude-error-safe span{
+  display:block;
+
+  color:#7e7e85;
+
+  font-size:11px;
+  line-height:1.55;
+}
+
+
+/* ==========================================================
+   CTA
+   ========================================================== */
+
+.dd-claude-error-actions{
+  position:relative;
+  z-index:1;
+
+  display:flex;
+
+  margin-top:18px;
+}
+
+
+.dd-claude-retry{
+  min-height:45px;
+
+  padding:0 19px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:9px;
+
+  border:1px solid rgba(255,70,82,.19);
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      110deg,
+      #d90018,
+      #ff1729 55%,
+      #ff3545
+    );
+
+  color:white;
+
+  font:
+    800 11px/1 'DM Sans',
+    sans-serif;
+
+  letter-spacing:.035em;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 11px 28px rgba(220,0,20,.18),
+    inset 0 1px rgba(255,255,255,.22);
+
+  transition:
+    transform .22s cubic-bezier(.2,.8,.2,1),
+    box-shadow .22s ease,
+    filter .22s ease;
+}
+
+
+.dd-claude-retry span{
+  font-size:15px;
+
+  transition:
+    transform .22s ease;
+}
+
+
+.dd-claude-retry:hover{
+  transform:translateY(-2px);
+
+  filter:brightness(1.08);
+
+  box-shadow:
+    0 16px 38px rgba(220,0,20,.25),
+    0 0 28px rgba(255,24,40,.10),
+    inset 0 1px rgba(255,255,255,.26);
+}
+
+
+.dd-claude-retry:hover span{
+  transform:translateX(3px);
+}
+
+
+.dd-claude-retry:active{
+  transform:scale(.98);
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media(max-width:650px){
+
+  .dd-claude-error-card{
+    padding:20px;
+    border-radius:20px;
+  }
+
+  .dd-claude-error-title{
+    font-size:16px;
+  }
+
+  .dd-claude-retry{
+    width:100%;
+  }
+
+}
+
+</style>
 
 </body>
 </html>
