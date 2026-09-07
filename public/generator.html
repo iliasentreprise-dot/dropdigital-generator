@@ -3210,152 +3210,6 @@ img[src*="dg-logo"],
 }
 
 </style>
-
-
-<style id="dd-question-result-fix-v1">
-
-/* =========================================================
-   QUESTIONS — RÉTABLIT LA VISIBILITÉ
-   ========================================================= */
-
-#chatWrap,
-.chat-wrap{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-
-  position:relative !important;
-  z-index:3 !important;
-}
-
-
-/*
-  Le vieux système avait opacity:0 + animation.
-  Avec les multiples couches CSS, le bloc pouvait rester à 0.
-*/
-#chatWrap .q-block,
-.chat-wrap .q-block{
-  display:block !important;
-  visibility:visible !important;
-
-  opacity:1 !important;
-
-  transform:none !important;
-  filter:none !important;
-
-  animation:none !important;
-}
-
-
-/* petit indicateur étape = rouge */
-#chatWrap .q-label,
-.chat-wrap .q-label{
-  color:#ff4652 !important;
-  -webkit-text-fill-color:#ff4652 !important;
-
-  text-shadow:
-    0 0 14px rgba(255,24,40,.38) !important;
-}
-
-
-/* QUESTION PRINCIPALE = BLANCHE */
-#chatWrap .q-title,
-#chatWrap .q-title span,
-.chat-wrap .q-title,
-.chat-wrap .q-title span{
-  color:#f8f8f9 !important;
-  -webkit-text-fill-color:#f8f8f9 !important;
-
-  opacity:1 !important;
-
-  text-shadow:
-    0 0 18px rgba(255,24,40,.16) !important;
-}
-
-
-/* description = gris premium */
-#chatWrap .q-sub,
-.chat-wrap .q-sub{
-  color:#99999f !important;
-  -webkit-text-fill-color:#99999f !important;
-
-  opacity:1 !important;
-}
-
-
-/* boutons de réponses */
-#chatWrap .choice-btn,
-.chat-wrap .choice-btn{
-  color:#ededee !important;
-
-  background:#0b0b0d !important;
-
-  border:
-    1px solid rgba(255,255,255,.09) !important;
-}
-
-#chatWrap .choice-btn:hover,
-.chat-wrap .choice-btn:hover{
-  color:white !important;
-
-  border-color:
-    rgba(255,24,40,.46) !important;
-
-  background:
-    rgba(255,24,40,.055) !important;
-
-  box-shadow:
-    0 0 25px rgba(255,24,40,.08) !important;
-}
-
-#chatWrap .choice-btn.selected,
-.chat-wrap .choice-btn.selected{
-  color:white !important;
-
-  border-color:
-    rgba(255,24,40,.72) !important;
-
-  background:
-    rgba(255,24,40,.10) !important;
-}
-
-
-/* labels d'inputs = gris/blanc, PAS rouge */
-#chatWrap .text-input-wrap label,
-.chat-wrap .text-input-wrap label{
-  color:#b9b9bd !important;
-  -webkit-text-fill-color:#b9b9bd !important;
-}
-
-
-/* =========================================================
-   ÉCRAN FINAL
-   ========================================================= */
-
-#resultsScreen .dd-result-red-title{
-  color:#ff1b2d !important;
-  -webkit-text-fill-color:#ff1b2d !important;
-
-  text-shadow:
-    0 0 14px rgba(255,24,40,.82),
-    0 0 34px rgba(255,24,40,.42),
-    0 0 72px rgba(190,0,20,.18) !important;
-}
-
-
-/* PRÊT + VENDRE restent verts */
-#resultsScreen .dd-result-red-title .dd-result-green{
-  color:#25D366 !important;
-  -webkit-text-fill-color:#25D366 !important;
-
-  text-shadow:
-    0 0 14px rgba(37,211,102,.90),
-    0 0 34px rgba(37,211,102,.48),
-    0 0 70px rgba(20,190,85,.20) !important;
-}
-
-</style>
-
 </head>
 <body>
 
@@ -6278,6 +6132,12 @@ function chooseDiscoveryPlan(){
 }
 // ── GENERATE ───────────────────────────────────────────
 function showBuildWorkspace(){
+  const chatWrap=document.getElementById('chatWrap');
+
+  if(chatWrap){
+    chatWrap.style.display='none';
+  }
+
   document.getElementById('loadingScreen').classList.remove('show');
   document.getElementById('resultsScreen').classList.add('show');
   document.querySelector('.results-header h2').innerHTML='Ton produit est en <span>construction.</span>';
@@ -10789,6 +10649,12 @@ function wireConnectedStripeCheckout(html,product){
 
 // ── SHOW RESULTS ───────────────────────────────────────
 function showResults(d, theme) {
+  const chatWrap=document.getElementById('chatWrap');
+
+  if(chatWrap){
+    chatWrap.style.display='none';
+  }
+
   document.getElementById('loadingScreen').classList.remove('show');
   document.getElementById('resultsScreen').classList.add('show');
   const resultTitle=document.querySelector('.results-header h2'),resultCopy=document.querySelector('.results-header p');
@@ -12174,154 +12040,122 @@ initMemberAccess();
 })();
 </script>
 
-<!-- DD QUESTION RESULT FIX JS START -->
-<script>
-(function(){
+<style id="dd-results-banner-final-v2">
 
-  /*
-    La zone résultat est générée dynamiquement.
-    On retrouve donc le titre par SON TEXTE,
-    sans dépendre d'une ancienne classe CSS.
-  */
-  function ddPaintFinalResultTitle(){
+/* ==========================================================
+   RESULTS — ROUGE PREMIUM
+   ========================================================== */
 
-    const root=
-      document.getElementById('resultsScreen');
+#resultsScreen .results-header{
+  background:
+    radial-gradient(
+      ellipse 70% 68% at 50% 42%,
+      rgba(255,20,38,.30) 0%,
+      rgba(210,0,22,.16) 36%,
+      rgba(120,0,12,.07) 58%,
+      transparent 74%
+    ),
+    linear-gradient(
+      155deg,
+      #1a0205 0%,
+      #290308 36%,
+      #1c0206 68%,
+      #0b0103 100%
+    ) !important;
 
-    if(!root)return;
+  border-bottom:
+    2px solid rgba(255,28,45,.52) !important;
 
-    const headings=[
-      ...root.querySelectorAll('h1,h2,h3')
-    ];
-
-    for(const heading of headings){
-
-      const text=
-        String(heading.textContent||'')
-          .replace(/\s+/g,' ')
-          .trim()
-          .toUpperCase();
-
-      if(
-        !text.includes('TON PRODUIT EST PRÊT') ||
-        !text.includes('TON SITE VA VENDRE')
-      ){
-        continue;
-      }
-
-      if(
-        heading.dataset.ddResultColorFixed==='1'
-      ){
-        return;
-      }
-
-      heading.dataset.ddResultColorFixed='1';
-
-      heading.classList.add(
-        'dd-result-red-title'
-      );
-
-      heading.innerHTML=
-        'TON PRODUIT EST ' +
-        '<span class="dd-result-green">PRÊT.</span>' +
-        '<br>' +
-        'TON SITE VA ' +
-        '<span class="dd-result-green">VENDRE.</span>';
-
-      return;
-    }
-  }
+  box-shadow:
+    inset 0 -50px 100px rgba(0,0,0,.25),
+    0 20px 80px rgba(120,0,10,.10) !important;
+}
 
 
-  /*
-    Sécurité question :
-    si un ancien style inline remet opacity:0,
-    on l'annule après chaque rendu.
-  */
-  function ddRevealQuestion(){
-
-    const blocks=
-      document.querySelectorAll(
-        '#chatWrap .q-block, .chat-wrap .q-block'
-      );
-
-    blocks.forEach(block=>{
-
-      block.style.setProperty(
-        'opacity',
-        '1',
-        'important'
-      );
-
-      block.style.setProperty(
-        'visibility',
-        'visible',
-        'important'
-      );
-
-      block.style.setProperty(
-        'transform',
-        'none',
-        'important'
-      );
-
-      block.style.setProperty(
-        'filter',
-        'none',
-        'important'
-      );
-
-    });
-  }
+/* HALO DE LA BANNIÈRE = ROUGE */
+#resultsScreen .results-header::before{
+  background:
+    radial-gradient(
+      ellipse 66% 60% at 50% 43%,
+      rgba(255,28,45,.28) 0%,
+      rgba(255,20,38,.10) 38%,
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 42% 30% at 28% 85%,
+      rgba(180,0,18,.12) 0%,
+      transparent 56%
+    ) !important;
+}
 
 
-  const observer=
-    new MutationObserver(()=>{
+/* ==========================================================
+   TITRE PRINCIPAL = BLANC
+   ========================================================== */
 
-      ddRevealQuestion();
-      ddPaintFinalResultTitle();
+#resultsScreen .results-header h2,
+#resultsScreen .results-header .dd-result-red-title{
+  color:#f7f7f8 !important;
 
-    });
+  -webkit-text-fill-color:#f7f7f8 !important;
 
-
-  function start(){
-
-    observer.observe(
-      document.body,
-      {
-        childList:true,
-        subtree:true
-      }
-    );
-
-    ddRevealQuestion();
-    ddPaintFinalResultTitle();
-  }
+  text-shadow:
+    0 0 16px rgba(255,255,255,.11),
+    0 0 38px rgba(255,24,40,.16),
+    0 3px 5px rgba(0,0,0,.80) !important;
+}
 
 
-  if(
-    document.readyState==='loading'
-  ){
-    document.addEventListener(
-      'DOMContentLoaded',
-      start
-    );
-  }else{
-    start();
-  }
+/* ==========================================================
+   UNIQUEMENT PRÊT / VENDRE = VERT
+   ========================================================== */
+
+#resultsScreen .results-header h2 span,
+#resultsScreen .results-header .dd-result-green{
+  color:#2eff7a !important;
+
+  -webkit-text-fill-color:#2eff7a !important;
+
+  text-shadow:
+    0 0 15px rgba(37,211,102,.95),
+    0 0 36px rgba(0,255,100,.50),
+    0 0 2px rgba(255,255,255,.75) !important;
+}
 
 
-  setTimeout(ddRevealQuestion,100);
-  setTimeout(ddRevealQuestion,400);
-  setTimeout(ddRevealQuestion,1000);
+/* ==========================================================
+   SOUS-TITRE = GRIS/BLANC
+   ========================================================== */
 
-  setTimeout(ddPaintFinalResultTitle,100);
-  setTimeout(ddPaintFinalResultTitle,500);
-  setTimeout(ddPaintFinalResultTitle,1200);
+#resultsScreen .results-header p{
+  color:rgba(235,235,238,.72) !important;
 
-})();
-</script>
-<!-- DD QUESTION RESULT FIX JS END -->
+  -webkit-text-fill-color:
+    rgba(235,235,238,.72) !important;
+}
+
+
+/* ==========================================================
+   ÉCLAIR : on retire tout glow vert
+   ========================================================== */
+
+#resultsScreen .check-anim{
+  filter:
+    drop-shadow(0 0 14px rgba(255,170,0,.55))
+    drop-shadow(0 0 34px rgba(255,24,40,.20)) !important;
+}
+
+
+/* ==========================================================
+   SÉCURITÉ :
+   JAMAIS LE QUESTIONNAIRE SUR L'ÉCRAN RÉSULTATS
+   ========================================================== */
+
+body:has(#resultsScreen.show) #chatWrap{
+  display:none !important;
+}
+
+</style>
 
 </body>
 </html>
