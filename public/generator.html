@@ -16210,7 +16210,9 @@ body:has(#resultsScreen.show) .chat-wrap{
           retire également
           l'ancien emoji.
         */
-        el.textContent='EBOOK';
+        if(el.textContent!=='EBOOK'){
+          el.textContent='EBOOK';
+        }
 
 
         const style=
@@ -16288,34 +16290,105 @@ body:has(#resultsScreen.show) .chat-wrap{
   }
 
 
+  /*
+    Observer limité UNIQUEMENT à l'écran résultats.
+
+    Avant :
+    document.body entier était observé.
+    decorate() modifiait le DOM observé lui-même,
+    ce qui pouvait créer une boucle infinie.
+
+    Maintenant :
+    - aucune observation globale
+    - observer coupé pendant decorate()
+    - seulement #resultsScreen
+  */
+
+  let ddEbookDecorating=false;
+
   const observer=
-    new MutationObserver(
-      decorate
-    );
+    new MutationObserver(()=>{
+
+      if(ddEbookDecorating){
+        return;
+      }
+
+      const root=
+        document.getElementById(
+          'resultsScreen'
+        );
+
+      if(!root){
+        return;
+      }
+
+      ddEbookDecorating=true;
+
+      observer.disconnect();
+
+      try{
+
+        decorate();
+
+      }catch(error){
+
+        console.error(
+          '[DropDigital] ebook decorator',
+          error
+        );
+
+      }finally{
+
+        ddEbookDecorating=false;
+
+        observer.observe(
+          root,
+          {
+            childList:true,
+            subtree:true
+          }
+        );
+      }
+
+    });
 
 
   function start(){
 
+    /*
+      Premier rendu AVANT observation :
+      ses propres modifications DOM
+      ne peuvent pas rappeler l'observer.
+    */
+    decorate();
+
+    const root=
+      document.getElementById(
+        'resultsScreen'
+      );
+
+    if(!root){
+      return;
+    }
+
     observer.observe(
-      document.body,
+      root,
       {
         childList:true,
         subtree:true
       }
     );
-
-    decorate();
-
   }
 
 
-  if(
-    document.readyState==='loading'
-  ){
+  if(document.readyState==='loading'){
 
     document.addEventListener(
       'DOMContentLoaded',
-      start
+      start,
+      {
+        once:true
+      }
     );
 
   }else{
@@ -16324,11 +16397,6 @@ body:has(#resultsScreen.show) .chat-wrap{
 
   }
 
-
-  setTimeout(decorate,100);
-  setTimeout(decorate,400);
-  setTimeout(decorate,1000);
-  setTimeout(decorate,1800);
 
 })();
 </script>
