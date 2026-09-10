@@ -13099,197 +13099,269 @@ function restart(){
   });
 }
 function previewHTML(html){
-  const payload=String(html||'');
+  const payload = String(html || '');
 
   if(!payload.trim()){
-    alert("Cet aperçu est vide. Rouvre la création depuis « Mes créations » puis réessaie.");
+    alert("Cet aperçu est vide. Régénère ta création puis réessaie.");
     return;
   }
 
-  /*
-    Ouvre immédiatement la fenêtre pendant le clic utilisateur.
-    Safari accepte beaucoup mieux cette méthode qu'un échange postMessage.
-  */
-  const popup=window.open('about:blank','_blank');
+  let overlay = document.getElementById('dd-preview-overlay');
 
-  if(!popup){
-    alert(
-      'Safari a bloqué l’aperçu. Autorise les fenêtres surgissantes pour DropDigital.'
-    );
-    return;
-  }
+  if(!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'dd-preview-overlay';
 
-  try{
-    popup.document.open();
-    popup.document.write(payload);
-    popup.document.close();
+    overlay.innerHTML = `
+      <style>
+        #dd-preview-overlay{
+          position:fixed;
+          inset:0;
+          z-index:2147483647;
+          background:#080808;
+          display:none;
+          flex-direction:column;
+          font-family:Inter,Arial,sans-serif;
+        }
 
-    try{
-      popup.focus();
-    }catch(_){}
+        #dd-preview-overlay.dd-open{
+          display:flex;
+        }
 
-    console.log(
-      '[DropDigital] aperçu ouvert directement',
-      {
-        length:payload.length,
-        title:window._productTitle||''
-      }
-    );
+        #dd-preview-toolbar{
+          height:64px;
+          min-height:64px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:0 20px;
+          background:#0d0d0d;
+          border-bottom:1px solid rgba(255,255,255,.1);
+          color:white;
+        }
 
-  }catch(error){
-    console.error('[DropDigital] erreur aperçu',error);
+        #dd-preview-left{
+          display:flex;
+          align-items:center;
+          gap:12px;
+          font-weight:700;
+        }
 
-    try{
-      popup.close();
-    }catch(_){}
+        #dd-preview-logo{
+          width:34px;
+          height:34px;
+          border-radius:10px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background:rgba(255,40,60,.12);
+          border:1px solid rgba(255,40,60,.35);
+          color:#ff334d;
+          font-weight:900;
+        }
 
-    alert(
-      "Impossible d’ouvrir l’aperçu. Recharge DropDigital puis réessaie."
-    );
-  }
-}
+        #dd-preview-actions{
+          display:flex;
+          align-items:center;
+          gap:8px;
+        }
 
-init();
-initMemberAccess();
-</script>
+        .dd-preview-btn{
+          appearance:none;
+          border:1px solid rgba(255,255,255,.12);
+          background:#171717;
+          color:#aaa;
+          padding:9px 14px;
+          border-radius:10px;
+          cursor:pointer;
+          font-weight:700;
+          font-size:13px;
+        }
 
-<script>
-(function(){
-  function dedupePendingDGLogo(){
-    const form=document.getElementById('emailGateForm');
-    if(!form || !form.classList.contains('is-pending')) return;
+        .dd-preview-btn:hover{
+          color:#fff;
+          background:#222;
+        }
 
-    const logos=[...form.querySelectorAll('img[src*="dg-app-logo"]')];
+        .dd-preview-btn.dd-active{
+          background:white;
+          color:black;
+        }
 
-    if(logos.length <= 1) return;
+        #dd-preview-close{
+          color:white;
+        }
 
-    logos.slice(0,-1).forEach(img=>{
-      const parent=img.parentElement;
+        #dd-preview-stage{
+          flex:1;
+          min-height:0;
+          overflow:auto;
+          display:flex;
+          justify-content:center;
+          background:#151515;
+        }
 
-      if(
-        parent &&
-        parent !== form &&
-        parent.children.length === 1 &&
-        !parent.textContent.trim()
-      ){
-        parent.style.display='none';
-      }else{
-        img.style.display='none';
-      }
+        #dd-preview-shell{
+          width:100%;
+          height:100%;
+          background:white;
+          transition:
+            width .25s ease,
+            max-width .25s ease,
+            border-radius .25s ease,
+            margin .25s ease;
+        }
+
+        #dd-preview-shell.dd-mobile{
+          width:390px;
+          max-width:calc(100vw - 20px);
+          height:calc(100% - 24px);
+          margin:12px auto;
+          border-radius:22px;
+          overflow:hidden;
+          box-shadow:0 20px 80px rgba(0,0,0,.6);
+        }
+
+        #dd-preview-frame{
+          width:100%;
+          height:100%;
+          border:0;
+          display:block;
+          background:white;
+        }
+
+        @media(max-width:600px){
+          #dd-preview-toolbar{
+            padding:0 10px;
+          }
+
+          #dd-preview-left span{
+            display:none;
+          }
+
+          .dd-preview-btn{
+            padding:8px 10px;
+            font-size:12px;
+          }
+        }
+      </style>
+
+      <div id="dd-preview-toolbar">
+
+        <div id="dd-preview-left">
+          <div id="dd-preview-logo">F</div>
+          <span>Aperçu</span>
+        </div>
+
+        <div id="dd-preview-actions">
+
+          <button
+            class="dd-preview-btn dd-active"
+            id="dd-preview-desktop"
+            type="button"
+          >
+            Desktop
+          </button>
+
+          <button
+            class="dd-preview-btn"
+            id="dd-preview-mobile"
+            type="button"
+          >
+            Mobile
+          </button>
+
+          <button
+            class="dd-preview-btn"
+            id="dd-preview-close"
+            type="button"
+          >
+            Fermer
+          </button>
+
+        </div>
+
+      </div>
+
+      <div id="dd-preview-stage">
+        <div id="dd-preview-shell">
+          <iframe
+            id="dd-preview-frame"
+            title="Aperçu"
+          ></iframe>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const shell = overlay.querySelector('#dd-preview-shell');
+
+    const desktopButton =
+      overlay.querySelector('#dd-preview-desktop');
+
+    const mobileButton =
+      overlay.querySelector('#dd-preview-mobile');
+
+    const closeButton =
+      overlay.querySelector('#dd-preview-close');
+
+    desktopButton.addEventListener('click', () => {
+      shell.classList.remove('dd-mobile');
+
+      desktopButton.classList.add('dd-active');
+      mobileButton.classList.remove('dd-active');
+    });
+
+    mobileButton.addEventListener('click', () => {
+      shell.classList.add('dd-mobile');
+
+      mobileButton.classList.add('dd-active');
+      desktopButton.classList.remove('dd-active');
+    });
+
+    closeButton.addEventListener('click', () => {
+      overlay.classList.remove('dd-open');
+
+      const frame =
+        overlay.querySelector('#dd-preview-frame');
+
+      frame.srcdoc = '';
+
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
     });
   }
 
-  const observer=new MutationObserver(dedupePendingDGLogo);
+  const frame =
+    overlay.querySelector('#dd-preview-frame');
 
-  window.addEventListener('DOMContentLoaded',()=>{
-    const form=document.getElementById('emailGateForm');
+  const shell =
+    overlay.querySelector('#dd-preview-shell');
 
-    if(form){
-      observer.observe(form,{
-        attributes:true,
-        attributeFilter:['class'],
-        childList:true,
-        subtree:true
-      });
-    }
+  const desktopButton =
+    overlay.querySelector('#dd-preview-desktop');
 
-    dedupePendingDGLogo();
-  });
+  const mobileButton =
+    overlay.querySelector('#dd-preview-mobile');
 
-  setTimeout(dedupePendingDGLogo,100);
-  setTimeout(dedupePendingDGLogo,500);
-})();
-</script>
+  shell.classList.remove('dd-mobile');
 
+  desktopButton.classList.add('dd-active');
+  mobileButton.classList.remove('dd-active');
 
-<script id="dd-motion-v4">
-(()=>{
-  let previousBlobLeft = null;
-  let settleTimer = null;
+  frame.srcdoc = payload;
 
-  function getProgressItems(){
-    const root=document.getElementById('progressDots');
-    if(!root) return [];
+  overlay.classList.add('dd-open');
 
-    return [...root.children].filter(
-      el=>el.id!=='ddProgressBlob'
-    );
-  }
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
 
-  function ensureProgressBlob(){
-    const root=document.getElementById('progressDots');
-    if(!root) return null;
-
-    let blob=document.getElementById('ddProgressBlob');
-
-    if(!blob){
-      blob=document.createElement('div');
-      blob.id='ddProgressBlob';
-      root.appendChild(blob);
-    }
-
-    return blob;
-  }
-
-  function positionProgressBlob(animated=true){
-    const root=document.getElementById('progressDots');
-    const blob=ensureProgressBlob();
-
-    if(!root || !blob) return;
-
-    const items=getProgressItems();
-    if(!items.length) return;
-
-    let active=items.find(el=>el.classList.contains('active'));
-
-    if(!active){
-      active=items.findLast
-        ? items.findLast(el=>el.classList.contains('done'))
-        : [...items].reverse().find(el=>el.classList.contains('done'));
-    }
-
-    if(!active) active=items[0];
-
-    const rootBox=root.getBoundingClientRect();
-    const activeBox=active.getBoundingClientRect();
-
-    const nextLeft=activeBox.left-rootBox.left;
-    const nextWidth=activeBox.width;
-
-    if(previousBlobLeft===null || !animated){
-      blob.style.transition='none';
-      blob.style.left=nextLeft+'px';
-      blob.style.width=nextWidth+'px';
-
-      requestAnimationFrame(()=>{
-        blob.style.transition='';
-      });
-
-      previousBlobLeft=nextLeft;
-      return;
-    }
-
-    clearTimeout(settleTimer);
-
-    const oldLeft=previousBlobLeft;
-    const minLeft=Math.min(oldLeft,nextLeft);
-    const distance=Math.abs(nextLeft-oldLeft);
-
-    /*
-      Phase liquide :
-      le blob s'étire entre les deux bullets
-      avant de se rétracter sur la nouvelle étape.
-    */
-    blob.style.left=minLeft+'px';
-    blob.style.width=(distance+nextWidth)+'px';
-
-    settleTimer=setTimeout(()=>{
-      blob.style.left=nextLeft+'px';
-      blob.style.width=nextWidth+'px';
-    },115);
-
-    previousBlobLeft=nextLeft;
-  }
+  console.log(
+    '[FERRUCCI] aperçu ouvert',
+    { length: payload.length }
+  );
+}
 
   function watchProgress(){
     const root=document.getElementById('progressDots');
